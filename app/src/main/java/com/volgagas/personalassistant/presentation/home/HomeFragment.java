@@ -41,16 +41,12 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.activity_constraint_projects, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        ivUserImage = view.findViewById(R.id.iv_user_image);
-        tvPosition = view.findViewById(R.id.tv_user_position);
-        tvName = view.findViewById(R.id.tv_user_name);
-        tvCurrentTasks = view.findViewById(R.id.tv_count_current_tasks);
-        tvCompletedTasks = view.findViewById(R.id.tv_count_completed_tasks);
+
     }
 
     @Override

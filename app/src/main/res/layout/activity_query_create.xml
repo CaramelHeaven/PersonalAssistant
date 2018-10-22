@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/text_add_query"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/iv_user"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_below="@id/tv_description"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        app:srcCompat="@drawable/ic_user" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_description"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:layout_toEndOf="@id/iv_user"
+        android:theme="@style/TextLabel">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:hint="Введите свое имя"
+            android:imeOptions="flagNoExtractUi"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/colorTextGray" />
+    </android.support.design.widget.TextInputLayout>
+</RelativeLayout>

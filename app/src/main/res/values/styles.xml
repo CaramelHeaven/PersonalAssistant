@@ -21,4 +21,13 @@
         <item name="android:textColorSecondary">@color/colorSecondaryLight</item>
         <item name="android:color">@color/colorSecondaryLight</item>
     </style>
+
+    <style name="TextLabel" parent="TextAppearance.AppCompat">
+        <item name="android:textColorHint">@color/colorTextGray</item>
+        <item name="android:textSize">20sp</item>
+
+        <item name="colorAccent">#b41f55</item>
+        <item name="colorControlNormal">@android:color/black</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
 </resources>

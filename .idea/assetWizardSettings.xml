@@ -28,9 +28,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_add" />
-                            <entry key="sourceFile" value="C:\Users\S.Fominov" />
+                            <entry key="outputName" value="ic_data_picker" />
+                            <entry key="sourceFile" value="C:\Users\S.Fominov\Desktop\notification.svg" />
                           </map>
                         </option>
                       </PersistentState>

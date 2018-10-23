@@ -38,7 +38,7 @@
 
     <View
         android:id="@+id/viewBackground"
-        android:layout_width="411dp"
+        android:layout_width="0dp"
         android:layout_height="249dp"
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"

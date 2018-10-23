@@ -1,16 +1,32 @@
 package com.volgagas.personalassistant.presentation.projects.queries;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
+import com.volgagas.personalassistant.presentation.main.MainActivity;
+import com.volgagas.personalassistant.presentation.projects.query_create.QueryCreateActivity;
+
+import java.util.ArrayList;
 
 public class QueryFragment extends BaseFragment {
+
+    private FloatingActionButton fabCreate;
+    private Button btnAddQuery;
+    private RecyclerView recyclerView;
+
+    private QueryAdapter adapter;
 
     public static QueryFragment newInstance() {
 
@@ -29,11 +45,43 @@ public class QueryFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        btnAddQuery = view.findViewById(R.id.btn_add_query);
+        fabCreate = view.findViewById(R.id.fab_create);
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+        provideClickListeners();
+        fillDataToAdapter();
     }
+
+    private void fillDataToAdapter() {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+        adapter = new QueryAdapter(new ArrayList());
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void provideClickListeners() {
+        btnAddQuery.setVisibility(View.VISIBLE);
+        btnAddQuery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), QueryCreateActivity.class));
+            }
+        });
+
+        fabCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), QueryCreateActivity.class));
+            }
+        });
+    }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        fabCreate = null;
     }
 }

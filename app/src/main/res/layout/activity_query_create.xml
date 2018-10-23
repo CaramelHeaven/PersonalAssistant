@@ -4,45 +4,109 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/text_add_query"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:animateLayoutChanges="true">
 
-    <ImageView
-        android:id="@+id/iv_user"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:layout_below="@id/tv_description"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        app:srcCompat="@drawable/ic_user" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ToolbarStyle"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:title="Добавление заявки"
+            app:titleTextColor="@color/colorSecondaryLight" />
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/text_input_user"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_description"
+        android:layout_height="100dp"
+        android:layout_below="@id/appBar"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:layout_toEndOf="@id/iv_user"
+        android:layout_marginEnd="16dp"
         android:theme="@style/TextLabel">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/et_user_name"
+            android:id="@+id/et_title"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginEnd="8dp"
-            android:ellipsize="end"
-            android:hint="Введите свое имя"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:hint="Название"
             android:imeOptions="flagNoExtractUi"
-            android:maxLines="1"
+            android:maxHeight="50dp"
+            android:maxLines="3"
             android:textColor="@android:color/black"
             android:textColorHint="@color/colorTextGray" />
     </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/text_input_description"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_below="@id/text_input_user"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:theme="@style/TextLabel">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:hint="Описание заявки"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/colorTextGray" />
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_input_description"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="46dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_destination"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_btn_normal"
+            android:text="Кому"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btn_date_picker"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_btn_normal"
+            android:text="Время"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnApply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:background="@drawable/rounded_btn_normal"
+        android:text="Подтвердить"
+        android:textColor="@android:color/white" />
 </RelativeLayout>

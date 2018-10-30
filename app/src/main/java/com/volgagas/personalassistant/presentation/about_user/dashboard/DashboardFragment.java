@@ -1,28 +1,16 @@
-package com.volgagas.personalassistant.presentation.dashboard;
+package com.volgagas.personalassistant.presentation.about_user.dashboard;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.presentation.base.BaseFragment;
-import com.volgagas.personalassistant.presentation.dashboard.presenter.DashboardPresenter;
-import com.volgagas.personalassistant.presentation.dashboard.presenter.DashboardView;
 
-public class DashboardFragment extends BaseFragment implements DashboardView {
-
-    @ProvidePresenter
-    DashboardPresenter provideDashboardPresenter() {
-        return new DashboardPresenter();
-    }
-
-    @InjectPresenter
-    DashboardPresenter presenter;
+public class DashboardFragment extends Fragment {
 
     public static DashboardFragment newInstance() {
 
@@ -47,15 +35,5 @@ public class DashboardFragment extends BaseFragment implements DashboardView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
     }
 }

@@ -1,18 +1,19 @@
-package com.volgagas.personalassistant.presentation.main;
+package com.volgagas.personalassistant.presentation.main.adapters;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.volgagas.personalassistant.presentation.projects.contracts.ContractFragment;
 import com.volgagas.personalassistant.presentation.projects.queries.QueryFragment;
 import com.volgagas.personalassistant.presentation.projects.work.WorkFragment;
 
-public class PagerAdapter extends FragmentPagerAdapter {
+public class PagerProjectsAdapter extends FragmentPagerAdapter {
 
-    private int count = 2;
+    private int count = 3;
 
-    public PagerAdapter(FragmentManager fm) {
+    public PagerProjectsAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -23,6 +24,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 return WorkFragment.newInstance();
             case 1:
                 return QueryFragment.newInstance();
+            case 2:
+                return ContractFragment.newInstance();
         }
         return null;
     }
@@ -35,6 +38,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 return "Работа";
             case 1:
                 return "Заявки";
+            case 2:
+                return "Договоры";
         }
         return "";
     }

@@ -9,4 +9,7 @@ import retrofit2.http.Url;
 public interface D365ApiService {
     @GET
     Single<JsonObject> getTest(@Url String url);
+
+    @GET
+    Single<JsonObject> getSharePointTest(@Url String url);
 }

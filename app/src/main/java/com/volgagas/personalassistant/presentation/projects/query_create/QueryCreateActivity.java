@@ -3,15 +3,11 @@ package com.volgagas.personalassistant.presentation.projects.query_create;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -41,6 +37,7 @@ public class QueryCreateActivity extends MvpAppCompatActivity implements DatePic
         toolbar = findViewById(R.id.toolbar);
         btnDestination = findViewById(R.id.btn_destination);
         btnDatePicker = findViewById(R.id.btn_date_picker);
+        btnApply = findViewById(R.id.btn_apply);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -1,12 +1,12 @@
-package com.volgagas.personalassistant.presentation.dashboard.presenter;
+package com.volgagas.personalassistant.presentation.projects.contracts.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
 @InjectViewState
-public class DashboardPresenter extends MvpPresenter<DashboardView> {
+public class ContractPresenter extends MvpPresenter<ContractView> {
 
-    public DashboardPresenter() {
+    public ContractPresenter() {
     }
 
     @Override

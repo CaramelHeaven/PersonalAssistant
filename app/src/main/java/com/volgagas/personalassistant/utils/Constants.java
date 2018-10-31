@@ -22,6 +22,7 @@ public class Constants {
     //url for requests from SP
     public static final String SHARE_POINT = "https://graph.microsoft.com/v1.0";
 
-    public static final String AUTH_URL = "https://login.windows.net/common";
+    public static final String AUTH_URL = "https://login.microsoftonline.com/common/oauth2/authorize";
+
     public static final String REDIRECT_URL = "http://localhost123";
 }

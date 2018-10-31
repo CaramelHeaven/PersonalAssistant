@@ -75,6 +75,7 @@ public class PersonalAssistant extends Application {
     private static OkHttpClient.Builder initBuilderAuth(String token, String authTo) {
         switch (authTo) {
             case "D365":
+                Timber.d("INIT D365");
                 OkHttpClient.Builder builderD365 = new OkHttpClient().newBuilder();
                 builderD365.readTimeout(10, TimeUnit.SECONDS);
                 builderD365.connectTimeout(7, TimeUnit.SECONDS);
@@ -91,6 +92,7 @@ public class PersonalAssistant extends Application {
                 builderD365.addInterceptor(interceptorD365);
                 return builderD365;
             case "SP":
+                Timber.d("INIT SP");
                 OkHttpClient.Builder builderSP = new OkHttpClient().newBuilder();
                 builderSP.readTimeout(10, TimeUnit.SECONDS);
                 builderSP.connectTimeout(7, TimeUnit.SECONDS);

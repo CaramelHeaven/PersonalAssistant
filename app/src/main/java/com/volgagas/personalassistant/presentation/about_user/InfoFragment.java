@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.presentation.about_user.dashboard;
+package com.volgagas.personalassistant.presentation.about_user;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,15 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.presentation.about_user.presenter.InfoPresenter;
+import com.volgagas.personalassistant.presentation.about_user.presenter.InfoView;
+import com.volgagas.personalassistant.presentation.base.BaseFragment;
 
-public class DashboardFragment extends Fragment {
+public class InfoFragment extends BaseFragment implements InfoView {
 
-    public static DashboardFragment newInstance() {
+    @InjectPresenter
+    InfoPresenter presenter;
+
+    public static InfoFragment newInstance() {
 
         Bundle args = new Bundle();
 
-        DashboardFragment fragment = new DashboardFragment();
+        InfoFragment fragment = new InfoFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -24,7 +31,7 @@ public class DashboardFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dashboard, container, false);
+        return inflater.inflate(R.layout.fragment_info, container, false);
     }
 
     @Override

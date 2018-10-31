@@ -41,7 +41,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/colorPrimary"
-        tools:layout_editor_absoluteY="56dp" />
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tabLayout" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -68,31 +71,31 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_container"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/bnv_navigation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabLayout2"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBar"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabMode="fixed" />
+        app:layout_constraintTop_toTopOf="@+id/tabLayout" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_container2"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/bnv_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tabLayout" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container_about"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bnv_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout2" />
+        app:layout_constraintTop_toTopOf="@+id/tabLayout" />
 </android.support.constraint.ConstraintLayout>

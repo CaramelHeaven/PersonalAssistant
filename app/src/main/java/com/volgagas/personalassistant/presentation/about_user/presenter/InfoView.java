@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.presentation.about_user.info.presenter;
+package com.volgagas.personalassistant.presentation.about_user.presenter;
 
 import com.arellomobile.mvp.MvpView;
 

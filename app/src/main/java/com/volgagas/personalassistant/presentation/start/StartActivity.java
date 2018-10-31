@@ -30,12 +30,12 @@ public class StartActivity extends BaseActivity implements StartView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
+//        authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
+//
+//        authContext.acquireToken(StartActivity.this, Constants.GRAPH, Constants.CLIENT,
+//                Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
 
-        authContext.acquireToken(StartActivity.this, Constants.GRAPH, Constants.CLIENT,
-                Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
-
-       // startActivity(new Intent(StartActivity.this, MainActivity.class));
+        startActivity(new Intent(StartActivity.this, MainActivity.class));
 
         //startActivity(new Intent(this, MainActivity.class));
     }
@@ -91,8 +91,8 @@ public class StartActivity extends BaseActivity implements StartView {
                             Timber.d("thro: " + throwable.getMessage());
                         });
 
-                authContext.acquireToken(StartActivity.this, Constants.GRAPH, Constants.CLIENT,
-                        Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", spCallback);
+               /* authContext.acquireToken(StartActivity.this, Constants.GRAPH, Constants.CLIENT,
+                        Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", spCallback);*/
             }
         }
 
@@ -102,7 +102,7 @@ public class StartActivity extends BaseActivity implements StartView {
         }
     };
 
-    private AuthenticationCallback<AuthenticationResult> spCallback = new AuthenticationCallback<AuthenticationResult>() {
+    /*private AuthenticationCallback<AuthenticationResult> spCallback = new AuthenticationCallback<AuthenticationResult>() {
         @SuppressLint("CheckResult")
         @Override
         public void onSuccess(AuthenticationResult result) {
@@ -125,5 +125,5 @@ public class StartActivity extends BaseActivity implements StartView {
         public void onError(Exception exc) {
 
         }
-    };
+    };*/
 }

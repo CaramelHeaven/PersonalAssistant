@@ -6,19 +6,25 @@ import android.support.constraint.ConstraintSet;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.transition.TransitionManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.presentation.about_user.InfoFragment;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
-import com.volgagas.personalassistant.presentation.main.adapters.PagerAboutAdapter;
+import com.volgagas.personalassistant.presentation.home.HomeFragment;
 import com.volgagas.personalassistant.presentation.main.adapters.PagerProjectsAdapter;
 import com.volgagas.personalassistant.presentation.main.presenter.MainPresenter;
 import com.volgagas.personalassistant.presentation.main.presenter.MainView;
+
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements MainView {
 
@@ -27,12 +33,12 @@ public class MainActivity extends BaseActivity implements MainView {
     private RelativeLayout rlContainer;
     private ImageView ivUserImage;
     private ConstraintLayout constraintLayout;
-    private ViewPager vpProjectsContainer, vpAboutContainer;
-    private TabLayout tabLayout, tabLayout2;
+    private ViewPager vpProjectsContainer;
+    private TabLayout tabLayout;
+    private FrameLayout fragmentContainer, fragmentTest;
 
     private PagerProjectsAdapter projectsAdapter;
-    private PagerAboutAdapter pagerAboutAdapter;
-    private ConstraintSet homeSet, projectsSet, dashboardSet;
+    private ConstraintSet homeSet, projectsSet, infoSet;
 
     @ProvidePresenter
     MainPresenter provideMainPresenter() {
@@ -50,24 +56,27 @@ public class MainActivity extends BaseActivity implements MainView {
         bnvNavigation = findViewById(R.id.bnv_navigation);
         constraintLayout = findViewById(R.id.constraintLayout);
         vpProjectsContainer = findViewById(R.id.vp_container);
-        vpAboutContainer = findViewById(R.id.vp_container2);
         tabLayout = findViewById(R.id.tabLayout);
-        tabLayout2 = findViewById(R.id.tabLayout2);
+        fragmentContainer = findViewById(R.id.fragment_container);
+        fragmentTest = findViewById(R.id.fragment_container_about);
         homeSet = new ConstraintSet();
         projectsSet = new ConstraintSet();
-        dashboardSet = new ConstraintSet();
+        infoSet = new ConstraintSet();
 
         projectsAdapter = new PagerProjectsAdapter(getSupportFragmentManager());
-        pagerAboutAdapter = new PagerAboutAdapter(getSupportFragmentManager());
 
         homeSet.clone(constraintLayout);
         projectsSet.clone(this, R.layout.activity_constraint_projects);
-        dashboardSet.clone(this, R.layout.activity_constraint_about);
+        infoSet.clone(this, R.layout.activity_constraint_about);
 
         setSupportActionBar(toolbar);
 
         setBottomNavigation();
-        bnvNavigation.setSelectedItemId(R.id.action_home);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, HomeFragment.newInstance(), "HOME")
+                .commit();
     }
 
     @Override
@@ -79,19 +88,34 @@ public class MainActivity extends BaseActivity implements MainView {
         bnvNavigation.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.action_home:
+                    Fragment fragmente = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+                    if (!fragmente.getTag().equals("HOME")) {
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, HomeFragment.newInstance(), "HOME")
+                                .commit();
+                    }
                     TransitionManager.beginDelayedTransition(constraintLayout);
                     homeSet.applyTo(constraintLayout);
                     break;
                 case R.id.action_project:
                     vpProjectsContainer.setAdapter(projectsAdapter);
                     tabLayout.setupWithViewPager(vpProjectsContainer);
+
                     openProjects();
                     break;
-                case R.id.action_dashboard:
-                    vpAboutContainer.setAdapter(pagerAboutAdapter);
-                    tabLayout2.setupWithViewPager(vpAboutContainer);
+                case R.id.action_info:
+                    Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("INFO");
+
+                    if (fragment1 == null) {
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container_about, InfoFragment.newInstance(), "INFO")
+                                .commit();
+                    }
                     TransitionManager.beginDelayedTransition(constraintLayout);
-                    dashboardSet.applyTo(constraintLayout);
+                    infoSet.applyTo(constraintLayout);
                     break;
             }
             return true;

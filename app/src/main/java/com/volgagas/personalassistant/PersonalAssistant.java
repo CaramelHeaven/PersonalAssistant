@@ -1,9 +1,11 @@
 package com.volgagas.personalassistant;
 
 import android.app.Application;
+import android.support.annotation.Nullable;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.volgagas.personalassistant.data.datasource.D365ApiService;
+import com.volgagas.personalassistant.data.datasource.SPApiService;
 import com.volgagas.personalassistant.utils.Constants;
 
 import java.util.concurrent.TimeUnit;
@@ -20,6 +22,7 @@ public class PersonalAssistant extends Application {
     private PersonalAssistant application;
 
     private static D365ApiService d365ApiService;
+    private static SPApiService spApiService;
 
     @Override
     public void onCreate() {
@@ -29,12 +32,20 @@ public class PersonalAssistant extends Application {
         application = this;
     }
 
+    public PersonalAssistant getApplication() {
+        return application;
+    }
+
     public static D365ApiService getD365ApiService() {
         return d365ApiService;
     }
 
+    public static SPApiService getSpApiService() {
+        return spApiService;
+    }
+
     public static void provideDynamics365Auth(String token) {
-        OkHttpClient.Builder builderWithAuth = initBuilderAuth(token);
+        OkHttpClient.Builder builderWithAuth = initBuilderAuth(token, "D365");
         OkHttpClient client = builderWithAuth.build();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -47,21 +58,57 @@ public class PersonalAssistant extends Application {
         d365ApiService = retrofit.create(D365ApiService.class);
     }
 
-    private static OkHttpClient.Builder initBuilderAuth(String token) {
-        OkHttpClient.Builder builderD365 = new OkHttpClient().newBuilder();
-        builderD365.readTimeout(10, TimeUnit.SECONDS);
-        builderD365.connectTimeout(7, TimeUnit.SECONDS);
-        builderD365.addInterceptor(chain -> {
-            Request request = chain.request();
-            request = request.newBuilder()
-                    .addHeader("Authorization", "Bearer " + token)
-                    .addHeader("Content-Type", "application/json;odata=verbose")
-                    .build();
-            return chain.proceed(request);
-        });
-        HttpLoggingInterceptor interceptorD365 = new HttpLoggingInterceptor();
-        interceptorD365.setLevel(HttpLoggingInterceptor.Level.BODY);
-        builderD365.addInterceptor(interceptorD365);
-        return builderD365;
+    public static void provideSharePointAuth(String token) {
+        OkHttpClient.Builder builderWithAuth = initBuilderAuth(token, "SP");
+        OkHttpClient client = builderWithAuth.build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.GRAPH)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        spApiService = retrofit.create(SPApiService.class);
+    }
+
+    private static OkHttpClient.Builder initBuilderAuth(String token, String authTo) {
+        switch (authTo) {
+            case "D365":
+                Timber.d("INIT D365");
+                OkHttpClient.Builder builderD365 = new OkHttpClient().newBuilder();
+                builderD365.readTimeout(10, TimeUnit.SECONDS);
+                builderD365.connectTimeout(7, TimeUnit.SECONDS);
+                builderD365.addInterceptor(chain -> {
+                    Request request = chain.request();
+                    request = request.newBuilder()
+                            .addHeader("Authorization", "Bearer " + token)
+                            .addHeader("Content-Type", "application/json")
+                            .build();
+                    return chain.proceed(request);
+                });
+                HttpLoggingInterceptor interceptorD365 = new HttpLoggingInterceptor();
+                interceptorD365.setLevel(HttpLoggingInterceptor.Level.BODY);
+                builderD365.addInterceptor(interceptorD365);
+                return builderD365;
+            case "SP":
+                Timber.d("INIT SP");
+                OkHttpClient.Builder builderSP = new OkHttpClient().newBuilder();
+                builderSP.readTimeout(10, TimeUnit.SECONDS);
+                builderSP.connectTimeout(7, TimeUnit.SECONDS);
+                builderSP.addInterceptor(chain -> {
+                    Request request = chain.request();
+                    request = request.newBuilder()
+                            .addHeader("Authorization", "Bearer " + token)
+                            .addHeader("Content-Type", "application/json")
+                            .build();
+                    return chain.proceed(request);
+                });
+                HttpLoggingInterceptor interceptorSP = new HttpLoggingInterceptor();
+                interceptorSP.setLevel(HttpLoggingInterceptor.Level.BODY);
+                builderSP.addInterceptor(interceptorSP);
+                return builderSP;
+        }
+        return null;
     }
 }

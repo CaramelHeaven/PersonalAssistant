@@ -21,6 +21,8 @@ import com.volgagas.personalassistant.presentation.main.MainActivity;
 import com.volgagas.personalassistant.presentation.start.presenter.StartPresenter;
 import com.volgagas.personalassistant.presentation.start.presenter.StartView;
 import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.channels.StartChannel;
+import com.volgagas.personalassistant.utils.channels.ThreePermissions;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -43,12 +45,26 @@ public class StartActivity extends BaseActivity implements StartView {
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
     }
 
+    /*
+     *  Save current data from card and send it to server in the D365 callback
+     *  @param data - user codekey from mifare card
+     */
     @Override
     protected void sendDataToServer(String data) {
-        presenter.setDataCodekey(data);
+        if (data != null && data.length() == 18) {
+            presenter.setDataCodekey(data);
 
-        authContext.acquireToken(StartActivity.this, Constants.DYNAMICS_365_DEV, Constants.CLIENT,
-                Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
+            //repeat auth
+            if (ThreePermissions.getInstance().anyValueIsTrue()) {
+                ThreePermissions.getInstance().resetValues();
+            }
+            CacheUser.getUser().clear();
+
+            authContext.acquireToken(StartActivity.this, Constants.DYNAMICS_365_DEV, Constants.CLIENT,
+                    Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
+        } else {
+            Toast.makeText(this, "Приложите карту еще раз", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -59,6 +75,11 @@ public class StartActivity extends BaseActivity implements StartView {
     @Override
     public void hideProgress() {
 
+    }
+
+    @Override
+    public void goToMainMenu() {
+        startActivity(new Intent(StartActivity.this, MainActivity.class));
     }
 
     @Override
@@ -76,7 +97,15 @@ public class StartActivity extends BaseActivity implements StartView {
             if (result.getAccessToken() != null) {
                 CacheUser.getUser().setUserCliendId(result.getClientId());
                 CacheUser.getUser().setDynamics365Token(result.getAccessToken());
-                PersonalAssistant.provideDynamics365Auth(result.getAccessToken());
+
+                if (PersonalAssistant.getD365ApiService() == null) {
+                    Timber.d("INIT D365");
+                    PersonalAssistant.provideDynamics365Auth(result.getAccessToken());
+                }
+
+                ThreePermissions permissions = ThreePermissions.getInstance();
+                permissions.setD365Token(true);
+                StartChannel.sendData(permissions);
 
                 presenter.getUserData(presenter.getDataCodekey());
 
@@ -97,10 +126,15 @@ public class StartActivity extends BaseActivity implements StartView {
         public void onSuccess(AuthenticationResult result) {
             if (result.getAccessToken() != null) {
                 CacheUser.getUser().setSharePointToken(result.getAccessToken());
-                PersonalAssistant.provideSharePointAuth(result.getAccessToken());
 
-                Timber.d("COMPLETED SP CALLBACK");
-                Timber.d("ca: " + CacheUser.getUser().toString());
+                if (PersonalAssistant.getSpApiService() == null) {
+                    Timber.d("INIT SHARE POINT");
+                    PersonalAssistant.provideSharePointAuth(result.getAccessToken());
+                }
+
+                ThreePermissions permissions = ThreePermissions.getInstance();
+                permissions.setSharePointToken(true);
+                StartChannel.sendData(permissions);
             }
         }
 
@@ -109,11 +143,6 @@ public class StartActivity extends BaseActivity implements StartView {
 
         }
     };
-
-    @Override
-    public void requestD365Token() {
-
-    }
 
     @Override
     public void resultMatchedWithEquipment() {

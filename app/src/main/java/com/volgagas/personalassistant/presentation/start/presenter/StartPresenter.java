@@ -9,6 +9,8 @@ import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.channels.StartChannel;
+import com.volgagas.personalassistant.utils.channels.ThreePermissions;
 
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
@@ -25,8 +27,19 @@ public class StartPresenter extends BasePresenter<StartView> {
     private CompositeDisposable disposable;
     private String dataCodekey = "";
 
+    @SuppressLint("CheckResult")
     public StartPresenter() {
         repository = MainRemoteRepository.getInstance();
+        disposable = new CompositeDisposable();
+
+        disposable.add(StartChannel.getInstance().getPermissionSubject()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result.allValuesIsTrue()) {
+                        getViewState().goToMainMenu();
+                    }
+                }));
     }
 
     @Override
@@ -37,29 +50,34 @@ public class StartPresenter extends BasePresenter<StartView> {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        disposable.clear();
     }
 
-    @SuppressLint("CheckResult")
     public void getUserData(String data) {
-        getViewState().requestD365Token();
         getViewState().showProgress();
-        repository.getCardInfo(data)
+        disposable.add(repository.getCardInfo(data)
                 .subscribeOn(Schedulers.io())
                 .flatMap((Function<User, SingleSource<User>>) user -> {
-                    if (!user.getCategory().equals(Constants.EQUIPMENT)) {
-                        return Single.just(user);
+                    if (user.getCategory() != null) {
+                        if (!user.getCategory().equals(Constants.EQUIPMENT)) {
+                            return Single.just(user);
+                        } else {
+                            return Single.error(new IllegalArgumentException("Equipment"));
+                        }
                     } else {
-                        return Single.error(new IllegalArgumentException("Equipment"));
+                        return Single.just(user);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResponse, this::handlerErrorsFromBadRequests);
+                .subscribe(this::successfulResponse, this::handlerErrorsFromBadRequests));
     }
 
     private void successfulResponse(User user) {
         CacheUser.getUser().setBaseFields(user);
-        getViewState().hideProgress();
-        Timber.d("COMPLETED DATA");
+
+        ThreePermissions permissions = ThreePermissions.getInstance();
+        permissions.setServer(true);
+        StartChannel.sendData(permissions);
     }
 
     @Override

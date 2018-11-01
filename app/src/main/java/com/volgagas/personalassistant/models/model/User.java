@@ -115,4 +115,16 @@ public class User {
     public void setSharePointToken(String sharePointToken) {
         this.sharePointToken = sharePointToken;
     }
+
+    public void clear() {
+        this.name = "";
+        this.position = "";
+        this.codekey = "";
+        this.lastEntered = "";
+        this.category = "";
+
+        this.userCliendId = "";
+        this.dynamics365Token = "";
+        this.sharePointToken = "";
+    }
 }

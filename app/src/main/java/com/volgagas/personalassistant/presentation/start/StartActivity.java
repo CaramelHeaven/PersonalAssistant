@@ -6,15 +6,19 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationContext;
 import com.microsoft.aad.adal.AuthenticationResult;
 import com.microsoft.aad.adal.PromptBehavior;
 import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.main.MainActivity;
+import com.volgagas.personalassistant.presentation.start.presenter.StartPresenter;
 import com.volgagas.personalassistant.presentation.start.presenter.StartView;
 import com.volgagas.personalassistant.utils.Constants;
 
@@ -26,29 +30,25 @@ public class StartActivity extends BaseActivity implements StartView {
 
     private AuthenticationContext authContext;
 
+    @InjectPresenter
+    StartPresenter presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        permissionToEnableNfc = true;
+
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
-
-      /*  authContext.acquireToken(StartActivity.this, Constants.GRAPH, Constants.CLIENT,
-                Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", spCallback);*/
-
-        authContext.acquireToken(StartActivity.this, Constants.DYNAMICS_365_DEV, Constants.CLIENT,
-                Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
-       /* authContext.acquireToken(StartActivity.this, Constants.DYNAMICS_365_DEV, Constants.CLIENT,
-                Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);*/
-        //  startActivity(new Intent(StartActivity.this, MainActivity.class));
-
-        //startActivity(new Intent(this, MainActivity.class));
-        //startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override
     protected void sendDataToServer(String data) {
-        //nothing
+        presenter.setDataCodekey(data);
+
+        authContext.acquireToken(StartActivity.this, Constants.DYNAMICS_365_DEV, Constants.CLIENT,
+                Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
     }
 
     @Override
@@ -73,31 +73,15 @@ public class StartActivity extends BaseActivity implements StartView {
         @SuppressLint("CheckResult")
         @Override
         public void onSuccess(AuthenticationResult result) {
-            Timber.d("ZLFKZL:FZK:FL");
             if (result.getAccessToken() != null) {
+                CacheUser.getUser().setUserCliendId(result.getClientId());
+                CacheUser.getUser().setDynamics365Token(result.getAccessToken());
                 PersonalAssistant.provideDynamics365Auth(result.getAccessToken());
-                PersonalAssistant.provideSharePointAuth(result.getAccessToken());
-                Timber.d("res: " + result.getClientId() + " resource: " + result.getResource() + " status: " + result.getIsMultiResourceRefreshToken());
 
-                PersonalAssistant.getD365ApiService().getTest("https://volgagas-devdevaos.sandbox.ax.dynamics.com/data/SOWithAC?&$filter=(AC_ActivityStartDateTime ge 2018-10-15T00:00:00Z and AC_ActivityStartDateTime le 2018-10-16T00:00:00Z) and (SO_ServiceStage eq 'Распредел' or SO_ServiceStage eq 'ВРаботе') and (AC_Worker eq 'Михайлова Евгения Андреевна')")
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(q -> {
-                            Timber.d("another result: " + q);
-                        }, throwable -> {
-                            Timber.d("thro: " + throwable.getCause());
-                            Timber.d("thro: " + throwable.getMessage());
-                        });
+                presenter.getUserData(presenter.getDataCodekey());
 
-                PersonalAssistant.getSpApiService().getTest("https://graph.microsoft.com/v1.0/sites/volagas.sharepoint.com,9a51e995-62f9-4b40-81c2-d167c4c79182,8603ccc9-1f11-4573-8fa2-140ef4204a1d/lists/ed91d81b-2c69-487d-a7eb-f924771488fb/items")
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(q -> {
-                            Timber.d("result: " + q);
-                        }, throwable -> {
-                            Timber.d("thro: " + throwable.getCause());
-                            Timber.d("thro: " + throwable.getMessage());
-                        });
+                authContext.acquireToken(StartActivity.this, Constants.GRAPH, Constants.CLIENT,
+                        Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", spCallback);
             }
         }
 
@@ -112,18 +96,11 @@ public class StartActivity extends BaseActivity implements StartView {
         @Override
         public void onSuccess(AuthenticationResult result) {
             if (result.getAccessToken() != null) {
-                Timber.d("res: " + result.getClientId() + " resource: " + result.getResource());
+                CacheUser.getUser().setSharePointToken(result.getAccessToken());
                 PersonalAssistant.provideSharePointAuth(result.getAccessToken());
-                PersonalAssistant.getSpApiService().getTest("https://graph.microsoft.com/v1.0/sites/volagas.sharepoint.com,9a51e995-62f9-4b40-81c2-d167c4c79182,8603ccc9-1f11-4573-8fa2-140ef4204a1d/lists/ed91d81b-2c69-487d-a7eb-f924771488fb/items")
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(q -> {
-                            Timber.d("result: " + q);
-                        }, throwable -> {
-                            Timber.d("thro: " + throwable.getCause());
-                            Timber.d("thro: " + throwable.getMessage());
-                        });
 
+                Timber.d("COMPLETED SP CALLBACK");
+                Timber.d("ca: " + CacheUser.getUser().toString());
             }
         }
 
@@ -133,15 +110,18 @@ public class StartActivity extends BaseActivity implements StartView {
         }
     };
 
-    enum DataProfile {
-        GRAPH("https://graph.windows.net"),
-        SHAREPOINT_MS_DEV("https://msdevex-my.sharepoint.com"),
-        SHAREPOINT("00000003-0000-0ff1-ce00-000000000000"),
-        OFFICE_ONEDRIVE("6a9b9266-8161-4a7b-913a-a9eda19da220"),
-        SIMPLE("00000002-0000-0000-c000-000000000000");
+    @Override
+    public void requestD365Token() {
 
-        DataProfile(String s) {
+    }
 
-        }
+    @Override
+    public void resultMatchedWithEquipment() {
+        Toast.makeText(this, "Вы приложили карточку оборудования", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void commonError() {
+        Toast.makeText(this, "Common error", Toast.LENGTH_SHORT).show();
     }
 }

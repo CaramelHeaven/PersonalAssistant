@@ -31,7 +31,7 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
     private StringBuilder secretNumbers = null;
     private CompositeDisposable disposable = new CompositeDisposable();
     private AuthenticationContext authContext;
-    private boolean permissionToEnableNfc = false;
+    public boolean permissionToEnableNfc = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

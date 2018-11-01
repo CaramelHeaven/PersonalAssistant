@@ -1,13 +1,41 @@
 package com.volgagas.personalassistant.data.cache;
 
+import com.volgagas.personalassistant.models.model.User;
+
+import timber.log.Timber;
+
 public class CacheUser {
 
-    private static final CacheUser ourInstance = new CacheUser();
-
-    static CacheUser getInstance() {
-        return ourInstance;
-    }
+    private static volatile CacheUser INSTANCE;
+    private static volatile User user;
 
     private CacheUser() {
+        if (INSTANCE == null) {
+            throw new RuntimeException("Use getInstance() method to get the single instance of this class.");
+        }
+    }
+
+    public static CacheUser getInstance() {
+        if (INSTANCE == null) {
+            synchronized (CacheUser.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new CacheUser();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
+    public static User getUser() {
+        if (user == null) {
+            Timber.d("CREATE USER INSTANCE");
+            user = new User();
+        }
+        Timber.d("SIMPLE GET USER");
+        return user;
+    }
+
+    public static void clear() {
+        user = null;
     }
 }

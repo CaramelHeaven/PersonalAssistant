@@ -25,4 +25,5 @@ public class Constants {
     public static final String AUTH_URL = "https://login.microsoftonline.com/common/oauth2/authorize";
 
     public static final String REDIRECT_URL = "http://localhost123";
+    public static final String EQUIPMENT = "Оборудование";
 }

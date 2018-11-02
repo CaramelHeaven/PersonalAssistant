@@ -19,5 +19,6 @@ public class UserResponseToUser extends Mapper<UserResponse, User> {
         user.setLastEntered(response.getLastEntered());
         user.setName(response.getName());
         user.setPosition(response.getJob());
+        user.setUserImage(response.getUserImage());
     }
 }

@@ -16,7 +16,7 @@ public interface D365ApiService {
     @GET
     Single<JsonObject> getSharePointTest(@Url String url);
 
-    @GET(Constants.MY_HOST + "database/getUser")
+    @GET(Constants.MY_HOST + "database/getUserWithPhoto")
     Single<UserResponse> getCardInfo(@Query("userNumbers") String numbers);
 
 }

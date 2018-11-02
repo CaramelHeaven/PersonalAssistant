@@ -21,6 +21,8 @@ public class UserResponse {
     private String lastEntered;
     @SerializedName("category")
     private String category;
+    @SerializedName("image")
+    private String userImage;
 
     public String getName() {
         return name;
@@ -44,5 +46,9 @@ public class UserResponse {
 
     public String getCategory() {
         return category;
+    }
+
+    public String getUserImage() {
+        return userImage;
     }
 }

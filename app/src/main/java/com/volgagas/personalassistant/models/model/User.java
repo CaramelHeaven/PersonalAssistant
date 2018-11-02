@@ -10,6 +10,7 @@ public class User {
     private String codekey;
     private String lastEntered;
     private String category;
+    private String userImage;
 
     private String userCliendId;
     private String dynamics365Token;
@@ -22,6 +23,7 @@ public class User {
         this.codekey = user.getCodekey();
         this.lastEntered = user.getLastEntered();
         this.category = user.getCategory();
+        this.userImage = user.getUserImage();
     }
 
     @Override
@@ -46,6 +48,7 @@ public class User {
                 ", codekey='" + codekey + '\'' +
                 ", lastEntered='" + lastEntered + '\'' +
                 ", category='" + category + '\'' +
+                ", userImage='" + userImage + '\'' +
                 ", userCliendId='" + userCliendId + '\'' +
                 ", dynamics365Token='" + dynamics365Token + '\'' +
                 ", sharePointToken='" + sharePointToken + '\'' +
@@ -114,6 +117,14 @@ public class User {
 
     public void setSharePointToken(String sharePointToken) {
         this.sharePointToken = sharePointToken;
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
     }
 
     public void clear() {

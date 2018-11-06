@@ -1,10 +1,9 @@
 package com.volgagas.personalassistant;
 
 import android.app.Application;
-import android.support.annotation.Nullable;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.volgagas.personalassistant.data.datasource.D365ApiService;
+import com.volgagas.personalassistant.data.datasource.BaseApiService;
 import com.volgagas.personalassistant.data.datasource.SPApiService;
 import com.volgagas.personalassistant.utils.Constants;
 
@@ -21,7 +20,7 @@ public class PersonalAssistant extends Application {
 
     private PersonalAssistant application;
 
-    private static D365ApiService d365ApiService;
+    private static BaseApiService baseApiService;
     private static SPApiService spApiService;
 
     @Override
@@ -36,8 +35,8 @@ public class PersonalAssistant extends Application {
         return application;
     }
 
-    public static D365ApiService getD365ApiService() {
-        return d365ApiService;
+    public static BaseApiService getBaseApiService() {
+        return baseApiService;
     }
 
     public static SPApiService getSpApiService() {
@@ -55,7 +54,7 @@ public class PersonalAssistant extends Application {
                 .client(client)
                 .build();
 
-        d365ApiService = retrofit.create(D365ApiService.class);
+        baseApiService = retrofit.create(BaseApiService.class);
     }
 
     public static void provideSharePointAuth(String token) {

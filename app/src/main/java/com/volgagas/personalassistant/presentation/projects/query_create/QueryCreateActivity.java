@@ -15,6 +15,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.presentation.projects.query_create.presenter.QueryCreatePresenter;
 import com.volgagas.personalassistant.presentation.projects.query_create.presenter.QueryCreateView;
+import com.volgagas.personalassistant.presentation.projects.query_create.who_is_the_recipient.RecipientDialogFragment;
 
 import java.util.Calendar;
 
@@ -47,11 +48,9 @@ public class QueryCreateActivity extends MvpAppCompatActivity implements DatePic
     }
 
     private void provideClickListeners() {
-        btnDestination.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        btnDestination.setOnClickListener(v -> {
+            RecipientDialogFragment fragment = RecipientDialogFragment.newInstance();
+            fragment.show(getSupportFragmentManager(), null);
         });
 
         btnDatePicker.setOnClickListener(new View.OnClickListener() {

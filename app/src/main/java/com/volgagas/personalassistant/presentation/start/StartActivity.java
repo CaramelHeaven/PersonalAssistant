@@ -3,9 +3,6 @@ package com.volgagas.personalassistant.presentation.start;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -24,8 +21,6 @@ import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.channels.StartChannel;
 import com.volgagas.personalassistant.utils.channels.ThreePermissions;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class StartActivity extends BaseActivity implements StartView {
@@ -98,7 +93,7 @@ public class StartActivity extends BaseActivity implements StartView {
                 CacheUser.getUser().setUserCliendId(result.getClientId());
                 CacheUser.getUser().setDynamics365Token(result.getAccessToken());
 
-                if (PersonalAssistant.getD365ApiService() == null) {
+                if (PersonalAssistant.getBaseApiService() == null) {
                     Timber.d("INIT D365");
                     PersonalAssistant.provideDynamics365Auth(result.getAccessToken());
                 }

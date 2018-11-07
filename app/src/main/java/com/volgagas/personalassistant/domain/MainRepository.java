@@ -10,5 +10,5 @@ public interface MainRepository {
 
     Single<User> getCardInfo(String numbers);
 
-    Single<List<User>> getSearchedUsers(String name);
+    Single<List<User>> getSearchedUsers();
 }

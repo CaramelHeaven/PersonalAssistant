@@ -35,6 +35,7 @@ public class RecipientDialogFragment extends MvpAppCompatDialogFragment implemen
 
     private DisplayMetrics displayMetrics;
     private RecipientAdapter adapter;
+    private List<User> filterModels;
 
     private RecyclerView recyclerView;
     private EditText etSearch;
@@ -62,9 +63,10 @@ public class RecipientDialogFragment extends MvpAppCompatDialogFragment implemen
         recyclerView = view.findViewById(R.id.recyclerView);
         etSearch = view.findViewById(R.id.et_search);
 
-        recyclerView.setHasFixedSize(true);
+    //    recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
+        filterModels = new ArrayList<>();
         adapter = new RecipientAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
@@ -101,6 +103,8 @@ public class RecipientDialogFragment extends MvpAppCompatDialogFragment implemen
     public void showUsers(List<User> values) {
         if (values.size() != 0) {
             adapter.updateAdapter(values);
+            filterModels.clear();
+            filterModels.addAll(values);
         }
     }
 
@@ -113,8 +117,27 @@ public class RecipientDialogFragment extends MvpAppCompatDialogFragment implemen
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                List<User> filterUsers = new ArrayList<>();
+
+                String c = "Тищенко Алексей Иванович";
+                String k = "Алексей";
+                if (c.toLowerCase().contains(k.toLowerCase())) {
+                    Timber.d("contains");
+                }
+
+                if (k.toLowerCase().contains(c.toLowerCase())) {
+                    Timber.d("k: contains");
+                }
+
                 if (!charSequence.toString().isEmpty()) {
-                    presenter.searchUsers(charSequence.toString());
+                    for (User user : filterModels) {
+                        if (user.getName().toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                            filterUsers.add(user);
+                        }
+                    }
+                    adapter.updateAdapter(filterUsers);
+                } else {
+                    adapter.updateAdapter(filterModels);
                 }
             }
 

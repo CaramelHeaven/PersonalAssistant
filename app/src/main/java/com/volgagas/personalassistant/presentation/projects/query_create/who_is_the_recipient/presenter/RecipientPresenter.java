@@ -31,7 +31,7 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        disposable.add(repository.getSearchedUsers(" ")
+        disposable.add(repository.getSearchedUsers()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
@@ -40,13 +40,6 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
     private void successfulResult(List<User> users) {
         Timber.d("result size: " + users.size());
         getViewState().showUsers(users);
-    }
-
-    public void searchUsers(String name) {
-        disposable.add(repository.getSearchedUsers(name)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
     }
 
     @Override

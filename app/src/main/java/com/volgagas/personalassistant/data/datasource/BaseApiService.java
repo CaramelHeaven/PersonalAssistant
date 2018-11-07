@@ -21,6 +21,6 @@ public interface BaseApiService {
     @GET(Constants.MY_HOST + "database/getUserWithPhoto")
     Single<UserResponse> getCardInfo(@Query("userNumbers") String numbers);
 
-    @GET(Constants.MY_HOST + "database/searchUser?")
-    Single<List<UserResponse>> getSearchedUsers(@Query("name") String userName);
+    @GET(Constants.MY_HOST + "database/getAllUsers")
+    Single<List<UserResponse>> getSearchedUsers();
 }

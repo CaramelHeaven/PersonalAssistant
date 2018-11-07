@@ -49,8 +49,8 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public Single<List<User>> getSearchedUsers(String name) {
-        return PersonalAssistant.getBaseApiService().getSearchedUsers(name)
+    public Single<List<User>> getSearchedUsers() {
+        return PersonalAssistant.getBaseApiService().getSearchedUsers()
                 .map(userMapper::map);
     }
 }

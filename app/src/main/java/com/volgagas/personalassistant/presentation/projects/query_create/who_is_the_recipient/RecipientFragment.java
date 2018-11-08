@@ -76,7 +76,11 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
 
     @Override
     public void showUsers(List<User> values) {
-
+        if (values.size() != 0) {
+            adapter.updateAdapter(values);
+            filterModels.clear();
+            filterModels.addAll(values);
+        }
     }
 
     @Override

@@ -108,7 +108,13 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> sendDataToServer(secretNumbers.toString()), this::unsuccessfulResult);
+                .subscribe(result -> {
+                    if (secretNumbers != null) {
+                        sendDataToServer(secretNumbers.toString());
+                    } else {
+                        Toast.makeText(this, "Приложите карту еще раз", Toast.LENGTH_SHORT).show();
+                    }
+                }, this::unsuccessfulResult);
     }
 
     private void unsuccessfulResult(Throwable throwable) {

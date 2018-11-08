@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.utils.channels;
+package com.volgagas.personalassistant.utils.channels.check_auth;
 
 /**
  * Created by CaramelHeaven on 16:42, 01.11.2018.

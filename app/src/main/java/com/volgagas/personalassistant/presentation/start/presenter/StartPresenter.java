@@ -9,8 +9,8 @@ import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
-import com.volgagas.personalassistant.utils.channels.StartChannel;
-import com.volgagas.personalassistant.utils.channels.ThreePermissions;
+import com.volgagas.personalassistant.utils.channels.check_auth.StartChannel;
+import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
 
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
@@ -18,7 +18,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 @InjectViewState
 public class StartPresenter extends BasePresenter<StartView> {

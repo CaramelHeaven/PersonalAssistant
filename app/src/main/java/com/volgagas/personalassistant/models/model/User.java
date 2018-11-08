@@ -1,10 +1,13 @@
 package com.volgagas.personalassistant.models.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Objects;
 
 import timber.log.Timber;
 
-public class User {
+public class User implements Parcelable {
     private String name;
     private String position;
     private String codekey;
@@ -138,4 +141,50 @@ public class User {
         this.dynamics365Token = "";
         this.sharePointToken = "";
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.position);
+        dest.writeString(this.codekey);
+        dest.writeString(this.lastEntered);
+        dest.writeString(this.category);
+        dest.writeString(this.userImage);
+        dest.writeString(this.userCliendId);
+        dest.writeString(this.dynamics365Token);
+        dest.writeString(this.sharePointToken);
+    }
+
+    public User() {
+    }
+
+    protected User(Parcel in) {
+        this.name = in.readString();
+        this.position = in.readString();
+        this.codekey = in.readString();
+        this.lastEntered = in.readString();
+        this.category = in.readString();
+        this.userImage = in.readString();
+        this.userCliendId = in.readString();
+        this.dynamics365Token = in.readString();
+        this.sharePointToken = in.readString();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

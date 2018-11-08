@@ -24,10 +24,15 @@
 
     <style name="TextLabel" parent="TextAppearance.AppCompat">
         <item name="android:textColorHint">@color/colorTextGray</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
 
         <item name="colorAccent">#b41f55</item>
-        <item name="colorControlNormal">@color/colorPrimary</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorTextGray</item>
+        <item name="colorControlActivated">@color/colorTextGray</item>
+    </style>
+
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorSecondaryLight</item>
     </style>
 </resources>

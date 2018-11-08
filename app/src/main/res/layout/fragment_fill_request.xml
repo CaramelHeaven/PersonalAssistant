@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundView">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="lalala" />
+
+    <RelativeLayout
+        android:id="@+id/rl_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/rounded_view">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_user"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_below="@id/appBar"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:theme="@style/TextLabel">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_event_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:hint="Event name"
+                android:imeOptions="flagNoExtractUi"
+                android:lines="2"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/colorTextGray" />
+        </android.support.design.widget.TextInputLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_date_container"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/text_input_user"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rectangle_shape"
+            android:foreground="?attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/iv_reflect_calendar"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_calendar" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_toRightOf="@id/iv_reflect_calendar"
+                android:text="Set a Date"
+                android:textColor="@color/colorTextGray" />
+        </RelativeLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_description"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rl_date_container"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="40dp"
+            android:theme="@style/TextLabel">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:hint="Описание заявки"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/colorTextGray" />
+        </android.support.design.widget.TextInputLayout>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="56dp"
+        android:background="@drawable/rounded_button"
+        android:text="следующий шаг 1/2"
+        android:textColor="@android:color/white" />
+</RelativeLayout>

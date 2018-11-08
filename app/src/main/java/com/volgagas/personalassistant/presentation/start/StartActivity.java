@@ -18,8 +18,8 @@ import com.volgagas.personalassistant.presentation.main.MainActivity;
 import com.volgagas.personalassistant.presentation.start.presenter.StartPresenter;
 import com.volgagas.personalassistant.presentation.start.presenter.StartView;
 import com.volgagas.personalassistant.utils.Constants;
-import com.volgagas.personalassistant.utils.channels.StartChannel;
-import com.volgagas.personalassistant.utils.channels.ThreePermissions;
+import com.volgagas.personalassistant.utils.channels.check_auth.StartChannel;
+import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
 
 import timber.log.Timber;
 

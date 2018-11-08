@@ -7,18 +7,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.EditText;
 
-import com.arellomobile.mvp.MvpAppCompatDialogFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.User;
+import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.projects.query_create.who_is_the_recipient.presenter.RecipientPresenter;
 import com.volgagas.personalassistant.presentation.projects.query_create.who_is_the_recipient.presenter.RecipientView;
 
@@ -28,12 +25,11 @@ import java.util.List;
 import timber.log.Timber;
 
 /**
- * Created by CaramelHeaven on 15:25, 02.11.2018.
+ * Created by CaramelHeaven on 16:57, 08.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
-public class RecipientDialogFragment extends MvpAppCompatDialogFragment implements RecipientView {
+public class RecipientFragment extends BaseFragment implements RecipientView {
 
-    private DisplayMetrics displayMetrics;
     private RecipientAdapter adapter;
     private List<User> filterModels;
 
@@ -43,11 +39,11 @@ public class RecipientDialogFragment extends MvpAppCompatDialogFragment implemen
     @InjectPresenter
     RecipientPresenter presenter;
 
-    public static RecipientDialogFragment newInstance() {
+    public static RecipientFragment newInstance() {
 
         Bundle args = new Bundle();
 
-        RecipientDialogFragment fragment = new RecipientDialogFragment();
+        RecipientFragment fragment = new RecipientFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,7 +59,7 @@ public class RecipientDialogFragment extends MvpAppCompatDialogFragment implemen
         recyclerView = view.findViewById(R.id.recyclerView);
         etSearch = view.findViewById(R.id.et_search);
 
-    //    recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
         filterModels = new ArrayList<>();
@@ -71,22 +67,16 @@ public class RecipientDialogFragment extends MvpAppCompatDialogFragment implemen
         recyclerView.setAdapter(adapter);
 
         provideEditText();
-
-        displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Window window = getDialog().getWindow();
-        window.setLayout(displayMetrics.widthPixels - 50, displayMetrics.heightPixels / 2 + 280);
-        window.setGravity(Gravity.CENTER);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void showUsers(List<User> values) {
+
     }
 
     @Override
@@ -97,15 +87,6 @@ public class RecipientDialogFragment extends MvpAppCompatDialogFragment implemen
     @Override
     public void hideProgress() {
 
-    }
-
-    @Override
-    public void showUsers(List<User> values) {
-        if (values.size() != 0) {
-            adapter.updateAdapter(values);
-            filterModels.clear();
-            filterModels.addAll(values);
-        }
     }
 
     private void provideEditText() {

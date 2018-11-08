@@ -9,18 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.User;
+import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 14:04, 06.11.2018.
@@ -29,6 +28,7 @@ import timber.log.Timber;
 public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<User> userList;
+    private myOnItemClickListener myOnItemClickListener;
 
     public RecipientAdapter(List<User> userList) {
         this.userList = userList;
@@ -74,20 +74,36 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
+    public User getItemByPosition(int position) {
+        return userList.get(position);
+    }
+
     public List<User> getUserList() {
         return userList;
     }
 
-    private class RecipientVH extends RecyclerView.ViewHolder {
+    private class RecipientVH extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView ivPhoto;
         private TextView tvName, tvPosition;
+        private RelativeLayout rlContainer;
 
         public RecipientVH(@NonNull View itemView) {
             super(itemView);
             ivPhoto = itemView.findViewById(R.id.iv_image_worker);
             tvName = itemView.findViewById(R.id.tv_name);
             tvPosition = itemView.findViewById(R.id.tv_position);
+            rlContainer = itemView.findViewById(R.id.rl_container);
+            rlContainer.setOnClickListener(this::onClick);
         }
+
+        @Override
+        public void onClick(View v) {
+            myOnItemClickListener.onItemClick(getAdapterPosition());
+        }
+    }
+
+    public void setMyOnItemClickListener(com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener myOnItemClickListener) {
+        this.myOnItemClickListener = myOnItemClickListener;
     }
 }

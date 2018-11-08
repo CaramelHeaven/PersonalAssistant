@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.utils.channels;
+package com.volgagas.personalassistant.utils.channels.check_auth;
 
 import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;

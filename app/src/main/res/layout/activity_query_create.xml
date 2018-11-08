@@ -32,7 +32,7 @@
         android:theme="@style/TextLabel">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/et_title"
+            android:id="@+id/et_event_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="top"

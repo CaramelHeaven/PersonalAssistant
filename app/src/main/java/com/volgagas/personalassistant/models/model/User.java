@@ -19,6 +19,8 @@ public class User implements Parcelable {
     private String dynamics365Token;
     private String sharePointToken;
 
+    private String modifiedName;
+
     public void setBaseFields(User user) {
         Timber.d("setBase felds" + user.toString());
         this.name = user.getName();
@@ -27,6 +29,10 @@ public class User implements Parcelable {
         this.lastEntered = user.getLastEntered();
         this.category = user.getCategory();
         this.userImage = user.getUserImage();
+
+        //modified name for share point requests
+        String[] partsName = name.split(" ");
+        this.modifiedName = partsName[1] + " " + partsName[0];
     }
 
     @Override
@@ -114,6 +120,14 @@ public class User implements Parcelable {
         this.dynamics365Token = dynamics365Token;
     }
 
+    public void setModifiedName(String modifiedName) {
+        this.modifiedName = modifiedName;
+    }
+
+    public String getModifiedName() {
+        return modifiedName;
+    }
+
     public String getSharePointToken() {
         return sharePointToken;
     }
@@ -140,6 +154,8 @@ public class User implements Parcelable {
         this.userCliendId = "";
         this.dynamics365Token = "";
         this.sharePointToken = "";
+
+        this.modifiedName = "";
     }
 
 
@@ -159,6 +175,7 @@ public class User implements Parcelable {
         dest.writeString(this.userCliendId);
         dest.writeString(this.dynamics365Token);
         dest.writeString(this.sharePointToken);
+        dest.writeString(this.modifiedName);
     }
 
     public User() {
@@ -174,9 +191,10 @@ public class User implements Parcelable {
         this.userCliendId = in.readString();
         this.dynamics365Token = in.readString();
         this.sharePointToken = in.readString();
+        this.modifiedName = in.readString();
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel source) {
             return new User(source);

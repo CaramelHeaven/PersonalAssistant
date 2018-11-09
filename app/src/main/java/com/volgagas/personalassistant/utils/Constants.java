@@ -9,6 +9,7 @@ public class Constants {
 
     public static final String MY_HOST = "http://192.168.1.147:8080/volgagas-0.2.3/";
     //Lists of this site
+    public static final String UNIFORM_REQUESTS_URL = "(guid'895e45dd-17ac-41bd-9a41-3d72bd0cbfc7')";
     public static final String ACTIVITIES = "974b2dca-c256-45d5-a691-7d83ba69e73b";
     public static final String SERVICE_ORDERS = "ed91d81b-2c69-487d-a7eb-f924771488fb";
     public static final String ACTIVITY_TEMPLATE = "1a412fc6-a93e-4f92-b0cd-5eda07d3eaf9";
@@ -17,13 +18,12 @@ public class Constants {
     //main url for requests
     public static final String DYNAMICS_365_TEST = "https://volgagas-test.sandbox.operations.dynamics.com";
     public static final String DYNAMICS_365_DEV = "https://volgagas-devdevaos.sandbox.ax.dynamics.com";
-    public static final String GRAPH = "https://graph.microsoft.com";
-
-    //url for requests from SP
-    public static final String SHARE_POINT = "https://graph.microsoft.com/v1.0";
+    public static final String GRAPH = "https://volagas.sharepoint.com";
+    public static final String SHARE_POINT_WEB_API = "https://volagas.sharepoint.com/doc/_api/web";
 
     public static final String AUTH_URL = "https://login.microsoftonline.com/common/oauth2/authorize";
 
+    //other
     public static final String REDIRECT_URL = "http://localhost123";
     public static final String EQUIPMENT = "Оборудование";
 }

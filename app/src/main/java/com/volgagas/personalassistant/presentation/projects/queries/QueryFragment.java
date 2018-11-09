@@ -16,11 +16,12 @@ import android.widget.TextView;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.main.MainActivity;
+import com.volgagas.personalassistant.presentation.projects.queries.presenter.QueryView;
 import com.volgagas.personalassistant.presentation.projects.query_create.QueryCreateActivity;
 
 import java.util.ArrayList;
 
-public class QueryFragment extends BaseFragment {
+public class QueryFragment extends BaseFragment implements QueryView {
 
     private FloatingActionButton fabCreate;
     private Button btnAddQuery;
@@ -83,5 +84,15 @@ public class QueryFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         fabCreate = null;
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
     }
 }

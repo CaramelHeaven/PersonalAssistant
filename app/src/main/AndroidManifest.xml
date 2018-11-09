@@ -53,7 +53,8 @@
 
         <activity
             android:name=".presentation.projects.query_create.QueryCreateActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

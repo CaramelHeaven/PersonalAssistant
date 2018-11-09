@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.main;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -18,8 +19,12 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
+import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
+import com.volgagas.personalassistant.domain.MainRepository;
+import com.volgagas.personalassistant.models.model.UniformRequest;
 import com.volgagas.personalassistant.presentation.about_user.InfoFragment;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.home.HomeFragment;
@@ -30,6 +35,9 @@ import com.volgagas.personalassistant.presentation.main.presenter.MainView;
 import java.nio.charset.StandardCharsets;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements MainView {
 
@@ -54,6 +62,7 @@ public class MainActivity extends BaseActivity implements MainView {
     @InjectPresenter
     MainPresenter presenter;
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

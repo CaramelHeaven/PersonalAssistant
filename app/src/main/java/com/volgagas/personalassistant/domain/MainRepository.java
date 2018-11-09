@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.domain;
 
+import com.volgagas.personalassistant.models.model.UniformRequest;
 import com.volgagas.personalassistant.models.model.User;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface MainRepository {
     Single<User> getCardInfo(String numbers);
 
     Single<List<User>> getSearchedUsers();
+
+    Single<List<UniformRequest>> getUniformRequests();
 }

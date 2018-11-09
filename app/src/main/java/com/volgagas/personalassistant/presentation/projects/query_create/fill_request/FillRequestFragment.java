@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
@@ -59,9 +60,12 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
         btnNextStep = view.findViewById(R.id.btn_apply);
 
         provideCalendarPicker();
-        btnNextStep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnNextStep.setOnClickListener(v -> {
+            if (etDescription.getText().toString().length() == 0
+                    || etEventName.getText().toString().length() == 0
+                    || tvDate.getCurrentTextColor() != getResources().getColor(R.color.colorTextBlack)) {
+                Toast.makeText(getActivity(), "Не отмечены все поля", Toast.LENGTH_SHORT).show();
+            } else {
                 presenter.handlerClickButton();
             }
         });

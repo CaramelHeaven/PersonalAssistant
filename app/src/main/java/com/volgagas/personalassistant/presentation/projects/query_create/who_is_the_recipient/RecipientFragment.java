@@ -22,8 +22,6 @@ import com.volgagas.personalassistant.presentation.projects.query_create.who_is_
 import java.util.ArrayList;
 import java.util.List;
 
-import timber.log.Timber;
-
 /**
  * Created by CaramelHeaven on 16:57, 08.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
@@ -51,7 +49,7 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dialog_recipient, container, false);
+        return inflater.inflate(R.layout.fragment_recipient, container, false);
     }
 
     @Override
@@ -103,16 +101,6 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 List<User> filterUsers = new ArrayList<>();
-
-                String c = "Тищенко Алексей Иванович";
-                String k = "Алексей";
-                if (c.toLowerCase().contains(k.toLowerCase())) {
-                    Timber.d("contains");
-                }
-
-                if (k.toLowerCase().contains(c.toLowerCase())) {
-                    Timber.d("k: contains");
-                }
 
                 if (!charSequence.toString().isEmpty()) {
                     for (User user : filterModels) {

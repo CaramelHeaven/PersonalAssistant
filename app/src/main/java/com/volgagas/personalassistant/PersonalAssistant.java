@@ -2,6 +2,8 @@ package com.volgagas.personalassistant;
 
 import android.app.Application;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.volgagas.personalassistant.data.datasource.BaseApiService;
 import com.volgagas.personalassistant.data.datasource.SPApiService;
@@ -14,6 +16,7 @@ import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 import timber.log.Timber;
 
 public class PersonalAssistant extends Application {
@@ -99,7 +102,7 @@ public class PersonalAssistant extends Application {
                     Request request = chain.request();
                     request = request.newBuilder()
                             .addHeader("Authorization", "Bearer " + token)
-                            .addHeader("Content-Type", "application/json")
+                            .addHeader("Accept", "application/json;odata=verbose")
                             .build();
                     return chain.proceed(request);
                 });

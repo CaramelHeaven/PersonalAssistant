@@ -33,7 +33,7 @@ public class QueryCreateActivity extends MvpAppCompatActivity implements DatePic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_query_creat);
+        setContentView(R.layout.activity_uniform_request_create);
         vpContainer = findViewById(R.id.vp_container);
         adapterQuery = new QueryCreateAdapter(getSupportFragmentManager());
 

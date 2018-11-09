@@ -39,7 +39,7 @@
     <View
         android:id="@+id/viewBackground"
         android:layout_width="0dp"
-        android:layout_height="249dp"
+        android:layout_height="230dp"
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

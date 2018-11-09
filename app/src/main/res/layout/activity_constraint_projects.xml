@@ -38,10 +38,11 @@
     <View
         android:id="@+id/viewBackground"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="80dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/appBar"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
@@ -49,7 +50,6 @@
         android:layout_height="66dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:src="@color/colorTextGray"
         app:civ_border_color="@android:color/white"
         app:civ_border_width="2dp"

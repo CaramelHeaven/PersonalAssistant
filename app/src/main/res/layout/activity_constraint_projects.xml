@@ -22,6 +22,18 @@
             app:titleTextColor="@color/colorSecondaryLight" />
     </android.support.design.widget.AppBarLayout>
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="0.00001dp"
+        android:background="@color/colorPrimary"
+        android:elevation="8dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="-2.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewBackground" />
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bnv_navigation"
         android:layout_width="0dp"
@@ -38,25 +50,27 @@
     <View
         android:id="@+id/viewBackground"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="1dp"
         android:background="@color/colorPrimary"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
-        android:layout_width="66dp"
-        android:layout_height="66dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="50dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
         android:src="@color/colorTextGray"
         app:civ_border_color="@android:color/white"
         app:civ_border_width="2dp"
-        app:layout_constraintBottom_toTopOf="@+id/tabLayout"
-        app:layout_constraintEnd_toEndOf="@+id/viewBackground"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/viewBackground"
+        app:layout_constraintBottom_toTopOf="@+id/viewBackground"
+        app:layout_constraintEnd_toEndOf="@+id/appBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
 
     <android.support.v4.view.ViewPager

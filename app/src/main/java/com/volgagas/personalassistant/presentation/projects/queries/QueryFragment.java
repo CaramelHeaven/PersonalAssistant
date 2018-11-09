@@ -10,24 +10,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.models.model.UniformRequest;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
-import com.volgagas.personalassistant.presentation.main.MainActivity;
+import com.volgagas.personalassistant.presentation.projects.queries.presenter.QueryPresenter;
 import com.volgagas.personalassistant.presentation.projects.queries.presenter.QueryView;
 import com.volgagas.personalassistant.presentation.projects.query_create.QueryCreateActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class QueryFragment extends BaseFragment implements QueryView {
+public class QueryFragment extends BaseFragment implements QueryView<UniformRequest> {
 
     private FloatingActionButton fabCreate;
-    private Button btnAddQuery;
     private RecyclerView recyclerView;
 
     private QueryAdapter adapter;
+
+    @InjectPresenter
+    QueryPresenter presenter;
 
     public static QueryFragment newInstance() {
 
@@ -46,11 +49,10 @@ public class QueryFragment extends BaseFragment implements QueryView {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        btnAddQuery = view.findViewById(R.id.btn_add_query);
         fabCreate = view.findViewById(R.id.fab_create);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-        provideClickListeners();
+        provideListeners();
         fillDataToAdapter();
     }
 
@@ -62,19 +64,22 @@ public class QueryFragment extends BaseFragment implements QueryView {
         recyclerView.setAdapter(adapter);
     }
 
-    private void provideClickListeners() {
-        btnAddQuery.setVisibility(View.VISIBLE);
-        btnAddQuery.setOnClickListener(new View.OnClickListener() {
+    private void provideListeners() {
+        fabCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), QueryCreateActivity.class));
             }
         });
 
-        fabCreate.setOnClickListener(new View.OnClickListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), QueryCreateActivity.class));
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    fabCreate.hide();
+                } else {
+                    fabCreate.show();
+                }
             }
         });
     }
@@ -94,5 +99,12 @@ public class QueryFragment extends BaseFragment implements QueryView {
     @Override
     public void hideProgress() {
 
+    }
+
+    @Override
+    public void showItems(List<UniformRequest> items) {
+        if (items.size() != 0) {
+            adapter.updateAdapter(items);
+        }
     }
 }

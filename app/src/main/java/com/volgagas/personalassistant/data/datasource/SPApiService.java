@@ -15,7 +15,8 @@ public interface SPApiService {
     Single<QueryResponse> getTest(@Url String url);
 
     @GET
-    Single<QueryResponse> getOpenUniformRequests(@Url String url);
+    Single<QueryResponse> getOpenUniformRequests(@Url String url,
+                                                 @QueryMap Map<String, String> options);
 
     @GET
     Single<JsonObject> getTest2(@Url String s);

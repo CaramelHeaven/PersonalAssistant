@@ -8,4 +8,7 @@
     <color name="colorSecondaryLight">#FFFFFF</color>
     <color name="colorBackgroundView">#E0E0E0</color>
     <color name="colorTextBlack">#000000</color>
+
+    <color name="priorityHigh">#f44336</color>
+    <color name="priorityNormal">#388E3C</color>
 </resources>

@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 @InjectViewState
-public class QueryPresenter extends BasePresenter<QueryView> {
+public class QueryPresenter extends BasePresenter<QueryView<UniformRequest>> {
 
     private MainRepository repository;
     private CompositeDisposable disposable;
@@ -28,7 +28,8 @@ public class QueryPresenter extends BasePresenter<QueryView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-
+        Timber.d("query presenter injected");
+        getViewState().showProgress();
         disposable.add(repository.getUniformRequests()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -36,6 +37,8 @@ public class QueryPresenter extends BasePresenter<QueryView> {
     }
 
     private void successfulResult(List<UniformRequest> uniformRequests) {
+        getViewState().hideProgress();
+        getViewState().showItems(uniformRequests);
     }
 
     @Override

@@ -26,4 +26,8 @@ public class Constants {
     //other
     public static final String REDIRECT_URL = "http://localhost123";
     public static final String EQUIPMENT = "Оборудование";
+
+    //priority for query adapter
+    public static final String PRIORITY_NORMAL = "Обычная";
+    public static final String PRIORITY_HIGH = "Высокая";
 }

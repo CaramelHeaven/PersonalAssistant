@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.projects.queries;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,11 @@ import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.UniformRequest;
+import com.volgagas.personalassistant.utils.Constants;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 public class QueryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -32,6 +36,15 @@ public class QueryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         UniformVH uniformVH = (UniformVH) viewHolder;
         uniformVH.tvTitle.setText(data.get(position).getTitle());
         uniformVH.tvDescription.setText(data.get(position).getDescription());
+
+        if (data.get(position).getPriority().contains(Constants.PRIORITY_HIGH)) {
+            uniformVH.cvPriority.setCardBackgroundColor(uniformVH.cvPriority.getContext().getResources().getColor(R.color.priorityHigh));
+            uniformVH.tvPriority.setText(Constants.PRIORITY_HIGH);
+        } else if (data.get(position).getPriority().contains(Constants.PRIORITY_NORMAL)) {
+            uniformVH.cvPriority.setCardBackgroundColor(uniformVH.cvPriority.getContext().getResources().getColor(R.color.priorityNormal));
+            uniformVH.tvPriority.setText(Constants.PRIORITY_NORMAL);
+        }
+        Timber.d("check priority: " + data.get(position).getPriority());
     }
 
     public void updateAdapter(List<UniformRequest> values) {
@@ -50,12 +63,15 @@ public class QueryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     class UniformVH extends RecyclerView.ViewHolder {
-        private TextView tvTitle, tvDescription;
+        private TextView tvTitle, tvDescription, tvPriority;
+        private CardView cvPriority;
 
         public UniformVH(@NonNull View itemView) {
             super(itemView);
             tvDescription = itemView.findViewById(R.id.tv_description);
             tvTitle = itemView.findViewById(R.id.tv_title);
+            tvPriority = itemView.findViewById(R.id.tv_priority);
+            cvPriority = itemView.findViewById(R.id.cv_priority);
         }
     }
 }

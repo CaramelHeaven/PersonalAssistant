@@ -69,12 +69,13 @@ public class MainRemoteRepository implements MainRepository {
     @Override
     public Single<List<UniformRequest>> getUniformRequests() {
         Map<String, String> data = new LinkedHashMap<>();
-        String url = "https://volagas.sharepoint.com/doc/_api/web/lists(guid'895e45dd-17ac-41bd-9a41-3d72bd0cbfc7')/Items?$select=Title,Author,Comment, Priority, DueDate/Name,Author/Title&$expand=Author/Id&$filter=Status eq 'Открыт' and Author/Title eq 'Татьяна Нехорошкова'";
-        data.put("$select", "Title,Author/Name,Author/Title");
+        String url = Constants.SHARE_POINT_WEB_API + "/lists" + Constants.UNIFORM_REQUESTS_URL + "/Items?";
+
+        data.put("$select", "Title,Author,Comment,Priority,DueDate/Name,Author/Title");
         data.put("$expand", "Author/Id");
         data.put("$filter", "Status eq 'Открыт' and Author/Title eq '" + "Татьяна Нехорошкова" + "'");
 
-        return PersonalAssistant.getSpApiService().getOpenUniformRequests(url)
+        return PersonalAssistant.getSpApiService().getOpenUniformRequests(url, data)
                 .map(uniformRequestMapper::map);
     }
 }

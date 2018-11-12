@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,12 +23,16 @@ import com.volgagas.personalassistant.presentation.projects.query_create.QueryCr
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class QueryFragment extends BaseFragment implements QueryView<UniformRequest> {
 
     private FloatingActionButton fabCreate;
-    private RecyclerView recyclerView;
+    private RecyclerView rvTasksToUser, rvTasksFromUser;
+    private NestedScrollView nsvContainer;
 
-    private QueryAdapter adapter;
+    private QueryToUserAdapter adapterToUser;
+    private QueryFromUserAdapter adapterFromUser;
 
     @InjectPresenter
     QueryPresenter presenter;
@@ -50,18 +55,29 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         fabCreate = view.findViewById(R.id.fab_create);
-        recyclerView = view.findViewById(R.id.recyclerView);
+        rvTasksToUser = view.findViewById(R.id.rv_tasks_to_user);
+        rvTasksFromUser = view.findViewById(R.id.rv_tasks_from_user);
+        nsvContainer = view.findViewById(R.id.nsv_container);
 
         provideListeners();
         fillDataToAdapter();
     }
 
     private void fillDataToAdapter() {
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        rvTasksToUser.setHasFixedSize(true);
+        rvTasksFromUser.setHasFixedSize(true);
 
-        adapter = new QueryAdapter(new ArrayList());
-        recyclerView.setAdapter(adapter);
+        rvTasksToUser.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        rvTasksFromUser.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+        rvTasksToUser.setNestedScrollingEnabled(false);
+        rvTasksFromUser.setNestedScrollingEnabled(false);
+
+        adapterToUser = new QueryToUserAdapter(new ArrayList());
+        adapterFromUser = new QueryFromUserAdapter(new ArrayList<>());
+
+        rvTasksToUser.setAdapter(adapterToUser);
+        rvTasksFromUser.setAdapter(adapterFromUser);
     }
 
     private void provideListeners() {
@@ -72,14 +88,14 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
             }
         });
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) {
-                    fabCreate.hide();
-                } else {
-                    fabCreate.show();
-                }
+        nsvContainer.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (nestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            Timber.d("SCROLL");
+            if (scrollY > oldScrollY) {
+                Timber.d("fab HIDE");
+                fabCreate.hide();
+            } else {
+                Timber.d("fab SHOW");
+                fabCreate.show();
             }
         });
     }
@@ -104,7 +120,7 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
     @Override
     public void showItems(List<UniformRequest> items) {
         if (items.size() != 0) {
-            adapter.updateAdapter(items);
+            adapterToUser.updateAdapter(items);
         }
     }
 }

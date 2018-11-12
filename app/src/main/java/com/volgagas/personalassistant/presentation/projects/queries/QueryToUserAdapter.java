@@ -16,11 +16,11 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class QueryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class QueryToUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<UniformRequest> data;
 
-    public QueryAdapter(List<UniformRequest> arrayList) {
+    public QueryToUserAdapter(List<UniformRequest> arrayList) {
         this.data = arrayList;
     }
 
@@ -37,14 +37,12 @@ public class QueryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         uniformVH.tvTitle.setText(data.get(position).getTitle());
         uniformVH.tvDescription.setText(data.get(position).getDescription());
 
+        Timber.d("DATA: " + data.get(position).getPriority());
         if (data.get(position).getPriority().contains(Constants.PRIORITY_HIGH)) {
-            uniformVH.cvPriority.setCardBackgroundColor(uniformVH.cvPriority.getContext().getResources().getColor(R.color.priorityHigh));
-            uniformVH.tvPriority.setText(Constants.PRIORITY_HIGH);
-        } else if (data.get(position).getPriority().contains(Constants.PRIORITY_NORMAL)) {
-            uniformVH.cvPriority.setCardBackgroundColor(uniformVH.cvPriority.getContext().getResources().getColor(R.color.priorityNormal));
-            uniformVH.tvPriority.setText(Constants.PRIORITY_NORMAL);
+            uniformVH.cvPriority.setVisibility(View.VISIBLE);
+        } else {
+            uniformVH.cvPriority.setVisibility(View.GONE);
         }
-        Timber.d("check priority: " + data.get(position).getPriority());
     }
 
     public void updateAdapter(List<UniformRequest> values) {
@@ -63,14 +61,13 @@ public class QueryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     class UniformVH extends RecyclerView.ViewHolder {
-        private TextView tvTitle, tvDescription, tvPriority;
+        private TextView tvTitle, tvDescription;
         private CardView cvPriority;
 
         public UniformVH(@NonNull View itemView) {
             super(itemView);
             tvDescription = itemView.findViewById(R.id.tv_description);
             tvTitle = itemView.findViewById(R.id.tv_title);
-            tvPriority = itemView.findViewById(R.id.tv_priority);
             cvPriority = itemView.findViewById(R.id.cv_priority);
         }
     }

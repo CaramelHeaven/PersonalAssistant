@@ -19,12 +19,12 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
-import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
-import com.volgagas.personalassistant.domain.MainRepository;
-import com.volgagas.personalassistant.models.model.UniformRequest;
 import com.volgagas.personalassistant.presentation.about_user.InfoFragment;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.home.HomeFragment;
@@ -103,6 +103,43 @@ public class MainActivity extends BaseActivity implements MainView {
                 .beginTransaction()
                 .replace(R.id.fragment_container, HomeFragment.newInstance(), "HOME")
                 .commit();
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        JsonObject objectBase = new JsonObject();
+        JsonObject metadataObject = new JsonObject();
+        metadataObject.add("type", new JsonPrimitive("SP.Data.List7ListItem"));
+
+        JsonArray array = new JsonArray(1);
+        array.add(13);
+
+        JsonObject object = new JsonObject();
+        JsonObject collectionData = new JsonObject();
+        collectionData.add("type", new JsonPrimitive("Collection(Edm.String)"));
+        object.add("__metadata", collectionData);
+        object.add("results", array);
+
+        objectBase.add("__metadata", metadataObject);
+        objectBase.add("Title", new JsonPrimitive("TestFromMobile"));
+        objectBase.add("CategoryLookup0Id", new JsonPrimitive(1));
+        objectBase.add("Comment", new JsonPrimitive("description test"));
+        objectBase.add("DueDate", new JsonPrimitive("2018-11-25'T'13:13:13'Z'"));
+        objectBase.add("AssignedToStringId", object);
+
+        PersonalAssistant.getSpApiService()
+                .sendTest("https://volagas.sharepoint.com/doc/_api/web/lists(guid'895e45dd-17ac-41bd-9a41-3d72bd0cbfc7')/items", objectBase)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    Timber.d("result: " + result);
+                }, throwable -> {
+                    Timber.d("thrwable: " + throwable.getMessage());
+                    Timber.d("thrwable: " + throwable.getCause());
+                });
     }
 
     @Override

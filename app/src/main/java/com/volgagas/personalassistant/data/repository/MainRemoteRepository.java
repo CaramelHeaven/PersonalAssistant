@@ -71,7 +71,7 @@ public class MainRemoteRepository implements MainRepository {
         Map<String, String> data = new LinkedHashMap<>();
         String url = Constants.SHARE_POINT_WEB_API + "/lists" + Constants.UNIFORM_REQUESTS_URL + "/Items?";
 
-        data.put("$select", "Title,Author,Comment,Priority,DueDate/Name,Author/Title");
+        data.put("$select", "Title,Author,Comment,Priority,DueDate,LastText/Name,Author/Title");
         data.put("$expand", "Author/Id");
         data.put("$filter", "Status eq 'Открыт' and Author/Title eq '" + "Татьяна Нехорошкова" + "'");
 

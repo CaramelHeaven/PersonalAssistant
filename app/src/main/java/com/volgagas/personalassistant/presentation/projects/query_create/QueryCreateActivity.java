@@ -119,7 +119,6 @@ public class QueryCreateActivity extends MvpAppCompatActivity implements DatePic
 
     @Override
     public void showNextPage() {
-        Timber.d("SHOW NEXT PAGE");
         vpContainer.setCurrentItem(1);
     }
 

@@ -46,7 +46,6 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:layout_below="@id/appBar"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
@@ -94,14 +93,42 @@
                         android:textColor="@color/colorTextGray" />
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/rl_important_work_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rl_date_container"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_toLeftOf="@id/switch_important"
+                        android:text="Важность задачи"
+                        android:textColor="@android:color/black" />
+
+                    <Switch
+                        android:id="@+id/switch_important"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp" />
+                </RelativeLayout>
+
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/text_input_description"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@id/rl_date_container"
+                    android:layout_below="@id/rl_important_work_container"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="4dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="40dp"
                     android:theme="@style/TextLabel">

@@ -21,7 +21,7 @@
             android:background="@color/colorPrimary"
             android:theme="@style/ToolbarStyle"
             app:layout_scrollFlags="scroll"
-            app:title="Киоск"
+            app:title="Добавление заявки"
             app:titleTextColor="@color/colorSecondaryLight" />
 
         <EditText

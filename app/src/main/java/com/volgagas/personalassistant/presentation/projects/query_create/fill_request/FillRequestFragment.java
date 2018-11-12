@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.projects.query_create.fill_request.presenter.FillRequestPresenter;
 import com.volgagas.personalassistant.presentation.projects.query_create.fill_request.presenter.FillRequestView;
+import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 
 import java.util.Calendar;
 
@@ -32,6 +34,7 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
     private TextView tvDate;
     private RelativeLayout rlDateContainer;
     private Button btnNextStep;
+    private Switch switchImportant;
 
     @InjectPresenter
     FillRequestPresenter presenter;
@@ -58,6 +61,7 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
         tvDate = view.findViewById(R.id.tv_date);
         rlDateContainer = view.findViewById(R.id.rl_date_container);
         btnNextStep = view.findViewById(R.id.btn_apply);
+        switchImportant = view.findViewById(R.id.switch_important);
 
         provideCalendarPicker();
         btnNextStep.setOnClickListener(v -> {
@@ -66,7 +70,12 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
                     || tvDate.getCurrentTextColor() != getResources().getColor(R.color.colorTextBlack)) {
                 Toast.makeText(getActivity(), "Не отмечены все поля", Toast.LENGTH_SHORT).show();
             } else {
-                presenter.handlerClickButton();
+                RequestData data = new RequestData();
+                data.setDescription(etDescription.getText().toString());
+                data.setTitle(etEventName.getText().toString());
+                data.setEndDate(tvDate.getText().toString());
+                data.setImportant(switchImportant.isChecked());
+                presenter.handlerClickButton(data);
             }
         });
     }

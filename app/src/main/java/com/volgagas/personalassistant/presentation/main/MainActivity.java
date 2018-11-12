@@ -119,7 +119,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
         JsonObject object = new JsonObject();
         JsonObject collectionData = new JsonObject();
-        collectionData.add("type", new JsonPrimitive("Collection(Edm.String)"));
+        collectionData.add("type", new JsonPrimitive("Collection(Edm.Int32)"));
         object.add("__metadata", collectionData);
         object.add("results", array);
 
@@ -127,19 +127,20 @@ public class MainActivity extends BaseActivity implements MainView {
         objectBase.add("Title", new JsonPrimitive("TestFromMobile"));
         objectBase.add("CategoryLookup0Id", new JsonPrimitive(1));
         objectBase.add("Comment", new JsonPrimitive("description test"));
-        objectBase.add("DueDate", new JsonPrimitive("2018-11-25'T'13:13:13'Z'"));
-        objectBase.add("AssignedToStringId", object);
+        objectBase.add("DueDate", new JsonPrimitive("2018-11-30"));
+        objectBase.add("AssignedToId", object);
+        objectBase.add("LastText", new JsonPrimitive("my last comment"));
 
-        PersonalAssistant.getSpApiService()
-                .sendTest("https://volagas.sharepoint.com/doc/_api/web/lists(guid'895e45dd-17ac-41bd-9a41-3d72bd0cbfc7')/items", objectBase)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    Timber.d("result: " + result);
-                }, throwable -> {
-                    Timber.d("thrwable: " + throwable.getMessage());
-                    Timber.d("thrwable: " + throwable.getCause());
-                });
+//        PersonalAssistant.getSpApiService()
+//                .sendTest("https://volagas.sharepoint.com/doc/_api/web/lists(guid'895e45dd-17ac-41bd-9a41-3d72bd0cbfc7')/items", objectBase)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(result -> {
+//                    Timber.d("result: " + result);
+//                }, throwable -> {
+//                    Timber.d("thrwable: " + throwable.getMessage());
+//                    Timber.d("thrwable: " + throwable.getCause());
+//                });
     }
 
     @Override

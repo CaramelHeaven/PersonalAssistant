@@ -5,6 +5,7 @@ import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import timber.log.Timber;
 public class RecipientPresenter extends BasePresenter<RecipientView> {
 
     private MainRepository repository;
+    private PassDataChannel passDataChannel;
     private CompositeDisposable disposable;
 
     public RecipientPresenter() {
@@ -35,11 +37,20 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
+
+        disposable.add(passDataChannel.getInstance().getSubject()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> getViewState().sendUserData(result)));
     }
 
     private void successfulResult(List<User> users) {
         Timber.d("result size: " + users.size());
         getViewState().showUsers(users);
+    }
+
+    public void createRequestOnServer() {
+        
     }
 
     @Override

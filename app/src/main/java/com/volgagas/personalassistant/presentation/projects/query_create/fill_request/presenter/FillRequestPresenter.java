@@ -1,7 +1,8 @@
 package com.volgagas.personalassistant.presentation.projects.query_create.fill_request.presenter;
 
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
-import com.volgagas.personalassistant.utils.channels.pass_data.PassData;
+import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
+import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 
 /**
  * Created by CaramelHeaven on 17:33, 08.11.2018.
@@ -23,8 +24,8 @@ public class FillRequestPresenter extends BasePresenter<FillRequestView> {
         super.onDestroy();
     }
 
-    public void handlerClickButton() {
-        PassData.getInstance().sendData("s");
+    public void handlerClickButton(RequestData data) {
+        PassDataChannel.getInstance().sendData(data);
     }
 
     @Override

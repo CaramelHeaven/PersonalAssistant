@@ -18,9 +18,13 @@ import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.projects.query_create.who_is_the_recipient.presenter.RecipientPresenter;
 import com.volgagas.personalassistant.presentation.projects.query_create.who_is_the_recipient.presenter.RecipientView;
+import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
+import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 16:57, 08.11.2018.
@@ -64,6 +68,11 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
         adapter = new RecipientAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
+        adapter.setMyOnItemClickListener(position -> {
+            Timber.d("asfsaf");
+            Timber.d("asfsaf");
+        });
+
         provideEditText();
     }
 
@@ -79,6 +88,11 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
             filterModels.clear();
             filterModels.addAll(values);
         }
+    }
+
+    @Override
+    public void sendUserData(RequestData data) {
+        Timber.d("check data: " + data.toString());
     }
 
     @Override

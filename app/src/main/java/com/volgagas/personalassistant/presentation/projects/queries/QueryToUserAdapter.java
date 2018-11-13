@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.UniformRequest;
 import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import timber.log.Timber;
 public class QueryToUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<UniformRequest> data;
+    private myOnItemClickListener myOnItemClickListener;
 
     public QueryToUserAdapter(List<UniformRequest> arrayList) {
         this.data = arrayList;
@@ -60,7 +62,7 @@ public class QueryToUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return data.size();
     }
 
-    class UniformVH extends RecyclerView.ViewHolder {
+    class UniformVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvTitle, tvDescription;
         private CardView cvPriority;
 
@@ -69,6 +71,16 @@ public class QueryToUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tvDescription = itemView.findViewById(R.id.tv_description);
             tvTitle = itemView.findViewById(R.id.tv_title);
             cvPriority = itemView.findViewById(R.id.cv_priority);
+            cvPriority.setOnClickListener(this::onClick);
         }
+
+        @Override
+        public void onClick(View v) {
+            myOnItemClickListener.onItemClick(getAdapterPosition());
+        }
+    }
+
+    public void setMyOnItemClickListener(com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener myOnItemClickListener) {
+        this.myOnItemClickListener = myOnItemClickListener;
     }
 }

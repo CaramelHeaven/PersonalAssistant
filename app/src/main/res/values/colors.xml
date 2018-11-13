@@ -11,4 +11,5 @@
 
     <color name="colorPriorityHigh">#f44336</color>
     <color name="colorPriorityNormal">#388E3C</color>
+    <color name="colorSuperLightGray">#FAFAFA</color>
 </resources>

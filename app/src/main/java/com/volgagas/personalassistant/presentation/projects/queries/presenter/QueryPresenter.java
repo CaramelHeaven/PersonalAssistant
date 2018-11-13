@@ -1,7 +1,6 @@
 package com.volgagas.personalassistant.presentation.projects.queries.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.UniformRequest;
@@ -30,7 +29,7 @@ public class QueryPresenter extends BasePresenter<QueryView<UniformRequest>> {
         super.onFirstViewAttach();
         Timber.d("query presenter injected");
         getViewState().showProgress();
-        disposable.add(repository.getUniformRequests()
+        disposable.add(repository.getUniformRequestsFromUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));

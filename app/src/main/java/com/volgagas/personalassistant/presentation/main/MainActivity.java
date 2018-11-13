@@ -11,6 +11,8 @@ import android.support.design.widget.TabLayout;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.widget.FrameLayout;
@@ -22,7 +24,6 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.presentation.about_user.InfoFragment;
@@ -31,8 +32,10 @@ import com.volgagas.personalassistant.presentation.home.HomeFragment;
 import com.volgagas.personalassistant.presentation.main.adapters.PagerProjectsAdapter;
 import com.volgagas.personalassistant.presentation.main.presenter.MainPresenter;
 import com.volgagas.personalassistant.presentation.main.presenter.MainView;
+import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -49,10 +52,12 @@ public class MainActivity extends BaseActivity implements MainView {
     private ViewPager vpProjectsContainer;
     private TabLayout tabLayout;
     private FrameLayout fragmentContainer, fragmentTest;
-    private TextView tvName, tvCategory;
+    private TextView tvName, tvCategory, tvTitleProblem;
+    private RecyclerView rvSmallMessanger;
 
     private PagerProjectsAdapter projectsAdapter;
-    private ConstraintSet homeSet, projectsSet, infoSet;
+    private MainMessangerAdapter adapterMessanger;
+    private ConstraintSet homeSet, projectsSet, infoSet, requestFullSet;
 
     @ProvidePresenter
     MainPresenter provideMainPresenter() {
@@ -76,9 +81,12 @@ public class MainActivity extends BaseActivity implements MainView {
         tabLayout = findViewById(R.id.tabLayout);
         fragmentContainer = findViewById(R.id.fragment_container);
         fragmentTest = findViewById(R.id.fragment_container_about);
+        tvTitleProblem = findViewById(R.id.tv_title_problem);
+
         homeSet = new ConstraintSet();
         projectsSet = new ConstraintSet();
         infoSet = new ConstraintSet();
+        requestFullSet = new ConstraintSet();
 
         if (CacheUser.getUser().getUserImage() != null) {
             byte[] data = Base64.decode(CacheUser.getUser().getUserImage().getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
@@ -94,6 +102,7 @@ public class MainActivity extends BaseActivity implements MainView {
         homeSet.clone(constraintLayout);
         projectsSet.clone(this, R.layout.activity_constraint_projects);
         infoSet.clone(this, R.layout.activity_constraint_about);
+        requestFullSet.clone(this, R.layout.activity_constraint_request_full);
 
         setSupportActionBar(toolbar);
 
@@ -104,7 +113,28 @@ public class MainActivity extends BaseActivity implements MainView {
                 .replace(R.id.fragment_container, HomeFragment.newInstance(), "HOME")
                 .commit();
 
+        PassDataChannel passDataChannel = PassDataChannel.getInstance();
 
+        passDataChannel.getSubject()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    Timber.d("result: " + result);
+                    TransitionManager.beginDelayedTransition(constraintLayout);
+                    requestFullSet.applyTo(constraintLayout);
+                }, throwable -> {
+                    Timber.d("tho: " + throwable.getCause());
+                    Timber.d("tho: " + throwable.getMessage());
+                });
+
+        provideMessanger();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        TransitionManager.beginDelayedTransition(constraintLayout);
+        projectsSet.applyTo(constraintLayout);
     }
 
     @Override
@@ -193,5 +223,14 @@ public class MainActivity extends BaseActivity implements MainView {
     private void openProjects() {
         TransitionManager.beginDelayedTransition(constraintLayout);
         projectsSet.applyTo(constraintLayout);
+    }
+
+    private void provideMessanger() {
+        adapterMessanger = new MainMessangerAdapter(new ArrayList<>());
+
+        rvSmallMessanger.setHasFixedSize(true);
+        rvSmallMessanger.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        rvSmallMessanger.setAdapter(adapterMessanger);
     }
 }

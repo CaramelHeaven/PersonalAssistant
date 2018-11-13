@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
@@ -19,6 +20,8 @@ import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.projects.queries.presenter.QueryPresenter;
 import com.volgagas.personalassistant.presentation.projects.queries.presenter.QueryView;
 import com.volgagas.personalassistant.presentation.projects.query_create.QueryCreateActivity;
+import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
+import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +81,11 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
 
         rvTasksToUser.setAdapter(adapterToUser);
         rvTasksFromUser.setAdapter(adapterFromUser);
+
+        adapterFromUser.setMyOnCustomItemClickListener((position, view) -> {
+            Toast.makeText(getActivity(), "click", Toast.LENGTH_SHORT).show();
+            PassDataChannel.sendData(new RequestData());
+        });
     }
 
     private void provideListeners() {
@@ -120,7 +128,7 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
     @Override
     public void showItems(List<UniformRequest> items) {
         if (items.size() != 0) {
-            adapterToUser.updateAdapter(items);
+            adapterFromUser.updateAdapter(items);
         }
     }
 }

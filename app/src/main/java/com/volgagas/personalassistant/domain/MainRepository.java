@@ -13,5 +13,5 @@ public interface MainRepository {
 
     Single<List<User>> getSearchedUsers();
 
-    Single<List<UniformRequest>> getUniformRequests();
+    Single<List<UniformRequest>> getUniformRequestsFromUser();
 }

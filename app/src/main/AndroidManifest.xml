@@ -17,7 +17,6 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:theme">
-
         <activity android:name=".presentation.main.MainActivity">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -36,7 +35,6 @@
             android:exported="true"
             android:label="Login"
             android:screenOrientation="portrait" />
-
         <activity android:name=".presentation.start.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,7 +48,6 @@
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_container" />
         </activity>
-
         <activity
             android:name=".presentation.projects.query_create.QueryCreateActivity"
             android:screenOrientation="portrait"

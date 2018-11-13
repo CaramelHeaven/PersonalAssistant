@@ -67,7 +67,7 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public Single<List<UniformRequest>> getUniformRequests() {
+    public Single<List<UniformRequest>> getUniformRequestsFromUser() {
         Map<String, String> data = new LinkedHashMap<>();
         String url = Constants.SHARE_POINT_WEB_API + "/lists" + Constants.UNIFORM_REQUESTS_URL + "/Items?";
 

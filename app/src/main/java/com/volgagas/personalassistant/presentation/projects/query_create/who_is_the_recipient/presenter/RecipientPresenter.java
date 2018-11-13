@@ -50,7 +50,7 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
     }
 
     public void createRequestOnServer() {
-        
+
     }
 
     @Override

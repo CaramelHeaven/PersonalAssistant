@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.presentation.projects.query_create.who_is_the_recipient;
+package com.volgagas.personalassistant.presentation.projects.query_create.who_is_the_recipient.adapters;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,50 +16,53 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.User;
-import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
- * Created by CaramelHeaven on 14:04, 06.11.2018.
+ * Created by CaramelHeaven on 13:18, 14.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
-public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RecipientAddedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<User> userList;
-    private myOnItemClickListener myOnItemClickListener;
+    private Set<User> uniqueUsers;
 
-    public RecipientAdapter(List<User> userList) {
+    public RecipientAddedAdapter(List<User> userList) {
         this.userList = userList;
+        uniqueUsers = new LinkedHashSet<>();
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_recipient_worker, viewGroup, false);
-        return new RecipientVH(view);
+        final UserVH userVH = new UserVH(view);
+        return userVH;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        RecipientVH recipientVH = (RecipientVH) viewHolder;
-        recipientVH.tvPosition.setText(userList.get(i).getPosition());
-        recipientVH.tvName.setText(userList.get(i).getName());
+        UserVH userVH = (UserVH) viewHolder;
+        userVH.tvPosition.setText(userList.get(i).getPosition());
+        userVH.tvName.setText(userList.get(i).getName());
 
         if (userList.get(i).getUserImage() != null) {
             byte[] data = Base64.decode(userList.get(i).getUserImage().getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
             Bitmap croppedBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - 30);
-            Glide.with(recipientVH.ivPhoto.getContext())
+            Glide.with(userVH.ivPhoto.getContext())
                     .load(croppedBmp)
                     .apply(new RequestOptions()
                             .centerCrop())
-                    .into(recipientVH.ivPhoto);
+                    .into(userVH.ivPhoto);
         } else {
-            Glide.with(recipientVH.ivPhoto.getContext())
-                    .clear(recipientVH.ivPhoto);
-            recipientVH.ivPhoto.setImageDrawable(null);
+            Glide.with(userVH.ivPhoto.getContext())
+                    .clear(userVH.ivPhoto);
+            userVH.ivPhoto.setImageDrawable(null);
         }
     }
 
@@ -68,42 +71,24 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return userList.size();
     }
 
-    public void updateAdapter(List<User> users) {
+    public void updateAdapter(User user) {
+        uniqueUsers.add(user);
         userList.clear();
-        userList.addAll(users);
+        userList.addAll(uniqueUsers);
         notifyDataSetChanged();
     }
 
-    public User getItemByPosition(int position) {
-        return userList.get(position);
-    }
-
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    private class RecipientVH extends RecyclerView.ViewHolder implements View.OnClickListener {
-
+    class UserVH extends RecyclerView.ViewHolder {
         private ImageView ivPhoto;
         private TextView tvName, tvPosition;
         private RelativeLayout rlContainer;
 
-        public RecipientVH(@NonNull View itemView) {
+        public UserVH(@NonNull View itemView) {
             super(itemView);
             ivPhoto = itemView.findViewById(R.id.iv_image_worker);
             tvName = itemView.findViewById(R.id.tv_name);
             tvPosition = itemView.findViewById(R.id.tv_position);
             rlContainer = itemView.findViewById(R.id.rl_container);
-            rlContainer.setOnClickListener(this::onClick);
         }
-
-        @Override
-        public void onClick(View v) {
-            myOnItemClickListener.onItemClick(getAdapterPosition());
-        }
-    }
-
-    public void setMyOnItemClickListener(com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener myOnItemClickListener) {
-        this.myOnItemClickListener = myOnItemClickListener;
     }
 }

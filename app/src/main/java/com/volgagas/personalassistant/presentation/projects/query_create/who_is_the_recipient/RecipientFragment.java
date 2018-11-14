@@ -16,9 +16,10 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
+import com.volgagas.personalassistant.presentation.projects.query_create.who_is_the_recipient.adapters.RecipientAdapter;
+import com.volgagas.personalassistant.presentation.projects.query_create.who_is_the_recipient.adapters.RecipientAddedAdapter;
 import com.volgagas.personalassistant.presentation.projects.query_create.who_is_the_recipient.presenter.RecipientPresenter;
 import com.volgagas.personalassistant.presentation.projects.query_create.who_is_the_recipient.presenter.RecipientView;
-import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 
 import java.util.ArrayList;
@@ -33,9 +34,10 @@ import timber.log.Timber;
 public class RecipientFragment extends BaseFragment implements RecipientView {
 
     private RecipientAdapter adapter;
+    private RecipientAddedAdapter adapterAdded;
     private List<User> filterModels;
 
-    private RecyclerView recyclerView;
+    private RecyclerView rvAllWorkers, rvAddedWorkers;
     private EditText etSearch;
 
     @InjectPresenter
@@ -58,19 +60,30 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recyclerView = view.findViewById(R.id.recyclerView);
+        rvAllWorkers = view.findViewById(R.id.recyclerView);
+        rvAddedWorkers = view.findViewById(R.id.rv_added_workers);
         etSearch = view.findViewById(R.id.et_search);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        rvAllWorkers.setHasFixedSize(true);
+        rvAddedWorkers.setHasFixedSize(true);
+        rvAllWorkers.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        rvAddedWorkers.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        rvAddedWorkers.setNestedScrollingEnabled(false);
+        rvAllWorkers.setNestedScrollingEnabled(false);
 
         filterModels = new ArrayList<>();
         adapter = new RecipientAdapter(new ArrayList<>());
-        recyclerView.setAdapter(adapter);
+        adapterAdded = new RecipientAddedAdapter(new ArrayList<>());
 
-        adapter.setMyOnItemClickListener(position -> {
+        rvAllWorkers.setAdapter(adapter);
+        rvAddedWorkers.setAdapter(adapterAdded);
+        /*adapter.setMyOnItemClickListener(position -> {
             Timber.d("asfsaf");
             Timber.d("asfsaf");
+        });*/
+
+        adapter.setMyOnCustomItemClickListener((position, view1) -> {
+            adapterAdded.updateAdapter(adapter.getItemByPosition(position));
         });
 
         provideEditText();

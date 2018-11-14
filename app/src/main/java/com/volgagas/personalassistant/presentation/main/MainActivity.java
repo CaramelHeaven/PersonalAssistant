@@ -53,11 +53,11 @@ public class MainActivity extends BaseActivity implements MainView {
     private TabLayout tabLayout;
     private FrameLayout fragmentContainer, fragmentTest;
     private TextView tvName, tvCategory, tvTitleProblem;
-    private RecyclerView rvSmallMessanger;
+ //   private RecyclerView rvSmallMessanger;
 
     private PagerProjectsAdapter projectsAdapter;
     private MainMessangerAdapter adapterMessanger;
-    private ConstraintSet homeSet, projectsSet, infoSet, requestFullSet;
+    private ConstraintSet homeSet, projectsSet, infoSet;
 
     @ProvidePresenter
     MainPresenter provideMainPresenter() {
@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity implements MainView {
         homeSet = new ConstraintSet();
         projectsSet = new ConstraintSet();
         infoSet = new ConstraintSet();
-        requestFullSet = new ConstraintSet();
+        //requestFullSet = new ConstraintSet();
 
         if (CacheUser.getUser().getUserImage() != null) {
             byte[] data = Base64.decode(CacheUser.getUser().getUserImage().getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
@@ -102,7 +102,7 @@ public class MainActivity extends BaseActivity implements MainView {
         homeSet.clone(constraintLayout);
         projectsSet.clone(this, R.layout.activity_constraint_projects);
         infoSet.clone(this, R.layout.activity_constraint_about);
-        requestFullSet.clone(this, R.layout.activity_constraint_request_full);
+//        requestFullSet.clone(this, R.layout.activity_constraint_request_full);
 
         setSupportActionBar(toolbar);
 
@@ -121,20 +121,19 @@ public class MainActivity extends BaseActivity implements MainView {
                 .subscribe(result -> {
                     Timber.d("result: " + result);
                     TransitionManager.beginDelayedTransition(constraintLayout);
-                    requestFullSet.applyTo(constraintLayout);
+                    // requestFullSet.applyTo(constraintLayout);
                 }, throwable -> {
                     Timber.d("tho: " + throwable.getCause());
                     Timber.d("tho: " + throwable.getMessage());
                 });
 
-        provideMessanger();
+        //provideMessanger();
     }
 
 
     @Override
     public void onBackPressed() {
-        TransitionManager.beginDelayedTransition(constraintLayout);
-        projectsSet.applyTo(constraintLayout);
+        super.onBackPressed();
     }
 
     @Override
@@ -197,7 +196,9 @@ public class MainActivity extends BaseActivity implements MainView {
                     vpProjectsContainer.setAdapter(projectsAdapter);
                     tabLayout.setupWithViewPager(vpProjectsContainer);
 
-                    openProjects();
+                    TransitionManager.beginDelayedTransition(constraintLayout);
+                    projectsSet.applyTo(constraintLayout);
+                  //  openProjects();
                     break;
                 case R.id.action_info:
                     Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("INFO");
@@ -226,11 +227,11 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     private void provideMessanger() {
-        adapterMessanger = new MainMessangerAdapter(new ArrayList<>());
-
-        rvSmallMessanger.setHasFixedSize(true);
-        rvSmallMessanger.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-        rvSmallMessanger.setAdapter(adapterMessanger);
+//        adapterMessanger = new MainMessangerAdapter(new ArrayList<>());
+//
+//        rvSmallMessanger.setHasFixedSize(true);
+//        rvSmallMessanger.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+//
+//        rvSmallMessanger.setAdapter(adapterMessanger);
     }
 }

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
+import com.volgagas.personalassistant.presentation.projects.query_create.fill_request.choose_category.CategoryDialogFragment;
 import com.volgagas.personalassistant.presentation.projects.query_create.fill_request.presenter.FillRequestPresenter;
 import com.volgagas.personalassistant.presentation.projects.query_create.fill_request.presenter.FillRequestView;
 import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
@@ -31,8 +32,8 @@ import java.util.Calendar;
 public class FillRequestFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener, FillRequestView {
 
     private TextInputEditText etEventName, etDescription;
-    private TextView tvDate;
-    private RelativeLayout rlDateContainer;
+    private TextView tvDate, tvCategory;
+    private RelativeLayout rlDateContainer, rlCategoryContainer;
     private Button btnNextStep;
     private Switch switchImportant;
 
@@ -62,12 +63,15 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
         rlDateContainer = view.findViewById(R.id.rl_date_container);
         btnNextStep = view.findViewById(R.id.btn_apply);
         switchImportant = view.findViewById(R.id.switch_important);
+        tvCategory = view.findViewById(R.id.tv_category);
+        rlCategoryContainer = view.findViewById(R.id.rl_category_container);
 
-        provideCalendarPicker();
+        provideClickListeners();
         btnNextStep.setOnClickListener(v -> {
             if (etDescription.getText().toString().length() == 0
                     || etEventName.getText().toString().length() == 0
-                    || tvDate.getCurrentTextColor() != getResources().getColor(R.color.colorTextBlack)) {
+                    || tvDate.getCurrentTextColor() != getResources().getColor(R.color.colorTextBlack)
+                    || tvCategory.getText().toString().length() == 0) {
                 Toast.makeText(getActivity(), "Не отмечены все поля", Toast.LENGTH_SHORT).show();
             } else {
                 RequestData data = new RequestData();
@@ -85,7 +89,7 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
         super.onDestroyView();
     }
 
-    private void provideCalendarPicker() {
+    private void provideClickListeners() {
         rlDateContainer.setOnClickListener(v -> {
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
@@ -93,6 +97,11 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
             int day = c.get(Calendar.DAY_OF_MONTH);
             DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), 0, FillRequestFragment.this, year, month, day);
             datePickerDialog.show();
+        });
+
+        rlCategoryContainer.setOnClickListener(v -> {
+            CategoryDialogFragment dialogFragment = CategoryDialogFragment.newInstance();
+            dialogFragment.show(getActivity().getSupportFragmentManager(), null);
         });
     }
 

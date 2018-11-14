@@ -8,7 +8,19 @@ public class RequestData {
     private String title;
     private String description;
     private String endDate;
+    private String category;
     private boolean isImportant;
+
+    @Override
+    public String toString() {
+        return "RequestData{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", category='" + category + '\'' +
+                ", isImportant=" + isImportant +
+                '}';
+    }
 
     public String getTitle() {
         return title;
@@ -42,13 +54,11 @@ public class RequestData {
         isImportant = important;
     }
 
-    @Override
-    public String toString() {
-        return "RequestData{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", isImportant=" + isImportant +
-                '}';
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

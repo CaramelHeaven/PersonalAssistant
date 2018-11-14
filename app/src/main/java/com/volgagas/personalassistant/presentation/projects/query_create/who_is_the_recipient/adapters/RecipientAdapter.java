@@ -119,6 +119,10 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return userList;
     }
 
+    public List<User> getAddedUsers() {
+        return addedUsers;
+    }
+
     public void updateAddedUsers(User user) {
         addedUsers.add(user);
         notifyItemChanged(TYPE_ADDED);
@@ -159,6 +163,11 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             addedAdapter = new RecipientAddedAdapter(new ArrayList<>());
             rvAddedWorkers.setAdapter(addedAdapter);
+
+            addedAdapter.setMyOnItemClickListener(position -> {
+                Timber.d("remove");
+                addedAdapter.removeUser(addedAdapter.getUserByPosition(position));
+            });
         }
     }
 

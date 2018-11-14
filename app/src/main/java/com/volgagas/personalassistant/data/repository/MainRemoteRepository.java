@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.data.repository;
 
+import com.google.gson.JsonObject;
 import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.domain.MainRepository;
@@ -17,6 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 public class MainRemoteRepository implements MainRepository {
@@ -77,5 +79,11 @@ public class MainRemoteRepository implements MainRepository {
 
         return PersonalAssistant.getSpApiService().getOpenUniformRequests(url, data)
                 .map(uniformRequestMapper::map);
+    }
+
+    @Override
+    public Observable<JsonObject> getUserIdByUserName(String name) {
+        String url = "https://volagas.sharepoint.com/doc/_api/web/siteusers?&$filter=Title eq 'Бунькин Дмитрий'&$select=id";
+        return PersonalAssistant.getSpApiService().getUserIdByUserName(url);
     }
 }

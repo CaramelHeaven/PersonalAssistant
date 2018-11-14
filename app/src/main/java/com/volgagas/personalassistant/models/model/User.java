@@ -30,9 +30,15 @@ public class User implements Parcelable {
         this.category = user.getCategory();
         this.userImage = user.getUserImage();
 
-        //modified name for share point requests
+        //modified name for share point requests, but this - Vasiliev Andrew
         String[] partsName = name.split(" ");
         this.modifiedName = partsName[1] + " " + partsName[0];
+    }
+
+    //Andrew Vasiliev
+    public String getModifiedNormalName() {
+        String[] partsName = name.split(" ");
+        return partsName[0] + " " + partsName[1];
     }
 
     @Override

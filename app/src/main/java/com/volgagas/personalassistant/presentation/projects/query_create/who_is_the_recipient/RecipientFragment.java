@@ -84,7 +84,7 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
             adapter.updateAddedUsers(adapter.getItemByPosition(position));
         });
 
-        // btnSend.setOnClickListener(v -> presenter.sendToServer(data, adapterAdded.getUserList()));
+        btnSend.setOnClickListener(v -> presenter.sendToServer(data, adapter.getAddedUsers()));
         provideEditText();
     }
 

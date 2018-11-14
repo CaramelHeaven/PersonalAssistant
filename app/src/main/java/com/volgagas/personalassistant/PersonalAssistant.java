@@ -102,7 +102,7 @@ public class PersonalAssistant extends Application {
                     Request request = chain.request();
                     request = request.newBuilder()
                             .addHeader("Authorization", "Bearer " + token)
-                            .addHeader("Accept", "application/json;odata=verbose")
+                            .addHeader("Accept", "application/json")
                             .build();
                     return chain.proceed(request);
                 });

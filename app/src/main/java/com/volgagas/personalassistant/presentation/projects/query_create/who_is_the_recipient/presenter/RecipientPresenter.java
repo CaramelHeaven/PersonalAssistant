@@ -1,5 +1,8 @@
 package com.volgagas.personalassistant.presentation.projects.query_create.who_is_the_recipient.presenter;
 
+import android.annotation.SuppressLint;
+import android.transition.Scene;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
@@ -11,8 +14,10 @@ import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -51,8 +56,22 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
         getViewState().showUsers(users);
     }
 
+    @SuppressLint("CheckResult")
     public void sendToServer(RequestData data, List<User> userList) {
         Timber.d("SEND");
+        getViewState().showProgress();
+        Single.just(userList)
+                .subscribeOn(Schedulers.io())
+                .flattenAsObservable((Function<List<User>, Iterable<User>>) users -> userList)
+                .flatMap(user -> repository.getUserIdByUserName(user.getModifiedNormalName()))
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    Timber.d("get result: " + result.toString());
+                }, t -> {
+                    Timber.d("throwable: " + t.getMessage());
+                    Timber.d("throwable: " + t.getCause());
+                });
     }
 
     @Override

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +20,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 13:18, 14.11.2018.
@@ -39,7 +40,7 @@ public class RecipientAddedAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_recipient_worker, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_chip_worker, viewGroup, false);
         final UserVH userVH = new UserVH(view);
         return userVH;
     }
@@ -47,7 +48,6 @@ public class RecipientAddedAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         UserVH userVH = (UserVH) viewHolder;
-        userVH.tvPosition.setText(userList.get(i).getPosition());
         userVH.tvName.setText(userList.get(i).getName());
 
         if (userList.get(i).getUserImage() != null) {
@@ -71,8 +71,13 @@ public class RecipientAddedAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return userList.size();
     }
 
-    public void updateAdapter(User user) {
-        uniqueUsers.add(user);
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void updateAdapter(List<User> users) {
+        Timber.d("UPDATE ADAPTER ADDE");
+        uniqueUsers.addAll(users);
         userList.clear();
         userList.addAll(uniqueUsers);
         notifyDataSetChanged();
@@ -80,15 +85,12 @@ public class RecipientAddedAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     class UserVH extends RecyclerView.ViewHolder {
         private ImageView ivPhoto;
-        private TextView tvName, tvPosition;
-        private RelativeLayout rlContainer;
+        private TextView tvName;
 
         public UserVH(@NonNull View itemView) {
             super(itemView);
-            ivPhoto = itemView.findViewById(R.id.iv_image_worker);
+            ivPhoto = itemView.findViewById(R.id.iv_photo_user);
             tvName = itemView.findViewById(R.id.tv_name);
-            tvPosition = itemView.findViewById(R.id.tv_position);
-            rlContainer = itemView.findViewById(R.id.rl_container);
         }
     }
 }

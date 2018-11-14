@@ -6,7 +6,9 @@ import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
+import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -45,12 +47,12 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
     }
 
     private void successfulResult(List<User> users) {
-        Timber.d("result size: " + users.size());
+        getViewState().hideProgress();
         getViewState().showUsers(users);
     }
 
-    public void createRequestOnServer() {
-
+    public void sendToServer(RequestData data, List<User> userList) {
+        Timber.d("SEND");
     }
 
     @Override

@@ -79,8 +79,8 @@ public class PersonalAssistant extends Application {
             case "D365":
                 Timber.d("INIT D365");
                 OkHttpClient.Builder builderD365 = new OkHttpClient().newBuilder();
-                builderD365.readTimeout(10, TimeUnit.SECONDS);
-                builderD365.connectTimeout(7, TimeUnit.SECONDS);
+                builderD365.readTimeout(15, TimeUnit.SECONDS);
+                builderD365.connectTimeout(10, TimeUnit.SECONDS);
                 builderD365.addInterceptor(chain -> {
                     Request request = chain.request();
                     request = request.newBuilder()

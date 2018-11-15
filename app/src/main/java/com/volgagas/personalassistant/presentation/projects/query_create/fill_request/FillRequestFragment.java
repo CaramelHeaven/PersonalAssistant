@@ -107,7 +107,7 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String date = "" + dayOfMonth + "/" + month + "/" + year;
+        String date = year + "-" + month + "-" + dayOfMonth;
         tvDate.setTextColor(getResources().getColor(R.color.colorTextBlack));
         tvDate.setText(date);
     }

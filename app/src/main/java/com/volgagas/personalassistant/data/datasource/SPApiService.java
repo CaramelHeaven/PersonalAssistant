@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.data.datasource;
 
 import com.google.gson.JsonObject;
 import com.volgagas.personalassistant.models.network.QueryResponse;
+import com.volgagas.personalassistant.models.network.UserIdResponse;
 import com.volgagas.personalassistant.utils.Constants;
 
 import java.util.Map;
@@ -26,10 +27,10 @@ public interface SPApiService {
                                                  @QueryMap Map<String, String> options);
 
     @Headers("Content-Type: application/json;odata=verbose")
-    @POST
-    Single<Response<Void>> sendTest(@Url String s, @Body JsonObject object);
+    @POST(Constants.SHARE_POINT_DOC_API_WEB + "/lists" + Constants.UNIFORM_REQUESTS_URL + "/items")
+    Single<Response<Void>> createUniformQueryItem(@Body JsonObject object);
 
-    @Headers("Content-Type: application/json;odata=verbose")
-    @GET
-    Observable<JsonObject> getUserIdByUserName(@Url String url);
+    @GET(Constants.SHARE_POINT_API_WEB + "/siteusers?")
+    Observable<UserIdResponse> getUserIdByUserName(@Query("$filter") String title,
+                                                   @Query("$select") String select);
 }

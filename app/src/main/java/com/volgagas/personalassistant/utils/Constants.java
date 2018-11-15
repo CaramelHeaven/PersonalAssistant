@@ -19,7 +19,8 @@ public class Constants {
     public static final String DYNAMICS_365_TEST = "https://volgagas-test.sandbox.operations.dynamics.com";
     public static final String DYNAMICS_365_DEV = "https://volgagas-devdevaos.sandbox.ax.dynamics.com";
     public static final String GRAPH = "https://volagas.sharepoint.com";
-    public static final String SHARE_POINT_WEB_API = "https://volagas.sharepoint.com/doc/_api/web";
+    public static final String SHARE_POINT_DOC_API_WEB = "https://volagas.sharepoint.com/doc/_api/web";
+    public static final String SHARE_POINT_API_WEB = "https://volagas.sharepoint.com/_api/web";
 
     public static final String AUTH_URL = "https://login.microsoftonline.com/common/oauth2/authorize";
 

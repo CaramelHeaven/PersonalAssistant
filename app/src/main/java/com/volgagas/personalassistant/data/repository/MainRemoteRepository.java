@@ -2,24 +2,25 @@ package com.volgagas.personalassistant.data.repository;
 
 import com.google.gson.JsonObject;
 import com.volgagas.personalassistant.PersonalAssistant;
-import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.mapper.uniform_request.QueryResponseToUniformRequest;
 import com.volgagas.personalassistant.models.mapper.uniform_request.UniformRequestMapper;
+import com.volgagas.personalassistant.models.mapper.user.UserIdResponseToUserId;
 import com.volgagas.personalassistant.models.mapper.user.UserMapper;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseListToUserList;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseToUser;
 import com.volgagas.personalassistant.models.model.UniformRequest;
 import com.volgagas.personalassistant.models.model.User;
+import com.volgagas.personalassistant.models.network.user_id.UserId;
 import com.volgagas.personalassistant.utils.Constants;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import retrofit2.Response;
 
 public class MainRemoteRepository implements MainRepository {
 
@@ -31,6 +32,7 @@ public class MainRemoteRepository implements MainRepository {
     private static UserResponseToUser userResponseToUser;
     private static UserResponseListToUserList userResponseListToUserList;
     private static QueryResponseToUniformRequest queryResponseToUniformRequest;
+    private static UserIdResponseToUserId userIdResponseToUserId;
 
     private MainRemoteRepository() {
         if (INSTANCE != null) {
@@ -45,8 +47,9 @@ public class MainRemoteRepository implements MainRepository {
                     userResponseToUser = new UserResponseToUser();
                     userResponseListToUserList = new UserResponseListToUserList();
                     queryResponseToUniformRequest = new QueryResponseToUniformRequest();
+                    userIdResponseToUserId = new UserIdResponseToUserId();
 
-                    userMapper = new UserMapper(userResponseToUser, userResponseListToUserList);
+                    userMapper = new UserMapper(userResponseToUser, userResponseListToUserList, userIdResponseToUserId);
                     uniformRequestMapper = new UniformRequestMapper(queryResponseToUniformRequest);
                     INSTANCE = new MainRemoteRepository();
                 }
@@ -71,7 +74,7 @@ public class MainRemoteRepository implements MainRepository {
     @Override
     public Single<List<UniformRequest>> getUniformRequestsFromUser() {
         Map<String, String> data = new LinkedHashMap<>();
-        String url = Constants.SHARE_POINT_WEB_API + "/lists" + Constants.UNIFORM_REQUESTS_URL + "/Items?";
+        String url = Constants.SHARE_POINT_DOC_API_WEB + "/lists" + Constants.UNIFORM_REQUESTS_URL + "/Items?";
 
         data.put("$select", "Title,Author,Comment,Priority,DueDate,LastText/Name,Author/Title");
         data.put("$expand", "Author/Id");
@@ -82,8 +85,14 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public Observable<JsonObject> getUserIdByUserName(String name) {
-        String url = "https://volagas.sharepoint.com/doc/_api/web/siteusers?&$filter=Title eq 'Бунькин Дмитрий'&$select=id";
-        return PersonalAssistant.getSpApiService().getUserIdByUserName(url);
+    public Observable<UserId> getUserIdByUserName(String name) {
+        String filter = "Title eq '" + name + "'";
+        return PersonalAssistant.getSpApiService().getUserIdByUserName(filter, "id")
+                .map(userMapper::map);
+    }
+
+    @Override
+    public Single<Response<Void>> createUniformQueryItem(JsonObject jsonObject) {
+        return PersonalAssistant.getSpApiService().createUniformQueryItem(jsonObject);
     }
 }

@@ -31,9 +31,6 @@ import timber.log.Timber;
 public class QueryFragment extends BaseFragment implements QueryView<UniformRequest> {
 
     private FloatingActionButton fabCreate;
-    private RecyclerView rvTasksToUser, rvTasksFromUser;
-    private ExpandableLinearLayout expandableFromUser, expandableToUser;
-    private CardView cvExpandFromUser, cvExpandToUser;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private List<String> listBaseAdapter;
@@ -62,59 +59,40 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         fabCreate = view.findViewById(R.id.fab_create);
         recyclerView = view.findViewById(R.id.recyclerView);
+        progressBar = view.findViewById(R.id.progress_bar);
 
-        // progressBar = view.findViewById(R.id.progress_bar);
         listBaseAdapter = new ArrayList<>(Arrays.asList("Заявки к вам", "Заявки от вас"));
         adapterBase = new QueryBaseAdapter(new ArrayList<>());
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(adapterBase);
+
+        provideListeners();
+    }
+
+    private void provideListeners() {
+        fabCreate.setOnClickListener(v -> {
+            Timber.d("test");
+            startActivity(new Intent(getActivity(), QueryCreateActivity.class));
+        });
 
         adapterBase.setMyOnItemClickListener(position -> {
             Timber.d("CLICK " + position);
             Timber.d("CLICK " + position);
         });
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(adapterBase);
-
-//        expandableFromUser.setInRecyclerView(true);
-        // expandableToUser.setInRecyclerView(true);
-
-      /*  cvExpandToUser.setOnClickListener(v -> {
-            Timber.d("CV EXPAND USER");
-            // expandableToUser.moveChild(0);
-            expandableToUser.toggle();
-        });
-
-        cvExpandFromUser.setOnClickListener(v -> {
-            Timber.d("CV EXPAND USER");
-            // expandableFromUser.setExpanded(true);
-            // expandableFromUser.toggle();
-        });*/
-
-        //provideListeners();
-        // fillDataToAdapter();
-    }
-
-    private void provideListeners() {
-        fabCreate.setOnClickListener(new View.OnClickListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), QueryCreateActivity.class));
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    fabCreate.hide();
+                } else {
+                    fabCreate.show();
+                }
             }
         });
-
-        /*nsvContainer.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (nestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            Timber.d("SCROLL");
-            if (scrollY > oldScrollY) {
-                Timber.d("fab HIDE");
-                fabCreate.hide();
-            } else {
-                Timber.d("fab SHOW");
-                fabCreate.show();
-            }
-        });*/
     }
-
 
     @Override
     public void onDestroyView() {
@@ -124,12 +102,12 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
 
     @Override
     public void showProgress() {
-//        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-        //  progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

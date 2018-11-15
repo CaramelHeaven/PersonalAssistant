@@ -32,11 +32,16 @@ public class QueryPresenter extends BasePresenter<QueryView<UniformRequest>> {
         disposable.add(repository.getUniformRequestsFromUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
+                .subscribe(this::successfulResultFromUser, this::handlerErrorsFromBadRequests));
     }
 
-    private void successfulResult(List<UniformRequest> uniformRequests) {
+    private void successfulResultToUser(List<UniformRequest> uniformRequests) {
         getViewState().hideProgress();
+    }
+
+    private void successfulResultFromUser(List<UniformRequest> uniformRequests) {
+        getViewState().hideProgress();
+        Timber.d("SHOW ITEMS: " + uniformRequests.size());
         getViewState().showItems(uniformRequests);
     }
 

@@ -3,7 +3,7 @@ package com.volgagas.personalassistant.models.mapper.uniform_request;
 import com.volgagas.personalassistant.models.mapper.Mapper;
 import com.volgagas.personalassistant.models.model.UniformRequest;
 import com.volgagas.personalassistant.models.network.QueryResponse;
-import com.volgagas.personalassistant.models.network.query.QueryResult;
+import com.volgagas.personalassistant.models.network.query.QueryNetwork;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class QueryResponseToUniformRequest extends Mapper<QueryResponse, List<Un
     @Override
     protected void fillData(List<UniformRequest> uniformRequests, QueryResponse queryResponse) {
         Timber.d("queryResponse");
-        for (QueryResult result : queryResponse.getQueryNetwork().getResults()) {
+        for (QueryNetwork result : queryResponse.getQueryNetwork()) {
             UniformRequest uniformRequest = new UniformRequest();
             uniformRequest.setPriority(result.getPriority());
             uniformRequest.setDescription(result.getComment());

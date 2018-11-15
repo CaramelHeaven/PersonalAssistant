@@ -106,6 +106,8 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
                 .flatMap(jsonObject -> repository.createUniformQueryItem(jsonObject))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
+                    getViewState().showProgress();
+                    getViewState().finish();
                     Timber.d("get result: " + result.toString());
                 }, t -> {
                     Timber.d("throwable: " + t.getMessage());

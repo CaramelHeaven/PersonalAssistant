@@ -12,11 +12,11 @@ import java.util.List;
  */
 public class QueryResponse {
 
-    @SerializedName("d")
+    @SerializedName("value")
     @Expose
-    private QueryNetwork queryNetwork;
+    private List<QueryNetwork> queryNetwork;
 
-    public QueryNetwork getQueryNetwork() {
+    public List<QueryNetwork> getQueryNetwork() {
         return queryNetwork;
     }
 }

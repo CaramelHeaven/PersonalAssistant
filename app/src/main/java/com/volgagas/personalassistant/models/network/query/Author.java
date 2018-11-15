@@ -8,19 +8,38 @@ import com.google.gson.annotations.SerializedName;
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class Author {
-    @SerializedName("__metadata")
+
+    @SerializedName("odata.type")
     @Expose
-    private Metadata_ metadata;
+    private String odataType;
+    @SerializedName("odata.id")
+    @Expose
+    private String odataId;
     @SerializedName("Title")
     @Expose
     private String title;
 
-    public Metadata_ getMetadata() {
-        return metadata;
+    public String getOdataType() {
+        return odataType;
+    }
+
+    public void setOdataType(String odataType) {
+        this.odataType = odataType;
+    }
+
+    public String getOdataId() {
+        return odataId;
+    }
+
+    public void setOdataId(String odataId) {
+        this.odataId = odataId;
     }
 
     public String getTitle() {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

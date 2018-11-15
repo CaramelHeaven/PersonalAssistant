@@ -125,6 +125,11 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
     }
 
     @Override
+    public void finish() {
+        getActivity().finish();
+    }
+
+    @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
     }

@@ -18,6 +18,9 @@ public interface RecipientView extends BaseView {
     @StateStrategyType(value = AddToEndSingleStrategy.class)
     void showUsers(List<User> values);
 
-    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    @StateStrategyType(value = AddToEndSingleStrategy.class)
     void sendUserData(RequestData data);
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void finish();
 }

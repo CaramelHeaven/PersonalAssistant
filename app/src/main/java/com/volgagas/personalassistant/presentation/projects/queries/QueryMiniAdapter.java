@@ -17,12 +17,12 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class QueryToUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class QueryMiniAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<UniformRequest> data;
     private myOnItemClickListener myOnItemClickListener;
 
-    public QueryToUserAdapter(List<UniformRequest> arrayList) {
+    public QueryMiniAdapter(List<UniformRequest> arrayList) {
         this.data = arrayList;
     }
 
@@ -64,14 +64,15 @@ public class QueryToUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     class UniformVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvTitle, tvDescription;
-        private CardView cvPriority;
+        private CardView cvPriority, cvContainer;
 
         public UniformVH(@NonNull View itemView) {
             super(itemView);
             tvDescription = itemView.findViewById(R.id.tv_description);
             tvTitle = itemView.findViewById(R.id.tv_title);
             cvPriority = itemView.findViewById(R.id.cv_priority);
-            cvPriority.setOnClickListener(this::onClick);
+            cvContainer = itemView.findViewById(R.id.cv_container);
+            cvContainer.setOnClickListener(this::onClick);
         }
 
         @Override

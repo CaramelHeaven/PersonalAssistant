@@ -5,25 +5,25 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.UniformRequest;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.projects.queries.presenter.QueryPresenter;
 import com.volgagas.personalassistant.presentation.projects.queries.presenter.QueryView;
 import com.volgagas.personalassistant.presentation.projects.query_create.QueryCreateActivity;
-import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
-import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import timber.log.Timber;
@@ -32,10 +32,13 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
 
     private FloatingActionButton fabCreate;
     private RecyclerView rvTasksToUser, rvTasksFromUser;
-    private NestedScrollView nsvContainer;
+    private ExpandableLinearLayout expandableFromUser, expandableToUser;
+    private CardView cvExpandFromUser, cvExpandToUser;
+    private ProgressBar progressBar;
+    private RecyclerView recyclerView;
+    private List<String> listBaseAdapter;
 
-    private QueryToUserAdapter adapterToUser;
-    private QueryFromUserAdapter adapterFromUser;
+    private QueryBaseAdapter adapterBase;
 
     @InjectPresenter
     QueryPresenter presenter;
@@ -58,34 +61,38 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         fabCreate = view.findViewById(R.id.fab_create);
-        rvTasksToUser = view.findViewById(R.id.rv_tasks_to_user);
-        rvTasksFromUser = view.findViewById(R.id.rv_tasks_from_user);
-        nsvContainer = view.findViewById(R.id.nsv_container);
+        recyclerView = view.findViewById(R.id.recyclerView);
 
-        provideListeners();
-        fillDataToAdapter();
-    }
+        // progressBar = view.findViewById(R.id.progress_bar);
+        listBaseAdapter = new ArrayList<>(Arrays.asList("Заявки к вам", "Заявки от вас"));
+        adapterBase = new QueryBaseAdapter(new ArrayList<>());
 
-    private void fillDataToAdapter() {
-        rvTasksToUser.setHasFixedSize(true);
-        rvTasksFromUser.setHasFixedSize(true);
-
-        rvTasksToUser.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        rvTasksFromUser.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-
-        rvTasksToUser.setNestedScrollingEnabled(false);
-        rvTasksFromUser.setNestedScrollingEnabled(false);
-
-        adapterToUser = new QueryToUserAdapter(new ArrayList());
-        adapterFromUser = new QueryFromUserAdapter(new ArrayList<>());
-
-        rvTasksToUser.setAdapter(adapterToUser);
-        rvTasksFromUser.setAdapter(adapterFromUser);
-
-        adapterFromUser.setMyOnCustomItemClickListener((position, view) -> {
-            Toast.makeText(getActivity(), "click", Toast.LENGTH_SHORT).show();
-            PassDataChannel.sendData(new RequestData());
+        adapterBase.setMyOnItemClickListener(position -> {
+            Timber.d("CLICK " + position);
+            Timber.d("CLICK " + position);
         });
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(adapterBase);
+
+//        expandableFromUser.setInRecyclerView(true);
+        // expandableToUser.setInRecyclerView(true);
+
+      /*  cvExpandToUser.setOnClickListener(v -> {
+            Timber.d("CV EXPAND USER");
+            // expandableToUser.moveChild(0);
+            expandableToUser.toggle();
+        });
+
+        cvExpandFromUser.setOnClickListener(v -> {
+            Timber.d("CV EXPAND USER");
+            // expandableFromUser.setExpanded(true);
+            // expandableFromUser.toggle();
+        });*/
+
+        //provideListeners();
+        // fillDataToAdapter();
     }
 
     private void provideListeners() {
@@ -96,7 +103,7 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
             }
         });
 
-        nsvContainer.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (nestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+        /*nsvContainer.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (nestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             Timber.d("SCROLL");
             if (scrollY > oldScrollY) {
                 Timber.d("fab HIDE");
@@ -105,7 +112,7 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
                 Timber.d("fab SHOW");
                 fabCreate.show();
             }
-        });
+        });*/
     }
 
 
@@ -117,18 +124,18 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
 
     @Override
     public void showProgress() {
-
+//        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-
+        //  progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void showItems(List<UniformRequest> items) {
         if (items.size() != 0) {
-            adapterFromUser.updateAdapter(items);
+            adapterBase.updateAdapter(listBaseAdapter, items);
         }
     }
 }

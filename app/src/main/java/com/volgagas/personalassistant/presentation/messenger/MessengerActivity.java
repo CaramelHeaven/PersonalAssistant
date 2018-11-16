@@ -10,6 +10,7 @@ import android.widget.EditText;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.models.model.Message;
 import com.volgagas.personalassistant.presentation.messenger.presenter.MessengerPresenter;
 import com.volgagas.personalassistant.presentation.messenger.presenter.MessengerView;
@@ -42,30 +43,28 @@ public class MessengerActivity extends MvpAppCompatActivity implements Messenger
 
         btnSend.setOnClickListener(v -> {
             Timber.d("data");
-            Message message = new Message(etMessage.getText().toString());
+            Message message = new Message(CacheUser.getUser().getModifiedNormalName(), etMessage.getText().toString());
             adapter.addMessage(message);
-            recyclerView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-                }
-            }, 100);
+            etMessage.setText("");
+            recyclerView.postDelayed(() -> recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1), 100);
         });
 
         List<Message> messages = new ArrayList<>();
-        messages.add(new Message("t"));
-        messages.add(new Message("t"));
-        messages.add(new Message("t"));
-        messages.add(new Message("t"));
-        messages.add(new Message("t"));
-        messages.add(new Message("t"));
-        messages.add(new Message("t"));
-        messages.add(new Message("t"));
-        messages.add(new Message("t"));
-        messages.add(new Message("t"));
-        messages.add(new Message("t"));
-        messages.add(new Message("t"));
-        messages.add(new Message("t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
+        messages.add(new Message("Adrrew", "t"));
 
         adapter.updateAdapter(messages);
         recyclerView.scrollToPosition(adapter.getMessageList().size() - 1);
@@ -82,7 +81,6 @@ public class MessengerActivity extends MvpAppCompatActivity implements Messenger
     }
 
     private void provideRecyclerAndAdapter() {
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         adapter = new MessangerAdapter(new ArrayList<>());
@@ -90,12 +88,7 @@ public class MessengerActivity extends MvpAppCompatActivity implements Messenger
 
         recyclerView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             if (bottom < oldBottom) {
-                recyclerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-                    }
-                }, 100);
+                recyclerView.postDelayed(() -> recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1), 100);
             }
         });
     }

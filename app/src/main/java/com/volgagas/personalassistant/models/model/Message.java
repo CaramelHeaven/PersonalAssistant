@@ -5,10 +5,11 @@ package com.volgagas.personalassistant.models.model;
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class Message {
-    private String message;
     private String author;
+    private String message;
 
-    public Message(String message) {
+    public Message(String author, String message) {
+        this.author = author;
         this.message = message;
     }
 
@@ -26,5 +27,13 @@ public class Message {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "author='" + author + '\'' +
+                ", message='" + message + '\'' +
+                '}';
     }
 }

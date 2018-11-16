@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
@@ -31,13 +32,11 @@ import timber.log.Timber;
 public class QueryFragment extends BaseFragment implements QueryView<UniformRequest> {
 
     private FloatingActionButton fabCreate;
-    private RecyclerView rvTasksToUser, rvTasksFromUser;
-    private ExpandableLinearLayout expandableFromUser, expandableToUser;
-    private CardView cvExpandFromUser, cvExpandToUser;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
-    private List<String> listBaseAdapter;
+    private TextView tvShowEmpty;
 
+    private List<String> listBaseAdapter;
     private QueryBaseAdapter adapterBase;
 
     @InjectPresenter
@@ -62,80 +61,57 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         fabCreate = view.findViewById(R.id.fab_create);
         recyclerView = view.findViewById(R.id.recyclerView);
+        tvShowEmpty = view.findViewById(R.id.tv_show_empty_queries);
+        progressBar = view.findViewById(R.id.progress_bar);
 
-        // progressBar = view.findViewById(R.id.progress_bar);
         listBaseAdapter = new ArrayList<>(Arrays.asList("Заявки к вам", "Заявки от вас"));
         adapterBase = new QueryBaseAdapter(new ArrayList<>());
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(adapterBase);
+
+        provideListeners();
+    }
+
+    private void provideListeners() {
+        fabCreate.setOnClickListener(v -> {
+            Timber.d("create");
+            startActivity(new Intent(getActivity(), QueryCreateActivity.class));
+        });
 
         adapterBase.setMyOnItemClickListener(position -> {
             Timber.d("CLICK " + position);
             Timber.d("CLICK " + position);
         });
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(adapterBase);
-
-//        expandableFromUser.setInRecyclerView(true);
-        // expandableToUser.setInRecyclerView(true);
-
-      /*  cvExpandToUser.setOnClickListener(v -> {
-            Timber.d("CV EXPAND USER");
-            // expandableToUser.moveChild(0);
-            expandableToUser.toggle();
-        });
-
-        cvExpandFromUser.setOnClickListener(v -> {
-            Timber.d("CV EXPAND USER");
-            // expandableFromUser.setExpanded(true);
-            // expandableFromUser.toggle();
-        });*/
-
-        //provideListeners();
-        // fillDataToAdapter();
     }
-
-    private void provideListeners() {
-        fabCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), QueryCreateActivity.class));
-            }
-        });
-
-        /*nsvContainer.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (nestedScrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            Timber.d("SCROLL");
-            if (scrollY > oldScrollY) {
-                Timber.d("fab HIDE");
-                fabCreate.hide();
-            } else {
-                Timber.d("fab SHOW");
-                fabCreate.show();
-            }
-        });*/
-    }
-
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         fabCreate = null;
+        tvShowEmpty = null;
+        progressBar = null;
+        recyclerView = null;
     }
 
     @Override
     public void showProgress() {
-//        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-        //  progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void showItems(List<UniformRequest> items) {
         if (items.size() != 0) {
             adapterBase.updateAdapter(listBaseAdapter, items);
+        } else {
+            tvShowEmpty.setVisibility(View.VISIBLE);
         }
     }
 }

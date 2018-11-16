@@ -7,35 +7,27 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.presentation.about_user.InfoFragment;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.home.HomeFragment;
-import com.volgagas.personalassistant.presentation.main.adapters.PagerProjectsAdapter;
 import com.volgagas.personalassistant.presentation.main.presenter.MainPresenter;
 import com.volgagas.personalassistant.presentation.main.presenter.MainView;
+import com.volgagas.personalassistant.presentation.projects.FragmentProjects;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -50,13 +42,8 @@ public class MainActivity extends BaseActivity implements MainView {
     private CircleImageView ivUserImage;
     private ConstraintLayout constraintLayout;
     private ViewPager vpProjectsContainer;
-    private TabLayout tabLayout;
-    private FrameLayout fragmentContainer, fragmentTest;
     private TextView tvName, tvCategory, tvTitleProblem;
- //   private RecyclerView rvSmallMessanger;
 
-    private PagerProjectsAdapter projectsAdapter;
-    private MainMessangerAdapter adapterMessanger;
     private ConstraintSet homeSet, projectsSet, infoSet;
 
     @ProvidePresenter
@@ -78,10 +65,6 @@ public class MainActivity extends BaseActivity implements MainView {
         tvCategory = findViewById(R.id.tv_category);
         constraintLayout = findViewById(R.id.constraintLayout);
         vpProjectsContainer = findViewById(R.id.vp_container);
-        tabLayout = findViewById(R.id.tabLayout);
-        fragmentContainer = findViewById(R.id.fragment_container);
-        fragmentTest = findViewById(R.id.fragment_container_about);
-        tvTitleProblem = findViewById(R.id.tv_title_problem);
 
         homeSet = new ConstraintSet();
         projectsSet = new ConstraintSet();
@@ -96,8 +79,6 @@ public class MainActivity extends BaseActivity implements MainView {
         }
         tvName.setText(CacheUser.getUser().getName());
         tvCategory.setText(CacheUser.getUser().getPosition());
-
-        projectsAdapter = new PagerProjectsAdapter(getSupportFragmentManager());
 
         homeSet.clone(constraintLayout);
         projectsSet.clone(this, R.layout.activity_constraint_projects);
@@ -163,12 +144,21 @@ public class MainActivity extends BaseActivity implements MainView {
                     homeSet.applyTo(constraintLayout);
                     break;
                 case R.id.action_project:
-                    vpProjectsContainer.setAdapter(projectsAdapter);
-                    tabLayout.setupWithViewPager(vpProjectsContainer);
+                    //   vpProjectsContainer.setAdapter(projectsAdapter);
+                    //  tabLayout.setupWithViewPager(vpProjectsContainer);
+
+                    Fragment fragment2 = getSupportFragmentManager().findFragmentByTag("PROJECTS");
+
+                    if (fragment2 == null) {
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container_projects, FragmentProjects.newInstance(), "PROJECTS")
+                                .commit();
+                    }
 
                     TransitionManager.beginDelayedTransition(constraintLayout);
                     projectsSet.applyTo(constraintLayout);
-                  //  openProjects();
+                    //  openProjects();
                     break;
                 case R.id.action_info:
                     Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("INFO");

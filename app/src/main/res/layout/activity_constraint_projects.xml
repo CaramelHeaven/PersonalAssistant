@@ -5,7 +5,8 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.main.MainActivity">
+    tools:context=".presentation.main.MainActivity"
+    tools:layout_editor_absoluteY="25dp">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
@@ -22,18 +23,6 @@
             app:titleTextColor="@color/colorSecondaryLight" />
     </android.support.design.widget.AppBarLayout>
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="0.00001dp"
-        android:background="@color/colorPrimary"
-        android:elevation="8dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="-2.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/viewBackground" />
-
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bnv_navigation"
         android:layout_width="0dp"
@@ -49,13 +38,13 @@
 
     <View
         android:id="@+id/viewBackground"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@color/colorPrimary"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBar" />
+        app:layout_constraintTop_toTopOf="@+id/appBar" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
@@ -73,26 +62,6 @@
         app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/bnv_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewBackground"
-        app:tabMode="fixed" />
-
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="0dp"
@@ -100,7 +69,8 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/bnv_navigation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tabLayout" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/appBar" />
 
     <FrameLayout
         android:id="@+id/fragment_container_about"
@@ -109,8 +79,18 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/bnv_navigation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/fragment_container"
-        app:layout_constraintTop_toTopOf="@+id/tabLayout" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/appBar" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container_projects"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/bnv_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
     <TextView
         android:id="@+id/tv_name"
@@ -142,6 +122,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="0.00001dp"
+        android:background="@color/colorPrimary"
+        android:elevation="8dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="-2.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewBackground" />
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
@@ -155,5 +147,5 @@
         app:layout_constraintBottom_toBottomOf="@+id/bnv_navigation"
         app:layout_constraintEnd_toEndOf="@+id/fragment_container_about"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tabLayout" />
+        app:layout_constraintTop_toTopOf="@+id/appBar" />
 </android.support.constraint.ConstraintLayout>

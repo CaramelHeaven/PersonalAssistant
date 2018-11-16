@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.presentation.main.adapters;
+package com.volgagas.personalassistant.presentation.projects;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

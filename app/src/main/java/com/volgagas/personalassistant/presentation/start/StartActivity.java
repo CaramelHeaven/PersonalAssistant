@@ -18,7 +18,7 @@ import com.volgagas.personalassistant.presentation.main.MainActivity;
 import com.volgagas.personalassistant.presentation.start.presenter.StartPresenter;
 import com.volgagas.personalassistant.presentation.start.presenter.StartView;
 import com.volgagas.personalassistant.utils.Constants;
-import com.volgagas.personalassistant.utils.channels.check_auth.StartChannel;
+import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
 
 import timber.log.Timber;
@@ -100,7 +100,7 @@ public class StartActivity extends BaseActivity implements StartView {
 
                 ThreePermissions permissions = ThreePermissions.getInstance();
                 permissions.setD365Token(true);
-                StartChannel.sendData(permissions);
+                CommonChannel.sendPermissions(permissions);
 
                 presenter.getUserData(presenter.getDataCodekey());
 
@@ -129,7 +129,7 @@ public class StartActivity extends BaseActivity implements StartView {
 
                 ThreePermissions permissions = ThreePermissions.getInstance();
                 permissions.setSharePointToken(true);
-                StartChannel.sendData(permissions);
+                CommonChannel.sendPermissions(permissions);
             }
         }
 

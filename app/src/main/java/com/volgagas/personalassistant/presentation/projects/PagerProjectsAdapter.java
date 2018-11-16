@@ -5,9 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.volgagas.personalassistant.presentation.projects.contracts.ContractFragment;
-import com.volgagas.personalassistant.presentation.projects.queries.QueryFragment;
-import com.volgagas.personalassistant.presentation.projects.work.WorkFragment;
+import com.volgagas.personalassistant.presentation.contracts.ContractFragment;
+import com.volgagas.personalassistant.presentation.queries.QueryFragment;
+import com.volgagas.personalassistant.presentation.work.WorkFragment;
 
 public class PagerProjectsAdapter extends FragmentPagerAdapter {
 

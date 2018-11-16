@@ -111,10 +111,14 @@ public class MainActivity extends BaseActivity implements MainView {
         //provideMessanger();
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        return super.onSupportNavigateUp();
+    }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        getSupportFragmentManager().popBackStack();
     }
 
     @Override
@@ -177,21 +181,8 @@ public class MainActivity extends BaseActivity implements MainView {
         });
     }
 
-    private void openHome() {
-
-    }
-
     private void openProjects() {
         TransitionManager.beginDelayedTransition(constraintLayout);
         projectsSet.applyTo(constraintLayout);
-    }
-
-    private void provideMessanger() {
-//        adapterMessanger = new MainMessangerAdapter(new ArrayList<>());
-//
-//        rvSmallMessanger.setHasFixedSize(true);
-//        rvSmallMessanger.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-//
-//        rvSmallMessanger.setAdapter(adapterMessanger);
     }
 }

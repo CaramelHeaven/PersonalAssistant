@@ -9,7 +9,7 @@ import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
-import com.volgagas.personalassistant.utils.channels.check_auth.StartChannel;
+import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
 
 import io.reactivex.Single;
@@ -31,7 +31,7 @@ public class StartPresenter extends BasePresenter<StartView> {
         repository = MainRemoteRepository.getInstance();
         disposable = new CompositeDisposable();
 
-        disposable.add(StartChannel.getInstance().getPermissionSubject()
+        disposable.add(CommonChannel.getInstance().getPermissionsSubject()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
@@ -76,7 +76,7 @@ public class StartPresenter extends BasePresenter<StartView> {
 
         ThreePermissions permissions = ThreePermissions.getInstance();
         permissions.setServer(true);
-        StartChannel.sendData(permissions);
+        CommonChannel.sendPermissions(permissions);
     }
 
     @Override

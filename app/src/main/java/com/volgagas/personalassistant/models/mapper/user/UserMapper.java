@@ -1,6 +1,8 @@
 package com.volgagas.personalassistant.models.mapper.user;
 
 import com.volgagas.personalassistant.models.model.User;
+import com.volgagas.personalassistant.models.model.UserDynamics;
+import com.volgagas.personalassistant.models.network.UserDynamicsResponse;
 import com.volgagas.personalassistant.models.network.UserIdResponse;
 import com.volgagas.personalassistant.models.network.UserResponse;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
@@ -11,12 +13,14 @@ public class UserMapper {
     private final UserResponseToUser userResponseToUser;
     private final UserResponseListToUserList userResponseListToUserList;
     private final UserIdResponseToUserId userIdResponseToUserId;
+    private final UserDynamicsResponseToUserDynamics userDynamicsResponseToUserDynamics;
 
     public UserMapper(UserResponseToUser userResponseToUser, UserResponseListToUserList userResponseListToUserList,
-                      UserIdResponseToUserId userIdResponseToUserId) {
+                      UserIdResponseToUserId userIdResponseToUserId, UserDynamicsResponseToUserDynamics userDynamicsResponseToUserDynamics) {
         this.userResponseToUser = userResponseToUser;
         this.userResponseListToUserList = userResponseListToUserList;
         this.userIdResponseToUserId = userIdResponseToUserId;
+        this.userDynamicsResponseToUserDynamics = userDynamicsResponseToUserDynamics;
     }
 
     public User map(UserResponse response) {
@@ -29,5 +33,9 @@ public class UserMapper {
 
     public UserId map(UserIdResponse response) {
         return userIdResponseToUserId.map(response);
+    }
+
+    public UserDynamics map(UserDynamicsResponse response) {
+        return userDynamicsResponseToUserDynamics.map(response);
     }
 }

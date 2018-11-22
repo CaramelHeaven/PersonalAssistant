@@ -38,24 +38,26 @@
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:id="@+id/iv_image"
+                            android:id="@+id/iv_image1"
                             android:layout_width="54dp"
                             android:layout_height="54dp"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="18dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_pen" />
+                            android:src="@drawable/ic_writing" />
 
                         <TextView
-                            android:id="@+id/tv_option"
+                            android:id="@+id/tv_option1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/iv_image"
+                            android:layout_below="@id/iv_image1"
+                            android:layout_marginStart="4dp"
                             android:layout_marginTop="4dp"
+                            android:layout_marginEnd="4dp"
                             android:ellipsize="end"
                             android:gravity="center"
-                            android:lines="1"
-                            android:text="Создать заявку"
+                            android:lines="2"
+                            android:text="Создать задачу"
                             android:textColor="@android:color/black" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -82,23 +84,26 @@
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:id="@+id/iv_image1"
+                            android:id="@+id/iv_image"
                             android:layout_width="54dp"
                             android:layout_height="54dp"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="18dp"
-                            android:scaleType="fitXY" />
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_pen" />
 
                         <TextView
-                            android:id="@+id/tv_option1"
+                            android:id="@+id/tv_option"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/iv_image1"
+                            android:layout_below="@id/iv_image"
+                            android:layout_marginStart="4dp"
                             android:layout_marginTop="4dp"
+                            android:layout_marginEnd="4dp"
                             android:ellipsize="end"
                             android:gravity="center"
-                            android:lines="1"
-                            android:text="Создать заявкqwу"
+                            android:lines="2"
+                            android:text="Создать заявку"
                             android:textColor="@android:color/black" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -140,18 +145,20 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="18dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_pen" />
+                            android:src="@drawable/ic_note" />
 
                         <TextView
                             android:id="@+id/tv_option2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/iv_image2"
+                            android:layout_marginStart="4dp"
                             android:layout_marginTop="4dp"
+                            android:layout_marginEnd="4dp"
                             android:ellipsize="end"
                             android:gravity="center"
-                            android:lines="1"
-                            android:text="Создать заявкуqw"
+                            android:lines="2"
+                            android:text="Список задач"
                             android:textColor="@android:color/black" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -183,18 +190,20 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="18dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_pen" />
+                            android:src="@drawable/ic_box" />
 
                         <TextView
                             android:id="@+id/tv_option3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/iv_image3"
+                            android:layout_marginStart="4dp"
                             android:layout_marginTop="4dp"
+                            android:layout_marginEnd="4dp"
                             android:ellipsize="end"
                             android:gravity="center"
-                            android:lines="1"
-                            android:text="Создать заявкуqwss"
+                            android:lines="2"
+                            android:text="Заказ"
                             android:textColor="@android:color/black" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>

@@ -12,4 +12,7 @@
     <color name="colorPriorityHigh">#f44336</color>
     <color name="colorPriorityNormal">#388E3C</color>
     <color name="colorSuperLightGray">#FAFAFA</color>
+
+    <color name="colorIconEvent">#E0531F</color>
+    <color name="colorIconLocation">#5D15C2</color>
 </resources>

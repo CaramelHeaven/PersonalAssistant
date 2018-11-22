@@ -48,14 +48,16 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="85dp"
+        android:layout_height="81dp"
         android:layout_marginEnd="8dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bnv_navigation"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/viewBackground" />
+        app:layout_constraintTop_toTopOf="@+id/viewBackground"
+        app:layout_constraintVertical_bias="0.107" />
 
     <FrameLayout
         android:id="@+id/fragment_container"

@@ -1,7 +1,7 @@
 package com.volgagas.personalassistant.presentation.about_user.presenter;
 
-import com.arellomobile.mvp.MvpView;
+import com.volgagas.personalassistant.presentation.base.BaseView;
 
-public interface InfoView extends MvpView {
+public interface InfoView extends BaseView {
 
 }

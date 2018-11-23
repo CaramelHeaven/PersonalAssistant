@@ -28,4 +28,6 @@ public interface MainRepository {
     Single<List<Task>> getTemplateTasks();
 
     Single<UserDynamics> getPersonalUserNumber(String personalName);
+
+    List<Task> testedData();
 }

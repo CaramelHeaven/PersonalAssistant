@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.utils.channels;
 
+import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
 import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 
@@ -17,6 +18,7 @@ public class CommonChannel {
     private static PublishSubject<RequestData> requestDataSubject;
     private static PublishSubject<ThreePermissions> permissionsSubject;
     private static PublishSubject<String> actionsSubject;
+    private static PublishSubject<Task> actionChosenTask;
 
     public static CommonChannel getInstance() {
         if (INSTANCE == null) {
@@ -26,6 +28,7 @@ public class CommonChannel {
                     requestDataSubject = PublishSubject.create();
                     permissionsSubject = PublishSubject.create();
                     actionsSubject = PublishSubject.create();
+                    actionChosenTask = PublishSubject.create();
                 }
             }
         }
@@ -53,7 +56,14 @@ public class CommonChannel {
     }
 
     public static void sendActions(String data) {
-        Timber.d("action: " + data);
         actionsSubject.onNext(data);
+    }
+
+    public static PublishSubject<Task> getActionChosenTask() {
+        return actionChosenTask;
+    }
+
+    public static void sendChosenTask(Task data) {
+        actionChosenTask.onNext(data);
     }
 }

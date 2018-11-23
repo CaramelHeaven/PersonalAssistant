@@ -19,6 +19,7 @@ import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 import com.volgagas.personalassistant.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,5 +113,22 @@ public class MainRemoteRepository implements MainRepository {
         return PersonalAssistant.getBaseApiService()
                 .getPersonalNumber(filter)
                 .map(userMapper::map);
+    }
+
+    @Override
+    public List<Task> testedData() {
+        List<Task> array = new ArrayList<>();
+        array.add(new Task("ytjtyfffff"));
+        array.add(new Task("afdbfffff"));
+        array.add(new Task("vasfvffff"));
+        array.add(new Task("asgfffff"));
+        array.add(new Task("asdffffff"));
+        array.add(new Task("fsdfffff"));
+        array.add(new Task("ffgdgffff"));
+        array.add(new Task("1241fffff"));
+        array.add(new Task("125fffff"));
+        array.add(new Task("f411ffff"));
+
+        return array;
     }
 }

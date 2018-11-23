@@ -12,6 +12,10 @@ public class Task implements Parcelable {
     private String description;
     private String categoryId;
 
+    public Task(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "Task{" +

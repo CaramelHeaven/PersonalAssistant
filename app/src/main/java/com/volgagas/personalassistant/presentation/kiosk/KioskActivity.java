@@ -11,8 +11,12 @@ import android.widget.EditText;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.kiosk.presenter.KioskPresenter;
 import com.volgagas.personalassistant.presentation.kiosk.presenter.KioskView;
+import com.volgagas.personalassistant.utils.bus.GlobalBus;
+
+import timber.log.Timber;
 
 public class KioskActivity extends MvpAppCompatActivity implements KioskView {
 
@@ -64,7 +68,9 @@ public class KioskActivity extends MvpAppCompatActivity implements KioskView {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                //send entered letters to KioskTaskFragment
+                Timber.d("char sequence: " + s);
+                GlobalBus.getEventBus().post(s.toString());
             }
 
             @Override

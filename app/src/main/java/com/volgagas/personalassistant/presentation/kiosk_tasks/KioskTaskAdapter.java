@@ -16,6 +16,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 17:38, 22.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
@@ -54,6 +56,7 @@ public class KioskTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void filterAdapter(List<Task> filterList) {
+        Timber.d("filterSize: " + filterList.size());
         taskList.clear();
         taskList.addAll(filterList);
         notifyDataSetChanged();
@@ -62,6 +65,10 @@ public class KioskTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public int getItemCount() {
         return taskList.size();
+    }
+
+    public Task getItemByPosition(int position) {
+        return taskList.get(position);
     }
 
     class TaskVH extends RecyclerView.ViewHolder implements View.OnClickListener {

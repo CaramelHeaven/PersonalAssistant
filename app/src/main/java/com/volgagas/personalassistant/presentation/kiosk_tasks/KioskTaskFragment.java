@@ -16,9 +16,16 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.kiosk_tasks.presenter.KioskTaskPresenter;
 import com.volgagas.personalassistant.presentation.kiosk_tasks.presenter.KioskTaskView;
+import com.volgagas.personalassistant.utils.bus.GlobalBus;
+import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 17:10, 22.11.2018.
@@ -62,11 +69,52 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
 
         adapter = new KioskTaskAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
+
+        adapter.setMyOnItemClickListener(position -> {
+            Timber.d("click pos: " + position);
+            Timber.d("click pos: " + position);
+            presenter.addedTask(adapter.getItemByPosition(position));
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        GlobalBus.getEventBus().register(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onStop() {
+        GlobalBus.getEventBus().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void filterList(String str) {
+        Timber.d("string: " + str);
+        if (!str.isEmpty()) {
+            final List<Task> filtering = new ArrayList<>();
+            for (Task val : filterList) {
+                if (val.getDescription().toLowerCase().contains(str)) {
+                    filtering.add(val);
+                }
+            }
+            adapter.filterAdapter(filtering);
+        } else {
+            adapter.updateAdapter(filterList);
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        recyclerView = null;
+        progressBar = null;
     }
 
     @Override
@@ -81,6 +129,10 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
 
     @Override
     public void showItems(List<Task> models) {
-        adapter.updateAdapter(models);
+        if (models.size() != 0) {
+            filterList.clear();
+            filterList.addAll(models);
+            adapter.updateAdapter(models);
+        }
     }
 }

@@ -5,11 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.presentation.kiosk_tasks.KioskTaskAdapter;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by CaramelHeaven on 9:59, 23.11.2018.
@@ -18,9 +22,11 @@ import java.util.List;
 public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Task> taskList;
+    private Set<Task> uniqueTasks;
 
     public KioskAddedTaskAdapter(List<Task> taskList) {
         this.taskList = taskList;
+        uniqueTasks = new LinkedHashSet<>();
     }
 
     @NonNull
@@ -31,8 +37,9 @@ public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+        TaskVH taskVH = (TaskVH) viewHolder;
+        taskVH.tvTaskName.setText(taskList.get(position).getDescription());
     }
 
     @Override
@@ -40,10 +47,26 @@ public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return taskList.size();
     }
 
-    class TaskVH extends RecyclerView.ViewHolder {
+    public void addItem(Task model) {
+        uniqueTasks.add(model);
+        taskList.clear();
+        taskList.addAll(uniqueTasks);
+        notifyDataSetChanged();
+    }
+
+    public void onItemDismiss(int position) {
+        uniqueTasks.remove(taskList.get(position));
+        taskList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public class TaskVH extends RecyclerView.ViewHolder {
+        TextView tvTaskName, tvCategory;
 
         public TaskVH(@NonNull View itemView) {
             super(itemView);
+            tvTaskName = itemView.findViewById(R.id.tv_description);
+            tvCategory = itemView.findViewById(R.id.tv_category);
         }
     }
 }

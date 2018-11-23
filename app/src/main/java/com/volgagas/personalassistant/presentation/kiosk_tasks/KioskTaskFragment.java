@@ -17,6 +17,7 @@ import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.kiosk_tasks.presenter.KioskTaskPresenter;
 import com.volgagas.personalassistant.presentation.kiosk_tasks.presenter.KioskTaskView;
 import com.volgagas.personalassistant.utils.bus.GlobalBus;
+import com.volgagas.personalassistant.utils.bus.models.AddedTask;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -73,7 +74,7 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
         adapter.setMyOnItemClickListener(position -> {
             Timber.d("click pos: " + position);
             Timber.d("click pos: " + position);
-            presenter.addedTask(adapter.getItemByPosition(position));
+            GlobalBus.getEventBus().post(new AddedTask(adapter.getItemByPosition(position)));
         });
     }
 
@@ -84,17 +85,12 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onStop() {
         GlobalBus.getEventBus().unregister(this);
         super.onStop();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.POSTING)
     public void filterList(String str) {
         Timber.d("string: " + str);
         if (!str.isEmpty()) {

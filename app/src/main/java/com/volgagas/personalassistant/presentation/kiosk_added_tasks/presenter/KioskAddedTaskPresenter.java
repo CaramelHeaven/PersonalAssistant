@@ -1,7 +1,5 @@
 package com.volgagas.personalassistant.presentation.kiosk_added_tasks.presenter;
 
-import android.annotation.SuppressLint;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
@@ -9,10 +7,14 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 17:11, 22.11.2018.
@@ -24,15 +26,17 @@ public class KioskAddedTaskPresenter extends BasePresenter<KioskAddedTaskView<Ta
     private CompositeDisposable disposable;
     private MainRepository repository;
 
+    private Set<Task> addedTasks;
+
     public KioskAddedTaskPresenter() {
         repository = MainRemoteRepository.getInstance();
         disposable = new CompositeDisposable();
+        addedTasks = new LinkedHashSet<>();
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        listenerAddedTasks();
     }
 
     @Override
@@ -46,17 +50,13 @@ public class KioskAddedTaskPresenter extends BasePresenter<KioskAddedTaskView<Ta
 
     }
 
-    @SuppressLint("CheckResult")
-    private void listenerAddedTasks() {
-        CommonChannel.getActionChosenTask()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    Timber.d("get result: " + result);
-                    getViewState().addedTaskToList(result);
-                }, t -> {
-                    Timber.d("t" + t.getCause());
-                    Timber.d("t" + t.getMessage());
-                });
+    public void addedTask(Task task) {
+        addedTasks.add(task);
+        CommonChannel.sendListTasks(addedTasks);
+    }
+
+    public void removeTask(Task task) {
+        addedTasks.remove(task);
+        CommonChannel.sendListTasks(addedTasks);
     }
 }

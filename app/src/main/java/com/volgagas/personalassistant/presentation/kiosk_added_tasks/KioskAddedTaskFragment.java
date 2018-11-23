@@ -17,9 +17,16 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.kiosk_added_tasks.presenter.KioskAddedTaskPresenter;
 import com.volgagas.personalassistant.presentation.kiosk_added_tasks.presenter.KioskAddedTaskView;
+import com.volgagas.personalassistant.utils.bus.GlobalBus;
+import com.volgagas.personalassistant.utils.bus.models.AddedTask;
 import com.volgagas.personalassistant.utils.item_touch.ItemTouchAdapterKioskAdded;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 17:11, 22.11.2018.
@@ -64,6 +71,11 @@ public class KioskAddedTaskFragment extends BaseFragment implements KioskAddedTa
         ItemTouchAdapterKioskAdded callback = new ItemTouchAdapterKioskAdded(adapter);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(recyclerView);
+
+        //listener for removing item
+        adapter.setMyOnItemClickListener(position ->
+                presenter.removeTask(adapter.getItemByPosition(position)));
+
     }
 
     @Override
@@ -84,10 +96,24 @@ public class KioskAddedTaskFragment extends BaseFragment implements KioskAddedTa
     }
 
     @Override
-    public void addedTaskToList(Task model) {
+    public void onStart() {
+        super.onStart();
+        GlobalBus.getEventBus().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        GlobalBus.getEventBus().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void addedTaskToList(AddedTask data) {
+        Timber.d("checking: " + data.toString());
         if (tvShowEmpty.getVisibility() == View.VISIBLE) {
             tvShowEmpty.setVisibility(View.GONE);
         }
-        adapter.addItem(model);
+        adapter.addItem(data.getTask());
+        presenter.addedTask(data.getTask());
     }
 }

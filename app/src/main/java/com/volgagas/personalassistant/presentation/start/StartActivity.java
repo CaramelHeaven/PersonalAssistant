@@ -35,7 +35,7 @@ public class StartActivity extends BaseActivity implements StartView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        permissionToEnableNfc = true;
+        setPermissionToEnableNfc(true);
 
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
     }

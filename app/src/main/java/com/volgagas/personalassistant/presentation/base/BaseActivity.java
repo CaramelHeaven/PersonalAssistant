@@ -31,7 +31,7 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
     private StringBuilder secretNumbers = null;
     private CompositeDisposable disposable = new CompositeDisposable();
     private AuthenticationContext authContext;
-    public boolean permissionToEnableNfc = false;
+    private boolean permissionToEnableNfc = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -149,5 +149,13 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
             return stringFromBlock.delete(0, stringFromBlock.length()).append(array);
         }
         return null;
+    }
+
+    public boolean isPermissionToEnableNfc() {
+        return permissionToEnableNfc;
+    }
+
+    public void setPermissionToEnableNfc(boolean permissionToEnableNfc) {
+        this.permissionToEnableNfc = permissionToEnableNfc;
     }
 }

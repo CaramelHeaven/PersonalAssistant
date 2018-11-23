@@ -4,8 +4,10 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
 import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 
+import java.util.List;
+import java.util.Set;
+
 import io.reactivex.subjects.PublishSubject;
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 12:16, 16.11.2018.
@@ -18,7 +20,7 @@ public class CommonChannel {
     private static PublishSubject<RequestData> requestDataSubject;
     private static PublishSubject<ThreePermissions> permissionsSubject;
     private static PublishSubject<String> actionsSubject;
-    private static PublishSubject<Task> actionChosenTask;
+    private static PublishSubject<Set<Task>> observableUpdatedTasks;
 
     public static CommonChannel getInstance() {
         if (INSTANCE == null) {
@@ -28,7 +30,7 @@ public class CommonChannel {
                     requestDataSubject = PublishSubject.create();
                     permissionsSubject = PublishSubject.create();
                     actionsSubject = PublishSubject.create();
-                    actionChosenTask = PublishSubject.create();
+                    observableUpdatedTasks = PublishSubject.create();
                 }
             }
         }
@@ -59,11 +61,11 @@ public class CommonChannel {
         actionsSubject.onNext(data);
     }
 
-    public static PublishSubject<Task> getActionChosenTask() {
-        return actionChosenTask;
+    public static PublishSubject<Set<Task>> getObservableUpdatedTasks() {
+        return observableUpdatedTasks;
     }
 
-    public static void sendChosenTask(Task data) {
-        actionChosenTask.onNext(data);
+    public static void sendListTasks(Set<Task> data) {
+        observableUpdatedTasks.onNext(data);
     }
 }

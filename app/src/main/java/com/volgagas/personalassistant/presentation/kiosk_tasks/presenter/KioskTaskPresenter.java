@@ -7,6 +7,9 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 /**
@@ -16,12 +19,14 @@ import io.reactivex.disposables.CompositeDisposable;
 @InjectViewState
 public class KioskTaskPresenter extends BasePresenter<KioskTaskView<Task>> {
 
+    private List<Task> addedTasks;
     private CompositeDisposable disposable;
     private MainRepository repository;
 
     public KioskTaskPresenter() {
         repository = MainRemoteRepository.getInstance();
         disposable = new CompositeDisposable();
+        addedTasks = new ArrayList<>();
     }
 
     @Override
@@ -40,9 +45,4 @@ public class KioskTaskPresenter extends BasePresenter<KioskTaskView<Task>> {
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
 
     }
-
-    public void addedTask(Task task) {
-        CommonChannel.sendChosenTask(task);
-    }
-
 }

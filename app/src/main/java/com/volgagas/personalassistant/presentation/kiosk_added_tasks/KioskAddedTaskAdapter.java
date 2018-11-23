@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
-import com.volgagas.personalassistant.presentation.kiosk_tasks.KioskTaskAdapter;
+import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -23,6 +23,8 @@ public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private List<Task> taskList;
     private Set<Task> uniqueTasks;
+
+    private myOnItemClickListener myOnItemClickListener;
 
     public KioskAddedTaskAdapter(List<Task> taskList) {
         this.taskList = taskList;
@@ -56,8 +58,13 @@ public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public void onItemDismiss(int position) {
         uniqueTasks.remove(taskList.get(position));
+        myOnItemClickListener.onItemClick(position);
         taskList.remove(position);
         notifyItemRemoved(position);
+    }
+
+    public Task getItemByPosition(int position) {
+        return taskList.get(position);
     }
 
     public class TaskVH extends RecyclerView.ViewHolder {
@@ -68,5 +75,9 @@ public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             tvTaskName = itemView.findViewById(R.id.tv_description);
             tvCategory = itemView.findViewById(R.id.tv_category);
         }
+    }
+
+    public void setMyOnItemClickListener(com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener myOnItemClickListener) {
+        this.myOnItemClickListener = myOnItemClickListener;
     }
 }

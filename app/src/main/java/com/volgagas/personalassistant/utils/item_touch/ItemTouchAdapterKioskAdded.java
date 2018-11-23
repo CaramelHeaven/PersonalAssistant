@@ -1,7 +1,5 @@
 package com.volgagas.personalassistant.utils.item_touch;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;

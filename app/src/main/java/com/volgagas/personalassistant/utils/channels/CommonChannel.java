@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.utils.channels;
 
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
+import com.volgagas.personalassistant.utils.channels.check_auth.TwoPermissions;
 import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class CommonChannel {
     private static PublishSubject<ThreePermissions> permissionsSubject;
     private static PublishSubject<String> actionsSubject;
     private static PublishSubject<Set<Task>> observableUpdatedTasks;
+    private static PublishSubject<TwoPermissions> twoPermissionsSubject;
 
     public static CommonChannel getInstance() {
         if (INSTANCE == null) {
@@ -31,6 +33,7 @@ public class CommonChannel {
                     permissionsSubject = PublishSubject.create();
                     actionsSubject = PublishSubject.create();
                     observableUpdatedTasks = PublishSubject.create();
+                    twoPermissionsSubject = PublishSubject.create();
                 }
             }
         }
@@ -67,5 +70,13 @@ public class CommonChannel {
 
     public static void sendListTasks(Set<Task> data) {
         observableUpdatedTasks.onNext(data);
+    }
+
+    public static void sendTwoPermissions(TwoPermissions data) {
+        twoPermissionsSubject.onNext(data);
+    }
+
+    public static PublishSubject<TwoPermissions> getTwoPermissionsSubject() {
+        return twoPermissionsSubject;
     }
 }

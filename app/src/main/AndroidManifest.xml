@@ -80,6 +80,11 @@
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_container" />
         </activity>
+
+        <service
+            android:name=".utils.services.UpdateTokensService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

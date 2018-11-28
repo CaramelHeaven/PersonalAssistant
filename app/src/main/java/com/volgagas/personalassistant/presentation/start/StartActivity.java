@@ -3,6 +3,7 @@ package com.volgagas.personalassistant.presentation.start;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -20,6 +21,7 @@ import com.volgagas.personalassistant.presentation.start.presenter.StartView;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
+import com.volgagas.personalassistant.utils.services.UpdateTokensService;
 
 import timber.log.Timber;
 
@@ -38,6 +40,19 @@ public class StartActivity extends BaseActivity implements StartView {
         setPermissionToEnableNfc(true);
 
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
+
+        UpdateTokensService.getInstance();
+        UpdateTokensService.startTimer();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     /*

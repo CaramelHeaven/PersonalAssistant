@@ -72,6 +72,7 @@ public class PersonalAssistant extends Application {
                 .build();
 
         spApiService = retrofit.create(SPApiService.class);
+        Timber.d("share point init completed");
     }
 
     private static OkHttpClient.Builder initBuilderAuth(String token, String authTo) {

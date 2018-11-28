@@ -185,4 +185,5 @@ public class MainActivity extends BaseActivity implements MainView {
         TransitionManager.beginDelayedTransition(constraintLayout);
         projectsSet.applyTo(constraintLayout);
     }
+
 }

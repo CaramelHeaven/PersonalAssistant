@@ -69,4 +69,5 @@ public class QueryFullFragment extends MvpAppCompatDialogFragment implements Que
     public void hideProgress() {
 
     }
+
 }

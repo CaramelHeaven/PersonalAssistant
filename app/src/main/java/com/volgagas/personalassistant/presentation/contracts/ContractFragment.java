@@ -80,4 +80,5 @@ public class ContractFragment extends BaseFragment implements ContractView {
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
     }
+
 }

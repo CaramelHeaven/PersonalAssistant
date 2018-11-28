@@ -53,4 +53,5 @@ public class InfoFragment extends BaseFragment implements InfoView {
     public void hideProgress() {
 
     }
+
 }

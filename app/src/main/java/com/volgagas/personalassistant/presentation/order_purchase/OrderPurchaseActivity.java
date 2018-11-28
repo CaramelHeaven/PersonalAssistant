@@ -23,4 +23,5 @@ public class OrderPurchaseActivity extends MvpAppCompatActivity implements Order
     public void hideProgress() {
 
     }
+
 }

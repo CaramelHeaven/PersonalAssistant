@@ -30,4 +30,5 @@ public class WorkerActivity extends MvpAppCompatActivity implements WorkerView {
     public void hideProgress() {
 
     }
+
 }

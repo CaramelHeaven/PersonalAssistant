@@ -131,4 +131,5 @@ public class QueryCreateActivity extends MvpAppCompatActivity implements DatePic
     public void hideProgress() {
 
     }
+
 }

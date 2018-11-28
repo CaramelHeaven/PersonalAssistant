@@ -12,7 +12,21 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationContext;
+import com.microsoft.aad.adal.AuthenticationResult;
+import com.microsoft.aad.adal.PromptBehavior;
+import com.volgagas.personalassistant.PersonalAssistant;
+import com.volgagas.personalassistant.data.cache.CacheUser;
+import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.GlobalBus;
+import com.volgagas.personalassistant.utils.bus.models.UpdateToken;
+import com.volgagas.personalassistant.utils.channels.CommonChannel;
+import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
+import com.volgagas.personalassistant.utils.channels.check_auth.TwoPermissions;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 
@@ -37,6 +51,8 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        listenerForRefreshTokens();
+
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter != null && nfcAdapter.isEnabled()) {
             pendingIntent = PendingIntent
@@ -59,6 +75,12 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        GlobalBus.getEventBus().register(this);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if (nfcAdapter != null && nfcAdapter.isEnabled() && permissionToEnableNfc) {
@@ -75,9 +97,21 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        GlobalBus.getEventBus().unregister(this);
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         disposable.clear();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onTokenUpdated(UpdateToken updateToken) {
+        refreshTokens();
+        Timber.d("updated token: " + updateToken);
     }
 
     @SuppressLint("CheckResult")
@@ -158,4 +192,72 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
     public void setPermissionToEnableNfc(boolean permissionToEnableNfc) {
         this.permissionToEnableNfc = permissionToEnableNfc;
     }
+
+    private void refreshTokens() {
+        authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
+        TwoPermissions.getInstance().resetValues();
+
+        authContext.acquireToken(BaseActivity.this, Constants.DYNAMICS_365_DEV, Constants.CLIENT,
+                Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
+    }
+
+    private void listenerForRefreshTokens() {
+        disposable.add(CommonChannel.getInstance().getTwoPermissionsSubject()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result.allValuesIsTrue()) {
+                        Timber.d("REFRESHING TOKENS");
+                        //   getViewState().goToMainMenu();
+                    }
+                }));
+    }
+
+    private AuthenticationCallback<AuthenticationResult> d365Callback = new AuthenticationCallback<AuthenticationResult>() {
+        @SuppressLint("CheckResult")
+        @Override
+        public void onSuccess(AuthenticationResult result) {
+            if (result.getAccessToken() != null) {
+                CacheUser.getUser().setUserCliendId(result.getClientId());
+                CacheUser.getUser().setDynamics365Token(result.getAccessToken());
+
+                //Refresh d365 retrofit object
+                PersonalAssistant.provideDynamics365Auth(result.getAccessToken());
+
+                TwoPermissions permissions = TwoPermissions.getInstance();
+                permissions.setD365Token(true);
+                CommonChannel.sendTwoPermissions(permissions);
+
+                authContext.acquireToken(BaseActivity.this, Constants.GRAPH, Constants.CLIENT,
+                        Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", spCallback);
+            }
+        }
+
+        @Override
+        public void onError(Exception exc) {
+
+        }
+    };
+
+    private AuthenticationCallback<AuthenticationResult> spCallback = new AuthenticationCallback<AuthenticationResult>() {
+        @SuppressLint("CheckResult")
+        @Override
+        public void onSuccess(AuthenticationResult result) {
+            if (result.getAccessToken() != null) {
+                CacheUser.getUser().setSharePointToken(result.getAccessToken());
+
+                //Refresh SharePoint token
+                PersonalAssistant.provideSharePointAuth(result.getAccessToken());
+
+                TwoPermissions permissions = TwoPermissions.getInstance();
+                permissions.setSharePointToken(true);
+                CommonChannel.sendTwoPermissions(permissions);
+            }
+        }
+
+        @Override
+        public void onError(Exception exc) {
+
+        }
+    };
 }

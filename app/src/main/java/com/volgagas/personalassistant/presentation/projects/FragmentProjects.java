@@ -70,4 +70,5 @@ public class FragmentProjects extends BaseFragment implements ProjectsView {
     public void hideProgress() {
 
     }
+
 }

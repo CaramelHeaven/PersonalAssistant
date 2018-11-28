@@ -12,6 +12,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.models.model.Message;
+import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.messenger.presenter.MessengerPresenter;
 import com.volgagas.personalassistant.presentation.messenger.presenter.MessengerView;
 
@@ -20,7 +21,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class MessengerActivity extends MvpAppCompatActivity implements MessengerView {
+public class MessengerActivity extends BaseActivity implements MessengerView {
 
     @InjectPresenter
     MessengerPresenter presenter;
@@ -68,6 +69,11 @@ public class MessengerActivity extends MvpAppCompatActivity implements Messenger
 
         adapter.updateAdapter(messages);
         recyclerView.scrollToPosition(adapter.getMessageList().size() - 1);
+    }
+
+    @Override
+    protected void sendDataToServer(String data) {
+        //nothing
     }
 
     @Override

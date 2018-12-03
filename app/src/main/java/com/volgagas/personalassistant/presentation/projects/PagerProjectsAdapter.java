@@ -7,11 +7,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.volgagas.personalassistant.presentation.contracts.ContractFragment;
 import com.volgagas.personalassistant.presentation.queries.QueryFragment;
-import com.volgagas.personalassistant.presentation.work.WorkFragment;
 
 public class PagerProjectsAdapter extends FragmentPagerAdapter {
 
-    private int count = 3;
+    private int count = 2;
 
     public PagerProjectsAdapter(FragmentManager fm) {
         super(fm);
@@ -21,10 +20,8 @@ public class PagerProjectsAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch (i) {
             case 0:
-                return WorkFragment.newInstance();
-            case 1:
                 return QueryFragment.newInstance();
-            case 2:
+            case 1:
                 return ContractFragment.newInstance();
         }
         return null;
@@ -35,10 +32,8 @@ public class PagerProjectsAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Работа";
-            case 1:
                 return "Заявки";
-            case 2:
+            case 1:
                 return "Договоры";
         }
         return "";

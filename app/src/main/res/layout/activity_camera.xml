@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.FitWindowsFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#282828">
+
+    <io.fotoapparat.view.CameraView
+        android:id="@+id/cameraView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:visibility="visible">
+
+        <!--Optionally add tap to focus-->
+        <io.fotoapparat.view.FocusView
+            android:id="@+id/focusView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </io.fotoapparat.view.CameraView>
+
+    <TextView
+        android:id="@+id/no_permission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="100dp"
+        android:text="No Camera permission granted."
+        android:textSize="20sp"
+        android:visibility="gone"
+        tools:ignore="HardcodedText"
+        tools:visibility="visible" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <RelativeLayout
+            android:id="@+id/rlContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/camera_lv_expose"
+                android:layout_width="32dp"
+                android:layout_height="200dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="4dp"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatSeekBar
+                    android:id="@+id/zoomSeekBar"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:max="30"
+                    android:rotation="270"
+                    android:theme="@style/AppTheme.SeekBar" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/frameImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/result"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true" />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/capture"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/capture"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+    </FrameLayout>
+</android.support.v7.widget.FitWindowsFrameLayout>

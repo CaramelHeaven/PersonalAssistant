@@ -31,7 +31,6 @@ public interface MainRepository {
      * */
     Observable<UserId> getUserIdByUserName(String name);
 
-
     Single<Response<Void>> createUniformQueryItem(JsonObject jsonObject);
 
     /* GET history tasks from D365 for special user
@@ -49,6 +48,18 @@ public interface MainRepository {
     /* Subtasks for special task in history
      * */
     Single<List<SubTaskViewer>> getSubTasksHistory(String serviceOrder);
+
+    /* Patch tasks with field - started
+     * */
+    Observable<Response<Void>> sendStartedSubTasks(JsonObject object, String idSubTask);
+
+    /* Patch tasks with field - completed
+     * */
+    Observable<Response<Void>> sendCompletedSubTasks(JsonObject object, String idSubTask);
+
+    /* Patch tasks with field - canceled
+     * */
+    Observable<Response<Void>> sendCanceledSubTasks(JsonObject object, String idSubTask);
 
     Single<List<Task>> getTemplateTasks();
 

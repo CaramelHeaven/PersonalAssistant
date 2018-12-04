@@ -41,10 +41,10 @@ public class WorkerHistoryPresenter extends BasePresenter<WorkerHistoryView<Task
     }
 
     private void loadData() {
-        disposable.add(repository.getHistory()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResult, this::unsuccessfulResult));
+//        disposable.add(repository.getHistory()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(this::successfulResult, this::unsuccessfulResult));
     }
 
     private void successfulResult(List<Task> tasks) {

@@ -143,6 +143,21 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
+    public Observable<Response<Void>> sendStartedSubTasks(JsonObject object, String idSubTask) {
+        return null;
+    }
+
+    @Override
+    public Observable<Response<Void>> sendCompletedSubTasks(JsonObject object, String idSubTask) {
+        return null;
+    }
+
+    @Override
+    public Observable<Response<Void>> sendCanceledSubTasks(JsonObject object, String idSubTask) {
+        return null;
+    }
+
+    @Override
     public List<Task> testedData() {
         List<Task> array = new ArrayList<>();
 

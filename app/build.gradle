@@ -59,7 +59,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.0'
 
     //camera
-    implementation 'io.fotoapparat:fotoapparat:2.6.1'
+    implementation 'io.fotoapparat.fotoapparat:library:2.3.1'
 
     //leak canary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'

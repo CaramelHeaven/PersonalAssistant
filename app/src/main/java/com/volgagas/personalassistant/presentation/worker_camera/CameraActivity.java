@@ -1,9 +1,11 @@
 package com.volgagas.personalassistant.presentation.worker_camera;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -77,7 +79,7 @@ public class CameraActivity extends AppCompatActivity {
 
 
         hasCameraPermission = permissionsDelegate.hasCameraPermission();
-        limitPictures = getIntent().getIntExtra("LIMIT", 0);
+        limitPictures = getIntent().getIntExtra("LIMIT", 2);
         positionData = getIntent().getIntExtra("POSITION_DATA", 0);
 
         if (hasCameraPermission) {
@@ -106,6 +108,7 @@ public class CameraActivity extends AppCompatActivity {
                             if (bitmapPhoto == null) {
                                 return;
                             }
+                            frameImage.setVisibility(View.VISIBLE);
                             imageResult.setImageBitmap(bitmapPhoto.bitmap);
                             imageResult.setRotation(-bitmapPhoto.rotationDegrees);
                         });
@@ -117,8 +120,52 @@ public class CameraActivity extends AppCompatActivity {
         provideFrameOnTouchEvent();
     }
 
-    private void provideFrameOnTouchEvent() {
+    private float currentCloseLocation = 0f, saveStartedLocation = 0f;
 
+    @SuppressLint("ClickableViewAccessibility")
+    private void provideFrameOnTouchEvent() {
+        frameImage.setOnTouchListener((view, event) -> {
+
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    Timber.d("pressed: " + event.getRawY());
+                    saveStartedLocation = event.getRawX();
+                    Timber.d("Install position: " + saveStartedLocation);
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (event.getAction() != MotionEvent.TOOL_TYPE_FINGER) {
+                        currentCloseLocation = saveStartedLocation - event.getRawX();
+
+                        currentCloseLocation *= -1;
+                        Timber.d("currentColose: " + currentCloseLocation);
+                        Timber.d("eventGetRawX: " + event.getRawX());
+                        Timber.d("saveStartedPos: " + saveStartedLocation);
+                        //Callback
+                        Timber.d("callback 0");
+                        frameImage.animate()
+                                //.translationXBy(currentCloseLocation)
+                                //.translationX(currentCloseLocation)
+                                .x(currentCloseLocation)
+                                //.xBy(currentCloseLocation)
+                                .setDuration(0)
+                                .start();
+
+                    }
+                    break;
+//                case MotionEvent.TOOL_TYPE_FINGER:
+//                    if (Math.abs(currentCloseLocation) > 300f) {
+//
+//                        Timber.d("callback 1");
+//                    } else {
+//                        Timber.d("callback 2");
+//                    }
+//                    break;
+                default:
+                    return false;
+            }
+            return true;
+
+        });
     }
 
 

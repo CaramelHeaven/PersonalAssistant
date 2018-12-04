@@ -3,4 +3,5 @@
     <string name="text_add_query">Добавление заявки</string>
 
     <string name="transition_morph_view" translatable="false">morph_view_transition</string>
+    <string name="text_errorWorkType">Плановая задача не была поставлена на сервере. Свяжитесь с руководителем и позвоните в офис</string>
 </resources>

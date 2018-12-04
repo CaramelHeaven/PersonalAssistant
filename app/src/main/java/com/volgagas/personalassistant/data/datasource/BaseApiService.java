@@ -1,6 +1,8 @@
 package com.volgagas.personalassistant.data.datasource;
 
 import com.google.gson.JsonObject;
+import com.volgagas.personalassistant.models.network.SubTaskResponse;
+import com.volgagas.personalassistant.models.network.TaskResponse;
 import com.volgagas.personalassistant.models.network.UserDynamicsResponse;
 import com.volgagas.personalassistant.models.network.UserResponse;
 import com.volgagas.personalassistant.utils.Constants;
@@ -28,4 +30,18 @@ public interface BaseApiService {
 
     @GET("data/BaseWorkers?")
     Single<UserDynamicsResponse> getPersonalNumber(@Query("$filter") String name);
+
+    @GET("data/SOWithAC?")
+    Single<TaskResponse> getTasksToday(@Query("$filter") String filter);
+
+    @GET("data/SOWithAC?")
+    Single<SubTaskResponse> getSubTasksToday(@Query("$filter") String filter);
+
+    @GET("data/SOWithAC?")
+    Single<SubTaskResponse> getSubTasksHistory(@Query("$filter") String filter);
+
+    @GET("data/SOWithAC?")
+    Single<TaskResponse> getHistory(@Query("$filter") String filter,
+                                    @Query("$top") String count,
+                                    @Query("$orderby") String orderBy);
 }

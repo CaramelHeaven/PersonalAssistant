@@ -1,6 +1,8 @@
 package com.volgagas.personalassistant.models.mapper.task;
 
+import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.network.SubTaskResponse;
 import com.volgagas.personalassistant.models.network.TaskResponse;
 
 import java.util.List;
@@ -18,5 +20,13 @@ public class TasksMapper {
 
     public List<Task> map(TaskResponse response) {
         return taskResponseToTask.map(response);
+    }
+
+    public List<SubTaskViewer> mapSubTask(SubTaskResponse response) {
+        return taskResponseToTask.mapSubTasks(response);
+    }
+
+    public List<Task> mapHistory(TaskResponse response) {
+        return taskResponseToTask.mapHistory(response);
     }
 }

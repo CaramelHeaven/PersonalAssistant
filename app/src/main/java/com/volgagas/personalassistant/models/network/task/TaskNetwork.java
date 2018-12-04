@@ -8,144 +8,102 @@ import com.google.gson.annotations.SerializedName;
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class TaskNetwork {
+    @SerializedName("SO_ServiceOrder")
+    @Expose
+    private String serviceOrderId;
     @SerializedName("@odata.etag")
     @Expose
     private String odataEtag;
     @SerializedName("dataAreaId")
     @Expose
-    private String dataAreaId;
-    @SerializedName("ServiceOrderId")
+    private String company;
+    @SerializedName("SO_PreferredServiceTime")
     @Expose
-    private String serviceOrderId;
-    @SerializedName("Description")
+    private String preferredTime;
+    @SerializedName("SO_Description")
     @Expose
-    private String description;
-    @SerializedName("ActivityTypeId")
+    private String serviceOrderDescription;
+    @SerializedName("SO_ServiceStage")
     @Expose
-    private String activityTypeId;
-    @SerializedName("ProjId")
+    private String status;
+    @SerializedName("AC_Description")
     @Expose
-    private String projId;
-    @SerializedName("OrderCreatedDateTime")
+    private String activityDescription;
+    @SerializedName("AC_ActivityEndDateTime")
     @Expose
-    private String orderCreatedDateTime;
-    @SerializedName("StageId")
+    private String endDate;
+    @SerializedName("AC_ActivityStartDateTime")
     @Expose
-    private String stageId;
-    @SerializedName("CustAccount")
+    private String startDate;
+    @SerializedName("AC_Worker")
     @Expose
-    private String custAccount;
-    @SerializedName("HcmWorker_PreferredTechnician_PersonnelNumber")
+    private String worker;
+    @SerializedName("AC_ServiceOrderLineNum")
     @Expose
-    private String hcmWorkerPreferredTechnicianPersonnelNumber;
-    @SerializedName("OrderCreatedBy")
+    private Integer idSubTask;
+    @SerializedName("AC_ActivityId")
     @Expose
-    private String orderCreatedBy;
-    @SerializedName("ServiceDateTime")
+    private String activityId;
+    @SerializedName("SO_ServiceObjectId")
     @Expose
-    private String serviceDateTime;
-    @SerializedName("HcmWorker_Responsible_PersonnelNumber")
+    private String gpa;
+    @SerializedName("AC_Closed")
     @Expose
-    private String hcmWorkerResponsiblePersonnelNumber;
-    @SerializedName("AgreementId")
-    @Expose
-    private String agreementId;
-    @SerializedName("ProjCategoryId")
-    @Expose
-    private String projCategoryId;
-    @SerializedName("CostCenter")
-    @Expose
-    private String costCenter;
-    @SerializedName("ActivityStartDateTime")
-    @Expose
-    private String activityStartDateTime;
-    @SerializedName("ServiceObjectId")
-    @Expose
-    private String serviceObjectId;
-    @SerializedName("ActivityEndDateTime")
-    @Expose
-    private String activityEndDateTime;
-    @SerializedName("ServiceTaskId")
-    @Expose
-    private String serviceTaskId;
-
-    public String getOdataEtag() {
-        return odataEtag;
-    }
-
-    public String getDataAreaId() {
-        return dataAreaId;
-    }
+    private String acClosed;
 
     public String getServiceOrderId() {
         return serviceOrderId;
     }
 
-    public String getDescription() {
-        return description;
+    public String getOdataEtag() {
+        return odataEtag;
     }
 
-    public String getActivityTypeId() {
-        return activityTypeId;
+    public String getCompany() {
+        return company;
     }
 
-    public String getProjId() {
-        return projId;
+    public String getPreferredTime() {
+        return preferredTime;
     }
 
-    public String getOrderCreatedDateTime() {
-        return orderCreatedDateTime;
+    public String getServiceOrderDescription() {
+        return serviceOrderDescription;
     }
 
-    public String getStageId() {
-        return stageId;
+    public String getStatus() {
+        return status;
     }
 
-    public String getCustAccount() {
-        return custAccount;
+    public String getActivityDescription() {
+        return activityDescription;
     }
 
-    public String getHcmWorkerPreferredTechnicianPersonnelNumber() {
-        return hcmWorkerPreferredTechnicianPersonnelNumber;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public String getOrderCreatedBy() {
-        return orderCreatedBy;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public String getServiceDateTime() {
-        return serviceDateTime;
+    public String getWorker() {
+        return worker;
     }
 
-    public String getHcmWorkerResponsiblePersonnelNumber() {
-        return hcmWorkerResponsiblePersonnelNumber;
+    public Integer getIdSubTask() {
+        return idSubTask;
     }
 
-    public String getAgreementId() {
-        return agreementId;
+    public String getActivityId() {
+        return activityId;
     }
 
-    public String getProjCategoryId() {
-        return projCategoryId;
+    public String getGpa() {
+        return gpa;
     }
 
-    public String getCostCenter() {
-        return costCenter;
-    }
-
-    public String getActivityStartDateTime() {
-        return activityStartDateTime;
-    }
-
-    public String getServiceObjectId() {
-        return serviceObjectId;
-    }
-
-    public String getActivityEndDateTime() {
-        return activityEndDateTime;
-    }
-
-    public String getServiceTaskId() {
-        return serviceTaskId;
+    public String getAcClosed() {
+        return acClosed;
     }
 }

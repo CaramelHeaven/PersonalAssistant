@@ -3,7 +3,6 @@ package com.volgagas.personalassistant.presentation.start;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -70,7 +69,7 @@ public class StartActivity extends BaseActivity implements StartView {
             }
             CacheUser.getUser().clear();
 
-            authContext.acquireToken(StartActivity.this, Constants.DYNAMICS_365_DEV, Constants.CLIENT,
+            authContext.acquireToken(StartActivity.this, Constants.DYNAMICS_365, Constants.CLIENT,
                     Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
         } else {
             Toast.makeText(this, "Приложите карту еще раз", Toast.LENGTH_SHORT).show();

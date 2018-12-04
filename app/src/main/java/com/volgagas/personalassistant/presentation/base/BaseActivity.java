@@ -22,7 +22,6 @@ import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.GlobalBus;
 import com.volgagas.personalassistant.utils.bus.models.UpdateToken;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
-import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
 import com.volgagas.personalassistant.utils.channels.check_auth.TwoPermissions;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -197,7 +196,7 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
         TwoPermissions.getInstance().resetValues();
 
-        authContext.acquireToken(BaseActivity.this, Constants.DYNAMICS_365_DEV, Constants.CLIENT,
+        authContext.acquireToken(BaseActivity.this, Constants.DYNAMICS_365, Constants.CLIENT,
                 Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
     }
 

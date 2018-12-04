@@ -3,34 +3,61 @@ package com.volgagas.personalassistant.models.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+import java.util.Objects;
+
 /**
  * Created by CaramelHeaven on 17:39, 22.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
-public class Task implements Parcelable {
-    private String serviceOrderId;
-    private String description;
-    private String categoryId;
 
-    public Task(String description) {
-        this.description = description;
-    }
+public class Task implements Parcelable {
+    private String idTask;
+    private String preferredTime;
+    private String description;
+    private String status;
+    private List<SubTask> subTasks;
+    private String gpa;
 
     @Override
     public String toString() {
         return "Task{" +
-                "serviceOrderId='" + serviceOrderId + '\'' +
+                "idTask='" + idTask + '\'' +
+                ", preferredTime='" + preferredTime + '\'' +
                 ", description='" + description + '\'' +
-                ", categoryId='" + categoryId + '\'' +
+                ", status='" + status + '\'' +
+                ", subTasks=" + subTasks +
+                ", gpa='" + gpa + '\'' +
                 '}';
     }
 
-    public String getServiceOrderId() {
-        return serviceOrderId;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return Objects.equals(idTask, task.idTask);
     }
 
-    public void setServiceOrderId(String serviceOrderId) {
-        this.serviceOrderId = serviceOrderId;
+    @Override
+    public int hashCode() {
+        return Objects.hash(idTask);
+    }
+
+    public String getIdTask() {
+        return idTask;
+    }
+
+    public void setIdTask(String idTask) {
+        this.idTask = idTask;
+    }
+
+    public String getPreferredTime() {
+        return preferredTime;
+    }
+
+    public void setPreferredTime(String preferredTime) {
+        this.preferredTime = preferredTime;
     }
 
     public String getDescription() {
@@ -41,14 +68,29 @@ public class Task implements Parcelable {
         this.description = description;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
+    public List<SubTask> getSubTasks() {
+        return subTasks;
+    }
+
+    public void setSubTasks(List<SubTask> subTasks) {
+        this.subTasks = subTasks;
+    }
+
+    public void setGpa(String gpa) {
+        this.gpa = gpa;
+    }
+
+    public String getGpa() {
+        return gpa;
+    }
 
     @Override
     public int describeContents() {
@@ -57,21 +99,27 @@ public class Task implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.serviceOrderId);
+        dest.writeString(this.idTask);
+        dest.writeString(this.preferredTime);
         dest.writeString(this.description);
-        dest.writeString(this.categoryId);
+        dest.writeString(this.status);
+        dest.writeTypedList(this.subTasks);
+        dest.writeString(this.gpa);
     }
 
     public Task() {
     }
 
     protected Task(Parcel in) {
-        this.serviceOrderId = in.readString();
+        this.idTask = in.readString();
+        this.preferredTime = in.readString();
         this.description = in.readString();
-        this.categoryId = in.readString();
+        this.status = in.readString();
+        this.subTasks = in.createTypedArrayList(SubTask.CREATOR);
+        this.gpa = in.readString();
     }
 
-    public static final Parcelable.Creator<Task> CREATOR = new Parcelable.Creator<Task>() {
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
         @Override
         public Task createFromParcel(Parcel source) {
             return new Task(source);

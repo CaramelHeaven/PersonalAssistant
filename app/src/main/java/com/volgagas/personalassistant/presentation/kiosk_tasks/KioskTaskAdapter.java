@@ -44,7 +44,7 @@ public class KioskTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         TaskVH taskVH = (TaskVH) viewHolder;
-        taskVH.tvCategory.setText(taskList.get(position).getCategoryId());
+       // taskVH.tvCategory.setText(taskList.get(position).getCategoryId());
         taskVH.tvTaskName.setText(taskList.get(position).getDescription());
     }
 

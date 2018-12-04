@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_square"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/ic_square_shape" />
+
+        <ImageView
+            android:id="@+id/iv_check_mark"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_check_mark"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="24dp"
+            android:layout_toEndOf="@id/iv_square"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Finalize he Design"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="24dp"
+            android:ellipsize="end"
+            android:maxLines="2" />
+
+        <TextView
+            android:id="@+id/tv_subtasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_description"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="2dp"
+            android:text="+2 subtasks"
+            android:textColor="@color/lightPrimaText"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_event"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_below="@id/tv_subtasks"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/ic_event" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_subtasks"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/iv_event"
+            android:text="Jul 12, 2018"
+            android:textColor="@color/colorIconEvent"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/iv_clock"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_below="@id/tv_subtasks"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="6dp"
+            android:layout_toEndOf="@id/tv_date"
+            android:background="@drawable/ic_clock" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_subtasks"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/iv_clock"
+            android:text="11:40"
+            android:textColor="@color/colorIconClock"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/iv_location"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_below="@id/tv_subtasks"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/tv_time"
+            android:background="@drawable/ic_location" />
+
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_subtasks"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/iv_location"
+            android:text="ГПА-1"
+            android:textColor="@color/colorIconLocation"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

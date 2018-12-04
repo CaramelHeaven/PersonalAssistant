@@ -15,7 +15,8 @@ public class UpdateTokensService {
     private static UpdateTokensService INSTANCE;
     private static TimerTask timerTask;
     private static Timer timer;
-    private static final int DELAY = 30000;
+    // 1 minute * 9 minutes
+    private static final int DELAY = 60000 * 9;
 
     public static UpdateTokensService getInstance() {
         if (INSTANCE == null) {

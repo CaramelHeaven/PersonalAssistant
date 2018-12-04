@@ -2,13 +2,16 @@ package com.volgagas.personalassistant;
 
 import android.app.Application;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.volgagas.personalassistant.data.datasource.BaseApiService;
 import com.volgagas.personalassistant.data.datasource.SPApiService;
 import com.volgagas.personalassistant.utils.Constants;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -16,7 +19,6 @@ import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 import timber.log.Timber;
 
 public class PersonalAssistant extends Application {
@@ -25,6 +27,8 @@ public class PersonalAssistant extends Application {
 
     private static BaseApiService baseApiService;
     private static SPApiService spApiService;
+
+    private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'", Locale.getDefault());
 
     @Override
     public void onCreate() {
@@ -51,7 +55,7 @@ public class PersonalAssistant extends Application {
         OkHttpClient client = builderWithAuth.build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.DYNAMICS_365_DEV)
+                .baseUrl(Constants.DYNAMICS_365)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
@@ -113,5 +117,25 @@ public class PersonalAssistant extends Application {
                 return builderSP;
         }
         return null;
+    }
+
+    public static String getNextDayDataFormat() {
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        String result = dateFormat.format(calendar.getTime());
+
+        return result + "00:00:00Z";
+    }
+
+    public static String getLastDayDataFormat() {
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.add(Calendar.DAY_OF_YEAR, -1);
+        String result = dateFormat.format(calendar.getTime());
+
+        return result + "00:00:00Z";
     }
 }

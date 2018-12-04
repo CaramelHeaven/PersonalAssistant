@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.data.repository;
 
 import com.google.gson.JsonObject;
 import com.volgagas.personalassistant.PersonalAssistant;
+import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.mapper.task.TaskResponseToTask;
 import com.volgagas.personalassistant.models.mapper.task.TasksMapper;
@@ -12,6 +13,7 @@ import com.volgagas.personalassistant.models.mapper.user.UserIdResponseToUserId;
 import com.volgagas.personalassistant.models.mapper.user.UserMapper;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseListToUserList;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseToUser;
+import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.UniformRequest;
 import com.volgagas.personalassistant.models.model.User;
@@ -103,6 +105,11 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
+    public Single<List<Task>> getHistory() {
+        return null;
+    }
+
+    @Override
     public Single<List<Task>> getTemplateTasks() {
         return null;
     }
@@ -116,18 +123,28 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
+    public Single<List<Task>> getTasksToday() {
+        String filter = "(AC_ActivityStartDateTime lt " + PersonalAssistant.getNextDayDataFormat()
+                + " and AC_ActivityEndDateTime gt " + PersonalAssistant.getLastDayDataFormat()
+                + ") and (SO_ServiceStage eq 'Распредел' or SO_ServiceStage eq 'ВРаботе') and (AC_Worker eq '"
+                + CacheUser.getUser().getName() + "')";
+        return PersonalAssistant.getBaseApiService().getTasksToday(filter)
+                .map(tasksMapper::map);
+    }
+
+    @Override
+    public Single<List<SubTaskViewer>> getSubTasksToday(String serviceOrder) {
+        return null;
+    }
+
+    @Override
+    public Single<List<SubTaskViewer>> getSubTasksHistory(String serviceOrder) {
+        return null;
+    }
+
+    @Override
     public List<Task> testedData() {
         List<Task> array = new ArrayList<>();
-        array.add(new Task("ytjtyfffff"));
-        array.add(new Task("afdbfffff"));
-        array.add(new Task("vasfvffff"));
-        array.add(new Task("asgfffff"));
-        array.add(new Task("asdffffff"));
-        array.add(new Task("fsdfffff"));
-        array.add(new Task("ffgdgffff"));
-        array.add(new Task("1241fffff"));
-        array.add(new Task("125fffff"));
-        array.add(new Task("f411ffff"));
 
         return array;
     }

@@ -7,6 +7,7 @@
 
     <color name="colorSecondaryLight">#FFFFFF</color>
     <color name="colorBackgroundView">#E0E0E0</color>
+    <color name="colorTextGrayLight">#FFD8D8D8</color>
     <color name="colorTextBlack">#000000</color>
 
     <color name="colorPriorityHigh">#f44336</color>
@@ -15,4 +16,7 @@
 
     <color name="colorIconEvent">#E0531F</color>
     <color name="colorIconLocation">#5D15C2</color>
+    <color name="colorIconClock">#7CC24A</color>
+
+    <color name="lightPrimaText">#4F83CC</color>
 </resources>

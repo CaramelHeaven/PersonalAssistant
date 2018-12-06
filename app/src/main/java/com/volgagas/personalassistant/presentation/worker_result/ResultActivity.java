@@ -1,9 +1,12 @@
 package com.volgagas.personalassistant.presentation.worker_result;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
@@ -64,8 +67,11 @@ public class ResultActivity extends BaseActivity implements ResultView {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        adapter = new ResultAdapter(subTasks);
+        adapter = new ResultAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
+
+        adapter.updateAdapter(subTasks);
+        runLayoutAnimation();
 
         adapter.setOnResultItemClick(new OnResultItemClick() {
             @Override
@@ -84,5 +90,15 @@ public class ResultActivity extends BaseActivity implements ResultView {
                 Timber.d("click");
             }
         });
+    }
+
+    private void runLayoutAnimation() {
+        final Context context = recyclerView.getContext();
+        final LayoutAnimationController controller =
+                AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down);
+
+        recyclerView.setLayoutAnimation(controller);
+        recyclerView.getAdapter().notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
     }
 }

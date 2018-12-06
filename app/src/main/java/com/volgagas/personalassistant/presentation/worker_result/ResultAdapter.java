@@ -48,6 +48,11 @@ public class ResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return subTaskList.size();
     }
 
+    public void updateAdapter(List<SubTask> subTasks) {
+        subTaskList.clear();
+        subTaskList.addAll(subTasks);
+    }
+
     class SubTaskVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvDescription, tvEmptyPictures;
         CardView cardView;

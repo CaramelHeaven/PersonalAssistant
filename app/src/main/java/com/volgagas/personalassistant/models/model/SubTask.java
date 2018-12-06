@@ -21,6 +21,10 @@ public class SubTask implements Parcelable {
     //for check boxes
     private boolean stateBox;
 
+    public SubTask(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "SubTask{" +

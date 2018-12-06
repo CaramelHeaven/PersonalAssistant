@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -63,7 +62,6 @@ public class CameraActivity extends AppCompatActivity {
     private FocusView focusView;
     private View capture;
     private AppCompatSeekBar seekBar;
-    private FrameLayout frameImage;
     private ImageView imageResult;
 
     @Override
@@ -75,7 +73,6 @@ public class CameraActivity extends AppCompatActivity {
         capture = findViewById(R.id.capture);
         seekBar = findViewById(R.id.zoomSeekBar);
         imageResult = findViewById(R.id.result);
-        frameImage = findViewById(R.id.frameImage);
 
 
         hasCameraPermission = permissionsDelegate.hasCameraPermission();
@@ -108,8 +105,9 @@ public class CameraActivity extends AppCompatActivity {
                             if (bitmapPhoto == null) {
                                 return;
                             }
-                            frameImage.setVisibility(View.VISIBLE);
                             imageResult.setImageBitmap(bitmapPhoto.bitmap);
+
+                            imageResult.setVisibility(View.VISIBLE);
                             imageResult.setRotation(-bitmapPhoto.rotationDegrees);
                         });
             } else {
@@ -124,7 +122,7 @@ public class CameraActivity extends AppCompatActivity {
 
     @SuppressLint("ClickableViewAccessibility")
     private void provideFrameOnTouchEvent() {
-        frameImage.setOnTouchListener((view, event) -> {
+        imageResult.setOnTouchListener((view, event) -> {
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -142,7 +140,7 @@ public class CameraActivity extends AppCompatActivity {
                         Timber.d("saveStartedPos: " + saveStartedLocation);
                         //Callback
                         Timber.d("callback 0");
-                        frameImage.animate()
+                        imageResult.animate()
                                 //.translationXBy(currentCloseLocation)
                                 //.translationX(currentCloseLocation)
                                 .x(currentCloseLocation)

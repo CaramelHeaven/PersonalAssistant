@@ -11,6 +11,7 @@ import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.presentation.worker.presenter.WorkerPresenter;
 import com.volgagas.personalassistant.presentation.worker.presenter.WorkerView;
 import com.volgagas.personalassistant.presentation.worker_camera.CameraActivity;
+import com.volgagas.personalassistant.presentation.worker_result.ResultActivity;
 
 public class WorkerActivity extends MvpAppCompatActivity implements WorkerView {
 
@@ -35,7 +36,8 @@ public class WorkerActivity extends MvpAppCompatActivity implements WorkerView {
 
         tabLayout.setupWithViewPager(viewPager);
 
-        startActivity(new Intent(this, CameraActivity.class));
+        //startActivity(new Intent(this, CameraActivity.class));
+        startActivity(new Intent(this, ResultActivity.class));
     }
 
     @Override

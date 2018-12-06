@@ -37,7 +37,7 @@ public class UpdateTokensService {
             Timber.d("run");
             timer.purge();
             timer.scheduleAtFixedRate(timerTask, 0, DELAY);
-        }, 5000);
+        }, DELAY);
     }
 
     private static void prepareTimer() {

@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.User;
-import com.volgagas.personalassistant.utils.callbacks.myOnCustomItemClickListener;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.nio.charset.StandardCharsets;
@@ -35,7 +34,6 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<User> userList;
     private List<User> addedUsers;
     private myOnItemClickListener myOnItemClickListener;
-    private myOnCustomItemClickListener myOnCustomItemClickListener;
 
     private static final int TYPE_ADDED = 0;
     private static final int TYPE_ALL = 1;
@@ -173,9 +171,5 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void setMyOnItemClickListener(com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener myOnItemClickListener) {
         this.myOnItemClickListener = myOnItemClickListener;
-    }
-
-    public void setMyOnCustomItemClickListener(com.volgagas.personalassistant.utils.callbacks.myOnCustomItemClickListener myOnCustomItemClickListener) {
-        this.myOnCustomItemClickListener = myOnCustomItemClickListener;
     }
 }

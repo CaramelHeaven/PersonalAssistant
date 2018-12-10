@@ -61,7 +61,7 @@ public class CameraActivity extends AppCompatActivity {
     private CameraView cameraView;
     private FocusView focusView;
     private View capture;
-    private AppCompatSeekBar seekBar;
+    // private AppCompatSeekBar seekBar;
     private ImageView imageResult;
 
     @Override
@@ -71,9 +71,8 @@ public class CameraActivity extends AppCompatActivity {
         cameraView = findViewById(R.id.cameraView);
         focusView = findViewById(R.id.focusView);
         capture = findViewById(R.id.capture);
-        seekBar = findViewById(R.id.zoomSeekBar);
+        // seekBar = findViewById(R.id.zoomSeekBar);
         imageResult = findViewById(R.id.result);
-
 
         hasCameraPermission = permissionsDelegate.hasCameraPermission();
         limitPictures = getIntent().getIntExtra("LIMIT", 2);
@@ -85,7 +84,6 @@ public class CameraActivity extends AppCompatActivity {
             permissionsDelegate.requestCameraPermission();
         }
 
-
         fotoapparat = createFotoapparat();
 
         zoomSeekBar();
@@ -93,18 +91,18 @@ public class CameraActivity extends AppCompatActivity {
         fotoapparat.switchTo(activeCameraBack ? back() : front(), cameraConfiguration);
 
         capture.setOnClickListener(view -> {
-            Timber.d("CLICK CLICK CLICK: " + limitPictures);
             if (limitPictures != 0) {
                 isVisible = true;
-                imageResult.animate().translationX(0).start();
+
                 imageResult.setVisibility(View.VISIBLE);
                 photoResult = fotoapparat.takePicture();
 
-                photoResult.toBitmap(scaled(0.25f))
+                photoResult.toBitmap(scaled(.1f))
                         .whenDone(bitmapPhoto -> {
                             if (bitmapPhoto == null) {
                                 return;
                             }
+
                             imageResult.setImageBitmap(bitmapPhoto.bitmap);
 
                             imageResult.setVisibility(View.VISIBLE);
@@ -114,58 +112,9 @@ public class CameraActivity extends AppCompatActivity {
                 Toast.makeText(this, "Больше фотографий сделать нельзя", Toast.LENGTH_SHORT).show();
             }
         });
-
-        provideFrameOnTouchEvent();
     }
 
     private float currentCloseLocation = 0f, saveStartedLocation = 0f;
-
-    @SuppressLint("ClickableViewAccessibility")
-    private void provideFrameOnTouchEvent() {
-        imageResult.setOnTouchListener((view, event) -> {
-
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    Timber.d("pressed: " + event.getRawY());
-                    saveStartedLocation = event.getRawX();
-                    Timber.d("Install position: " + saveStartedLocation);
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    if (event.getAction() != MotionEvent.TOOL_TYPE_FINGER) {
-                        currentCloseLocation = saveStartedLocation - event.getRawX();
-
-                        currentCloseLocation *= -1;
-                        Timber.d("currentColose: " + currentCloseLocation);
-                        Timber.d("eventGetRawX: " + event.getRawX());
-                        Timber.d("saveStartedPos: " + saveStartedLocation);
-                        //Callback
-                        Timber.d("callback 0");
-                        imageResult.animate()
-                                //.translationXBy(currentCloseLocation)
-                                //.translationX(currentCloseLocation)
-                                .x(currentCloseLocation)
-                                //.xBy(currentCloseLocation)
-                                .setDuration(0)
-                                .start();
-
-                    }
-                    break;
-//                case MotionEvent.TOOL_TYPE_FINGER:
-//                    if (Math.abs(currentCloseLocation) > 300f) {
-//
-//                        Timber.d("callback 1");
-//                    } else {
-//                        Timber.d("callback 2");
-//                    }
-//                    break;
-                default:
-                    return false;
-            }
-            return true;
-
-        });
-    }
-
 
     @Override
     protected void onStart() {
@@ -198,7 +147,6 @@ public class CameraActivity extends AppCompatActivity {
                 .with(this)
                 .into(cameraView)
                 .focusView(focusView)
-                .previewScaleType(ScaleType.CenterCrop)
                 .lensPosition(back())
                 .frameProcessor(new SampleFrameProcessor())
                 .cameraErrorCallback(new CameraErrorListener() {
@@ -239,21 +187,21 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void zoomSeekBar() {
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                fotoapparat.setZoom(progress / (float) seekBar.getMax());
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+//        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+//                fotoapparat.setZoom(progress / (float) seekBar.getMax());
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
     }
 }

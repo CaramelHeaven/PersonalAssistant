@@ -17,6 +17,7 @@ import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.main.MainActivity;
 import com.volgagas.personalassistant.presentation.start.presenter.StartPresenter;
 import com.volgagas.personalassistant.presentation.start.presenter.StartView;
+import com.volgagas.personalassistant.presentation.worker_camera.CameraActivity;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
@@ -39,6 +40,8 @@ public class StartActivity extends BaseActivity implements StartView {
         setPermissionToEnableNfc(true);
 
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
+
+        startActivity(new Intent(this, CameraActivity.class));
 
         UpdateTokensService.getInstance();
         UpdateTokensService.startTimer();

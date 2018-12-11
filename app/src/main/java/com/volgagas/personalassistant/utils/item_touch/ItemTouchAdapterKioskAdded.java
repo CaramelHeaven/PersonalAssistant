@@ -44,6 +44,7 @@ public class ItemTouchAdapterKioskAdded extends ItemTouchHelper.Callback {
         taskVH.itemView.animate()
                 .translationX(0)
                 .start();
+
         adapter.onItemDismiss(taskVH.getAdapterPosition());
     }
 }

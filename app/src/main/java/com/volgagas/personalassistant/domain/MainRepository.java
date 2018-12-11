@@ -24,7 +24,6 @@ public interface MainRepository {
      * */
     Single<List<User>> getSearchedUsers();
 
-
     Single<List<UniformRequest>> getUniformRequestsFromUser();
 
     /* User Id from D365
@@ -60,6 +59,11 @@ public interface MainRepository {
     /* Patch tasks with field - canceled
      * */
     Observable<Response<Void>> sendCanceledSubTasks(JsonObject object, String idSubTask);
+
+    /*
+     * Send created templates tasks for user.
+     * */
+    Observable<Response<Void>> sendTemplateTasks(String query, JsonObject object);
 
     Single<List<Task>> getTemplateTasks();
 

@@ -54,6 +54,9 @@ public class KioskActivity extends BaseActivity implements KioskView {
             if (presenter.getAddedTasksSize() > 0) {
                 buildAlertDialog();
                 setPermissionToEnableNfc(true);
+                onResume();
+
+                Timber.d("check permission: " + isPermissionToEnableNfc());
             } else {
                 Toast.makeText(KioskActivity.this, "Задачи не выбраны", Toast.LENGTH_SHORT).show();
             }
@@ -61,8 +64,15 @@ public class KioskActivity extends BaseActivity implements KioskView {
     }
 
     @Override
-    protected void sendDataToServer(String data) {
+    protected void onResume() {
+        super.onResume();
+    }
 
+    @Override
+    protected void sendDataToServer(String data) {
+        Timber.d("check permission 2: " + isPermissionToEnableNfc());
+
+        presenter.sendData();
     }
 
     @Override
@@ -124,6 +134,7 @@ public class KioskActivity extends BaseActivity implements KioskView {
                 .setOnCancelListener(dialog -> {
                     setPermissionToEnableNfc(false);
                 });
+
         alertDialog = builder.create();
         alertDialog.show();
     }

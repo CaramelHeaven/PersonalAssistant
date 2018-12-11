@@ -82,6 +82,7 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Timber.d("KIOSK on Resume check perm: " + permissionToEnableNfc);
         if (nfcAdapter != null && nfcAdapter.isEnabled() && permissionToEnableNfc) {
             nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListArray);
         }

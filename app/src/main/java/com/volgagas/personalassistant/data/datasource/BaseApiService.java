@@ -11,7 +11,10 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import retrofit2.Response;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -44,4 +47,7 @@ public interface BaseApiService {
     Single<TaskResponse> getHistory(@Query("$filter") String filter,
                                     @Query("$top") String count,
                                     @Query("$orderby") String orderBy);
+
+    @PATCH
+    Observable<Response<Void>> sendTemplateTasks(@Url String url, @Body JsonObject object);
 }

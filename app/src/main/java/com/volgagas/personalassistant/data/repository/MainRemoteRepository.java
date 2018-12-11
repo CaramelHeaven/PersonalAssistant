@@ -95,6 +95,7 @@ public class MainRemoteRepository implements MainRepository {
     @Override
     public Observable<UserId> getUserIdByUserName(String name) {
         String filter = "Title eq '" + name + "'";
+
         return PersonalAssistant.getSpApiService().getUserIdByUserName(filter, "id")
                 .map(userMapper::map);
     }
@@ -117,6 +118,7 @@ public class MainRemoteRepository implements MainRepository {
     @Override
     public Single<UserDynamics> getPersonalUserNumber(String personalName) {
         String filter = "Name eq '" + personalName + "'";
+
         return PersonalAssistant.getBaseApiService()
                 .getPersonalNumber(filter)
                 .map(userMapper::map);
@@ -128,6 +130,7 @@ public class MainRemoteRepository implements MainRepository {
                 + " and AC_ActivityEndDateTime gt " + PersonalAssistant.getLastDayDataFormat()
                 + ") and (SO_ServiceStage eq 'Распредел' or SO_ServiceStage eq 'ВРаботе') and (AC_Worker eq '"
                 + CacheUser.getUser().getName() + "')";
+
         return PersonalAssistant.getBaseApiService().getTasksToday(filter)
                 .map(tasksMapper::map);
     }
@@ -158,8 +161,28 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
+    public Observable<Response<Void>> sendTemplateTasks(String query, JsonObject object) {
+        String url = Constants.DYNAMICS_365 + "/data/SPEntity" + query;
+
+        return PersonalAssistant.getBaseApiService().sendTemplateTasks(url, object);
+    }
+
+    @Override
     public List<Task> testedData() {
         List<Task> array = new ArrayList<>();
+        Task task = new Task();
+        task.setDescription("fasf");
+        array.add(task);
+        array.add(task);
+        array.add(task);
+        array.add(task);
+        array.add(task);
+        array.add(task);
+        array.add(task);
+        array.add(task);
+        array.add(task);
+        array.add(task);
+        array.add(task);
 
         return array;
     }

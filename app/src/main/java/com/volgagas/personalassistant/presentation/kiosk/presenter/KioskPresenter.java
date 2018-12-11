@@ -74,4 +74,8 @@ public class KioskPresenter extends BasePresenter<KioskView> {
     public void setPermissionToSend(boolean permissionToSend) {
         this.permissionToSend = permissionToSend;
     }
+
+    public void sendData() {
+        Timber.d("lala; " + addedTasks.toString());
+    }
 }

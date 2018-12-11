@@ -41,7 +41,7 @@ public class StartActivity extends BaseActivity implements StartView {
 
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
 
-        startActivity(new Intent(this, CameraActivity.class));
+        //startActivity(new Intent(this, CameraActivity.class));
 
         UpdateTokensService.getInstance();
         UpdateTokensService.startTimer();

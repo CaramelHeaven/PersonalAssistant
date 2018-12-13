@@ -3,11 +3,12 @@ package com.volgagas.personalassistant.presentation.messenger;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
@@ -28,9 +29,11 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
 
     private RecyclerView recyclerView;
     private EditText etMessage;
-    private Button btnSend;
+    private ImageButton btnSend;
 
-    private MessangerAdapter adapter;
+    private MessengerAdapter adapter;
+    private boolean animateFrom0to1 = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +46,15 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
         provideRecyclerAndAdapter();
 
         btnSend.setOnClickListener(v -> {
-            Timber.d("data");
-            Message message = new Message(CacheUser.getUser().getModifiedNormalName(), etMessage.getText().toString());
+            String msg = etMessage.getText().toString().replaceAll("^\\s+", "");
+
+            Message message = new Message(CacheUser.getUser().getModifiedNormalName(), msg);
+
             adapter.addMessage(message);
             etMessage.setText("");
-            recyclerView.postDelayed(() -> recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1), 100);
+
+            recyclerView.postDelayed(() -> recyclerView
+                    .smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1), 100);
         });
 
         List<Message> messages = new ArrayList<>();
@@ -89,7 +96,7 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
     private void provideRecyclerAndAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        adapter = new MessangerAdapter(new ArrayList<>());
+        adapter = new MessengerAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
         recyclerView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {

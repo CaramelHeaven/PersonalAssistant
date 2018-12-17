@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.domain.MainRepository;
+import com.volgagas.personalassistant.models.mapper.query_template.QueriesTemplateResponseToQueryTemplate;
+import com.volgagas.personalassistant.models.mapper.query_template.QueryTemplateMapper;
 import com.volgagas.personalassistant.models.mapper.task.TaskResponseToTask;
 import com.volgagas.personalassistant.models.mapper.task.TasksMapper;
 import com.volgagas.personalassistant.models.mapper.uniform_request.QueryResponseToUniformRequest;
@@ -13,6 +15,7 @@ import com.volgagas.personalassistant.models.mapper.user.UserIdResponseToUserId;
 import com.volgagas.personalassistant.models.mapper.user.UserMapper;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseListToUserList;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseToUser;
+import com.volgagas.personalassistant.models.model.QueryTemplate;
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.UniformRequest;
@@ -20,6 +23,8 @@ import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 import com.volgagas.personalassistant.utils.Constants;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -36,6 +41,7 @@ public class MainRemoteRepository implements MainRepository {
 
     private static UserMapper userMapper;
     private static TasksMapper tasksMapper;
+    private static QueryTemplateMapper queryMapper;
     private static UniformRequestMapper uniformRequestMapper;
 
     private MainRemoteRepository() {
@@ -54,11 +60,14 @@ public class MainRemoteRepository implements MainRepository {
                     UserIdResponseToUserId userIdResponseToUserId = new UserIdResponseToUserId();
                     TaskResponseToTask taskResponseToTask = new TaskResponseToTask();
                     UserDynamicsResponseToUserDynamics userDynamicsResponseToUserDynamics = new UserDynamicsResponseToUserDynamics();
+                    QueriesTemplateResponseToQueryTemplate queriesTemplateResponseToQueryTemplate =
+                            new QueriesTemplateResponseToQueryTemplate();
 
                     tasksMapper = new TasksMapper(taskResponseToTask);
                     userMapper = new UserMapper(userResponseToUser, userResponseListToUserList,
                             userIdResponseToUserId, userDynamicsResponseToUserDynamics);
                     uniformRequestMapper = new UniformRequestMapper(queryResponseToUniformRequest);
+                    queryMapper = new QueryTemplateMapper(queriesTemplateResponseToQueryTemplate);
                     INSTANCE = new MainRemoteRepository();
                 }
             }
@@ -165,6 +174,14 @@ public class MainRemoteRepository implements MainRepository {
         String url = Constants.DYNAMICS_365 + "/data/SPEntity" + query;
 
         return PersonalAssistant.getBaseApiService().sendTemplateTasks(url, object);
+    }
+
+    @Override
+    public Single<List<QueryTemplate>> getTemplatesQueries() {
+        String url = "https://volagas.sharepoint.com/doc/_api/web/lists(guid'59C1EE57-5726-4B27-B9DD-B39775E170D5')/Items?$select=Title";
+
+        return PersonalAssistant.getSpApiService().getTemplateQueries(url)
+                .map(queryMapper::map);
     }
 
     @Override

@@ -32,8 +32,6 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
     private ImageButton btnSend;
 
     private MessengerAdapter adapter;
-    private boolean animateFrom0to1 = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

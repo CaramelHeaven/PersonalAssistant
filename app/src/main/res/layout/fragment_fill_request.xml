@@ -119,6 +119,8 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="8dp"
                         android:layout_toRightOf="@id/iv_description"
+                        android:ellipsize="end"
+                        android:maxLines="2"
                         android:text="Выбрать категорию"
                         android:textColor="@color/colorTextGray" />
                 </RelativeLayout>

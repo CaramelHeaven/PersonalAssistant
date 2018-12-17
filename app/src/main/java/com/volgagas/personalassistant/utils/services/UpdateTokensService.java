@@ -35,8 +35,8 @@ public class UpdateTokensService {
     public static void startTimer() {
         new Handler().postDelayed(() -> {
             Timber.d("run");
-            timer.purge();
-            timer.scheduleAtFixedRate(timerTask, 0, DELAY);
+
+            timer.schedule(timerTask, 0, DELAY);
         }, 5000);
     }
 

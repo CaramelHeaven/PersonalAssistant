@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.data.datasource;
 
 import com.google.gson.JsonObject;
+import com.volgagas.personalassistant.models.network.QueriesTemplateResponse;
 import com.volgagas.personalassistant.models.network.QueryResponse;
 import com.volgagas.personalassistant.models.network.UserIdResponse;
 import com.volgagas.personalassistant.utils.Constants;
@@ -33,4 +34,7 @@ public interface SPApiService {
     @GET(Constants.SHARE_POINT_API_WEB + "/siteusers?")
     Observable<UserIdResponse> getUserIdByUserName(@Query("$filter") String title,
                                                    @Query("$select") String select);
+
+    @GET
+    Single<QueriesTemplateResponse> getTemplateQueries(@Url String url);
 }

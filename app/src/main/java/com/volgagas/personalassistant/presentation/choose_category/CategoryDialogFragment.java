@@ -11,20 +11,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.MvpAppCompatDialogFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.models.model.QueryTemplate;
 import com.volgagas.personalassistant.presentation.choose_category.presenter.CategoryPresenter;
 import com.volgagas.personalassistant.presentation.choose_category.presenter.CategoryView;
+import com.volgagas.personalassistant.utils.bus.GlobalBus;
+import com.volgagas.personalassistant.utils.bus.models.UpdateToken;
+import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 12:23, 14.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
-public class CategoryDialogFragment extends MvpAppCompatDialogFragment implements CategoryView {
+public class CategoryDialogFragment extends MvpAppCompatDialogFragment implements CategoryView<QueryTemplate> {
 
-    private RecyclerView rlCategory;
+    private RecyclerView recyclerView;
+    private ProgressBar progressBar;
 
     private DisplayMetrics displayMetrics;
     private CategoryAdapter adapter;
@@ -49,7 +63,8 @@ public class CategoryDialogFragment extends MvpAppCompatDialogFragment implement
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        rlCategory = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        progressBar = view.findViewById(R.id.progress_bar);
 
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -65,6 +80,7 @@ public class CategoryDialogFragment extends MvpAppCompatDialogFragment implement
         window.setGravity(Gravity.CENTER);
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -72,16 +88,32 @@ public class CategoryDialogFragment extends MvpAppCompatDialogFragment implement
 
     @Override
     public void showProgress() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     private void provideRecyclerAndAdapter() {
-        rlCategory.setHasFixedSize(true);
-        rlCategory.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+        adapter = new CategoryAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+
+        adapter.setMyOnItemClickListener(position -> {
+            GlobalBus.getEventBus().post(adapter.getItemByPosition(position));
+
+            dismiss();
+        });
+    }
+
+    @Override
+    public void showItems(List<QueryTemplate> items) {
+        if (items.size() > 0) {
+            adapter.updateAdapter(items);
+        }
     }
 }

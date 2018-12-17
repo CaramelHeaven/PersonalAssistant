@@ -1,12 +1,15 @@
 package com.volgagas.personalassistant.domain;
 
 import com.google.gson.JsonObject;
+import com.volgagas.personalassistant.models.model.QueryTemplate;
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.UniformRequest;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -64,6 +67,10 @@ public interface MainRepository {
      * Send created templates tasks for user.
      * */
     Observable<Response<Void>> sendTemplateTasks(String query, JsonObject object);
+
+    /* Get templates for selected one of it in the choose_category folder
+     * */
+    Single<List<QueryTemplate>> getTemplatesQueries();
 
     Single<List<Task>> getTemplateTasks();
 

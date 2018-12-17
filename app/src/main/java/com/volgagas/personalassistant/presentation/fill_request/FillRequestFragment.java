@@ -17,13 +17,20 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.models.model.QueryTemplate;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.choose_category.CategoryDialogFragment;
 import com.volgagas.personalassistant.presentation.fill_request.presenter.FillRequestPresenter;
 import com.volgagas.personalassistant.presentation.fill_request.presenter.FillRequestView;
+import com.volgagas.personalassistant.utils.bus.GlobalBus;
 import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Calendar;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 15:49, 08.11.2018.
@@ -75,13 +82,33 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
                 Toast.makeText(getActivity(), "Не отмечены все поля", Toast.LENGTH_SHORT).show();
             } else {
                 RequestData data = new RequestData();
+
                 data.setDescription(etDescription.getText().toString());
                 data.setTitle(etEventName.getText().toString());
                 data.setEndDate(tvDate.getText().toString());
                 data.setImportant(switchImportant.isChecked());
+
                 presenter.handlerClickButton(data);
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        GlobalBus.getEventBus().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        GlobalBus.getEventBus().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventClickFromDialog(QueryTemplate queryTemplate) {
+        tvCategory.setTextColor(getActivity().getResources().getColor(R.color.colorTextBlack));
+        tvCategory.setText(queryTemplate.getTitle());
     }
 
     @Override
@@ -92,9 +119,11 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
     private void provideClickListeners() {
         rlDateContainer.setOnClickListener(v -> {
             final Calendar c = Calendar.getInstance();
+
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
+
             DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), 0, FillRequestFragment.this, year, month, day);
             datePickerDialog.show();
         });
@@ -108,6 +137,7 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String date = year + "-" + month + "-" + dayOfMonth;
+
         tvDate.setTextColor(getResources().getColor(R.color.colorTextBlack));
         tvDate.setText(date);
     }

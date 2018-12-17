@@ -88,7 +88,7 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
 
                     dataToServer.add("__metadata", metadataListItem);
                     dataToServer.add("Title", new JsonPrimitive(data.getTitle()));
-                    dataToServer.add("CategoryLookup0Id", new JsonPrimitive(1));
+                    dataToServer.add("CategoryLookup0Id", new JsonPrimitive(data.getCategory()));
                     dataToServer.add("Comment", new JsonPrimitive(data.getDescription()));
                     dataToServer.add("DueDate", new JsonPrimitive(data.getEndDate()));
                     dataToServer.add("LastText", new JsonPrimitive(data.getDescription()));

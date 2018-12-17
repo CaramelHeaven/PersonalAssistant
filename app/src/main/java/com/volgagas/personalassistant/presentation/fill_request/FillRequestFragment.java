@@ -87,6 +87,7 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
                 data.setTitle(etEventName.getText().toString());
                 data.setEndDate(tvDate.getText().toString());
                 data.setImportant(switchImportant.isChecked());
+                data.setCategory(presenter.getQueryTemplate().getId());
 
                 presenter.handlerClickButton(data);
             }
@@ -107,8 +108,10 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventClickFromDialog(QueryTemplate queryTemplate) {
+        presenter.setQueryTemplate(queryTemplate);
+
         tvCategory.setTextColor(getActivity().getResources().getColor(R.color.colorTextBlack));
-        tvCategory.setText(queryTemplate.getTitle());
+        tvCategory.setText(presenter.getQueryTemplate().getTitle());
     }
 
     @Override

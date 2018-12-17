@@ -28,7 +28,10 @@ public class PersonalAssistant extends Application {
     private static BaseApiService baseApiService;
     private static SPApiService spApiService;
 
+    /* Times
+    * */
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'", Locale.getDefault());
+    private static SimpleDateFormat patternFromServer = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     @Override
     public void onCreate() {
@@ -136,6 +139,16 @@ public class PersonalAssistant extends Application {
         calendar.add(Calendar.DAY_OF_YEAR, -1);
         String result = dateFormat.format(calendar.getTime());
 
+        return result + "00:00:00Z";
+    }
+
+    public static SimpleDateFormat getPatternFromServer() {
+        return patternFromServer;
+    }
+
+    public static String getCurrentDataFormat() {
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String result = dateFormat.format(Calendar.getInstance().getTime());
         return result + "00:00:00Z";
     }
 }

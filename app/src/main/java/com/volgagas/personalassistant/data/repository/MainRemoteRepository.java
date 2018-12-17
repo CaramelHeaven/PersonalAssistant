@@ -178,7 +178,7 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Single<List<QueryTemplate>> getTemplatesQueries() {
-        String url = "https://volagas.sharepoint.com/doc/_api/web/lists(guid'59C1EE57-5726-4B27-B9DD-B39775E170D5')/Items?$select=Title";
+        String url = "https://volagas.sharepoint.com/doc/_api/web/lists(guid'59C1EE57-5726-4B27-B9DD-B39775E170D5')/Items?$select=Title, id";
 
         return PersonalAssistant.getSpApiService().getTemplateQueries(url)
                 .map(queryMapper::map);

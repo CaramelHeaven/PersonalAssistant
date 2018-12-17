@@ -35,9 +35,6 @@ public class WorkerActivity extends MvpAppCompatActivity implements WorkerView {
         viewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(viewPager);
-
-
-        //startActivity(new Intent(this, ResultActivity.class));
     }
 
     @Override

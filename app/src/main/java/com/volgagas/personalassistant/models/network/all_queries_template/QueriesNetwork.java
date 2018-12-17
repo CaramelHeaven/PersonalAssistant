@@ -9,10 +9,16 @@ import java.util.List;
  * Created by CaramelHeaven on 10:56, 17/12/2018.
  */
 public class QueriesNetwork {
-
+    @SerializedName("Id")
+    @Expose
+    private int id;
     @SerializedName("Title")
     @Expose
     private String title;
+
+    public int getId() {
+        return id;
+    }
 
     public String getTitle() {
         return title;

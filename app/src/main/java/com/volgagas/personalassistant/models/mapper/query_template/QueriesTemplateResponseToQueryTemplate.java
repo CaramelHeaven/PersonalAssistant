@@ -24,7 +24,7 @@ public class QueriesTemplateResponseToQueryTemplate extends Mapper<QueriesTempla
     @Override
     protected void fillData(List<QueryTemplate> queryTemplates, QueriesTemplateResponse queriesTemplateResponse) {
         for (QueriesNetwork query : queriesTemplateResponse.getQueriesNetworkList()) {
-            QueryTemplate queryTemplate = new QueryTemplate(query.getTitle());
+            QueryTemplate queryTemplate = new QueryTemplate(query.getId(), query.getTitle());
 
             queryTemplates.add(queryTemplate);
         }

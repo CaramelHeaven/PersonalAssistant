@@ -8,7 +8,7 @@ public class RequestData {
     private String title;
     private String description;
     private String endDate;
-    private String category;
+    private int category;
     private boolean isImportant;
 
     @Override
@@ -17,7 +17,7 @@ public class RequestData {
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", endDate='" + endDate + '\'' +
-                ", category='" + category + '\'' +
+                ", category=" + category +
                 ", isImportant=" + isImportant +
                 '}';
     }
@@ -54,11 +54,11 @@ public class RequestData {
         isImportant = important;
     }
 
-    public String getCategory() {
+    public int getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 }

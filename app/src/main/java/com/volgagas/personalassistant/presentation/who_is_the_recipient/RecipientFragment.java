@@ -83,10 +83,8 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
         });
 
         btnSend.setOnClickListener(v -> {
-            Timber.d("getAddedUsers: " + adapter.getAddedUsers());
             if (adapter.getAddedUsers().size() > 0) {
-                Timber.d("SEND DATA: " + adapter.getAddedUsers());
-                //  presenter.sendToServer(data, adapter.getAddedUsers());
+                presenter.sendToServer(data, adapter.getAddedUsers());
             } else {
                 Toast.makeText(getActivity(), "Нет добавленных пользователей", Toast.LENGTH_SHORT).show();
             }
@@ -124,15 +122,19 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
     @Override
     public void sendUserData(RequestData data) {
         this.data = new RequestData();
+
         this.data.setDescription(data.getDescription());
         this.data.setTitle(data.getTitle());
         this.data.setEndDate(data.getEndDate());
         this.data.setCategory(data.getCategory());
         this.data.setImportant(data.isImportant());
+
+        Timber.d("check data: " + data.toString());
     }
 
     @Override
     public void finish() {
+        Toast.makeText(getActivity(), "Заявка создана", Toast.LENGTH_SHORT).show();
         getActivity().finish();
     }
 

@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.fill_request.presenter;
 
+import com.volgagas.personalassistant.models.model.QueryTemplate;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
 import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
@@ -9,6 +10,8 @@ import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class FillRequestPresenter extends BasePresenter<FillRequestView> {
+
+    private QueryTemplate queryTemplate;
 
     public FillRequestPresenter() {
     }
@@ -31,5 +34,13 @@ public class FillRequestPresenter extends BasePresenter<FillRequestView> {
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
         //nothing
+    }
+
+    public QueryTemplate getQueryTemplate() {
+        return queryTemplate;
+    }
+
+    public void setQueryTemplate(QueryTemplate queryTemplate) {
+        this.queryTemplate = queryTemplate;
     }
 }

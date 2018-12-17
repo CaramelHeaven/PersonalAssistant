@@ -1,6 +1,6 @@
 package com.volgagas.personalassistant.presentation.fill_request.presenter;
 
-import com.volgagas.personalassistant.models.model.QueryTemplate;
+import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
 import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;

@@ -1,7 +1,7 @@
 package com.volgagas.personalassistant.models.mapper.uniform_request;
 
 import com.volgagas.personalassistant.models.mapper.Mapper;
-import com.volgagas.personalassistant.models.model.UniformRequest;
+import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.network.QueryResponse;
 import com.volgagas.personalassistant.models.network.query.QueryNetwork;
 

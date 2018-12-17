@@ -3,6 +3,7 @@ package com.volgagas.personalassistant.data.datasource;
 import com.google.gson.JsonObject;
 import com.volgagas.personalassistant.models.network.QueriesTemplateResponse;
 import com.volgagas.personalassistant.models.network.QueryResponse;
+import com.volgagas.personalassistant.models.network.QueryToUserResponse;
 import com.volgagas.personalassistant.models.network.UserIdResponse;
 import com.volgagas.personalassistant.utils.Constants;
 
@@ -20,12 +21,14 @@ import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 public interface SPApiService {
-    @GET
-    Single<QueryResponse> getTest(@Url String url);
 
     @GET
-    Single<QueryResponse> getOpenUniformRequests(@Url String url,
-                                                 @QueryMap Map<String, String> options);
+    Single<QueryResponse> getOpenUniformRequestsFromUser(@Url String url,
+                                                         @QueryMap Map<String, String> options);
+
+    @GET
+    Single<QueryToUserResponse> getOpenUniformRequestsToUser(@Url String url,
+                                                             @QueryMap Map<String, String> options);
 
     @Headers("Content-Type: application/json;odata=verbose")
     @POST(Constants.SHARE_POINT_DOC_API_WEB + "/lists" + Constants.UNIFORM_REQUESTS_URL + "/items")

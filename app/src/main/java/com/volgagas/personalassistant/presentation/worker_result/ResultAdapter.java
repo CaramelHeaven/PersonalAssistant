@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.SubTask;
+import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.utils.callbacks.OnResultItemClick;
 
 import java.util.List;

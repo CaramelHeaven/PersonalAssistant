@@ -3,6 +3,8 @@ package com.volgagas.personalassistant.models.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.volgagas.personalassistant.models.model.worker.SubTask;
+
 import java.util.List;
 import java.util.Objects;
 

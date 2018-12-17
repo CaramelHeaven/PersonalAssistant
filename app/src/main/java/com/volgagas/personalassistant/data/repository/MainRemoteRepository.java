@@ -9,16 +9,18 @@ import com.volgagas.personalassistant.models.mapper.query_template.QueryTemplate
 import com.volgagas.personalassistant.models.mapper.task.TaskResponseToTask;
 import com.volgagas.personalassistant.models.mapper.task.TasksMapper;
 import com.volgagas.personalassistant.models.mapper.uniform_request.QueryResponseToUniformRequest;
+import com.volgagas.personalassistant.models.mapper.uniform_request.QueryToUserResponseToQueryToUser;
 import com.volgagas.personalassistant.models.mapper.uniform_request.UniformRequestMapper;
 import com.volgagas.personalassistant.models.mapper.user.UserDynamicsResponseToUserDynamics;
 import com.volgagas.personalassistant.models.mapper.user.UserIdResponseToUserId;
 import com.volgagas.personalassistant.models.mapper.user.UserMapper;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseListToUserList;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseToUser;
-import com.volgagas.personalassistant.models.model.QueryTemplate;
+import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
-import com.volgagas.personalassistant.models.model.UniformRequest;
+import com.volgagas.personalassistant.models.model.queries.QueryToUser;
+import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
@@ -62,12 +64,17 @@ public class MainRemoteRepository implements MainRepository {
                     UserDynamicsResponseToUserDynamics userDynamicsResponseToUserDynamics = new UserDynamicsResponseToUserDynamics();
                     QueriesTemplateResponseToQueryTemplate queriesTemplateResponseToQueryTemplate =
                             new QueriesTemplateResponseToQueryTemplate();
+                    QueryToUserResponseToQueryToUser queryToUserResponseToQueryToUser =
+                            new QueryToUserResponseToQueryToUser();
 
+                    //Initial mappers
                     tasksMapper = new TasksMapper(taskResponseToTask);
                     userMapper = new UserMapper(userResponseToUser, userResponseListToUserList,
                             userIdResponseToUserId, userDynamicsResponseToUserDynamics);
-                    uniformRequestMapper = new UniformRequestMapper(queryResponseToUniformRequest);
+                    uniformRequestMapper =
+                            new UniformRequestMapper(queryResponseToUniformRequest, queryToUserResponseToQueryToUser);
                     queryMapper = new QueryTemplateMapper(queriesTemplateResponseToQueryTemplate);
+
                     INSTANCE = new MainRemoteRepository();
                 }
             }
@@ -97,7 +104,20 @@ public class MainRemoteRepository implements MainRepository {
         data.put("$expand", "Author/Id");
         data.put("$filter", "Status eq 'Открыт' and Author/Title eq '" + "Татьяна Нехорошкова" + "'");
 
-        return PersonalAssistant.getSpApiService().getOpenUniformRequests(url, data)
+        return PersonalAssistant.getSpApiService().getOpenUniformRequestsFromUser(url, data)
+                .map(uniformRequestMapper::map);
+    }
+
+    @Override
+    public Single<List<QueryToUser>> getUniformRequestsToUser() {
+        Map<String, String> data = new LinkedHashMap<>();
+        String url = Constants.SHARE_POINT_DOC_API_WEB + "/lists" + Constants.UNIFORM_REQUESTS_URL + "/Items?";
+
+        data.put("$select", "Title,Comment,Priority,DueDate,AssignedTo/Title");
+        data.put("$expand", "AssignedTo/Id");
+        data.put("$filter", "Status eq 'Открыт' and AssignedTo/Title eq '" + "Татьяна Нехорошкова" + "'");
+
+        return PersonalAssistant.getSpApiService().getOpenUniformRequestsToUser(url, data)
                 .map(uniformRequestMapper::map);
     }
 

@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.models.model;
+package com.volgagas.personalassistant.models.model.worker;
 
 import android.os.Parcel;
 import android.os.Parcelable;

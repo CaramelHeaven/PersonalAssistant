@@ -1,7 +1,9 @@
 package com.volgagas.personalassistant.models.mapper.uniform_request;
 
-import com.volgagas.personalassistant.models.model.UniformRequest;
+import com.volgagas.personalassistant.models.model.queries.QueryToUser;
+import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.network.QueryResponse;
+import com.volgagas.personalassistant.models.network.QueryToUserResponse;
 
 import java.util.List;
 
@@ -11,12 +13,19 @@ import java.util.List;
  */
 public class UniformRequestMapper {
     private final QueryResponseToUniformRequest queryResponseToUniformRequest;
+    private final QueryToUserResponseToQueryToUser queryToUserResponseToQueryToUser;
 
-    public UniformRequestMapper(QueryResponseToUniformRequest queryResponseToUniformRequest) {
+    public UniformRequestMapper(QueryResponseToUniformRequest queryResponseToUniformRequest,
+                                QueryToUserResponseToQueryToUser queryToUserResponseToQueryToUser) {
         this.queryResponseToUniformRequest = queryResponseToUniformRequest;
+        this.queryToUserResponseToQueryToUser = queryToUserResponseToQueryToUser;
     }
 
     public List<UniformRequest> map(QueryResponse value) {
         return queryResponseToUniformRequest.map(value);
+    }
+
+    public List<QueryToUser> map(QueryToUserResponse value) {
+        return queryToUserResponseToQueryToUser.map(value);
     }
 }

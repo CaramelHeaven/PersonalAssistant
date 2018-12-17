@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.UniformRequest;
+import com.volgagas.personalassistant.models.model.queries.QueryBase;
+import com.volgagas.personalassistant.models.model.queries.QueryToUser;
+import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
@@ -17,12 +19,12 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class QueryMiniAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class QueryMiniAdapter<T extends QueryBase> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<UniformRequest> data;
+    private List<T> data;
     private myOnItemClickListener myOnItemClickListener;
 
-    public QueryMiniAdapter(List<UniformRequest> arrayList) {
+    public QueryMiniAdapter(List<T> arrayList) {
         this.data = arrayList;
     }
 
@@ -35,25 +37,33 @@ public class QueryMiniAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        UniformVH uniformVH = (UniformVH) viewHolder;
-        uniformVH.tvTitle.setText(data.get(position).getTitle());
-        uniformVH.tvDescription.setText(data.get(position).getDescription());
+        UniformVH baseVH = (UniformVH) viewHolder;
 
-        Timber.d("DATA: " + data.get(position).getPriority());
-        if (data.get(position).getPriority().contains(Constants.PRIORITY_HIGH)) {
-            uniformVH.cvPriority.setVisibility(View.VISIBLE);
-        } else {
-            uniformVH.cvPriority.setVisibility(View.GONE);
+        if (data.get(position) instanceof QueryToUser) {
+            baseVH.tvTitle.setText(((QueryToUser) data.get(position)).getTitle());
+            baseVH.tvDescription.setText(((QueryToUser) data.get(position)).getComment());
+
+        } else if (data.get(position) instanceof UniformRequest) {
+            baseVH.tvTitle.setText(((UniformRequest) data.get(position)).getTitle());
+            baseVH.tvDescription.setText(((UniformRequest) data.get(position)).getDescription());
+
+            if (((UniformRequest) data.get(position)).getPriority().contains(Constants.PRIORITY_HIGH)) {
+                baseVH.cvPriority.setVisibility(View.VISIBLE);
+            } else {
+                baseVH.cvPriority.setVisibility(View.GONE);
+            }
         }
+
     }
 
-    public void updateAdapter(List<UniformRequest> values) {
+    public void updateAdapter(List<T> values) {
         data.clear();
         data.addAll(values);
+
         notifyDataSetChanged();
     }
 
-    public UniformRequest getItemByPosition(int position) {
+    public T getItemByPosition(int position) {
         return data.get(position);
     }
 

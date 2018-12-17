@@ -1,8 +1,7 @@
 package com.volgagas.personalassistant.models.mapper.task;
 
-import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.models.mapper.Mapper;
-import com.volgagas.personalassistant.models.model.SubTask;
+import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.network.SubTaskResponse;

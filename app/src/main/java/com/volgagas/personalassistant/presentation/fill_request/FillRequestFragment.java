@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.QueryTemplate;
+import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.choose_category.CategoryDialogFragment;
 import com.volgagas.personalassistant.presentation.fill_request.presenter.FillRequestPresenter;
@@ -29,8 +29,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Calendar;
-
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 15:49, 08.11.2018.

@@ -1,7 +1,7 @@
 package com.volgagas.personalassistant.models.mapper.query_template;
 
 import com.volgagas.personalassistant.models.mapper.Mapper;
-import com.volgagas.personalassistant.models.model.QueryTemplate;
+import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.models.network.QueriesTemplateResponse;
 import com.volgagas.personalassistant.models.network.all_queries_template.QueriesNetwork;
 

@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.UniformRequest;
+import com.volgagas.personalassistant.models.model.queries.QueryToUser;
+import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
-import com.volgagas.personalassistant.presentation.main.MainActivity;
 import com.volgagas.personalassistant.presentation.messenger.MessengerActivity;
 import com.volgagas.personalassistant.presentation.queries.presenter.QueryPresenter;
 import com.volgagas.personalassistant.presentation.queries.presenter.QueryView;
@@ -29,7 +29,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class QueryFragment extends BaseFragment implements QueryView<UniformRequest> {
+public class QueryFragment extends BaseFragment implements QueryView<QueryToUser, UniformRequest> {
 
     private FloatingActionButton fabCreate;
     private ProgressBar progressBar;
@@ -37,7 +37,7 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
     private TextView tvShowEmpty;
 
     private List<String> listBaseAdapter;
-    private QueryBaseAdapter adapterBase;
+    private QueryBaseAdapter<QueryToUser, UniformRequest> adapterBase;
 
     @InjectPresenter
     QueryPresenter presenter;
@@ -107,12 +107,14 @@ public class QueryFragment extends BaseFragment implements QueryView<UniformRequ
         progressBar.setVisibility(View.GONE);
     }
 
+
     @Override
-    public void showItems(List<UniformRequest> items) {
-        if (items.size() != 0) {
-            adapterBase.updateAdapter(listBaseAdapter, items);
-        } else {
+    public void showValues(List<QueryToUser> queriesToUser, List<UniformRequest> uniformRequests) {
+        if (queriesToUser.size() == 0 && uniformRequests.size() == 0) {
             tvShowEmpty.setVisibility(View.VISIBLE);
+        } else {
+            Timber.d("queriesTOUser size: " + queriesToUser.size());
+            adapterBase.updateAdapter(listBaseAdapter, queriesToUser, uniformRequests);
         }
     }
 }

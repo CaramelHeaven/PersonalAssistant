@@ -1,10 +1,11 @@
-package com.volgagas.personalassistant.models.model;
+package com.volgagas.personalassistant.models.model.queries;
 
 /**
  * Created by CaramelHeaven on 13:19, 09.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * This is query FROM user in the uniform requests
  */
-public class UniformRequest {
+public class UniformRequest extends QueryBase {
     private String userName;
     private String title;
     private String description;

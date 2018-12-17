@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.models.model;
+package com.volgagas.personalassistant.models.model.queries;
 
 /**
  * Created by CaramelHeaven on 11:18, 17/12/2018.

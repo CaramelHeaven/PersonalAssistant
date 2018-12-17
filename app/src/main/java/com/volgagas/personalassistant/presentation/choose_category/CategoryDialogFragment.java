@@ -16,20 +16,13 @@ import android.widget.ProgressBar;
 import com.arellomobile.mvp.MvpAppCompatDialogFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.QueryTemplate;
+import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.presentation.choose_category.presenter.CategoryPresenter;
 import com.volgagas.personalassistant.presentation.choose_category.presenter.CategoryView;
 import com.volgagas.personalassistant.utils.bus.GlobalBus;
-import com.volgagas.personalassistant.utils.bus.models.UpdateToken;
-import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 12:23, 14.11.2018.

@@ -11,7 +11,8 @@ import android.widget.TextView;
 
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.UniformRequest;
+import com.volgagas.personalassistant.models.model.queries.QueryToUser;
+import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.ArrayList;
@@ -23,10 +24,11 @@ import timber.log.Timber;
  * Created by CaramelHeaven on 15:29, 15.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
-public class QueryBaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class QueryBaseAdapter<T extends QueryToUser, T1 extends UniformRequest> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private List<String> listAdapter;
-    private List<UniformRequest> uniformToUser;
-    private List<UniformRequest> uniformFromUser;
+    private List<T> uniformToUser;
+    private List<T1> uniformFromUser;
 
     private myOnItemClickListener myOnItemClickListener;
 
@@ -61,10 +63,10 @@ public class QueryBaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return listAdapter.size();
     }
 
-    public void updateAdapter(List<String> baseList, List<UniformRequest> uniformRequests) {
+    public void updateAdapter(List<String> baseList, List<T> uniformToUser, List<T1> uniformRequests) {
         listAdapter.addAll(baseList);
 
-        uniformToUser.addAll(uniformRequests);
+        this.uniformToUser.addAll(uniformToUser);
         uniformFromUser.addAll(uniformRequests);
         notifyDataSetChanged();
     }
@@ -99,7 +101,7 @@ public class QueryBaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         @Override
         public void onClick(View v) {
-           // myOnItemClickListener.onItemClick(getAdapterPosition());
+            // myOnItemClickListener.onItemClick(getAdapterPosition());
             expandableLinearLayout.toggle();
         }
     }

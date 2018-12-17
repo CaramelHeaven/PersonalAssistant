@@ -51,20 +51,16 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             return new UserAddedVH(view);
         } else {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_recipient_worker, viewGroup, false);
-            Timber.d("RECIPIENT CALLED");
             return new RecipientVH(view);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        Timber.d("getItemViewType by position: " + position);
-        Timber.d("user list: " + userList.size());
         if (position == TYPE_ADDED) {
             UserAddedVH userAddedVH = (UserAddedVH) viewHolder;
             userAddedVH.addedAdapter.updateAdapter(addedUsers);
         } else {
-            Timber.d("CALL SIMPLE USER");
             int pos = position - 1;
             RecipientVH recipientVH = (RecipientVH) viewHolder;
             recipientVH.tvPosition.setText(userList.get(pos).getPosition());
@@ -163,8 +159,8 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             rvAddedWorkers.setAdapter(addedAdapter);
 
             addedAdapter.setMyOnItemClickListener(position -> {
-                Timber.d("remove");
-                addedAdapter.removeUser(addedAdapter.getUserByPosition(position));
+                Timber.d("remove: " + position);
+                addedAdapter.removeUser(position);
             });
         }
     }

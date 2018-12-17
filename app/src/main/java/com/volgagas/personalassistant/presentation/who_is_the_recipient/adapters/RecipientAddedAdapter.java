@@ -91,11 +91,13 @@ public class RecipientAddedAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return userList.get(position);
     }
 
-    public void removeUser(User user) {
-        uniqueUsers.remove(user);
-        userList.clear();
-        userList.addAll(uniqueUsers);
-        notifyDataSetChanged();
+    public void removeUser(int position) {
+        userList.remove(position);
+
+        uniqueUsers.clear();
+        uniqueUsers.addAll(userList);
+
+        notifyItemRemoved(position);
     }
 
     class UserVH extends RecyclerView.ViewHolder implements View.OnClickListener {

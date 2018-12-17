@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
@@ -81,7 +82,16 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
             adapter.updateAddedUsers(adapter.getItemByPosition(position));
         });
 
-        btnSend.setOnClickListener(v -> presenter.sendToServer(data, adapter.getAddedUsers()));
+        btnSend.setOnClickListener(v -> {
+            Timber.d("getAddedUsers: " + adapter.getAddedUsers());
+            if (adapter.getAddedUsers().size() > 0) {
+                Timber.d("SEND DATA: " + adapter.getAddedUsers());
+                //  presenter.sendToServer(data, adapter.getAddedUsers());
+            } else {
+                Toast.makeText(getActivity(), "Нет добавленных пользователей", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         provideEditText();
     }
 

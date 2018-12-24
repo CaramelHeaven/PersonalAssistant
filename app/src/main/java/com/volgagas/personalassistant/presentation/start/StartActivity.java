@@ -15,13 +15,12 @@ import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.main.MainActivity;
-import com.volgagas.personalassistant.presentation.messenger.MessengerActivity;
 import com.volgagas.personalassistant.presentation.start.presenter.StartPresenter;
 import com.volgagas.personalassistant.presentation.start.presenter.StartView;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
-import com.volgagas.personalassistant.utils.services.UpdateTokensService;
+import com.volgagas.personalassistant.utils.services.UpdateTokensTimer;
 
 import timber.log.Timber;
 
@@ -41,10 +40,10 @@ public class StartActivity extends BaseActivity implements StartView {
 
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
 
-        //xstartActivity(new Intent(this, CameraActivity.class));
+        UpdateTokensTimer.getInstance();
+        UpdateTokensTimer.startTimer();
 
-        UpdateTokensService.getInstance();
-        UpdateTokensService.startTimer();
+        sendDataToServer("0x201FA7D1F0000000");
     }
 
     @Override

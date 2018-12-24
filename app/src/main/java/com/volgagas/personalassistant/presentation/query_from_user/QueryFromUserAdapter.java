@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.presentation.queries;
+package com.volgagas.personalassistant.presentation.query_from_user;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -10,23 +10,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.queries.QueryBase;
-import com.volgagas.personalassistant.models.model.queries.QueryToUser;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
-import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.List;
 
-import timber.log.Timber;
+/**
+ * Created by CaramelHeaven on 13:24, 24/12/2018.
+ */
+public class QueryFromUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-public class QueryMiniAdapter<T extends QueryBase> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    List<UniformRequest> uniformRequests;
 
-    private List<T> data;
     private myOnItemClickListener myOnItemClickListener;
 
-    public QueryMiniAdapter(List<T> arrayList) {
-        this.data = arrayList;
+    public QueryFromUserAdapter(List<UniformRequest> uniformRequests) {
+        this.uniformRequests = uniformRequests;
     }
 
     @NonNull
@@ -38,50 +37,29 @@ public class QueryMiniAdapter<T extends QueryBase> extends RecyclerView.Adapter<
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        UniformVH baseVH = (UniformVH) viewHolder;
+        UniformVH uniformVH = (UniformVH) viewHolder;
 
-        if (data.get(position) instanceof QueryToUser) {
-            baseVH.tvTitle.setText(((QueryToUser) data.get(position)).getTitle());
-            baseVH.tvDescription.setText(((QueryToUser) data.get(position)).getComment());
-
-        } else if (data.get(position) instanceof UniformRequest) {
-            baseVH.tvTitle.setText(((UniformRequest) data.get(position)).getTitle());
-            baseVH.tvDescription.setText(((UniformRequest) data.get(position)).getDescription());
-
-            if (((UniformRequest) data.get(position)).getPriority().contains(Constants.PRIORITY_HIGH)) {
-                baseVH.ivPriority.setVisibility(View.VISIBLE);
-            } else {
-                baseVH.ivPriority.setVisibility(View.GONE);
-            }
-        }
-
-    }
-
-    public void updateAdapter(List<T> values) {
-        data.clear();
-        data.addAll(values);
-
-        notifyDataSetChanged();
-    }
-
-    public T getItemByPosition(int position) {
-        return data.get(position);
+        uniformVH.tvDescription.setText(uniformRequests.get(position).getDescription());
+        uniformVH.tvTitle.setText(uniformRequests.get(position).getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return uniformRequests.size();
+    }
+
+    public void updateAdapter(List<UniformRequest> items) {
+        uniformRequests = items;
+        notifyDataSetChanged();
     }
 
     class UniformVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvTitle, tvDescription;
         private CardView cvContainer;
-        private ImageView ivPriority;
 
         public UniformVH(@NonNull View itemView) {
             super(itemView);
             tvDescription = itemView.findViewById(R.id.tv_description);
-            ivPriority = itemView.findViewById(R.id.iv_priority);
             tvTitle = itemView.findViewById(R.id.tv_title);
             cvContainer = itemView.findViewById(R.id.cv_container);
             cvContainer.setOnClickListener(this::onClick);

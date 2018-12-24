@@ -9,13 +9,14 @@ public class UserResponseToUser extends Mapper<UserResponse, User> {
     public User map(UserResponse value) {
         User user = new User();
         fillData(user, value);
+
         return user;
     }
 
     @Override
     protected void fillData(User user, UserResponse response) {
         user.setCategory(response.getCategory());
-        user.setCodekey(response.getCodekey());
+        user.setCodekeyList(response.getCodekeyList());
         user.setLastEntered(response.getLastEntered());
         user.setName(response.getName());
         user.setPosition(response.getJob());

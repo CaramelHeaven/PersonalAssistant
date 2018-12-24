@@ -98,8 +98,10 @@ public class PersonalAssistant extends Application {
                     return chain.proceed(request);
                 });
                 HttpLoggingInterceptor interceptorD365 = new HttpLoggingInterceptor();
+
                 interceptorD365.setLevel(HttpLoggingInterceptor.Level.BODY);
                 builderD365.addInterceptor(interceptorD365);
+
                 return builderD365;
             case "SP":
                 Timber.d("INIT SP");
@@ -115,8 +117,10 @@ public class PersonalAssistant extends Application {
                     return chain.proceed(request);
                 });
                 HttpLoggingInterceptor interceptorSP = new HttpLoggingInterceptor();
+
                 interceptorSP.setLevel(HttpLoggingInterceptor.Level.BODY);
                 builderSP.addInterceptor(interceptorSP);
+
                 return builderSP;
         }
         return null;

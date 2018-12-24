@@ -3,14 +3,15 @@ package com.volgagas.personalassistant.models.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 import timber.log.Timber;
 
 public class User implements Parcelable {
     private String name;
     private String position;
-    private String codekey;
+    private List<String> codekeyList;
     private String lastEntered;
     private String category;
     private String userImage;
@@ -23,7 +24,7 @@ public class User implements Parcelable {
         Timber.d("setBase felds" + user.toString());
         this.name = user.getName();
         this.position = user.getPosition();
-        this.codekey = user.getCodekey();
+        this.codekeyList = user.getCodekeyList();
         this.lastEntered = user.getLastEntered();
         this.category = user.getCategory();
         this.userImage = user.getUserImage();
@@ -35,34 +36,6 @@ public class User implements Parcelable {
         return partsName[1] + " " + partsName[0];
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(name, user.name) &&
-                Objects.equals(codekey, user.codekey);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, codekey);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", position='" + position + '\'' +
-                ", codekey='" + codekey + '\'' +
-                ", lastEntered='" + lastEntered + '\'' +
-                ", category='" + category + '\'' +
-                ", userImage='" + userImage + '\'' +
-                ", userCliendId='" + userCliendId + '\'' +
-                ", dynamics365Token='" + dynamics365Token + '\'' +
-                ", sharePointToken='" + sharePointToken + '\'' +
-                '}';
-    }
 
     public String getName() {
         return name;
@@ -80,12 +53,12 @@ public class User implements Parcelable {
         this.position = position;
     }
 
-    public String getCodekey() {
-        return codekey;
+    public List<String> getCodekeyList() {
+        return codekeyList;
     }
 
-    public void setCodekey(String codekey) {
-        this.codekey = codekey;
+    public void setCodekeyList(List<String> codekeyList) {
+        this.codekeyList = codekeyList;
     }
 
     public String getLastEntered() {
@@ -139,7 +112,7 @@ public class User implements Parcelable {
     public void clear() {
         this.name = "";
         this.position = "";
-        this.codekey = "";
+        this.codekeyList = new ArrayList<>();
         this.lastEntered = "";
         this.category = "";
 
@@ -158,7 +131,7 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.name);
         dest.writeString(this.position);
-        dest.writeString(this.codekey);
+        dest.writeStringList(this.codekeyList);
         dest.writeString(this.lastEntered);
         dest.writeString(this.category);
         dest.writeString(this.userImage);
@@ -173,7 +146,7 @@ public class User implements Parcelable {
     protected User(Parcel in) {
         this.name = in.readString();
         this.position = in.readString();
-        this.codekey = in.readString();
+        this.codekeyList = in.createStringArrayList();
         this.lastEntered = in.readString();
         this.category = in.readString();
         this.userImage = in.readString();

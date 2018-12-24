@@ -39,9 +39,9 @@
     <View
         android:id="@+id/viewBackground"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="160dp"
         android:background="@color/colorPrimary"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/appBar" />
@@ -50,14 +50,15 @@
         android:id="@+id/imageView"
         android:layout_width="85dp"
         android:layout_height="81dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bnv_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/viewBackground"
-        app:layout_constraintVertical_bias="0.107" />
+        app:layout_constraintTop_toBottomOf="@+id/appBar"
+        app:layout_constraintVertical_bias="0.0" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -77,7 +78,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bnv_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/appBar" />
+        app:layout_constraintTop_toBottomOf="@+id/viewBackground" />
 
     <FrameLayout
         android:id="@+id/fragment_container_projects"
@@ -94,16 +95,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Fominov Sergey Michailovich"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
     <TextView
         android:id="@+id/tv_category"
@@ -114,9 +116,10 @@
         android:layout_marginEnd="8dp"
         android:text="Android and iOS developer"
         android:textColor="@android:color/white"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
     <View

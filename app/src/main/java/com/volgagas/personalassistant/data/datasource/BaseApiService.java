@@ -25,7 +25,7 @@ public interface BaseApiService {
     @GET
     Single<JsonObject> getSharePointTest(@Url String url);
 
-    @GET(Constants.MY_HOST + "database/getUserWithPhoto")
+    @GET(Constants.MY_HOST + "database/findUser")
     Single<UserResponse> getCardInfo(@Query("userNumbers") String numbers);
 
     @GET(Constants.MY_HOST + "database/getAllUsers")

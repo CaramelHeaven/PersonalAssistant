@@ -7,10 +7,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.volgagas.personalassistant.presentation.contracts.ContractFragment;
 import com.volgagas.personalassistant.presentation.queries.QueryFragment;
+import com.volgagas.personalassistant.presentation.query_from_user.QueryFromUserFragment;
+import com.volgagas.personalassistant.presentation.query_from_user.presenter.QueryFromUserView;
+import com.volgagas.personalassistant.presentation.query_to_user.QueryToUserFragment;
 
 public class PagerProjectsAdapter extends FragmentPagerAdapter {
 
-    private int count = 2;
+    private int count = 3;
 
     public PagerProjectsAdapter(FragmentManager fm) {
         super(fm);
@@ -20,8 +23,10 @@ public class PagerProjectsAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch (i) {
             case 0:
-                return QueryFragment.newInstance();
+                return QueryFromUserFragment.newInstance();
             case 1:
+                return QueryToUserFragment.newInstance();
+            case 2:
                 return ContractFragment.newInstance();
         }
         return null;
@@ -32,8 +37,10 @@ public class PagerProjectsAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Заявки";
+                return "Заявки (от вас)";
             case 1:
+                return "Заявки (к вам)";
+            case 2:
                 return "Договоры";
         }
         return "";

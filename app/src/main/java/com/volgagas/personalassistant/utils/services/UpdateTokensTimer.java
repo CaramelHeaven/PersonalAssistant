@@ -10,21 +10,21 @@ import java.util.TimerTask;
 
 import timber.log.Timber;
 
-public class UpdateTokensService {
+public class UpdateTokensTimer {
 
-    private static UpdateTokensService INSTANCE;
+    private static UpdateTokensTimer INSTANCE;
     private static TimerTask timerTask;
     private static Timer timer;
     // 1 minute * 9 minutes
     private static final int DELAY = 60000 * 9;
 
-    public static UpdateTokensService getInstance() {
+    public static UpdateTokensTimer getInstance() {
         if (INSTANCE == null) {
-            synchronized (UpdateTokensService.class) {
+            synchronized (UpdateTokensTimer.class) {
                 if (INSTANCE == null) {
                     Timber.d("prepare to start");
                     prepareTimer();
-                    INSTANCE = new UpdateTokensService();
+                    INSTANCE = new UpdateTokensTimer();
                     timer = new Timer();
                 }
             }
@@ -37,7 +37,7 @@ public class UpdateTokensService {
             Timber.d("run");
 
             timer.schedule(timerTask, 0, DELAY);
-        }, 5000);
+        }, DELAY);
     }
 
     private static void prepareTimer() {

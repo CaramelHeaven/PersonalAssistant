@@ -21,12 +21,14 @@ public class UserResponseListToUserList {
     private void fillData(List<User> users, List<UserResponse> responseList) {
         for (UserResponse response : responseList) {
             User user = new User();
+
             user.setCategory(response.getCategory());
-            user.setCodekey(response.getCodekey());
+            user.setCodekeyList(response.getCodekeyList());
             user.setLastEntered(response.getLastEntered());
             user.setName(response.getName());
             user.setPosition(response.getJob());
             user.setUserImage(response.getUserImage());
+
             users.add(user);
         }
     }

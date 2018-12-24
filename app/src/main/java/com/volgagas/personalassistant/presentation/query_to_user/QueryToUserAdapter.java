@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.presentation.queries;
+package com.volgagas.personalassistant.presentation.query_to_user;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -10,75 +10,62 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.queries.QueryBase;
 import com.volgagas.personalassistant.models.model.queries.QueryToUser;
-import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.List;
 
-import timber.log.Timber;
+/**
+ * Created by CaramelHeaven on 13:24, 24/12/2018.
+ */
+public class QueryToUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-public class QueryMiniAdapter<T extends QueryBase> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private List<QueryToUser> queryToUsers;
 
-    private List<T> data;
     private myOnItemClickListener myOnItemClickListener;
 
-    public QueryMiniAdapter(List<T> arrayList) {
-        this.data = arrayList;
+    public QueryToUserAdapter(List<QueryToUser> queryToUsers) {
+        this.queryToUsers = queryToUsers;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_uniform_request, viewGroup, false);
-        return new UniformVH(view);
+        return new QueryToUserVH(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        UniformVH baseVH = (UniformVH) viewHolder;
+        QueryToUserVH queryToUserVH = (QueryToUserVH) viewHolder;
 
-        if (data.get(position) instanceof QueryToUser) {
-            baseVH.tvTitle.setText(((QueryToUser) data.get(position)).getTitle());
-            baseVH.tvDescription.setText(((QueryToUser) data.get(position)).getComment());
+        queryToUserVH.tvDescription.setText(queryToUsers.get(position).getComment());
+        queryToUserVH.tvTitle.setText(queryToUsers.get(position).getTitle());
 
-        } else if (data.get(position) instanceof UniformRequest) {
-            baseVH.tvTitle.setText(((UniformRequest) data.get(position)).getTitle());
-            baseVH.tvDescription.setText(((UniformRequest) data.get(position)).getDescription());
-
-            if (((UniformRequest) data.get(position)).getPriority().contains(Constants.PRIORITY_HIGH)) {
-                baseVH.ivPriority.setVisibility(View.VISIBLE);
-            } else {
-                baseVH.ivPriority.setVisibility(View.GONE);
-            }
+        if (queryToUsers.get(position).getPriority().contains(Constants.PRIORITY_HIGH)) {
+            queryToUserVH.ivPriority.setVisibility(View.VISIBLE);
+        } else {
+            queryToUserVH.ivPriority.setVisibility(View.GONE);
         }
-
-    }
-
-    public void updateAdapter(List<T> values) {
-        data.clear();
-        data.addAll(values);
-
-        notifyDataSetChanged();
-    }
-
-    public T getItemByPosition(int position) {
-        return data.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return queryToUsers.size();
     }
 
-    class UniformVH extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public void updateAdapter(List<QueryToUser> items) {
+        queryToUsers = items;
+        notifyDataSetChanged();
+    }
+
+    class QueryToUserVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvTitle, tvDescription;
         private CardView cvContainer;
         private ImageView ivPriority;
 
-        public UniformVH(@NonNull View itemView) {
+        public QueryToUserVH(@NonNull View itemView) {
             super(itemView);
             tvDescription = itemView.findViewById(R.id.tv_description);
             ivPriority = itemView.findViewById(R.id.iv_priority);
@@ -90,6 +77,7 @@ public class QueryMiniAdapter<T extends QueryBase> extends RecyclerView.Adapter<
         @Override
         public void onClick(View v) {
             myOnItemClickListener.onItemClick(getAdapterPosition());
+
         }
     }
 

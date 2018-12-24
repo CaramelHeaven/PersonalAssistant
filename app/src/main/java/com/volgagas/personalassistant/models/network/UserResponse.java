@@ -3,6 +3,8 @@ package com.volgagas.personalassistant.models.network;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class UserResponse {
     @SerializedName("name")
     @Expose
@@ -10,9 +12,9 @@ public class UserResponse {
     @SerializedName("position")
     @Expose
     private String position;
-    @SerializedName("codekey")
+    @SerializedName("codekeyList")
     @Expose
-    private String codekey;
+    private List<String> codekeyList;
     @SerializedName("createdTime")
     @Expose
     private String createdTime;
@@ -32,8 +34,12 @@ public class UserResponse {
         return position;
     }
 
-    public String getCodekey() {
-        return codekey;
+    public List<String> getCodekeyList() {
+        return codekeyList;
+    }
+
+    public String getPosition() {
+        return position;
     }
 
     public String getCreatedTime() {

@@ -16,6 +16,7 @@ import com.volgagas.personalassistant.models.mapper.user.UserIdResponseToUserId;
 import com.volgagas.personalassistant.models.mapper.user.UserMapper;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseListToUserList;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseToUser;
+import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
@@ -28,6 +29,7 @@ import com.volgagas.personalassistant.utils.Constants;
 
 import org.json.JSONObject;
 
+import java.sql.SQLTransactionRollbackException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -222,5 +224,36 @@ public class MainRemoteRepository implements MainRepository {
         array.add(task);
 
         return array;
+    }
+
+    @Override
+    public Single<List<NewOrder>> getOrderNewBase() {
+        List<NewOrder> stringList = new ArrayList<>();
+
+        stringList.add(new NewOrder("Ботинки летние", "f"));
+        stringList.add(new NewOrder("Брюки летние", "2"));
+        stringList.add(new NewOrder("Куртка летняя", "3"));
+        stringList.add(new NewOrder("Полукомбинизон летний", "4"));
+
+        return Single.just(stringList);
+    }
+
+    @Override
+    public Single<List<NewOrder>> getOrderNewAdditionally() {
+        List<NewOrder> stringList = new ArrayList<>();
+
+        stringList.add(new NewOrder("Костюм для защиты эл. дуги", "5"));
+        stringList.add(new NewOrder("Костюм зимний", "6"));
+        stringList.add(new NewOrder("Костюм сварщика", "2"));
+        stringList.add(new NewOrder("Куртка зимняя", "s"));
+        stringList.add(new NewOrder("Подшлеммник зимний", "a"));
+        stringList.add(new NewOrder("Сапоги зимние", "q"));
+        stringList.add(new NewOrder("Сапоги резиновые", "x"));
+        stringList.add(new NewOrder("Тапочки-туфли", "q"));
+        stringList.add(new NewOrder("Термобелье", "s"));
+        stringList.add(new NewOrder("Футболка", "a"));
+        stringList.add(new NewOrder("Шапка вязаная", "ds"));
+
+        return Single.just(stringList);
     }
 }

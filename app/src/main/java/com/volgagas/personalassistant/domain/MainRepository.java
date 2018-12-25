@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.domain;
 
 import com.google.gson.JsonObject;
+import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
@@ -84,4 +85,12 @@ public interface MainRepository {
     Single<UserDynamics> getPersonalUserNumber(String personalName);
 
     List<Task> testedData();
+
+    /* data for order new base fragment
+     * */
+    Single<List<NewOrder>> getOrderNewBase();
+
+    /* data for order new additionally fragment
+     * */
+    Single<List<NewOrder>> getOrderNewAdditionally();
 }

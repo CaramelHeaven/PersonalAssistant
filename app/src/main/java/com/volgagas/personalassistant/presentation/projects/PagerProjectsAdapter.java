@@ -6,9 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.volgagas.personalassistant.presentation.contracts.ContractFragment;
-import com.volgagas.personalassistant.presentation.queries.QueryFragment;
 import com.volgagas.personalassistant.presentation.query_from_user.QueryFromUserFragment;
-import com.volgagas.personalassistant.presentation.query_from_user.presenter.QueryFromUserView;
 import com.volgagas.personalassistant.presentation.query_to_user.QueryToUserFragment;
 
 public class PagerProjectsAdapter extends FragmentPagerAdapter {

@@ -113,8 +113,8 @@ public class MainRemoteRepository implements MainRepository {
         Map<String, String> data = new LinkedHashMap<>();
         String url = Constants.SHARE_POINT_DOC_API_WEB + "/lists" + Constants.UNIFORM_REQUESTS_URL + "/Items?";
 
-        data.put("$select", "Title,Comment,Priority,DueDate,AssignedTo/Title");
-        data.put("$expand", "AssignedTo/Id");
+        data.put("$select", "Title,Comment,Priority,DueDate,AssignedTo/Title,CategoryLookup0/Title");
+        data.put("$expand", "AssignedTo/Id,CategoryLookup0/Title");
         data.put("$filter", "Status eq 'Открыт' and AssignedTo/Title eq '" + "Татьяна Нехорошкова" + "'");
 
         return PersonalAssistant.getSpApiService().getOpenUniformRequestsToUser(url, data)

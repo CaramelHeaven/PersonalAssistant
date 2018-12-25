@@ -31,6 +31,7 @@ public class QueryToUserResponseToQueryToUser extends Mapper<QueryToUserResponse
             queryToUser.setComment(query.getComment());
             queryToUser.setDate(query.getDueDate());
             queryToUser.setPriority(query.getPriority());
+            queryToUser.setCategory(query.getCategoryData().getTitle());
 
             List<String> authors = new ArrayList<>();
 

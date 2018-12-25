@@ -24,6 +24,9 @@ public class QueryToUserNetwork {
     @SerializedName("DueDate")
     @Expose
     private String dueDate;
+    @SerializedName("CategoryLookup0")
+    @Expose
+    CategoryData categoryData;
 
     public List<QueryToUserAssignedTo> getAssignedTo() {
         return assignedTo;
@@ -43,5 +46,9 @@ public class QueryToUserNetwork {
 
     public String getDueDate() {
         return dueDate;
+    }
+
+    public CategoryData getCategoryData() {
+        return categoryData;
     }
 }

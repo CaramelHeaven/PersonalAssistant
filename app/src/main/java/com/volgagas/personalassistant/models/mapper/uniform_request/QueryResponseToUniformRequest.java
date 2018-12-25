@@ -28,11 +28,13 @@ public class QueryResponseToUniformRequest extends Mapper<QueryResponse, List<Un
         Timber.d("queryResponse");
         for (QueryNetwork result : queryResponse.getQueryNetwork()) {
             UniformRequest uniformRequest = new UniformRequest();
+
             uniformRequest.setPriority(result.getPriority());
             uniformRequest.setDescription(result.getComment());
             uniformRequest.setEndedTime(result.getDueDate());
             uniformRequest.setTitle(result.getTitle());
             uniformRequest.setUserName(result.getAuthor().getTitle());
+
             uniformRequests.add(uniformRequest);
         }
     }

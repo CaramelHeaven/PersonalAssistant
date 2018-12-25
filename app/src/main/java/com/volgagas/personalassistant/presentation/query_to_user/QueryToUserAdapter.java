@@ -42,6 +42,7 @@ public class QueryToUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         queryToUserVH.tvDescription.setText(queryToUsers.get(position).getComment());
         queryToUserVH.tvTitle.setText(queryToUsers.get(position).getTitle());
+        queryToUserVH.tvCategory.setText(queryToUsers.get(position).getCategory());
 
         if (queryToUsers.get(position).getPriority().contains(Constants.PRIORITY_HIGH)) {
             queryToUserVH.ivPriority.setVisibility(View.VISIBLE);
@@ -61,7 +62,7 @@ public class QueryToUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     class QueryToUserVH extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView tvTitle, tvDescription;
+        private TextView tvTitle, tvDescription, tvCategory;
         private CardView cvContainer;
         private ImageView ivPriority;
 
@@ -69,6 +70,7 @@ public class QueryToUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             super(itemView);
             tvDescription = itemView.findViewById(R.id.tv_description);
             ivPriority = itemView.findViewById(R.id.iv_priority);
+            tvCategory = itemView.findViewById(R.id.tv_category);
             tvTitle = itemView.findViewById(R.id.tv_title);
             cvContainer = itemView.findViewById(R.id.cv_container);
             cvContainer.setOnClickListener(this::onClick);

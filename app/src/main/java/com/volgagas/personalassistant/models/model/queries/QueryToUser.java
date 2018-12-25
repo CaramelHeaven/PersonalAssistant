@@ -11,6 +11,7 @@ public class QueryToUser extends QueryBase {
     private String priority;
     private String comment;
     private String date;
+    private String category;
 
     private List<String> assignedTo = null;
 
@@ -21,6 +22,7 @@ public class QueryToUser extends QueryBase {
                 ", priority='" + priority + '\'' +
                 ", comment='" + comment + '\'' +
                 ", date='" + date + '\'' +
+                ", category='" + category + '\'' +
                 ", assignedTo=" + assignedTo +
                 '}';
     }
@@ -63,5 +65,13 @@ public class QueryToUser extends QueryBase {
 
     public void setAssignedTo(List<String> assignedTo) {
         this.assignedTo = assignedTo;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

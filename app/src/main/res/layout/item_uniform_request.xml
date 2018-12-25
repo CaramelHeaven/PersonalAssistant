@@ -62,10 +62,15 @@
             android:background="#ff9a4c">
 
             <TextView
+                android:id="@+id/tv_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Заявка в АХО"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Неопределено"
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
         </RelativeLayout>

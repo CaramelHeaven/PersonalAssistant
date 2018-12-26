@@ -16,9 +16,13 @@ import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.order_new_additionally.presenter.OrderNewAdditionallyPresenter;
 import com.volgagas.personalassistant.presentation.order_new_additionally.presenter.OrderNewAdditionallyView;
 import com.volgagas.personalassistant.presentation.order_new_purchase.OrderCommonAdapter;
+import com.volgagas.personalassistant.utils.bus.GlobalBus;
+import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 13:18, 25/12/2018.
@@ -56,6 +60,14 @@ public class OrderNewAdditionallyFragment extends BaseFragment implements OrderN
 
         adapter = new OrderCommonAdapter<>(new ArrayList<>());
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnButtonPlusMinusClickListener((position, status) -> {
+            Timber.d("click: " + position);
+            NewOrder order = adapter.getItemByPosition(position);
+            order.setStatus(status);
+
+            GlobalBus.getEventBus().post(order);
+        });
     }
 
     @Override

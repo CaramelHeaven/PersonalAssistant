@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.data.repository;
 
 import com.google.gson.JsonObject;
 import com.volgagas.personalassistant.PersonalAssistant;
+import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.mapper.query_template.QueriesTemplateResponseToQueryTemplate;
@@ -230,10 +231,10 @@ public class MainRemoteRepository implements MainRepository {
     public Single<List<NewOrder>> getOrderNewBase() {
         List<NewOrder> stringList = new ArrayList<>();
 
-        stringList.add(new NewOrder("Ботинки летние", "f"));
-        stringList.add(new NewOrder("Брюки летние", "2"));
-        stringList.add(new NewOrder("Куртка летняя", "3"));
-        stringList.add(new NewOrder("Полукомбинизон летний", "4"));
+        stringList.add(new NewOrder("Ботинки летние", R.drawable.ic_summer_shoe));
+        stringList.add(new NewOrder("Брюки летние", R.drawable.ic_summer_pants));
+        stringList.add(new NewOrder("Куртка летняя", R.drawable.ic_summer_denim_jacket));
+        stringList.add(new NewOrder("Полукомбинизон летний", R.drawable.ic_summer_overall));
 
         return Single.just(stringList);
     }
@@ -242,17 +243,17 @@ public class MainRemoteRepository implements MainRepository {
     public Single<List<NewOrder>> getOrderNewAdditionally() {
         List<NewOrder> stringList = new ArrayList<>();
 
-        stringList.add(new NewOrder("Костюм для защиты эл. дуги", "5"));
-        stringList.add(new NewOrder("Костюм зимний", "6"));
-        stringList.add(new NewOrder("Костюм сварщика", "2"));
-        stringList.add(new NewOrder("Куртка зимняя", "s"));
-        stringList.add(new NewOrder("Подшлеммник зимний", "a"));
-        stringList.add(new NewOrder("Сапоги зимние", "q"));
-        stringList.add(new NewOrder("Сапоги резиновые", "x"));
-        stringList.add(new NewOrder("Тапочки-туфли", "q"));
-        stringList.add(new NewOrder("Термобелье", "s"));
-        stringList.add(new NewOrder("Футболка", "a"));
-        stringList.add(new NewOrder("Шапка вязаная", "ds"));
+        stringList.add(new NewOrder("Костюм для защиты эл. дуги", R.drawable.ic_protect_electrons));
+        stringList.add(new NewOrder("Костюм зимний", R.drawable.ic_trench_coat));
+        stringList.add(new NewOrder("Костюм сварщика", R.drawable.ic_welder));
+        stringList.add(new NewOrder("Куртка зимняя", R.drawable.ic_coat));
+        stringList.add(new NewOrder("Подшлеммник зимний", R.drawable.ic_summer_denim_jacket));
+        stringList.add(new NewOrder("Сапоги зимние", R.drawable.ic_winter_boot));
+        stringList.add(new NewOrder("Сапоги резиновые", R.drawable.ic_footwear));
+        stringList.add(new NewOrder("Тапочки-туфли", R.drawable.ic_slipper));
+        stringList.add(new NewOrder("Термобелье", R.drawable.ic_pijama));
+        stringList.add(new NewOrder("Футболка", R.drawable.ic_summer_denim_jacket));
+        stringList.add(new NewOrder("Шапка вязаная", R.drawable.ic_cap));
 
         return Single.just(stringList);
     }

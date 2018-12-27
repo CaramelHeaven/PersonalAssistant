@@ -42,6 +42,8 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
     private Button btnNextStep;
     private Switch switchImportant;
 
+    private String currentDate;
+
     @InjectPresenter
     FillRequestPresenter presenter;
 
@@ -83,7 +85,7 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
 
                 data.setDescription(etDescription.getText().toString());
                 data.setTitle(etEventName.getText().toString());
-                data.setEndDate(tvDate.getText().toString());
+                data.setEndDate(currentDate);
                 data.setImportant(switchImportant.isChecked());
                 data.setCategory(presenter.getQueryTemplate().getId());
 
@@ -137,10 +139,11 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String date = year + "-" + month + "-" + dayOfMonth;
+        String dateToView = dayOfMonth + "." + month + "." + year;
+        currentDate = year + "-" + month + "-" + dayOfMonth;
 
         tvDate.setTextColor(getResources().getColor(R.color.colorTextBlack));
-        tvDate.setText(date);
+        tvDate.setText(dateToView);
     }
 
     @Override

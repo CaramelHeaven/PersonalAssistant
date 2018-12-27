@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -17,6 +18,7 @@ public class WorkerActivity extends MvpAppCompatActivity implements WorkerView {
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private Toolbar toolbar;
 
     private WorkerPagerAdapter adapter;
 
@@ -27,9 +29,14 @@ public class WorkerActivity extends MvpAppCompatActivity implements WorkerView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worker);
-
+        toolbar = findViewById(R.id.toolbar);
         viewPager = findViewById(R.id.vp_container);
         tabLayout = findViewById(R.id.view_pager_tab);
+
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         adapter = new WorkerPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);

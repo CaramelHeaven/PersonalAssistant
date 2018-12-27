@@ -47,6 +47,11 @@ public class KioskActivity extends BaseActivity implements KioskView {
         tlContainer = findViewById(R.id.tl_container);
         btnSend = findViewById(R.id.btn_send);
 
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> finish());
+
         provideEtSearch();
         provideTabLayoutAndViewPager();
 

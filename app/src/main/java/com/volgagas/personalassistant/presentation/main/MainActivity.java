@@ -42,10 +42,8 @@ public class MainActivity extends BaseActivity implements MainView {
 
     private BottomNavigationView bnvNavigation;
     private Toolbar toolbar;
-    private RelativeLayout rlContainer;
     private CircleImageView ivUserImage;
     private ConstraintLayout constraintLayout;
-    private ViewPager vpProjectsContainer;
     private TextView tvName, tvCategory, tvTitleProblem;
 
     private ConstraintSet homeSet, projectsSet, infoSet;
@@ -68,12 +66,10 @@ public class MainActivity extends BaseActivity implements MainView {
         tvName = findViewById(R.id.tv_name);
         tvCategory = findViewById(R.id.tv_category);
         constraintLayout = findViewById(R.id.constraintLayout);
-        vpProjectsContainer = findViewById(R.id.vp_container);
 
         homeSet = new ConstraintSet();
         projectsSet = new ConstraintSet();
         infoSet = new ConstraintSet();
-        //requestFullSet = new ConstraintSet();
 
         if (CacheUser.getUser().getUserImage() != null) {
             byte[] data = Base64.decode(CacheUser.getUser().getUserImage().getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
@@ -87,7 +83,6 @@ public class MainActivity extends BaseActivity implements MainView {
         homeSet.clone(constraintLayout);
         projectsSet.clone(this, R.layout.activity_constraint_projects);
         infoSet.clone(this, R.layout.activity_constraint_about);
-//        requestFullSet.clone(this, R.layout.activity_constraint_request_full);
 
         setSupportActionBar(toolbar);
 

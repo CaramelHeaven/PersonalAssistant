@@ -5,10 +5,9 @@ import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.domain.MainRepository;
+import com.volgagas.personalassistant.models.mapper.kiosk.TaskKioskResponseToTaskTemplate;
 import com.volgagas.personalassistant.models.mapper.query_template.QueriesTemplateResponseToQueryTemplate;
 import com.volgagas.personalassistant.models.mapper.query_template.QueryTemplateMapper;
-import com.volgagas.personalassistant.models.mapper.task.TaskResponseToTask;
-import com.volgagas.personalassistant.models.mapper.task.TasksMapper;
 import com.volgagas.personalassistant.models.mapper.uniform_request.QueryResponseToUniformRequest;
 import com.volgagas.personalassistant.models.mapper.uniform_request.QueryToUserResponseToQueryToUser;
 import com.volgagas.personalassistant.models.mapper.uniform_request.UniformRequestMapper;
@@ -17,21 +16,22 @@ import com.volgagas.personalassistant.models.mapper.user.UserIdResponseToUserId;
 import com.volgagas.personalassistant.models.mapper.user.UserMapper;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseListToUserList;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseToUser;
+import com.volgagas.personalassistant.models.mapper.worker.TaskMapper;
+import com.volgagas.personalassistant.models.mapper.worker.TaskResponseToTask;
+import com.volgagas.personalassistant.models.mapper.worker.TaskResponseToTaskHistory;
+import com.volgagas.personalassistant.models.model.SubTaskViewer;
+import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.User;
+import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.models.model.order_purchase.Order;
 import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
-import com.volgagas.personalassistant.models.model.SubTaskViewer;
-import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.queries.QueryToUser;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
-import com.volgagas.personalassistant.models.model.User;
-import com.volgagas.personalassistant.models.model.UserDynamics;
+import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 import com.volgagas.personalassistant.utils.Constants;
 
-import org.json.JSONObject;
-
-import java.sql.SQLTransactionRollbackException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,7 +46,7 @@ public class MainRemoteRepository implements MainRepository {
     private static volatile MainRemoteRepository INSTANCE;
 
     private static UserMapper userMapper;
-    private static TasksMapper tasksMapper;
+    private static TaskMapper tasksMapper;
     private static QueryTemplateMapper queryMapper;
     private static UniformRequestMapper uniformRequestMapper;
 
@@ -65,14 +65,19 @@ public class MainRemoteRepository implements MainRepository {
                     QueryResponseToUniformRequest queryResponseToUniformRequest = new QueryResponseToUniformRequest();
                     UserIdResponseToUserId userIdResponseToUserId = new UserIdResponseToUserId();
                     TaskResponseToTask taskResponseToTask = new TaskResponseToTask();
-                    UserDynamicsResponseToUserDynamics userDynamicsResponseToUserDynamics = new UserDynamicsResponseToUserDynamics();
+                    TaskResponseToTaskHistory taskResponseToTaskHistory = new TaskResponseToTaskHistory();
+                    TaskKioskResponseToTaskTemplate taskKioskResponseToTaskTemplate =
+                            new TaskKioskResponseToTaskTemplate();
+                    UserDynamicsResponseToUserDynamics userDynamicsResponseToUserDynamics =
+                            new UserDynamicsResponseToUserDynamics();
                     QueriesTemplateResponseToQueryTemplate queriesTemplateResponseToQueryTemplate =
                             new QueriesTemplateResponseToQueryTemplate();
                     QueryToUserResponseToQueryToUser queryToUserResponseToQueryToUser =
                             new QueryToUserResponseToQueryToUser();
 
                     //Initial mappers
-                    tasksMapper = new TasksMapper(taskResponseToTask);
+                    tasksMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
+                            taskKioskResponseToTaskTemplate);
                     userMapper = new UserMapper(userResponseToUser, userResponseListToUserList,
                             userIdResponseToUserId, userDynamicsResponseToUserDynamics);
                     uniformRequestMapper =
@@ -139,7 +144,7 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public Single<List<Task>> getHistory() {
+    public Single<List<TaskHistory>> getHistoryTasks() {
         return null;
     }
 
@@ -165,7 +170,7 @@ public class MainRemoteRepository implements MainRepository {
                 + CacheUser.getUser().getName() + "')";
 
         return PersonalAssistant.getBaseApiService().getTasksToday(filter)
-                .map(tasksMapper::map);
+                .map(tasksMapper::mapTasks);
     }
 
     @Override

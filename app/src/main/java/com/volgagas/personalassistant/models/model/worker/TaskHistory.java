@@ -1,19 +1,14 @@
-package com.volgagas.personalassistant.models.model;
+package com.volgagas.personalassistant.models.model.worker;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.volgagas.personalassistant.models.model.worker.SubTask;
-
 import java.util.List;
-import java.util.Objects;
 
 /**
- * Created by CaramelHeaven on 17:39, 22.11.2018.
- * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * Created by CaramelHeaven on 17:39, 27/12/2018.
  */
-
-public class Task implements Parcelable {
+public class TaskHistory implements Parcelable {
     private String idTask;
     private String preferredTime;
     private String description;
@@ -21,36 +16,8 @@ public class Task implements Parcelable {
     private List<SubTask> subTasks;
     private String gpa;
 
-    //date and time for reflect this data on card view
-    private String startDate;
+    //Minimal time from all subtasks
     private String startTime;
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "idTask='" + idTask + '\'' +
-                ", preferredTime='" + preferredTime + '\'' +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                ", subTasks=" + subTasks +
-                ", gpa='" + gpa + '\'' +
-                ", startDate='" + startDate + '\'' +
-                ", startTime='" + startTime + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return Objects.equals(idTask, task.idTask);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(idTask);
-    }
 
     public String getIdTask() {
         return idTask;
@@ -92,20 +59,12 @@ public class Task implements Parcelable {
         this.subTasks = subTasks;
     }
 
-    public void setGpa(String gpa) {
-        this.gpa = gpa;
-    }
-
     public String getGpa() {
         return gpa;
     }
 
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setGpa(String gpa) {
+        this.gpa = gpa;
     }
 
     public String getStartTime() {
@@ -115,6 +74,7 @@ public class Task implements Parcelable {
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
+
 
     @Override
     public int describeContents() {
@@ -129,33 +89,31 @@ public class Task implements Parcelable {
         dest.writeString(this.status);
         dest.writeTypedList(this.subTasks);
         dest.writeString(this.gpa);
-        dest.writeString(this.startDate);
         dest.writeString(this.startTime);
     }
 
-    public Task() {
+    public TaskHistory() {
     }
 
-    protected Task(Parcel in) {
+    protected TaskHistory(Parcel in) {
         this.idTask = in.readString();
         this.preferredTime = in.readString();
         this.description = in.readString();
         this.status = in.readString();
         this.subTasks = in.createTypedArrayList(SubTask.CREATOR);
         this.gpa = in.readString();
-        this.startDate = in.readString();
         this.startTime = in.readString();
     }
 
-    public static final Creator<Task> CREATOR = new Creator<Task>() {
+    public static final Creator<TaskHistory> CREATOR = new Creator<TaskHistory>() {
         @Override
-        public Task createFromParcel(Parcel source) {
-            return new Task(source);
+        public TaskHistory createFromParcel(Parcel source) {
+            return new TaskHistory(source);
         }
 
         @Override
-        public Task[] newArray(int size) {
-            return new Task[size];
+        public TaskHistory[] newArray(int size) {
+            return new TaskHistory[size];
         }
     };
 }

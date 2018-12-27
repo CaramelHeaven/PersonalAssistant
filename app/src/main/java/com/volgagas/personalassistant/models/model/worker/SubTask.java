@@ -3,23 +3,37 @@ package com.volgagas.personalassistant.models.model.worker;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class SubTask implements Parcelable {
+public class SubTask implements Parcelable, Comparable<SubTask>  {
     private String description;
     private String endDate;
-    private String startDate;
+
     private String worker;
     private String idSubTask;
     private String idActivity;
     private String status;
+
+    /* formatting time is here
+    * */
     private String startTime;
+
+    /* formatting date is here
+    * */
+    private String startDate;
+
+    /* server time without formatting
+    * */
+    private String startServerTime;
 
     //for make photo adapter
     private List<String> picturesPath;
     //for check boxes
     private boolean stateBox;
+    //date for sorting subtasks
+    private Date dateStart;
 
     public SubTask(String description) {
         this.description = description;
@@ -36,8 +50,10 @@ public class SubTask implements Parcelable {
                 ", idActivity='" + idActivity + '\'' +
                 ", status='" + status + '\'' +
                 ", startTime='" + startTime + '\'' +
+                ", startServerTime='" + startServerTime + '\'' +
                 ", picturesPath=" + picturesPath +
                 ", stateBox=" + stateBox +
+                ", dateStart=" + dateStart +
                 '}';
     }
 
@@ -59,6 +75,22 @@ public class SubTask implements Parcelable {
     @Override
     public int hashCode() {
         return Objects.hash(description, endDate, startDate, worker, idSubTask, idActivity, status, startTime);
+    }
+
+    public Date getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(Date dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public String getStartServerTime() {
+        return startServerTime;
+    }
+
+    public void setStartServerTime(String startServerTime) {
+        this.startServerTime = startServerTime;
     }
 
     public void setPicturesPath(List<String> picturesPath) {
@@ -188,4 +220,9 @@ public class SubTask implements Parcelable {
             return new SubTask[size];
         }
     };
+
+    @Override
+    public int compareTo(SubTask o) {
+        return getDateStart().compareTo(o.getDateStart());
+    }
 }

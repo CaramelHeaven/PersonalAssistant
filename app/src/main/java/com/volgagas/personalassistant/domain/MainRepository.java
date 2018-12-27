@@ -10,6 +10,7 @@ import com.volgagas.personalassistant.models.model.queries.QueryToUser;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
+import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 
 import org.json.JSONObject;
@@ -46,7 +47,7 @@ public interface MainRepository {
 
     /* GET history tasks from D365 for special user
      * */
-    Single<List<Task>> getHistory();
+    Single<List<TaskHistory>> getHistoryTasks();
 
     /* GET tasks today
      * */

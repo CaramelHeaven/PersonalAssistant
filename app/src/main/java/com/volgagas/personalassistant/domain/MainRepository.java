@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.domain;
 
 import com.google.gson.JsonObject;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
+import com.volgagas.personalassistant.models.model.order_purchase.Order;
 import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
@@ -93,4 +94,8 @@ public interface MainRepository {
     /* data for order new additionally fragment
      * */
     Single<List<NewOrder>> getOrderNewAdditionally();
+
+    /* User orders from share point. Contains clothes, boots etc.
+    * */
+    Single<List<Order>> getUserOrders();
 }

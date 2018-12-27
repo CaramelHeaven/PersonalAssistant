@@ -18,6 +18,7 @@ import com.volgagas.personalassistant.models.mapper.user.UserMapper;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseListToUserList;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseToUser;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
+import com.volgagas.personalassistant.models.model.order_purchase.Order;
 import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
@@ -256,5 +257,16 @@ public class MainRemoteRepository implements MainRepository {
         stringList.add(new NewOrder("Шапка вязаная", R.drawable.ic_cap));
 
         return Single.just(stringList);
+    }
+
+    @Override
+    public Single<List<Order>> getUserOrders() {
+        List<Order> orderList = new ArrayList<>();
+        orderList.add(new Order("Title", true, "description"));
+        orderList.add(new Order("Title", true, "description"));
+        orderList.add(new Order("Title", true, "description"));
+        orderList.add(new Order("Title", true, "description"));
+
+        return Single.just(orderList);
     }
 }

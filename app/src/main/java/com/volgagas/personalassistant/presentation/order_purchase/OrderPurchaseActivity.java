@@ -12,15 +12,17 @@ import android.widget.ProgressBar;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.models.model.order_purchase.Order;
 import com.volgagas.personalassistant.presentation.order_new_purchase.OrderNewPurchaseActivity;
 import com.volgagas.personalassistant.presentation.order_purchase.presenter.OrderPurchasePresenter;
 import com.volgagas.personalassistant.presentation.order_purchase.presenter.OrderPurchaseView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import timber.log.Timber;
 
-public class OrderPurchaseActivity extends MvpAppCompatActivity implements OrderPurchaseView {
+public class OrderPurchaseActivity extends MvpAppCompatActivity implements OrderPurchaseView<Order> {
 
     private Button btnAddNewOrder;
     private RecyclerView recyclerView;
@@ -48,8 +50,6 @@ public class OrderPurchaseActivity extends MvpAppCompatActivity implements Order
 
         btnAddNewOrder.setOnClickListener(v -> {
             startActivity(new Intent(OrderPurchaseActivity.this, OrderNewPurchaseActivity.class));
-            Timber.d("click");
-            Timber.d("click");
         });
 
         provideViews();
@@ -71,5 +71,12 @@ public class OrderPurchaseActivity extends MvpAppCompatActivity implements Order
 
         adapter = new OrderAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void showItems(List<Order> items) {
+        if (items.size() > 0) {
+            adapter.updateAdapter(items);
+        }
     }
 }

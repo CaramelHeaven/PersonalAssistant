@@ -4,9 +4,13 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.design.widget.BottomNavigationView;
+import android.support.transition.AutoTransition;
+import android.support.transition.Transition;
+import android.support.transition.TransitionListenerAdapter;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -136,54 +140,61 @@ public class MainActivity extends BaseActivity implements MainView {
         bnvNavigation.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.action_home:
-                    Fragment fragmente = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-
-                    if (!fragmente.getTag().equals("HOME")) {
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, HomeFragment.newInstance(), "HOME")
-                                .commit();
-                    }
                     TransitionManager.beginDelayedTransition(constraintLayout);
                     homeSet.applyTo(constraintLayout);
+
+//                    if (!fragmente.getTag().equals("HOME")) {
+//                        getSupportFragmentManager()
+//                                .beginTransaction()
+//                                .replace(R.id.fragment_container, HomeFragment.newInstance(), "HOME")
+//                                .commit();
+//                    }
+
                     break;
                 case R.id.action_project:
-                    //   vpProjectsContainer.setAdapter(projectsAdapter);
-                    //  tabLayout.setupWithViewPager(vpProjectsContainer);
-
                     Fragment fragment2 = getSupportFragmentManager().findFragmentByTag("PROJECTS");
 
-                    if (fragment2 == null) {
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container_projects, FragmentProjects.newInstance(), "PROJECTS")
-                                .commit();
-                    }
+                    AutoTransition autoTransition = new AutoTransition();
 
-                    TransitionManager.beginDelayedTransition(constraintLayout);
+                    autoTransition.addListener(new TransitionListenerAdapter() {
+                        @Override
+                        public void onTransitionEnd(@NonNull Transition transition) {
+                            if (fragment2 == null) {
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.fragment_container_projects, FragmentProjects.newInstance(), "PROJECTS")
+                                        .commit();
+                            }
+                        }
+                    });
+
+                    TransitionManager.beginDelayedTransition(constraintLayout, autoTransition);
                     projectsSet.applyTo(constraintLayout);
-                    //  openProjects();
+
                     break;
                 case R.id.action_info:
                     Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("INFO");
 
-                    if (fragment1 == null) {
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container_about, InfoFragment.newInstance(), "INFO")
-                                .commit();
-                    }
-                    TransitionManager.beginDelayedTransition(constraintLayout);
+                    AutoTransition autoTransition1 = new AutoTransition();
+
+                    autoTransition1.addListener(new TransitionListenerAdapter() {
+                        @Override
+                        public void onTransitionEnd(@NonNull Transition transition) {
+                            if (fragment1 == null) {
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.fragment_container_about, InfoFragment.newInstance(), "INFO")
+                                        .commit();
+                            }
+                        }
+                    });
+
+                    TransitionManager.beginDelayedTransition(constraintLayout, autoTransition1);
                     infoSet.applyTo(constraintLayout);
+
                     break;
             }
             return true;
         });
     }
-
-    private void openProjects() {
-        TransitionManager.beginDelayedTransition(constraintLayout);
-        projectsSet.applyTo(constraintLayout);
-    }
-
 }

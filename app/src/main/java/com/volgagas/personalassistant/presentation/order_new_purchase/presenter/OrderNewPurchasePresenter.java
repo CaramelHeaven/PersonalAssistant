@@ -40,6 +40,11 @@ public class OrderNewPurchasePresenter extends BasePresenter<OrderNewPurchaseVie
 
     }
 
+    public void sendData() {
+        Timber.d("size sendData: " + chosenOrders);
+        Timber.d("toString: " + chosenOrders.toString());
+    }
+
     public void addNewOrder(NewOrder newOrder) {
         chosenOrders.add(newOrder);
     }

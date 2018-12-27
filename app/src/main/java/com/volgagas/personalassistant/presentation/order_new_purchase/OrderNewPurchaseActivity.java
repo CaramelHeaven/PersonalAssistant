@@ -67,7 +67,6 @@ public class OrderNewPurchaseActivity extends MvpAppCompatActivity implements Or
         btnCountItems.setOnClickListener(v -> {
             Timber.d("lalal");
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            Timber.d("checking list before open backet: " + presenter.getChosenOrders());
             GlobalBus.getEventBus().post(presenter.getChosenOrders());
         });
 
@@ -75,7 +74,7 @@ public class OrderNewPurchaseActivity extends MvpAppCompatActivity implements Or
             if (presenter.getChosenOrders().size() == 0) {
                 Toast.makeText(OrderNewPurchaseActivity.this, "Корзина пуста", Toast.LENGTH_SHORT).show();
             } else {
-                Timber.d("kek");
+                presenter.sendData();
             }
         });
 

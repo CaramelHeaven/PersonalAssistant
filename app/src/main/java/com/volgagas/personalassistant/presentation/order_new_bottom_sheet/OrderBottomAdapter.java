@@ -73,7 +73,10 @@ public class OrderBottomAdapter<T extends NewOrder> extends RecyclerView.Adapter
     }
 
     public void removeItemByPosition(int position) {
-        data.remove(position);
+        dataUnique.remove(data.get(position));
+        data.clear();
+        data.addAll(dataUnique);
+
         notifyItemRemoved(position);
     }
 

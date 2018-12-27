@@ -4,11 +4,14 @@ import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.models.model.order_purchase.Order;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.bus.models.NewOrderModified;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 12:40, 25/12/2018.
@@ -47,5 +50,12 @@ public class OrderNewPurchasePresenter extends BasePresenter<OrderNewPurchaseVie
 
     public List<NewOrder> getChosenOrders() {
         return chosenOrders;
+    }
+
+    public void updateRemovingCallback(NewOrder newOrder) {
+        chosenOrders.remove(newOrder);
+
+        Timber.d("checking: " + chosenOrders.toString());
+        Timber.d("checking: " + chosenOrders.toString());
     }
 }

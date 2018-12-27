@@ -1,12 +1,10 @@
 package com.volgagas.personalassistant.presentation.order_new_purchase;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +14,8 @@ import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 15:35, 25/12/2018.
@@ -43,6 +43,8 @@ public class OrderCommonAdapter<T extends NewOrder> extends RecyclerView.Adapter
         OrderVH orderVH = (OrderVH) viewHolder;
 
         orderVH.tvTitle.setText(data.get(i).getName());
+        orderVH.tvCounter.setText(String.valueOf(data.get(i).getSizeInSheet()));
+
         orderVH.ivImage.setImageDrawable(orderVH.ivImage
                 .getContext()
                 .getResources()
@@ -62,6 +64,16 @@ public class OrderCommonAdapter<T extends NewOrder> extends RecyclerView.Adapter
 
     public NewOrder getItemByPosition(int pos) {
         return data.get(pos);
+    }
+
+    public List<T> getData() {
+        return data;
+    }
+
+    public void setToSizeNil(int pos) {
+        data.get(pos).setSizeInSheet(0);
+
+        notifyItemChanged(pos);
     }
 
     class OrderVH extends RecyclerView.ViewHolder {
@@ -84,21 +96,24 @@ public class OrderCommonAdapter<T extends NewOrder> extends RecyclerView.Adapter
             btnAdd.setOnClickListener(v -> {
                 int count = Integer.parseInt(tvCounter.getText().toString());
                 count++;
+
                 tvCounter.setText(String.valueOf(count));
 
-                onButtonPlusMinusClickListener.onHandleCount(getAdapterPosition(), 1);
+                onButtonPlusMinusClickListener.onHandleCount(getAdapterPosition(), 1, count);
             });
 
             btnMinus.setOnClickListener(v -> {
+                int count = 0;
+
                 if (Integer.parseInt(tvCounter.getText().toString()) > 0) {
-                    int count = Integer.parseInt(tvCounter.getText().toString());
+                    count = Integer.parseInt(tvCounter.getText().toString());
                     count--;
                     tvCounter.setText(String.valueOf(count));
                 } else {
                     tvCounter.setText(String.valueOf(0));
                 }
 
-                onButtonPlusMinusClickListener.onHandleCount(getAdapterPosition(), 0);
+                onButtonPlusMinusClickListener.onHandleCount(getAdapterPosition(), 0, count);
             });
         }
     }

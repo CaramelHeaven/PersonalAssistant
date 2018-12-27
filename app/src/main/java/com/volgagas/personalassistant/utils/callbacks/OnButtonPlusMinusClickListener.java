@@ -5,5 +5,5 @@ package com.volgagas.personalassistant.utils.callbacks;
  * status means: plus - 1, minus - 0
  */
 public interface OnButtonPlusMinusClickListener {
-    void onHandleCount(int position, int status);
+    void onHandleCount(int position, int status, int count);
 }

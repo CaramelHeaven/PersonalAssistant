@@ -17,7 +17,10 @@ import com.volgagas.personalassistant.presentation.order_new_base.presenter.Orde
 import com.volgagas.personalassistant.presentation.order_new_base.presenter.OrderNewBaseView;
 import com.volgagas.personalassistant.presentation.order_new_purchase.OrderCommonAdapter;
 import com.volgagas.personalassistant.utils.bus.GlobalBus;
-import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
+import com.volgagas.personalassistant.utils.bus.models.NewOrderModified;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,15 +64,37 @@ public class OrderNewBaseFragment extends BaseFragment implements OrderNewBaseVi
         adapter = new OrderCommonAdapter<>(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnButtonPlusMinusClickListener((position, status) -> {
+        adapter.setOnButtonPlusMinusClickListener((position, status, count) -> {
             Timber.d("click: " + position);
             NewOrder order = adapter.getItemByPosition(position);
             order.setStatus(status);
+            order.setSizeInSheet(count);
 
             GlobalBus.getEventBus().post(order);
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        GlobalBus.getEventBus().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        GlobalBus.getEventBus().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void callbackFromSheetBottom(NewOrderModified order) {
+        if (adapter.getData().contains(order.getNewOrder())) {
+            int pos = adapter.getData().indexOf(order.getNewOrder());
+
+            Timber.d("position in newBaseChanged: " + pos);
+            adapter.setToSizeNil(pos);
+        }
+    }
 
     @Override
     public void onDestroyView() {

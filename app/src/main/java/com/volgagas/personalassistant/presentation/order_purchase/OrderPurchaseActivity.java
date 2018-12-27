@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -24,6 +25,7 @@ public class OrderPurchaseActivity extends MvpAppCompatActivity implements Order
     private Button btnAddNewOrder;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private Toolbar toolbar;
 
     private OrderAdapter adapter;
 
@@ -37,6 +39,12 @@ public class OrderPurchaseActivity extends MvpAppCompatActivity implements Order
         recyclerView = findViewById(R.id.recyclerView);
         btnAddNewOrder = findViewById(R.id.btn_add_new_order);
         progressBar = findViewById(R.id.progressBar);
+        toolbar = findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         btnAddNewOrder.setOnClickListener(v -> {
             startActivity(new Intent(OrderPurchaseActivity.this, OrderNewPurchaseActivity.class));

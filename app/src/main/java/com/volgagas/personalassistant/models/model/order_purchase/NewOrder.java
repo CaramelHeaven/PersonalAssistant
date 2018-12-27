@@ -2,6 +2,8 @@ package com.volgagas.personalassistant.models.model.order_purchase;
 
 import android.content.Context;
 
+import java.util.Objects;
+
 /**
  * Created by CaramelHeaven on 16:07, 25/12/2018.
  * new orders for created it
@@ -12,6 +14,9 @@ public class NewOrder {
 
     //status newOrder. remove or add
     private int status;
+
+    // size for order new bottom fragment
+    private int sizeInSheet;
 
     public NewOrder(String name, int imageReference) {
         this.name = name;
@@ -25,6 +30,21 @@ public class NewOrder {
                 ", imageReference=" + imageReference +
                 ", status=" + status +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NewOrder order = (NewOrder) o;
+        return imageReference == order.imageReference &&
+                Objects.equals(name, order.name);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(name, imageReference);
     }
 
     public String getName() {
@@ -46,5 +66,13 @@ public class NewOrder {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getSizeInSheet() {
+        return sizeInSheet;
+    }
+
+    public void setSizeInSheet(int sizeInSheet) {
+        this.sizeInSheet = sizeInSheet;
     }
 }

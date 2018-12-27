@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
-import com.volgagas.personalassistant.models.model.order_purchase.Order;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.utils.bus.GlobalBus;
+import com.volgagas.personalassistant.utils.bus.models.NewOrderModified;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -67,6 +67,21 @@ public class OrderNewBottomFragment extends BaseFragment {
 
         adapter = new OrderBottomAdapter<>(new ArrayList<>());
         recyclerView.setAdapter(adapter);
+
+        adapter.setMyOnItemClickListener(position -> {
+            NewOrder order = adapter.getItemByPosition(position);
+            NewOrderModified modified = new NewOrderModified();
+
+            //important code
+            modified.setLastCountState(order.getSizeInSheet());
+
+            order.setSizeInSheet(0);
+            modified.setNewOrder(order); // and here.
+
+            adapter.removeItemByPosition(position);
+
+            GlobalBus.getEventBus().post(modified);
+        });
     }
 
     @Override
@@ -85,6 +100,7 @@ public class OrderNewBottomFragment extends BaseFragment {
      * */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void updateAdapter(List<NewOrder> list) {
+
         adapter.updateAdapter(list);
         Timber.d("UPDATE ADAPTER");
     }

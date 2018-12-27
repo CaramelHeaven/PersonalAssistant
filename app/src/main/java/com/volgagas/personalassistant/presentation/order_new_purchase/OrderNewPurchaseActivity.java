@@ -3,6 +3,7 @@ package com.volgagas.personalassistant.presentation.order_new_purchase;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -17,9 +18,13 @@ import com.volgagas.personalassistant.presentation.order_new_bottom_sheet.OrderN
 import com.volgagas.personalassistant.presentation.order_new_purchase.presenter.OrderNewPurchasePresenter;
 import com.volgagas.personalassistant.presentation.order_new_purchase.presenter.OrderNewPurchaseView;
 import com.volgagas.personalassistant.utils.bus.GlobalBus;
+import com.volgagas.personalassistant.utils.bus.models.NewOrderModified;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import timber.log.Timber;
 
@@ -29,6 +34,7 @@ public class OrderNewPurchaseActivity extends MvpAppCompatActivity implements Or
     private Button btnCountItems, btnConfirm;
     private RelativeLayout rlContainer;
     private BottomSheetBehavior bottomSheetBehavior;
+    private Toolbar toolbar;
 
     private OrderViewPager pagerAdapter;
 
@@ -44,8 +50,14 @@ public class OrderNewPurchaseActivity extends MvpAppCompatActivity implements Or
         btnCountItems = findViewById(R.id.btn_count_items);
         rlContainer = findViewById(R.id.rl_container);
         bottomSheetBehavior = BottomSheetBehavior.from(rlContainer);
+        toolbar = findViewById(R.id.toolbar);
 
+        setSupportActionBar(toolbar);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -55,6 +67,7 @@ public class OrderNewPurchaseActivity extends MvpAppCompatActivity implements Or
         btnCountItems.setOnClickListener(v -> {
             Timber.d("lalal");
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            Timber.d("checking list before open backet: " + presenter.getChosenOrders());
             GlobalBus.getEventBus().post(presenter.getChosenOrders());
         });
 
@@ -95,6 +108,21 @@ public class OrderNewPurchaseActivity extends MvpAppCompatActivity implements Or
 
         btnCountItems.setText(String.valueOf(presenter.getChosenOrders().size()));
     }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void callbackRemoveNewOrderModified(NewOrderModified newOrder) {
+        Timber.d("callbackRemoveNewOrderModified");
+
+        Timber.d("size before: " + presenter.getChosenOrders().size());
+        for (int i = 0; i < newOrder.getLastCountState(); i++) {
+            presenter.getChosenOrders().remove(newOrder.getNewOrder());
+        }
+
+        Timber.d("size after: " + presenter.getChosenOrders().size());
+
+        btnCountItems.setText(String.valueOf(presenter.getChosenOrders().size()));
+    }
+
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void closeOrderSheetFragment(String close) {

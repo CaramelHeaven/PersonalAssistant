@@ -23,6 +23,7 @@ import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
+import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.models.model.order_purchase.Order;
 import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
@@ -214,23 +215,17 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public List<Task> testedData() {
-        List<Task> array = new ArrayList<>();
-        Task task = new Task();
-        task.setDescription("fasf");
-        array.add(task);
-        array.add(task);
-        array.add(task);
-        array.add(task);
-        array.add(task);
-        array.add(task);
-        array.add(task);
-        array.add(task);
-        array.add(task);
-        array.add(task);
-        array.add(task);
+    public List<TaskTemplate> testedData() {
+        List<TaskTemplate> taskTemplates = new ArrayList<>();
+        taskTemplates.add(new TaskTemplate("РазДваТри"));
+        taskTemplates.add(new TaskTemplate("1 RRRw"));
+        taskTemplates.add(new TaskTemplate("FFKGPB"));
+        taskTemplates.add(new TaskTemplate("Четыре"));
+        taskTemplates.add(new TaskTemplate("nnnnnnn"));
+        taskTemplates.add(new TaskTemplate("NnNnNn"));
+        taskTemplates.add(new TaskTemplate("94lFkss"));
 
-        return array;
+        return taskTemplates;
     }
 
     @Override

@@ -3,9 +3,8 @@ package com.volgagas.personalassistant.presentation.kiosk_tasks.presenter;
 import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
-import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
-import com.volgagas.personalassistant.utils.channels.CommonChannel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +16,9 @@ import io.reactivex.disposables.CompositeDisposable;
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 @InjectViewState
-public class KioskTaskPresenter extends BasePresenter<KioskTaskView<Task>> {
+public class KioskTaskPresenter extends BasePresenter<KioskTaskView<TaskTemplate>> {
 
-    private List<Task> addedTasks;
+    private List<TaskTemplate> addedTasks;
     private CompositeDisposable disposable;
     private MainRepository repository;
 

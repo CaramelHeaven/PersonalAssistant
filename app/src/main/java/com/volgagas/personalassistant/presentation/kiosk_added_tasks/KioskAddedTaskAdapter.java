@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.LinkedHashSet;
@@ -21,12 +21,12 @@ import java.util.Set;
  */
 public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Task> taskList;
-    private Set<Task> uniqueTasks;
+    private List<TaskTemplate> taskList;
+    private Set<TaskTemplate> uniqueTasks;
 
     private myOnItemClickListener myOnItemClickListener;
 
-    public KioskAddedTaskAdapter(List<Task> taskList) {
+    public KioskAddedTaskAdapter(List<TaskTemplate> taskList) {
         this.taskList = taskList;
         uniqueTasks = new LinkedHashSet<>();
     }
@@ -49,7 +49,7 @@ public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return taskList.size();
     }
 
-    public void addItem(Task model) {
+    public void addItem(TaskTemplate model) {
         uniqueTasks.add(model);
         taskList.clear();
         taskList.addAll(uniqueTasks);
@@ -63,7 +63,7 @@ public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyItemRemoved(position);
     }
 
-    public Task getItemByPosition(int position) {
+    public TaskTemplate getItemByPosition(int position) {
         return taskList.get(position);
     }
 

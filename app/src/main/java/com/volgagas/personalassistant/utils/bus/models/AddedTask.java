@@ -1,19 +1,20 @@
 package com.volgagas.personalassistant.utils.bus.models;
 
 import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 
 /**
  * Created by CaramelHeaven on 12:03, 23.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class AddedTask {
-    private Task task;
+    private TaskTemplate task;
 
-    public AddedTask(Task task) {
+    public AddedTask(TaskTemplate task) {
         this.task = task;
     }
 
-    public Task getTask() {
+    public TaskTemplate getTask() {
         return task;
     }
 

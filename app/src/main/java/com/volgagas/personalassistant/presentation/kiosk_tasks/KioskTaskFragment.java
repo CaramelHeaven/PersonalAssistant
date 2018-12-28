@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.kiosk_tasks.presenter.KioskTaskPresenter;
 import com.volgagas.personalassistant.presentation.kiosk_tasks.presenter.KioskTaskView;
@@ -32,13 +33,13 @@ import timber.log.Timber;
  * Created by CaramelHeaven on 17:10, 22.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
-public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Task> {
+public class KioskTaskFragment extends BaseFragment implements KioskTaskView<TaskTemplate> {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
 
     private KioskTaskAdapter adapter;
-    private List<Task> filterList;
+    private List<TaskTemplate> filterList;
 
     @InjectPresenter
     KioskTaskPresenter presenter;
@@ -94,8 +95,8 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
     public void filterList(String str) {
         Timber.d("string: " + str);
         if (!str.isEmpty()) {
-            final List<Task> filtering = new ArrayList<>();
-            for (Task val : filterList) {
+            final List<TaskTemplate> filtering = new ArrayList<>();
+            for (TaskTemplate val : filterList) {
                 if (val.getDescription().toLowerCase().contains(str)) {
                     filtering.add(val);
                 }
@@ -124,7 +125,7 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
     }
 
     @Override
-    public void showItems(List<Task> models) {
+    public void showItems(List<TaskTemplate> models) {
         if (models.size() != 0) {
             filterList.clear();
             filterList.addAll(models);

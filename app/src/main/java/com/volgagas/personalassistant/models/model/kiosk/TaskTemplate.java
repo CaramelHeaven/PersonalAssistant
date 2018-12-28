@@ -30,6 +30,10 @@ public class TaskTemplate implements Parcelable {
     private String endDateTime;
     private String workerPreferredTechnicianName;
 
+    public TaskTemplate(String description) {
+        this.description = description;
+    }
+
     public String getDataAreaId() {
         return dataAreaId;
     }

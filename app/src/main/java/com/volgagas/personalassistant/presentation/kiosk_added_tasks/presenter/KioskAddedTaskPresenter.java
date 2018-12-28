@@ -4,16 +4,13 @@ import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
-import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
 /**
@@ -21,12 +18,12 @@ import io.reactivex.disposables.CompositeDisposable;
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 @InjectViewState
-public class KioskAddedTaskPresenter extends BasePresenter<KioskAddedTaskView<Task>> {
+public class KioskAddedTaskPresenter extends BasePresenter<KioskAddedTaskView<TaskTemplate>> {
 
     private CompositeDisposable disposable;
     private MainRepository repository;
 
-    private Set<Task> addedTasks;
+    private Set<TaskTemplate> addedTasks;
 
     public KioskAddedTaskPresenter() {
         repository = MainRemoteRepository.getInstance();
@@ -50,12 +47,12 @@ public class KioskAddedTaskPresenter extends BasePresenter<KioskAddedTaskView<Ta
 
     }
 
-    public void addedTask(Task task) {
+    public void addedTask(TaskTemplate task) {
         addedTasks.add(task);
         CommonChannel.sendListTasks(addedTasks);
     }
 
-    public void removeTask(Task task) {
+    public void removeTask(TaskTemplate task) {
         addedTasks.remove(task);
         CommonChannel.sendListTasks(addedTasks);
     }

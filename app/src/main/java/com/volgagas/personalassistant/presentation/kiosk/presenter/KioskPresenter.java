@@ -6,6 +6,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 
@@ -28,7 +29,7 @@ public class KioskPresenter extends BasePresenter<KioskView> {
     private CompositeDisposable disposable;
     private boolean permissionToSend = false;
 
-    private List<Task> addedTasks;
+    private List<TaskTemplate> addedTasks;
 
     public KioskPresenter() {
         repository = MainRemoteRepository.getInstance();

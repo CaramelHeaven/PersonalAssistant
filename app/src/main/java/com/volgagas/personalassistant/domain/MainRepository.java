@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.domain;
 
 import com.google.gson.JsonObject;
+import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.models.model.order_purchase.Order;
 import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
@@ -86,7 +87,9 @@ public interface MainRepository {
 
     Single<UserDynamics> getPersonalUserNumber(String personalName);
 
-    List<Task> testedData();
+    /* Template of tasks for kiosk screen
+    * */
+    List<TaskTemplate> testedData();
 
     /* data for order new base fragment
      * */

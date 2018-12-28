@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.LinkedHashSet;
@@ -24,12 +24,12 @@ import timber.log.Timber;
  */
 public class KioskTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Task> taskList;
-    private Set<Task> uniqueTasks;
+    private List<TaskTemplate> taskList;
+    private Set<TaskTemplate> uniqueTasks;
 
     private myOnItemClickListener myOnItemClickListener;
 
-    public KioskTaskAdapter(List<Task> taskList) {
+    public KioskTaskAdapter(List<TaskTemplate> taskList) {
         this.taskList = taskList;
         uniqueTasks = new LinkedHashSet<>();
     }
@@ -44,18 +44,17 @@ public class KioskTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         TaskVH taskVH = (TaskVH) viewHolder;
-       // taskVH.tvCategory.setText(taskList.get(position).getCategoryId());
         taskVH.tvTaskName.setText(taskList.get(position).getDescription());
     }
 
-    public void updateAdapter(List<Task> models) {
+    public void updateAdapter(List<TaskTemplate> models) {
         uniqueTasks.addAll(models);
         taskList.clear();
         taskList.addAll(uniqueTasks);
         notifyDataSetChanged();
     }
 
-    public void filterAdapter(List<Task> filterList) {
+    public void filterAdapter(List<TaskTemplate> filterList) {
         Timber.d("filterSize: " + filterList.size());
         taskList.clear();
         taskList.addAll(filterList);
@@ -67,7 +66,7 @@ public class KioskTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return taskList.size();
     }
 
-    public Task getItemByPosition(int position) {
+    public TaskTemplate getItemByPosition(int position) {
         return taskList.get(position);
     }
 

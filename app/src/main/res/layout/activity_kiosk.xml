@@ -74,11 +74,11 @@
 
     <Button
         android:id="@+id/btn_send"
-        style="@style/AppTheme.Button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="24dp"
-        android:text="Подтвердить"
-        android:visibility="gone" />
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        android:text="Создать задачи"
+        android:textColor="@android:color/white"
+        android:visibility="visible" />
 </android.support.design.widget.CoordinatorLayout>

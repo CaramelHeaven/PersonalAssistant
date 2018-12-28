@@ -22,33 +22,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="52dp"
+            android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/iv_image"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="LalalalalLalalalalLalalalalLalalalal"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_16sp" />
+            android:textColor="@android:color/black" />
 
-        <TextView
-            android:id="@+id/tv_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_title"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_toRightOf="@id/iv_image"
-            android:text="Кол-во : 6" />
-
-        <ImageButton
-            android:id="@+id/btn_cancel"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="38dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="8dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/ic_clear" />
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/rounded_rectangle_white">
+
+            <ImageButton
+                android:id="@+id/btn_minus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@id/tv_count"
+                android:background="@drawable/ic_minus" />
+
+            <TextView
+                android:id="@+id/tv_count"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="0"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btn_plus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:layout_toRightOf="@id/tv_count"
+                android:background="@drawable/ic_plus" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <View

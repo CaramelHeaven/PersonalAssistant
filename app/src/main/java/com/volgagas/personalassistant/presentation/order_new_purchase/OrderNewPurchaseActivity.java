@@ -105,7 +105,7 @@ public class OrderNewPurchaseActivity extends MvpAppCompatActivity implements Or
             presenter.addNewOrder(newOrder);
         }
 
-        btnCountItems.setText(String.valueOf(presenter.getChosenOrders().size()));
+        btnCountItems.setText("Кол-во: " + String.valueOf(presenter.getChosenOrders().size()));
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -119,7 +119,7 @@ public class OrderNewPurchaseActivity extends MvpAppCompatActivity implements Or
 
         Timber.d("size after: " + presenter.getChosenOrders().size());
 
-        btnCountItems.setText(String.valueOf(presenter.getChosenOrders().size()));
+        btnCountItems.setText("Кол-во: " + String.valueOf(presenter.getChosenOrders().size()));
     }
 
 

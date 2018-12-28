@@ -49,8 +49,11 @@
                 android:layout_marginBottom="12dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_rectangle_white"
+                android:drawableLeft="@drawable/ic_basket"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
                 android:text="Кол-во: 0"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_12sp" />

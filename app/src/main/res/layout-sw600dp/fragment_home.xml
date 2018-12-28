@@ -28,9 +28,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_margin="50dp"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="4dp"
                     app:cardElevation="8dp">
@@ -41,8 +39,8 @@
 
                         <ImageView
                             android:id="@+id/iv_image1"
-                            android:layout_width="54dp"
-                            android:layout_height="54dp"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
                             android:layout_centerInParent="true"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="18dp"
@@ -61,7 +59,8 @@
                             android:gravity="center"
                             android:lines="2"
                             android:text="Создать задачу"
-                            android:textColor="@android:color/black" />
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
@@ -77,9 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_margin="50dp"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="4dp"
                     app:cardElevation="8dp">
@@ -90,8 +87,8 @@
 
                         <ImageView
                             android:id="@+id/iv_image"
-                            android:layout_width="54dp"
-                            android:layout_height="54dp"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
                             android:layout_centerInParent="true"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="18dp"
@@ -110,7 +107,8 @@
                             android:gravity="center"
                             android:lines="2"
                             android:text="Создать заявку"
-                            android:textColor="@android:color/black" />
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
@@ -135,9 +133,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_margin="50dp"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="4dp"
                     app:cardElevation="8dp">
@@ -148,8 +144,8 @@
 
                         <ImageView
                             android:id="@+id/iv_image2"
-                            android:layout_width="54dp"
-                            android:layout_height="54dp"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
                             android:layout_centerInParent="true"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="18dp"
@@ -168,7 +164,8 @@
                             android:gravity="center"
                             android:lines="2"
                             android:text="Список задач"
-                            android:textColor="@android:color/black" />
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
             </RelativeLayout>
@@ -183,9 +180,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_margin="50dp"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="4dp"
                     app:cardElevation="8dp">
@@ -196,8 +191,8 @@
 
                         <ImageView
                             android:id="@+id/iv_image3"
-                            android:layout_width="54dp"
-                            android:layout_height="54dp"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
                             android:layout_centerInParent="true"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="18dp"
@@ -216,7 +211,8 @@
                             android:gravity="center"
                             android:lines="2"
                             android:text="Заказ"
-                            android:textColor="@android:color/black" />
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
             </RelativeLayout>

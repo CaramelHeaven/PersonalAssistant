@@ -5,6 +5,7 @@
     <dimen name="image_icon_size">38dp</dimen>
     <dimen name="text_16sp">16dp</dimen>
     <dimen name="text_24sp">24sp</dimen>
+    <dimen name="text_18sp">18sp</dimen>
 
     <dimen name="design_bottom_navigation_item_max_width" tools:override="true">600dp</dimen>
     <dimen name="design_bottom_navigation_active_item_max_width" tools:override="true">600dp</dimen>

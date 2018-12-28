@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
@@ -32,6 +33,7 @@ public class OrderNewBottomFragment extends BaseFragment {
 
     private RecyclerView recyclerView;
     private Toolbar toolbar;
+    private TextView tvEmptyBasket;
 
     private OrderBottomAdapter<NewOrder> adapter;
 
@@ -56,6 +58,7 @@ public class OrderNewBottomFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerView);
         toolbar = view.findViewById(R.id.toolbar);
+        tvEmptyBasket = view.findViewById(R.id.tv_empty_basket);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -81,7 +84,11 @@ public class OrderNewBottomFragment extends BaseFragment {
             adapter.removeItemByPosition(position);
 
             GlobalBus.getEventBus().post(modified);
+
+            handlerTvEmptyBasket();
         });
+
+        handlerTvEmptyBasket();
     }
 
     @Override
@@ -100,9 +107,9 @@ public class OrderNewBottomFragment extends BaseFragment {
      * */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void updateAdapter(List<NewOrder> list) {
-
         adapter.updateAdapter(list);
-        Timber.d("UPDATE ADAPTER");
+
+        handlerTvEmptyBasket();
     }
 
     @Override
@@ -110,5 +117,13 @@ public class OrderNewBottomFragment extends BaseFragment {
         recyclerView = null;
         toolbar = null;
         super.onDestroyView();
+    }
+
+    private void handlerTvEmptyBasket() {
+        if (adapter.getData().size() == 0) {
+            tvEmptyBasket.setVisibility(View.VISIBLE);
+        } else {
+            tvEmptyBasket.setVisibility(View.GONE);
+        }
     }
 }

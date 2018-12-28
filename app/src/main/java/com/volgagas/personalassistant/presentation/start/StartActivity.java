@@ -3,6 +3,8 @@ package com.volgagas.personalassistant.presentation.start;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -26,6 +28,8 @@ import timber.log.Timber;
 
 public class StartActivity extends BaseActivity implements StartView {
 
+    private ProgressBar progressBar;
+
     private AuthenticationContext authContext;
 
     @InjectPresenter
@@ -35,6 +39,7 @@ public class StartActivity extends BaseActivity implements StartView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        progressBar = findViewById(R.id.progressBar);
 
         setPermissionToEnableNfc(true);
 
@@ -80,12 +85,12 @@ public class StartActivity extends BaseActivity implements StartView {
 
     @Override
     public void showProgress() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

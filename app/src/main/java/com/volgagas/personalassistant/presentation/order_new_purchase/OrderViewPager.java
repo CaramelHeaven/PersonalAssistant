@@ -36,7 +36,7 @@ public class OrderViewPager extends FragmentPagerAdapter {
             case 0:
                 return "Основное";
             case 1:
-                return "Допольнительно";
+                return "Дополнительно";
             default:
                 return "";
         }

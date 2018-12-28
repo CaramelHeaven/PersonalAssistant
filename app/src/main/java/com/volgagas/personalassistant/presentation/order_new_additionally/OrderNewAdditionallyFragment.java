@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
@@ -65,7 +66,6 @@ public class OrderNewAdditionallyFragment extends BaseFragment implements OrderN
         recyclerView.setAdapter(adapter);
 
         adapter.setOnButtonPlusMinusClickListener((position, status, count) -> {
-            Timber.d("click: " + position);
             NewOrder order = adapter.getItemByPosition(position);
             order.setStatus(status);
             order.setSizeInSheet(count);

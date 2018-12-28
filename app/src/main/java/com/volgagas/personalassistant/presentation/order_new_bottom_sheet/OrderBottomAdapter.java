@@ -80,6 +80,10 @@ public class OrderBottomAdapter<T extends NewOrder> extends RecyclerView.Adapter
         notifyItemRemoved(position);
     }
 
+    public List<T> getData() {
+        return data;
+    }
+
     class DataVH extends RecyclerView.ViewHolder {
         TextView tvTitle, tvCount;
         ImageButton btnCancel;

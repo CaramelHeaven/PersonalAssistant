@@ -1,21 +1,27 @@
 package com.volgagas.personalassistant.presentation.worker_camera;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.utils.services.SystemMyTimeProvider;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.io.File;
 
 import io.fotoapparat.Fotoapparat;
 import io.fotoapparat.configuration.CameraConfiguration;
@@ -55,14 +61,18 @@ public class CameraActivity extends AppCompatActivity {
     private boolean activeCameraBack = true;
     private boolean isVisible = false;
     private PhotoResult photoResult;
-    private ArrayList<String> filesEncoded = new ArrayList<>();
+    private String filePath;
     private int limitPictures, positionData;
 
     private CameraView cameraView;
     private FocusView focusView;
     private View capture;
-    // private AppCompatSeekBar seekBar;
+    private AppCompatSeekBar seekBar;
     private ImageView imageResult;
+    private GestureDetector gestureDetector;
+
+    private static final int SWIPE_MIN_DISTANCE = 120;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +81,12 @@ public class CameraActivity extends AppCompatActivity {
         cameraView = findViewById(R.id.cameraView);
         focusView = findViewById(R.id.focusView);
         capture = findViewById(R.id.capture);
-        // seekBar = findViewById(R.id.zoomSeekBar);
+        seekBar = findViewById(R.id.zoomSeekBar);
         imageResult = findViewById(R.id.result);
 
         hasCameraPermission = permissionsDelegate.hasCameraPermission();
-        limitPictures = getIntent().getIntExtra("LIMIT", 2);
+        gestureDetector = new GestureDetector(CameraActivity.this, new GestureListener());
+        limitPictures = getIntent().getIntExtra("LIMIT", 0);
         positionData = getIntent().getIntExtra("POSITION_DATA", 0);
 
         if (hasCameraPermission) {
@@ -87,25 +98,24 @@ public class CameraActivity extends AppCompatActivity {
         fotoapparat = createFotoapparat();
 
         zoomSeekBar();
+        imageResultTouch();
 
         fotoapparat.switchTo(activeCameraBack ? back() : front(), cameraConfiguration);
 
         capture.setOnClickListener(view -> {
+            Timber.d("CLICK CLICK CLICK: " + limitPictures);
             if (limitPictures != 0) {
                 isVisible = true;
-
+                imageResult.animate().translationX(0).start();
                 imageResult.setVisibility(View.VISIBLE);
                 photoResult = fotoapparat.takePicture();
 
-                photoResult.toBitmap(scaled(.1f))
+                photoResult.toBitmap(scaled(0.25f))
                         .whenDone(bitmapPhoto -> {
                             if (bitmapPhoto == null) {
                                 return;
                             }
-
                             imageResult.setImageBitmap(bitmapPhoto.bitmap);
-
-                            imageResult.setVisibility(View.VISIBLE);
                             imageResult.setRotation(-bitmapPhoto.rotationDegrees);
                         });
             } else {
@@ -113,8 +123,6 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
     }
-
-    private float currentCloseLocation = 0f, saveStartedLocation = 0f;
 
     @Override
     protected void onStart() {
@@ -147,6 +155,7 @@ public class CameraActivity extends AppCompatActivity {
                 .with(this)
                 .into(cameraView)
                 .focusView(focusView)
+                .previewScaleType(ScaleType.CenterCrop)
                 .lensPosition(back())
                 .frameProcessor(new SampleFrameProcessor())
                 .cameraErrorCallback(new CameraErrorListener() {
@@ -187,21 +196,86 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void zoomSeekBar() {
-//        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-//                fotoapparat.setZoom(progress / (float) seekBar.getMax());
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//        });
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                fotoapparat.setZoom(progress / (float) seekBar.getMax());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void imageResultTouch() {
+        imageResult.setOnTouchListener((view, motionEvent) -> {
+            gestureDetector.onTouchEvent(motionEvent);
+            return true;
+        });
+    }
+
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (isVisible) {
+                if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                    Toast.makeText(CameraActivity.this, "Удалено", Toast.LENGTH_SHORT).show();
+                    AlphaAnimation alphaAnimation = new AlphaAnimation(1f, 0f);
+                    alphaAnimation.setDuration(250);
+                    alphaAnimation.setFillAfter(true);
+                    imageResult.startAnimation(alphaAnimation);
+                    imageResult.animate().translationX(1200)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    imageResult.setVisibility(View.GONE);
+                                }
+                            });
+                    isVisible = false;
+                    return false;
+                } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                    limitPictures -= 1;
+                    Toast.makeText(CameraActivity.this, "Сохранено", Toast.LENGTH_SHORT).show();
+                    AlphaAnimation alphaAnimation = new AlphaAnimation(1f, 0f);
+                    alphaAnimation.setDuration(250);
+                    alphaAnimation.setFillAfter(true);
+                    imageResult.startAnimation(alphaAnimation);
+                    imageResult.animate().translationX(-1200)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    imageResult.setVisibility(View.GONE);
+                                }
+                            });
+                    File file = new File(getCacheDir(), SystemMyTimeProvider.folderNameTimeFormat());
+
+                    photoResult.saveToFile(file);
+                    filePath = file.getPath();
+                }
+            }
+            return false;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+
+        intent.putExtra("FILE", filePath);
+        intent.putExtra("POSITION", positionData);
+
+        setResult(RESULT_OK, intent);
+
+        super.onBackPressed();
     }
 }

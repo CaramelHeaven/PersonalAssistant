@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class SubTask implements Parcelable, Comparable<SubTask>  {
+public class SubTask implements Parcelable, Comparable<SubTask> {
     private String description;
     private String endDate;
 
@@ -17,15 +17,15 @@ public class SubTask implements Parcelable, Comparable<SubTask>  {
     private String status;
 
     /* formatting time is here
-    * */
+     * */
     private String startTime;
 
     /* formatting date is here
-    * */
+     * */
     private String startDate;
 
     /* server time without formatting
-    * */
+     * */
     private String startServerTime;
 
     //for make photo adapter
@@ -35,26 +35,20 @@ public class SubTask implements Parcelable, Comparable<SubTask>  {
     //date for sorting subtasks
     private Date dateStart;
 
+    //path file where we will send to server if it exist
+    private String filePath;
+
     public SubTask(String description) {
         this.description = description;
     }
 
+    public SubTask() {
+
+    }
+
     @Override
-    public String toString() {
-        return "SubTask{" +
-                "description='" + description + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", startDate='" + startDate + '\'' +
-                ", worker='" + worker + '\'' +
-                ", idSubTask='" + idSubTask + '\'' +
-                ", idActivity='" + idActivity + '\'' +
-                ", status='" + status + '\'' +
-                ", startTime='" + startTime + '\'' +
-                ", startServerTime='" + startServerTime + '\'' +
-                ", picturesPath=" + picturesPath +
-                ", stateBox=" + stateBox +
-                ", dateStart=" + dateStart +
-                '}';
+    public int compareTo(SubTask o) {
+        return getDateStart().compareTo(o.getDateStart());
     }
 
     @Override
@@ -173,6 +167,13 @@ public class SubTask implements Parcelable, Comparable<SubTask>  {
         this.stateBox = stateBox;
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 
     @Override
     public int describeContents() {
@@ -183,30 +184,34 @@ public class SubTask implements Parcelable, Comparable<SubTask>  {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.description);
         dest.writeString(this.endDate);
-        dest.writeString(this.startDate);
         dest.writeString(this.worker);
         dest.writeString(this.idSubTask);
         dest.writeString(this.idActivity);
         dest.writeString(this.status);
         dest.writeString(this.startTime);
+        dest.writeString(this.startDate);
+        dest.writeString(this.startServerTime);
         dest.writeStringList(this.picturesPath);
         dest.writeByte(this.stateBox ? (byte) 1 : (byte) 0);
-    }
-
-    public SubTask() {
+        dest.writeLong(this.dateStart != null ? this.dateStart.getTime() : -1);
+        dest.writeString(this.filePath);
     }
 
     protected SubTask(Parcel in) {
         this.description = in.readString();
         this.endDate = in.readString();
-        this.startDate = in.readString();
         this.worker = in.readString();
         this.idSubTask = in.readString();
         this.idActivity = in.readString();
         this.status = in.readString();
         this.startTime = in.readString();
+        this.startDate = in.readString();
+        this.startServerTime = in.readString();
         this.picturesPath = in.createStringArrayList();
         this.stateBox = in.readByte() != 0;
+        long tmpDateStart = in.readLong();
+        this.dateStart = tmpDateStart == -1 ? null : new Date(tmpDateStart);
+        this.filePath = in.readString();
     }
 
     public static final Creator<SubTask> CREATOR = new Creator<SubTask>() {
@@ -220,9 +225,4 @@ public class SubTask implements Parcelable, Comparable<SubTask>  {
             return new SubTask[size];
         }
     };
-
-    @Override
-    public int compareTo(SubTask o) {
-        return getDateStart().compareTo(o.getDateStart());
-    }
 }

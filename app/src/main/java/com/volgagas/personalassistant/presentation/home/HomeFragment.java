@@ -5,12 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -20,13 +17,8 @@ import com.volgagas.personalassistant.presentation.home.presenter.HomePresenter;
 import com.volgagas.personalassistant.presentation.home.presenter.HomeView;
 import com.volgagas.personalassistant.presentation.kiosk.KioskActivity;
 import com.volgagas.personalassistant.presentation.order_purchase.OrderPurchaseActivity;
-import com.volgagas.personalassistant.presentation.query_create.QueryCreateActivity;
 import com.volgagas.personalassistant.presentation.worker.WorkerActivity;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import timber.log.Timber;
+import com.volgagas.personalassistant.presentation.worker_result.ResultActivity;
 
 public class HomeFragment extends BaseFragment implements HomeView {
 
@@ -90,31 +82,19 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     private void provideClickListeners() {
         cvCreateTask.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "create task", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getActivity(), QueryCreateActivity.class));
-            Timber.d("click");
-            Timber.d("click");
+            startActivity(new Intent(getActivity(), ResultActivity.class));
         });
 
         cvKiosk.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), KioskActivity.class));
-            Toast.makeText(getActivity(), "cv kiosk", Toast.LENGTH_SHORT).show();
-            Timber.d("click");
-            Timber.d("click");
         });
 
         cvWorker.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), WorkerActivity.class));
-            Toast.makeText(getActivity(), "cv worker", Toast.LENGTH_SHORT).show();
-            Timber.d("click");
-            Timber.d("click");
         });
 
         cvBuyOrder.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), OrderPurchaseActivity.class));
-            Toast.makeText(getActivity(), "cv buy order", Toast.LENGTH_SHORT).show();
-            Timber.d("click");
-            Timber.d("click");
         });
     }
 }

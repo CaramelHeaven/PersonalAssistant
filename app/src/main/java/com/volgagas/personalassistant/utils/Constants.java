@@ -35,4 +35,5 @@ public class Constants {
     //priority for query adapter
     public static final String PRIORITY_NORMAL = "Обычная";
     public static final String PRIORITY_HIGH = "Высокая";
+    public static final int IMAGE_COUNT = 1;
 }

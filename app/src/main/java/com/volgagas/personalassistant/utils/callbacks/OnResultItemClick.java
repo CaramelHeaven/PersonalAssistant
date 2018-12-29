@@ -10,4 +10,6 @@ public interface OnResultItemClick {
     void onClick(int position, View view, boolean status);
 
     void makePhotoClick(int position);
+
+    void makeClearPicture(int position);
 }

@@ -29,4 +29,6 @@ public class QueriesTemplateResponseToQueryTemplate extends Mapper<QueriesTempla
             queryTemplates.add(queryTemplate);
         }
     }
+
+
 }

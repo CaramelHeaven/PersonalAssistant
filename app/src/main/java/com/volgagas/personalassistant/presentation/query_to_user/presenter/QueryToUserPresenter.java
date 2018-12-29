@@ -11,6 +11,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 11:44, 24/12/2018.
@@ -44,6 +45,7 @@ public class QueryToUserPresenter extends BasePresenter<QueryToUserView<QueryToU
     }
 
     private void interactionResult(List<QueryToUser> result) {
+        Timber.d("checkign result : " + result.toString());
         getViewState().hideProgress();
         getViewState().showItems(result);
     }

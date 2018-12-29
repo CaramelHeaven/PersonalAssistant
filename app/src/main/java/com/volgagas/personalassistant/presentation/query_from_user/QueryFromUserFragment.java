@@ -16,6 +16,7 @@ import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.query_from_user.presenter.QueryFromUserView;
 import com.volgagas.personalassistant.presentation.query_from_user.presenter.UniformsPresenter;
+import com.volgagas.personalassistant.presentation.query_more_details.QueryMoreDetailsDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +63,9 @@ public class QueryFromUserFragment extends BaseFragment implements QueryFromUser
         recyclerView.setAdapter(adapter);
 
         adapter.setMyOnItemClickListener(position -> {
-            Timber.d("click");
-            Timber.d("click");
+            QueryMoreDetailsDialogFragment fragment =
+                    QueryMoreDetailsDialogFragment.newInstance(adapter.getItemByPosition(position));
+            fragment.show(getActivity().getSupportFragmentManager(), null);
         });
     }
 

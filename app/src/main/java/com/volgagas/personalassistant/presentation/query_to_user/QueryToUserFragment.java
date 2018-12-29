@@ -14,6 +14,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.queries.QueryToUser;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
+import com.volgagas.personalassistant.presentation.query_more_details.QueryMoreDetailsDialogFragment;
 import com.volgagas.personalassistant.presentation.query_to_user.presenter.QueryToUserPresenter;
 import com.volgagas.personalassistant.presentation.query_to_user.presenter.QueryToUserView;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
@@ -63,8 +64,9 @@ public class QueryToUserFragment extends BaseFragment implements QueryToUserView
         recyclerView.setAdapter(adapter);
 
         adapter.setMyOnItemClickListener(position -> {
-            Timber.d("click");
-            Timber.d("click");
+            QueryMoreDetailsDialogFragment fragment =
+                    QueryMoreDetailsDialogFragment.newInstance(adapter.getItemByPosition(position));
+            fragment.show(getActivity().getSupportFragmentManager(), null);
         });
     }
 

@@ -61,6 +61,10 @@ public class QueryToUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
+    public QueryToUser getItemByPosition(int pos) {
+        return queryToUsers.get(pos);
+    }
+
     class QueryToUserVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvTitle, tvDescription, tvCategory;
         private CardView cvContainer;

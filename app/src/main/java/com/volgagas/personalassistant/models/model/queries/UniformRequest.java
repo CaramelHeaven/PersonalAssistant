@@ -1,5 +1,7 @@
 package com.volgagas.personalassistant.models.model.queries;
 
+import android.os.Parcel;
+
 /**
  * Created by CaramelHeaven on 13:19, 09.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
@@ -62,4 +64,41 @@ public class UniformRequest extends QueryBase {
     public String getPriority() {
         return priority;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.userName);
+        dest.writeString(this.title);
+        dest.writeString(this.description);
+        dest.writeString(this.endedTime);
+        dest.writeString(this.priority);
+    }
+
+    public UniformRequest() {
+    }
+
+    protected UniformRequest(Parcel in) {
+        this.userName = in.readString();
+        this.title = in.readString();
+        this.description = in.readString();
+        this.endedTime = in.readString();
+        this.priority = in.readString();
+    }
+
+    public static final Creator<UniformRequest> CREATOR = new Creator<UniformRequest>() {
+        @Override
+        public UniformRequest createFromParcel(Parcel source) {
+            return new UniformRequest(source);
+        }
+
+        @Override
+        public UniformRequest[] newArray(int size) {
+            return new UniformRequest[size];
+        }
+    };
 }

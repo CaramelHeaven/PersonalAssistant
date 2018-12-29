@@ -7,19 +7,41 @@
         android:id="@+id/ll_container"
         android:layout_width="match_parent"
         android:layout_height="134dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="2">
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-        </RelativeLayout>
+            <ImageView
+                android:id="@+id/iv_money_bag"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/ic_money_bag" />
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            <TextView
+                android:id="@+id/tv_money_for_month_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_money_bag"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"
+                android:text="Доход за месяц"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_money_for_month_text"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"
+                android:text="$ 40000"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_24sp" />
 
         </RelativeLayout>
 
@@ -63,9 +85,9 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/ll_container"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="32dp"
         android:background="@color/colorBackgroundView" />
 
     <TextView

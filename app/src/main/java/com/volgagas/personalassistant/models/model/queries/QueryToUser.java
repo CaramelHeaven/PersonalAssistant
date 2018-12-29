@@ -1,12 +1,15 @@
 package com.volgagas.personalassistant.models.model.queries;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
  * Created by CaramelHeaven on 15:28, 17/12/2018.
  * From uniform requests, where queries TO User
  */
-public class QueryToUser extends QueryBase {
+public class QueryToUser extends QueryBase implements Parcelable {
     private String title;
     private String priority;
     private String comment;
@@ -74,4 +77,43 @@ public class QueryToUser extends QueryBase {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.title);
+        dest.writeString(this.priority);
+        dest.writeString(this.comment);
+        dest.writeString(this.date);
+        dest.writeString(this.category);
+        dest.writeStringList(this.assignedTo);
+    }
+
+    public QueryToUser() {
+    }
+
+    protected QueryToUser(Parcel in) {
+        this.title = in.readString();
+        this.priority = in.readString();
+        this.comment = in.readString();
+        this.date = in.readString();
+        this.category = in.readString();
+        this.assignedTo = in.createStringArrayList();
+    }
+
+    public static final Parcelable.Creator<QueryToUser> CREATOR = new Parcelable.Creator<QueryToUser>() {
+        @Override
+        public QueryToUser createFromParcel(Parcel source) {
+            return new QueryToUser(source);
+        }
+
+        @Override
+        public QueryToUser[] newArray(int size) {
+            return new QueryToUser[size];
+        }
+    };
 }

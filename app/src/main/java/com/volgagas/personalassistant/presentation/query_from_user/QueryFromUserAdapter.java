@@ -53,6 +53,10 @@ public class QueryFromUserAdapter extends RecyclerView.Adapter<RecyclerView.View
         notifyDataSetChanged();
     }
 
+    public UniformRequest getItemByPosition(int pos) {
+        return uniformRequests.get(pos);
+    }
+
     class UniformVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvTitle, tvDescription;
         private CardView cvContainer;

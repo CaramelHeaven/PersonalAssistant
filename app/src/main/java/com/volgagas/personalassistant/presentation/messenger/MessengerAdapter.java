@@ -56,11 +56,11 @@ public class MessengerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             messageYourselfVH.tvMessage.setText(messageList.get(position).getMessage());
 
             if (messageList.get(position).isCompletedSendToServer()) {
-                messageYourselfVH.ivDone.setVisibility(View.GONE);
-                messageYourselfVH.ivTime.setVisibility(View.VISIBLE);
-            } else {
                 messageYourselfVH.ivTime.setVisibility(View.GONE);
                 messageYourselfVH.ivDone.setVisibility(View.VISIBLE);
+            } else {
+                messageYourselfVH.ivDone.setVisibility(View.GONE);
+                messageYourselfVH.ivTime.setVisibility(View.VISIBLE);
             }
         } else {
             MessageVH messageVH = (MessageVH) viewHolder;

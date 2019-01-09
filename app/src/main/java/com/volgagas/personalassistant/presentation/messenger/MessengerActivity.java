@@ -114,29 +114,29 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
             Message message = new Message(CacheUser.getUser().getModifiedNormalName(), msg);
             message.setCompletedSendToServer(false);
 
-           // formatDisplay(message);
+            formatDisplay(message);
 
             presenter.postMessage(message)
                     .subscribe(result -> {
-                       // observeResults(result, adapter.getItemCount());
+                        observeResults(result, adapter.getItemCount() - 1);
                         Timber.d("result in messenger: " + result.toString());
                     });
         });
     }
-//
-//    private void formatDisplay(Message message) {
-//        adapter.addMessage(message);
-//        etMessage.setText("");
-//
-//        recyclerView.postDelayed(() -> recyclerView
-//                .smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1), 100);
-//    }
-//
-//    private void observeResults(UUID id, int lastPosition) {
-//        WorkManager.getInstance().getWorkInfoByIdLiveData(id).observe(MessengerActivity.this, workInfo -> {
-//            if (workInfo.getState() == WorkInfo.State.SUCCEEDED) {
-//                adapter.updateMessage(lastPosition);
-//            }
-//        });
-//    }
+
+    private void formatDisplay(Message message) {
+        adapter.addMessage(message);
+        etMessage.setText("");
+
+        recyclerView.postDelayed(() -> recyclerView
+                .smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1), 100);
+    }
+
+    private void observeResults(UUID id, int lastPosition) {
+        WorkManager.getInstance().getWorkInfoByIdLiveData(id).observe(MessengerActivity.this, workInfo -> {
+            if (workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                adapter.updateMessage(lastPosition);
+            }
+        });
+    }
 }

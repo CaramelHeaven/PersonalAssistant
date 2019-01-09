@@ -20,46 +20,130 @@
             app:titleTextColor="@color/colorSecondaryLight" />
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:id="@+id/tv_title"
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_open_messages"
+        android:layout_below="@id/appBar"
+        android:fillViewport="true">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="Going to vacationGoing "
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_18sp" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/tv_title"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorBackgroundView" />
+
+            <ImageView
+                android:id="@+id/iv_priority"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_below="@id/view"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_priority_high" />
+
+            <TextView
+                android:id="@+id/tv_priority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="16dp"
+                android:layout_toEndOf="@id/iv_priority"
+                android:text="Высокий приоритет"
+                android:textColor="@color/colorPriorityHigh" />
+
+            <ImageView
+                android:id="@+id/iv_category"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_below="@id/iv_priority"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_category" />
+
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_priority"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/iv_category"
+                android:text="Заявка в АХО"
+                android:textColor="@color/colorIconLocation" />
+
+            <ImageView
+                android:id="@+id/iv_clock"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_below="@id/iv_category"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_clock" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_category"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="11dp"
+                android:layout_toEndOf="@id/iv_clock"
+                android:text="Время окончания: 10.10.2018"
+                android:textColor="@color/colorIconClock" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/iv_clock"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorBackgroundView" />
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view1"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textColor="@android:color/black" />
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btn_open_messages"
+        style="@style/AppTheme.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/appBar"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Going to vacation"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/text_18sp" />
-
-
-    <TextView
-        android:id="@+id/tv_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/recyclerView"
-        android:layout_marginTop="8dp" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_alignParentBottom="true">
-
-        <Button
-            android:id="@+id/btn_back"
-            style="@style/AppTheme.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:layout_toLeftOf="@id/btn_open_messages"
-            android:text="Назад" />
-
-        <Button
-            android:id="@+id/btn_open_messages"
-            style="@style/AppTheme.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="8dp"
-            android:text="Открыть беседу" />
-    </RelativeLayout>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:text="Открыть беседу" />
 </RelativeLayout>

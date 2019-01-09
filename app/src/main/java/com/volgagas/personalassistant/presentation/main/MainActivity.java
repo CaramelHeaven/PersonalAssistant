@@ -111,11 +111,6 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        return super.onSupportNavigateUp();
-    }
-
-    @Override
     public void onBackPressed() {
         getSupportFragmentManager().popBackStack();
     }
@@ -192,4 +187,6 @@ public class MainActivity extends BaseActivity implements MainView {
             return true;
         });
     }
+
+
 }

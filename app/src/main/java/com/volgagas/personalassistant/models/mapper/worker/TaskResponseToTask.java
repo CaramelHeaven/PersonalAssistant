@@ -157,7 +157,5 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
                 e.printStackTrace();
             }
         }
-
     }
-
 }

@@ -3,6 +3,7 @@ package com.volgagas.personalassistant.presentation.query_from_user;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class QueryFromUserAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         UniformVH uniformVH = (UniformVH) viewHolder;
 
-        uniformVH.tvDescription.setText(uniformRequests.get(position).getDescription());
+        uniformVH.tvDescription.setText(Html.fromHtml(uniformRequests.get(position).getDescription()));
         uniformVH.tvTitle.setText(uniformRequests.get(position).getTitle());
     }
 

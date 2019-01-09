@@ -3,8 +3,13 @@ package com.volgagas.personalassistant.presentation.worker_result;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -18,7 +23,6 @@ import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.worker_camera.CameraActivity;
 import com.volgagas.personalassistant.presentation.worker_result.presenter.ResultPresenter;
 import com.volgagas.personalassistant.presentation.worker_result.presenter.ResultView;
-import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.callbacks.OnResultItemClick;
 
 import java.util.ArrayList;
@@ -30,6 +34,8 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private Toolbar toolbar;
+    private AlertDialog alertDialog;
 
     private ResultAdapter adapter;
 
@@ -41,6 +47,12 @@ public class ResultActivity extends BaseActivity implements ResultView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         recyclerView = findViewById(R.id.recyclerView);
+        toolbar = findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         List<SubTask> subTasks = new ArrayList<>();
         subTasks.add(new SubTask("Raz"));
@@ -55,8 +67,43 @@ public class ResultActivity extends BaseActivity implements ResultView {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_result, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_send_result:
+                if (presenter.getSubTaskList().size() > 0) {
+                    //TODO send data
+                    showAlertDialog();
+                } else {
+                    Toast.makeText(this, "Ничего не выбрано", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     protected void sendDataToServer(String data) {
-        //nothing
+        Timber.d("get data from NFC and send it");
+        presenter.sendData();
     }
 
     @Override
@@ -95,12 +142,12 @@ public class ResultActivity extends BaseActivity implements ResultView {
             @Override
             public void onClick(int position, View view, boolean status) {
                 if (status) {
+                    presenter.addSubTask(adapter.getItemByPos(position));
                     view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 } else {
+                    presenter.removeSubTask(adapter.getItemByPos(position));
                     view.setBackgroundColor(getResources().getColor(R.color.colorBackgroundStatusNeutral));
                 }
-                Timber.d("click");
-
             }
 
             @Override
@@ -133,5 +180,19 @@ public class ResultActivity extends BaseActivity implements ResultView {
         intent.putExtra("POSITION_DATA", position);
 
         startActivityForResult(intent, 1);
+    }
+
+    public void showAlertDialog() {
+        //permission from abstract class to enable NFC
+        setPermissionToEnableNfc(true);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+                .setTitle("Сканирование")
+                .setMessage("Приложите карту для подтверждения задач")
+                .setCancelable(true)
+                .setOnCancelListener(dialogInterface -> setPermissionToEnableNfc(false));
+        alertDialog = builder.create();
+
+        alertDialog.show();
     }
 }

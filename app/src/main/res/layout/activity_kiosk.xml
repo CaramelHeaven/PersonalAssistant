@@ -46,7 +46,6 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/nestedSCrollContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -80,5 +79,5 @@
         android:background="@color/colorPrimary"
         android:text="Создать задачи"
         android:textColor="@android:color/white"
-        android:visibility="visible" />
+        android:visibility="gone" />
 </android.support.design.widget.CoordinatorLayout>

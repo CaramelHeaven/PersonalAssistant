@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
@@ -69,11 +71,25 @@ public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public class TaskVH extends RecyclerView.ViewHolder {
         TextView tvTaskName, tvCategory;
+        ImageButton iBtnRemove;
+        ImageView ivArrow;
 
         public TaskVH(@NonNull View itemView) {
             super(itemView);
             tvTaskName = itemView.findViewById(R.id.tv_description);
             tvCategory = itemView.findViewById(R.id.tv_category);
+            iBtnRemove = itemView.findViewById(R.id.ibtn_remove);
+            ivArrow = itemView.findViewById(R.id.iv_arrow);
+
+            ivArrow.setVisibility(View.GONE);
+            iBtnRemove.setVisibility(View.VISIBLE);
+
+            iBtnRemove.setOnClickListener(v -> {
+                uniqueTasks.remove(taskList.get(getAdapterPosition()));
+                myOnItemClickListener.onItemClick(getAdapterPosition());
+                taskList.remove(getAdapterPosition());
+                notifyItemRemoved(getAdapterPosition());
+            });
         }
     }
 

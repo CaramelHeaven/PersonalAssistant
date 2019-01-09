@@ -72,6 +72,10 @@ public class ResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return subTaskList.size();
     }
 
+    public SubTask getItemByPos(int pos) {
+        return subTaskList.get(pos);
+    }
+
     public void updateAdapter(List<SubTask> subTasks) {
         subTaskList.clear();
         subTaskList.addAll(subTasks);

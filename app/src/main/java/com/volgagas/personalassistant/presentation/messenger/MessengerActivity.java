@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
@@ -30,6 +31,7 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
     private RecyclerView recyclerView;
     private EditText etMessage;
     private ImageButton btnSend;
+    private ProgressBar progressBar;
 
     private MessengerAdapter adapter;
 
@@ -40,6 +42,7 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
         recyclerView = findViewById(R.id.recyclerView);
         etMessage = findViewById(R.id.et_send_message);
         btnSend = findViewById(R.id.btn_send);
+        progressBar = findViewById(R.id.progressBar);
 
         provideRecyclerAndAdapter();
 
@@ -83,12 +86,12 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
 
     @Override
     public void showProgress() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     private void provideRecyclerAndAdapter() {
@@ -99,7 +102,8 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
 
         recyclerView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             if (bottom < oldBottom) {
-                recyclerView.postDelayed(() -> recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1), 100);
+                recyclerView.postDelayed(() ->
+                        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1), 100);
             }
         });
     }

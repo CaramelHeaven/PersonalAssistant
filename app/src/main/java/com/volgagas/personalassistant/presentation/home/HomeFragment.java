@@ -17,8 +17,8 @@ import com.volgagas.personalassistant.presentation.home.presenter.HomePresenter;
 import com.volgagas.personalassistant.presentation.home.presenter.HomeView;
 import com.volgagas.personalassistant.presentation.kiosk.KioskActivity;
 import com.volgagas.personalassistant.presentation.order_purchase.OrderPurchaseActivity;
+import com.volgagas.personalassistant.presentation.query_create.QueryCreateActivity;
 import com.volgagas.personalassistant.presentation.worker.WorkerActivity;
-import com.volgagas.personalassistant.presentation.worker_result.ResultActivity;
 
 public class HomeFragment extends BaseFragment implements HomeView {
 
@@ -82,7 +82,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     private void provideClickListeners() {
         cvCreateTask.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), ResultActivity.class));
+            startActivity(new Intent(getActivity(), QueryCreateActivity.class));
         });
 
         cvKiosk.setOnClickListener(v -> {

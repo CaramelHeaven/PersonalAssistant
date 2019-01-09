@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.utils.services;
+package com.volgagas.personalassistant.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

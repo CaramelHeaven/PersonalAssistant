@@ -74,8 +74,14 @@ public class KioskAddedTaskFragment extends BaseFragment implements KioskAddedTa
         helper.attachToRecyclerView(recyclerView);
 
         //listener for removing item
-        adapter.setMyOnItemClickListener(position ->
-                presenter.removeTask(adapter.getItemByPosition(position)));
+        adapter.setMyOnItemClickListener(position -> {
+                    presenter.removeTask(adapter.getItemByPosition(position));
+
+                    if (presenter.getAddedTasks().size() == 0) {
+                        tvShowEmpty.setVisibility(View.VISIBLE);
+                    }
+                }
+        );
 
     }
 

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
@@ -53,6 +54,14 @@ public class MessengerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             MessageYourselfVH messageYourselfVH = (MessageYourselfVH) viewHolder;
 
             messageYourselfVH.tvMessage.setText(messageList.get(position).getMessage());
+
+            if (messageList.get(position).isCompletedSendToServer()) {
+                messageYourselfVH.ivDone.setVisibility(View.GONE);
+                messageYourselfVH.ivTime.setVisibility(View.VISIBLE);
+            } else {
+                messageYourselfVH.ivTime.setVisibility(View.GONE);
+                messageYourselfVH.ivDone.setVisibility(View.VISIBLE);
+            }
         } else {
             MessageVH messageVH = (MessageVH) viewHolder;
 
@@ -70,6 +79,7 @@ public class MessengerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         uniqueMessages.addAll(messages);
         messageList.clear();
         messageList.addAll(uniqueMessages);
+
         notifyDataSetChanged();
     }
 
@@ -85,6 +95,12 @@ public class MessengerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyItemInserted(messageList.size() - 1);
     }
 
+    public void updateMessage(int pos) {
+        messageList.get(pos).setCompletedSendToServer(true);
+
+        notifyItemChanged(pos);
+    }
+
     @Override
     public int getItemViewType(int position) {
         if (messageList.get(position).getAuthor().equals(CacheUser.getUser().getModifiedNormalName())) {
@@ -95,8 +111,8 @@ public class MessengerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     class MessageVH extends RecyclerView.ViewHolder {
-
         private TextView tvAuthor, tvMessage;
+        private ImageView ivPhoto;
 
         public MessageVH(@NonNull View itemView) {
             super(itemView);
@@ -106,12 +122,15 @@ public class MessengerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     class MessageYourselfVH extends RecyclerView.ViewHolder {
-
         private TextView tvMessage;
+        private ImageView ivDone, ivTime;
+
 
         public MessageYourselfVH(@NonNull View itemView) {
             super(itemView);
             tvMessage = itemView.findViewById(R.id.tv_message);
+            ivDone = itemView.findViewById(R.id.iv_done);
+            ivTime = itemView.findViewById(R.id.iv_time);
         }
     }
 }

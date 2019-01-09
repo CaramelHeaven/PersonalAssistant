@@ -22,7 +22,7 @@ import com.volgagas.personalassistant.presentation.start.presenter.StartView;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
-import com.volgagas.personalassistant.utils.services.UpdateTokensTimer;
+import com.volgagas.personalassistant.utils.UpdateTokensTimer;
 
 import timber.log.Timber;
 
@@ -45,8 +45,8 @@ public class StartActivity extends BaseActivity implements StartView {
 
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
 
-        UpdateTokensTimer.getInstance();
-        UpdateTokensTimer.startTimer();
+        //UpdateTokensTimer.getInstance();
+        //UpdateTokensTimer.startTimer();
 
         sendDataToServer("0x201FA7D1F0000000");
     }

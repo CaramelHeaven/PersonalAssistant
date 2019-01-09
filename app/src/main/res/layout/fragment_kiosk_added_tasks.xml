@@ -12,7 +12,7 @@
         android:text="Вы еще ничего не добавили"
         android:textColor="@android:color/black"
         android:textSize="18sp"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

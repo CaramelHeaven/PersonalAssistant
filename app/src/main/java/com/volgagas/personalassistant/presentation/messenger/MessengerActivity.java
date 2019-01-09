@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.messenger;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,13 +21,13 @@ import com.volgagas.personalassistant.presentation.messenger.presenter.Messenger
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 import timber.log.Timber;
 
 public class MessengerActivity extends BaseActivity implements MessengerView {
-
-    @InjectPresenter
-    MessengerPresenter presenter;
 
     private RecyclerView recyclerView;
     private EditText etMessage;
@@ -35,6 +36,10 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
 
     private MessengerAdapter adapter;
 
+    @InjectPresenter
+    MessengerPresenter presenter;
+
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,19 +49,9 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
         btnSend = findViewById(R.id.btn_send);
         progressBar = findViewById(R.id.progressBar);
 
+        setPermissionToEnableNfc(false);
+
         provideRecyclerAndAdapter();
-
-        btnSend.setOnClickListener(v -> {
-            String msg = etMessage.getText().toString().replaceAll("^\\s+", "");
-
-            Message message = new Message(CacheUser.getUser().getModifiedNormalName(), msg);
-
-            adapter.addMessage(message);
-            etMessage.setText("");
-
-            recyclerView.postDelayed(() -> recyclerView
-                    .smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1), 100);
-        });
 
         List<Message> messages = new ArrayList<>();
         messages.add(new Message("Adrrew", "t"));
@@ -77,6 +72,8 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
 
         adapter.updateAdapter(messages);
         recyclerView.scrollToPosition(adapter.getMessageList().size() - 1);
+
+        postMessage();
     }
 
     @Override
@@ -107,4 +104,39 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
             }
         });
     }
+
+
+    /* post user message
+     * */
+    private void postMessage() {
+        btnSend.setOnClickListener(v -> {
+            String msg = etMessage.getText().toString().replaceAll("^\\s+", "");
+            Message message = new Message(CacheUser.getUser().getModifiedNormalName(), msg);
+            message.setCompletedSendToServer(false);
+
+           // formatDisplay(message);
+
+            presenter.postMessage(message)
+                    .subscribe(result -> {
+                       // observeResults(result, adapter.getItemCount());
+                        Timber.d("result in messenger: " + result.toString());
+                    });
+        });
+    }
+//
+//    private void formatDisplay(Message message) {
+//        adapter.addMessage(message);
+//        etMessage.setText("");
+//
+//        recyclerView.postDelayed(() -> recyclerView
+//                .smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1), 100);
+//    }
+//
+//    private void observeResults(UUID id, int lastPosition) {
+//        WorkManager.getInstance().getWorkInfoByIdLiveData(id).observe(MessengerActivity.this, workInfo -> {
+//            if (workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+//                adapter.updateMessage(lastPosition);
+//            }
+//        });
+//    }
 }

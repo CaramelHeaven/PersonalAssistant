@@ -36,8 +36,6 @@ public class GpaActivity extends BaseActivity implements GpaView {
         tvUncorrected = findViewById(R.id.tv_uncorrectedPlace);
 
         setPermissionToEnableNfc(true);
-
-
     }
 
     @Override

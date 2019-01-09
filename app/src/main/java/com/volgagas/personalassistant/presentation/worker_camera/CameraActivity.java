@@ -17,7 +17,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.utils.services.SystemMyTimeProvider;
+import com.volgagas.personalassistant.utils.SystemMyTimeProvider;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -56,4 +56,8 @@ public class KioskAddedTaskPresenter extends BasePresenter<KioskAddedTaskView<Ta
         addedTasks.remove(task);
         CommonChannel.sendListTasks(addedTasks);
     }
+
+    public Set<TaskTemplate> getAddedTasks() {
+        return addedTasks;
+    }
 }

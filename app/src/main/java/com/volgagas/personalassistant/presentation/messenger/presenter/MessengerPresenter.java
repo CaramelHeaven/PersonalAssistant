@@ -1,14 +1,27 @@
 package com.volgagas.personalassistant.presentation.messenger.presenter;
 
+import com.arellomobile.mvp.InjectViewState;
+import com.volgagas.personalassistant.models.model.Message;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.services.ReplyWorker;
+
+import java.util.UUID;
+
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import io.reactivex.Observable;
 
 /**
  * Created by CaramelHeaven on 12:29, 16.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
+@InjectViewState
 public class MessengerPresenter extends BasePresenter<MessengerView> {
 
     public MessengerPresenter() {
+
     }
 
     @Override
@@ -24,5 +37,16 @@ public class MessengerPresenter extends BasePresenter<MessengerView> {
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
 
+    }
+
+    public Observable<UUID> postMessage(Message message) {
+        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(ReplyWorker.class)
+                .setConstraints(new Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build())
+                .build();
+        WorkManager.getInstance().enqueue(oneTimeWorkRequest);
+
+        return Observable.just(oneTimeWorkRequest.getId());
     }
 }

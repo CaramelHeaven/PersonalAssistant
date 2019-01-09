@@ -7,6 +7,7 @@ package com.volgagas.personalassistant.models.model;
 public class Message {
     private String author;
     private String message;
+    private boolean completedSendToServer;
 
     public Message(String author, String message) {
         this.author = author;
@@ -34,6 +35,15 @@ public class Message {
         return "Message{" +
                 "author='" + author + '\'' +
                 ", message='" + message + '\'' +
+                ", completedSendToServer=" + completedSendToServer +
                 '}';
+    }
+
+    public boolean isCompletedSendToServer() {
+        return completedSendToServer;
+    }
+
+    public void setCompletedSendToServer(boolean completedSendToServer) {
+        this.completedSendToServer = completedSendToServer;
     }
 }

@@ -136,9 +136,7 @@ public class KioskActivity extends BaseActivity implements KioskView {
                 .setTitle("Сканирование")
                 .setMessage("Приложите карту для подтверждения задач")
                 .setCancelable(true)
-                .setOnCancelListener(dialog -> {
-                    setPermissionToEnableNfc(false);
-                });
+                .setOnCancelListener(dialog -> setPermissionToEnableNfc(false));
 
         alertDialog = builder.create();
         alertDialog.show();

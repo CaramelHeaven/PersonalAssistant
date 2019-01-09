@@ -16,6 +16,7 @@ import com.volgagas.personalassistant.models.mapper.user.UserIdResponseToUserId;
 import com.volgagas.personalassistant.models.mapper.user.UserMapper;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseListToUserList;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseToUser;
+import com.volgagas.personalassistant.models.mapper.user.UserSimpleResponseToUserSimple;
 import com.volgagas.personalassistant.models.mapper.worker.TaskMapper;
 import com.volgagas.personalassistant.models.mapper.worker.TaskResponseToTask;
 import com.volgagas.personalassistant.models.mapper.worker.TaskResponseToTaskHistory;
@@ -29,6 +30,7 @@ import com.volgagas.personalassistant.models.model.order_purchase.Order;
 import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.models.model.queries.QueryToUser;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
+import com.volgagas.personalassistant.models.model.user.UserSimple;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 import com.volgagas.personalassistant.utils.Constants;
@@ -75,12 +77,15 @@ public class MainRemoteRepository implements MainRepository {
                             new QueriesTemplateResponseToQueryTemplate();
                     QueryToUserResponseToQueryToUser queryToUserResponseToQueryToUser =
                             new QueryToUserResponseToQueryToUser();
+                    UserSimpleResponseToUserSimple userSimpleResponseToUserSimple =
+                            new UserSimpleResponseToUserSimple();
 
                     //Initial mappers
                     tasksMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
                             taskKioskResponseToTaskTemplate);
                     userMapper = new UserMapper(userResponseToUser, userResponseListToUserList,
-                            userIdResponseToUserId, userDynamicsResponseToUserDynamics);
+                            userIdResponseToUserId, userDynamicsResponseToUserDynamics,
+                            userSimpleResponseToUserSimple);
                     uniformRequestMapper =
                             new UniformRequestMapper(queryResponseToUniformRequest, queryToUserResponseToQueryToUser);
                     queryMapper = new QueryTemplateMapper(queriesTemplateResponseToQueryTemplate);
@@ -268,5 +273,11 @@ public class MainRemoteRepository implements MainRepository {
         orderList.add(new Order("Title", true, "description"));
 
         return Single.just(orderList);
+    }
+
+    @Override
+    public Single<UserSimple> getUserPhotoByName(String userName) {
+        return PersonalAssistant.getBaseApiService().getUserSimpleByName(userName)
+                .map(userMapper::map);
     }
 }

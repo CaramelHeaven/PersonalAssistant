@@ -5,6 +5,7 @@ import com.volgagas.personalassistant.models.network.SubTaskResponse;
 import com.volgagas.personalassistant.models.network.TaskResponse;
 import com.volgagas.personalassistant.models.network.UserDynamicsResponse;
 import com.volgagas.personalassistant.models.network.UserResponse;
+import com.volgagas.personalassistant.models.network.UserSimpleResponse;
 import com.volgagas.personalassistant.utils.Constants;
 
 import java.util.List;
@@ -30,6 +31,9 @@ public interface BaseApiService {
 
     @GET(Constants.MY_HOST + "database/getAllUsers")
     Single<List<UserResponse>> getSearchedUsers();
+
+    @GET(Constants.MY_HOST + "database/getUserPhotoByName")
+    Single<UserSimpleResponse> getUserSimpleByName(@Query("userName") String userName);
 
     @GET("data/BaseWorkers?")
     Single<UserDynamicsResponse> getPersonalNumber(@Query("$filter") String name);

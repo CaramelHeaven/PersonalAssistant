@@ -7,7 +7,7 @@ public class Constants {
     //Site
     public static final String SITE_ERP = "volagas.sharepoint.com,9a51e995-62f9-4b40-81c2-d167c4c79182,8603ccc9-1f11-4573-8fa2-140ef4204a1d";
 
-    public static final String MY_HOST = "http://192.168.1.147:8080/volgagas-0.3.6.1/";
+    public static final String MY_HOST = "http://192.168.1.147:8080/pa-volgagas-0.3.6.3/";
     //Lists of this site
     public static final String UNIFORM_REQUESTS_URL = "(guid'895e45dd-17ac-41bd-9a41-3d72bd0cbfc7')";
     public static final String UNIFORM_REQUESTS_TO_USER_URL = "(guid'59C1EE57-5726-4B27-B9DD-B39775E170D5')";

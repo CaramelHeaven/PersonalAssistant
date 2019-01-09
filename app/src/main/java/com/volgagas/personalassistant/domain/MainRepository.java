@@ -11,6 +11,7 @@ import com.volgagas.personalassistant.models.model.queries.QueryToUser;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
+import com.volgagas.personalassistant.models.model.user.UserSimple;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 
@@ -88,7 +89,7 @@ public interface MainRepository {
     Single<UserDynamics> getPersonalUserNumber(String personalName);
 
     /* Template of tasks for kiosk screen
-    * */
+     * */
     List<TaskTemplate> testedData();
 
     /* data for order new base fragment
@@ -100,6 +101,10 @@ public interface MainRepository {
     Single<List<NewOrder>> getOrderNewAdditionally();
 
     /* User orders from share point. Contains clothes, boots etc.
-    * */
+     * */
     Single<List<Order>> getUserOrders();
+
+    /* GET user preview photo by name for messenger chat
+     * */
+    Single<UserSimple> getUserPhotoByName(String userName);
 }

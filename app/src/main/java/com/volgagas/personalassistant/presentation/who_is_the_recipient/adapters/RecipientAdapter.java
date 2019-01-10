@@ -69,20 +69,20 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if (userList.get(pos).getUserImage() != null) {
                 byte[] data = Base64.decode(userList.get(pos).getUserImage().getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                Bitmap croppedBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - 30);
-                Glide.with(recipientVH.ivPhoto.getContext())
-                        .load(croppedBmp)
-                        .apply(new RequestOptions()
-                                .centerCrop())
-                        .into(recipientVH.ivPhoto);
+                if (bitmap != null) {
+                    Bitmap croppedBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - 30);
+                    Glide.with(recipientVH.ivPhoto.getContext())
+                            .load(croppedBmp)
+                            .apply(new RequestOptions()
+                                    .centerCrop())
+                            .into(recipientVH.ivPhoto);
+                }
             } else {
                 Glide.with(recipientVH.ivPhoto.getContext())
                         .clear(recipientVH.ivPhoto);
                 recipientVH.ivPhoto.setImageDrawable(null);
             }
         }
-
-
     }
 
     @Override

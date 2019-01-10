@@ -30,6 +30,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    //test mockito
+    testImplementation "org.mockito:mockito-core:2.8.9"
+    androidTestImplementation "org.mockito:mockito-android:2.8.9"
+
     implementation('com.microsoft.aad:adal:1.15.1') {
         exclude group: 'com.android.support'
     }
@@ -67,7 +71,7 @@ dependencies {
 
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.8.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     //moxy
     implementation 'com.arello-mobile:moxy:1.5.3'

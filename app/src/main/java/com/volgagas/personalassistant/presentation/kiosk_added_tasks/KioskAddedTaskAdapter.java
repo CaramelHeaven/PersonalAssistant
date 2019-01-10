@@ -55,6 +55,7 @@ public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         uniqueTasks.add(model);
         taskList.clear();
         taskList.addAll(uniqueTasks);
+
         notifyDataSetChanged();
     }
 

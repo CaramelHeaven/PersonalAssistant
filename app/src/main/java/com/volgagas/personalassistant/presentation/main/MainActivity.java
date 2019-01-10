@@ -72,11 +72,15 @@ public class MainActivity extends BaseActivity implements MainView {
         infoSet = new ConstraintSet();
 
         if (CacheUser.getUser().getUserImage() != null) {
+            Timber.d("cache != null");
             byte[] data = Base64.decode(CacheUser.getUser().getUserImage().getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
             Bitmap croppedBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - 240);
             ivUserImage.setImageBitmap(croppedBmp);
+        } else {
+            Timber.d("cache == null");
         }
+
         tvName.setText(CacheUser.getUser().getName());
         tvCategory.setText(CacheUser.getUser().getPosition());
 

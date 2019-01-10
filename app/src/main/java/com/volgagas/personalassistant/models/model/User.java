@@ -30,6 +30,21 @@ public class User implements Parcelable {
         this.userImage = user.getUserImage();
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", position='" + position + '\'' +
+                ", codekeyList=" + codekeyList +
+                ", lastEntered='" + lastEntered + '\'' +
+                ", category='" + category + '\'' +
+                ", userImage='" + userImage + '\'' +
+                ", userCliendId='" + userCliendId + '\'' +
+                ", dynamics365Token='" + dynamics365Token + '\'' +
+                ", sharePointToken='" + sharePointToken + '\'' +
+                '}';
+    }
+
     //Andrew Vasiliev
     public String getModifiedNormalName() {
         String[] partsName = name.split(" ");

@@ -23,7 +23,7 @@ public class UserResponse {
     private String lastEntered;
     @SerializedName("category")
     private String category;
-    @SerializedName("image")
+    @SerializedName("previewPhoto")
     private String userImage;
 
     public String getName() {

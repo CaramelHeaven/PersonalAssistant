@@ -30,6 +30,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Calendar;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 15:49, 08.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
@@ -139,11 +141,24 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String dateToView = dayOfMonth + "." + month + "." + year;
-        currentDate = year + "-" + month + "-" + dayOfMonth;
+        Timber.d("i'm check: " + Calendar.getInstance().getTime().toString());
+        Timber.d("i'm choose: " + dayOfMonth + " m: " + month + " y: " + year + " and cal: " +
+                Calendar.getInstance().get(Calendar.YEAR));
+        Calendar calendar = Calendar.getInstance();
 
-        tvDate.setTextColor(getResources().getColor(R.color.colorTextBlack));
-        tvDate.setText(dateToView);
+        //successful click
+        if (calendar.get(Calendar.YEAR) <= year &&
+                calendar.get(Calendar.MONTH) <= month &&
+                calendar.get(Calendar.DAY_OF_MONTH) <= dayOfMonth) {
+            month += 1;
+            String dateToView = dayOfMonth + "." + month + "." + year;
+            currentDate = year + "-" + month + "-" + dayOfMonth;
+
+            tvDate.setTextColor(getResources().getColor(R.color.colorTextBlack));
+            tvDate.setText(dateToView);
+        } else {
+            Toast.makeText(getActivity(), "Выбрана неправильная дата", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

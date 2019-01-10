@@ -4,6 +4,8 @@ import com.volgagas.personalassistant.models.mapper.Mapper;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.network.UserResponse;
 
+import timber.log.Timber;
+
 public class UserResponseToUser extends Mapper<UserResponse, User> {
     @Override
     public User map(UserResponse value) {
@@ -21,5 +23,7 @@ public class UserResponseToUser extends Mapper<UserResponse, User> {
         user.setName(response.getName());
         user.setPosition(response.getJob());
         user.setUserImage(response.getUserImage());
+
+        Timber.d("checkign user: " + user.toString());
     }
 }

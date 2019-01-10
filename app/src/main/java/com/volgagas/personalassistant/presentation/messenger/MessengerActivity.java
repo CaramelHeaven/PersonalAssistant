@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -33,6 +34,7 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
     private EditText etMessage;
     private ImageButton btnSend;
     private ProgressBar progressBar;
+    private Toolbar toolbar;
 
     private MessengerAdapter adapter;
 
@@ -47,7 +49,13 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
         recyclerView = findViewById(R.id.recyclerView);
         etMessage = findViewById(R.id.et_send_message);
         btnSend = findViewById(R.id.btn_send);
+        toolbar = findViewById(R.id.toolbar);
         progressBar = findViewById(R.id.progressBar);
+
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         setPermissionToEnableNfc(false);
 
@@ -110,17 +118,19 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
      * */
     private void postMessage() {
         btnSend.setOnClickListener(v -> {
-            String msg = etMessage.getText().toString().replaceAll("^\\s+", "");
-            Message message = new Message(CacheUser.getUser().getModifiedNormalName(), msg);
-            message.setCompletedSendToServer(false);
+            if (etMessage.getText().toString().length() != 0) {
+                String msg = etMessage.getText().toString().replaceAll("^\\s+", "");
+                Message message = new Message(CacheUser.getUser().getModifiedNormalName(), msg);
+                message.setCompletedSendToServer(false);
 
-            formatDisplay(message);
+                formatDisplay(message);
 
-            presenter.postMessage(message)
-                    .subscribe(result -> {
-                        observeResults(result, adapter.getItemCount() - 1);
-                        Timber.d("result in messenger: " + result.toString());
-                    });
+                presenter.postMessage(message)
+                        .subscribe(result -> {
+                            observeResults(result, adapter.getItemCount() - 1);
+                            Timber.d("result in messenger: " + result.toString());
+                        });
+            }
         });
     }
 
@@ -138,5 +148,16 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
                 adapter.updateMessage(lastPosition);
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

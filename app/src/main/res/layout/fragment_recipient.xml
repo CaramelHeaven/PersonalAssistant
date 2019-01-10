@@ -11,21 +11,11 @@
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBar"
+    <RelativeLayout
+        android:id="@+id/rl_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:theme="@style/ToolbarStyle"
-            app:layout_scrollFlags="scroll"
-            app:title="Добавление заявки"
-            app:titleTextColor="@color/colorSecondaryLight" />
 
         <EditText
             android:id="@+id/et_search"
@@ -45,14 +35,13 @@
             android:nextFocusUp="@id/et_search"
             android:paddingStart="16dp"
             android:paddingEnd="8dp" />
-    </android.support.design.widget.AppBarLayout>
-
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/appBar" />
+        android:layout_below="@id/rl_container" />
 
     <Button
         android:id="@+id/btn_send"

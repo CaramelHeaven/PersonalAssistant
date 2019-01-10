@@ -1,13 +1,20 @@
 package com.volgagas.personalassistant.presentation.fill_request;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RelativeLayout;
@@ -39,6 +46,7 @@ import timber.log.Timber;
 public class FillRequestFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener, FillRequestView {
 
     private TextInputEditText etEventName, etDescription;
+    private TextInputLayout tilEventName, tilDescription;
     private TextView tvDate, tvCategory;
     private RelativeLayout rlDateContainer, rlCategoryContainer;
     private Button btnNextStep;
@@ -73,6 +81,8 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
         btnNextStep = view.findViewById(R.id.btn_apply);
         switchImportant = view.findViewById(R.id.switch_important);
         tvCategory = view.findViewById(R.id.tv_category);
+        tilDescription = view.findViewById(R.id.text_input_description);
+        tilEventName = view.findViewById(R.id.text_input_user);
         rlCategoryContainer = view.findViewById(R.id.rl_category_container);
 
         provideClickListeners();
@@ -81,6 +91,7 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
                     || etEventName.getText().toString().length() == 0
                     || tvDate.getCurrentTextColor() != getResources().getColor(R.color.colorTextBlack)
                     || tvCategory.getText().toString().length() == 0) {
+                animationShareViews();
                 Toast.makeText(getActivity(), "Не отмечены все поля", Toast.LENGTH_SHORT).show();
             } else {
                 RequestData data = new RequestData();
@@ -169,6 +180,31 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
     @Override
     public void hideProgress() {
 
+    }
+
+    private void animationShareViews() {
+        final Animation animationShake = AnimationUtils.loadAnimation(getActivity(), R.anim.item_shake);
+
+        if (etDescription.getText().toString().length() == 0) {
+            tilDescription.startAnimation(animationShake);
+        }
+        if (etEventName.getText().toString().length() == 0) {
+            tilEventName.startAnimation(animationShake);
+        }
+        if (tvDate.getCurrentTextColor() != getResources().getColor(R.color.colorTextBlack)) {
+            rlDateContainer.startAnimation(animationShake);
+        }
+        if (tvCategory.getText().length() == 0) {
+            rlCategoryContainer.startAnimation(animationShake);
+        }
+
+        Vibrator v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            v.vibrate(100);
+        }
     }
 
 }

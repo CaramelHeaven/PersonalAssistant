@@ -76,6 +76,9 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             .apply(new RequestOptions()
                                     .centerCrop())
                             .into(recipientVH.ivPhoto);
+                } else {
+                    Glide.with(recipientVH.ivPhoto.getContext())
+                            .clear(recipientVH.ivPhoto);
                 }
             } else {
                 Glide.with(recipientVH.ivPhoto.getContext())

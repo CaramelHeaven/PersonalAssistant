@@ -105,6 +105,7 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void updateAdapter(List<User> users) {
         userList.clear();
         userList.addAll(users);
+
         notifyDataSetChanged();
     }
 

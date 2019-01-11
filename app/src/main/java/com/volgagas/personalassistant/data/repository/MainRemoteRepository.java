@@ -17,6 +17,7 @@ import com.volgagas.personalassistant.models.mapper.user.UserMapper;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseListToUserList;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseToUser;
 import com.volgagas.personalassistant.models.mapper.user.UserSimpleResponseToUserSimple;
+import com.volgagas.personalassistant.models.mapper.worker.SubTaskResponseToSubTask;
 import com.volgagas.personalassistant.models.mapper.worker.TaskMapper;
 import com.volgagas.personalassistant.models.mapper.worker.TaskResponseToTask;
 import com.volgagas.personalassistant.models.mapper.worker.TaskResponseToTaskHistory;
@@ -34,6 +35,7 @@ import com.volgagas.personalassistant.models.model.user.UserSimple;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.UtilDateTimeProvider;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -79,10 +81,12 @@ public class MainRemoteRepository implements MainRepository {
                             new QueryToUserResponseToQueryToUser();
                     UserSimpleResponseToUserSimple userSimpleResponseToUserSimple =
                             new UserSimpleResponseToUserSimple();
+                    SubTaskResponseToSubTask subTaskResponseToSubTask =
+                            new SubTaskResponseToSubTask();
 
                     //Initial mappers
                     tasksMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
-                            taskKioskResponseToTaskTemplate);
+                            taskKioskResponseToTaskTemplate, subTaskResponseToSubTask);
                     userMapper = new UserMapper(userResponseToUser, userResponseListToUserList,
                             userIdResponseToUserId, userDynamicsResponseToUserDynamics,
                             userSimpleResponseToUserSimple);
@@ -181,27 +185,41 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Single<List<SubTaskViewer>> getSubTasksToday(String serviceOrder) {
-        return null;
+        String filter = "(AC_ActivityStartDateTime lt " + UtilDateTimeProvider.getNextDayDataFormat()
+                + ") and (AC_ActivityEndDateTime gt " + UtilDateTimeProvider.getLastDayDataFormat() + ")"
+                + " and (SO_ServiceOrder eq '" + serviceOrder + "')";
+
+        return PersonalAssistant.getBaseApiService().getSubTasksToday(filter)
+                .map(tasksMapper::map);
     }
 
     @Override
     public Single<List<SubTaskViewer>> getSubTasksHistory(String serviceOrder) {
-        return null;
+        String filter = "(SO_ServiceOrder eq '" + serviceOrder + "')";
+
+        return PersonalAssistant.getBaseApiService().getSubTasksHistory(filter)
+                .map(tasksMapper::map);
     }
 
     @Override
     public Observable<Response<Void>> sendStartedSubTasks(JsonObject object, String idSubTask) {
-        return null;
+        String url = Constants.DYNAMICS_365 + "/data/ActivitiesForMobile(dataAreaId='gns',ActivityNumber='" + idSubTask + "')";
+
+        return PersonalAssistant.getBaseApiService().sendStartedSubTasks(url, object);
     }
 
     @Override
     public Observable<Response<Void>> sendCompletedSubTasks(JsonObject object, String idSubTask) {
-        return null;
+        String url = Constants.DYNAMICS_365 + "/data/ActivitiesForMobile(dataAreaId='gns',ActivityNumber='" + idSubTask + "')";
+
+        return PersonalAssistant.getBaseApiService().sendCompletedSubTasks(url, object);
     }
 
     @Override
     public Observable<Response<Void>> sendCanceledSubTasks(JsonObject object, String idSubTask) {
-        return null;
+        String url = Constants.DYNAMICS_365 + "/data/ActivitiesForMobile(dataAreaId='gns',ActivityNumber='" + idSubTask + "')";
+
+        return PersonalAssistant.getBaseApiService().sendCanceledSubTasks(url, object);
     }
 
     @Override

@@ -1,9 +1,11 @@
 package com.volgagas.personalassistant.presentation.worker_gpa;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -12,6 +14,9 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.worker_gpa.presenter.GpaPresenter;
 import com.volgagas.personalassistant.presentation.worker_gpa.presenter.GpaView;
+import com.volgagas.personalassistant.presentation.worker_result.ResultActivity;
+
+import java.util.ArrayList;
 
 public class GpaActivity extends BaseActivity implements GpaView {
 
@@ -40,7 +45,6 @@ public class GpaActivity extends BaseActivity implements GpaView {
 
     @Override
     protected void sendDataToServer(String data) {
-        //TODO check GPA
         presenter.sendData(data);
         setPermissionToEnableNfc(false);
     }
@@ -64,6 +68,13 @@ public class GpaActivity extends BaseActivity implements GpaView {
 
     @Override
     public void completed() {
+        Toast.makeText(this, "Подтверждено о начале работы", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(GpaActivity.this, ResultActivity.class);
 
+        intent.putParcelableArrayListExtra("LIST_SUB_TASKS", new ArrayList<>(presenter.getSubTaskList()));
+        intent.putExtra("TASK", presenter.getTask());
+
+        startActivity(intent);
+        finish();
     }
 }

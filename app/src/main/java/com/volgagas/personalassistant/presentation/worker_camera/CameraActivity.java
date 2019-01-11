@@ -17,7 +17,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.utils.SystemMyTimeProvider;
+import com.volgagas.personalassistant.utils.UtilDateTimeProvider;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -257,7 +257,7 @@ public class CameraActivity extends AppCompatActivity {
                                     imageResult.setVisibility(View.GONE);
                                 }
                             });
-                    File file = new File(getCacheDir(), SystemMyTimeProvider.folderNameTimeFormat());
+                    File file = new File(getCacheDir(), UtilDateTimeProvider.folderNameTimeFormat());
 
                     photoResult.saveToFile(file);
                     filePath = file.getPath();

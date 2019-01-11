@@ -1,9 +1,11 @@
 package com.volgagas.personalassistant.models.mapper.worker;
 
 import com.volgagas.personalassistant.models.mapper.kiosk.TaskKioskResponseToTaskTemplate;
+import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
+import com.volgagas.personalassistant.models.network.SubTaskResponse;
 import com.volgagas.personalassistant.models.network.TaskKioskResponse;
 import com.volgagas.personalassistant.models.network.TaskResponse;
 
@@ -16,12 +18,15 @@ public class TaskMapper {
     private final TaskResponseToTask taskResponseToTask;
     private final TaskResponseToTaskHistory taskResponseToTaskHistory;
     private final TaskKioskResponseToTaskTemplate taskKioskResponseToTaskTemplate;
+    private final SubTaskResponseToSubTask subTaskResponseToSubTask;
 
     public TaskMapper(TaskResponseToTask taskResponseToTask, TaskResponseToTaskHistory taskResponseToTaskHistory,
-                      TaskKioskResponseToTaskTemplate taskKioskResponseToTaskTemplate) {
+                      TaskKioskResponseToTaskTemplate taskKioskResponseToTaskTemplate,
+                      SubTaskResponseToSubTask subTaskResponseToSubTask) {
         this.taskResponseToTask = taskResponseToTask;
         this.taskResponseToTaskHistory = taskResponseToTaskHistory;
         this.taskKioskResponseToTaskTemplate = taskKioskResponseToTaskTemplate;
+        this.subTaskResponseToSubTask = subTaskResponseToSubTask;
     }
 
     public List<TaskHistory> mapHistoryTasks(TaskResponse response) {
@@ -32,7 +37,11 @@ public class TaskMapper {
         return taskResponseToTask.map(response);
     }
 
-    public List<TaskTemplate> mapTemplates(TaskKioskResponse response) {
+    public List<TaskTemplate> map(TaskKioskResponse response) {
         return taskKioskResponseToTaskTemplate.map(response);
+    }
+
+    public List<SubTaskViewer> map(SubTaskResponse response) {
+        return subTaskResponseToSubTask.map(response);
     }
 }

@@ -16,7 +16,7 @@
     <item
         android:id="@+id/action_info"
         android:enabled="true"
-        android:icon="@drawable/ic_dashboard"
+        android:icon="@drawable/ic_user"
         android:title="About"
         app:showAsAction="ifRoom" />
 </menu>

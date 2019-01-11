@@ -47,11 +47,36 @@ public interface BaseApiService {
     @GET("data/SOWithAC?")
     Single<SubTaskResponse> getSubTasksHistory(@Query("$filter") String filter);
 
+    /**
+     * Provide history tasks which user has been completed
+     * Take the last 50 tasks.
+     */
     @GET("data/SOWithAC?")
     Single<TaskResponse> getHistory(@Query("$filter") String filter,
                                     @Query("$top") String count,
                                     @Query("$orderby") String orderBy);
 
+    /**
+     * Create template tasks from kiosk for user
+     *
+     * @param url    - url which contains activity order reference
+     * @param object - object where we ...
+     */
     @PATCH
     Observable<Response<Void>> sendTemplateTasks(@Url String url, @Body JsonObject object);
+
+    /**
+     * Send sub tasks for field started when user used mobile NFC from card on the factory
+     *
+     * @param url    - url which contains activity order reference
+     * @param object - object where we put field activity id
+     */
+    @PATCH
+    Observable<Response<Void>> sendStartedSubTasks(@Url String url, @Body JsonObject object);
+
+    @PATCH
+    Observable<Response<Void>> sendCompletedSubTasks(@Url String url, @Body JsonObject object);
+
+    @PATCH
+    Observable<Response<Void>> sendCanceledSubTasks(@Url String url, @Body JsonObject object);
 }

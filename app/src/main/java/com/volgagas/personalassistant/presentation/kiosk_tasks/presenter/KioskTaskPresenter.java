@@ -18,14 +18,12 @@ import io.reactivex.disposables.CompositeDisposable;
 @InjectViewState
 public class KioskTaskPresenter extends BasePresenter<KioskTaskView<TaskTemplate>> {
 
-    private List<TaskTemplate> addedTasks;
     private CompositeDisposable disposable;
     private MainRepository repository;
 
     public KioskTaskPresenter() {
         repository = MainRemoteRepository.getInstance();
         disposable = new CompositeDisposable();
-        addedTasks = new ArrayList<>();
     }
 
     @Override

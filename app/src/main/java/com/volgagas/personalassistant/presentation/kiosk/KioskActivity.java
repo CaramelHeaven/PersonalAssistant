@@ -16,10 +16,15 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.kiosk.presenter.KioskPresenter;
 import com.volgagas.personalassistant.presentation.kiosk.presenter.KioskView;
 import com.volgagas.personalassistant.utils.bus.GlobalBus;
+import com.volgagas.personalassistant.utils.bus.models.AddedTask;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import timber.log.Timber;
 
@@ -56,7 +61,7 @@ public class KioskActivity extends BaseActivity implements KioskView {
         provideTabLayoutAndViewPager();
 
         btnSend.setOnClickListener(v -> {
-            if (presenter.getAddedTasksSize() > 0) {
+            if (presenter.getSenderTasks().size() > 0) {
                 buildAlertDialog();
                 setPermissionToEnableNfc(true);
                 onResume();
@@ -71,6 +76,26 @@ public class KioskActivity extends BaseActivity implements KioskView {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    /**
+     * Listener for add task to presenter from KioskTaskFragment
+     *
+     * @param data - container which contains simple data class Task
+     */
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void addedTaskToPresenter(AddedTask data) {
+        presenter.addTask(data.getTask());
+    }
+
+    /**
+     * Remove task
+     *
+     * @param taskTemplate - task for remove from presenter
+     */
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void removeTaskFromPresenter(TaskTemplate taskTemplate) {
+        presenter.removeTask(taskTemplate);
     }
 
     @Override
@@ -97,13 +122,14 @@ public class KioskActivity extends BaseActivity implements KioskView {
 
         vpContainer.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
-            public void onPageSelected(int position) {
-                if (position == 0) {
-                    btnSend.setVisibility(View.GONE);
-                    Timber.d("LIST");
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                btnSend.setAlpha(positionOffset);
+
+                if (position == 1) {
+                    btnSend.setAlpha(1);
+                    btnSend.setEnabled(true);
                 } else {
-                    btnSend.setVisibility(View.VISIBLE);
-                    Timber.d("ADDED");
+                    btnSend.setEnabled(false);
                 }
             }
         });

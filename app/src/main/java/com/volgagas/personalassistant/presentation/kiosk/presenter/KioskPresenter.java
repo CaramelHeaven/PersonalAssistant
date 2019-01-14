@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
-import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
@@ -29,13 +28,13 @@ public class KioskPresenter extends BasePresenter<KioskView> {
     private CompositeDisposable disposable;
     private boolean permissionToSend = false;
 
-    private List<TaskTemplate> addedTasks;
+    private List<TaskTemplate> senderTasks;
 
     public KioskPresenter() {
         repository = MainRemoteRepository.getInstance();
         disposable = new CompositeDisposable();
         listenerAddedTasks();
-        addedTasks = new ArrayList<>();
+        senderTasks = new ArrayList<>();
     }
 
     @Override
@@ -59,14 +58,10 @@ public class KioskPresenter extends BasePresenter<KioskView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    addedTasks.clear();
-                    addedTasks.addAll(result);
-                    Timber.d("checking size: " + addedTasks.size());
+                    senderTasks.clear();
+                    senderTasks.addAll(result);
+                    Timber.d("checking size: " + senderTasks.size());
                 });
-    }
-
-    public int getAddedTasksSize() {
-        return addedTasks.size();
     }
 
     public boolean isPermissionToSend() {
@@ -78,6 +73,18 @@ public class KioskPresenter extends BasePresenter<KioskView> {
     }
 
     public void sendData() {
-        Timber.d("lala; " + addedTasks.toString());
+        Timber.d("lala; " + senderTasks.toString());
+    }
+
+    public void addTask(TaskTemplate taskTemplate) {
+        senderTasks.add(taskTemplate);
+    }
+
+    public void removeTask(TaskTemplate taskTemplate) {
+        senderTasks.remove(taskTemplate);
+    }
+
+    public List<TaskTemplate> getSenderTasks() {
+        return senderTasks;
     }
 }

@@ -122,7 +122,7 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
      * @param taskTemplate - task from kiosk added screen for add again in the common list
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void addedTaskToList(TaskTemplate taskTemplate) {
+    public void addedTaskAgainToList(TaskTemplate taskTemplate) {
         adapter.addItem(taskTemplate);
 
         filterList.add(taskTemplate);

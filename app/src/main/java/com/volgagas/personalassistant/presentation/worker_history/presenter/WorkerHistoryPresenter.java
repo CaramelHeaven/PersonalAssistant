@@ -12,6 +12,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 import timber.log.Timber;
 
 @InjectViewState
@@ -38,6 +39,11 @@ public class WorkerHistoryPresenter extends BasePresenter<WorkerHistoryView<Task
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
+
+    }
+
+    @Override
+    protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
 
     }
 

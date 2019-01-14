@@ -6,9 +6,12 @@ import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 
+import java.util.List;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 /**
  * Created by CaramelHeaven on 08:53, 04/12/2018.
@@ -44,6 +47,11 @@ public class TaskPresenter extends BasePresenter<TaskView<SubTaskViewer>> {
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
         getViewState().hideProgress();
         getViewState().showError();
+    }
+
+    @Override
+    protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+
     }
 
     private void loadData() {

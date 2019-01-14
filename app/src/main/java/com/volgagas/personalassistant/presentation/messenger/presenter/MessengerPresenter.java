@@ -5,6 +5,7 @@ import com.volgagas.personalassistant.models.model.Message;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.services.ReplyWorker;
 
+import java.util.List;
 import java.util.UUID;
 
 import androidx.work.Constraints;
@@ -12,6 +13,7 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import io.reactivex.Observable;
+import retrofit2.Response;
 
 /**
  * Created by CaramelHeaven on 12:29, 16.11.2018.
@@ -36,6 +38,11 @@ public class MessengerPresenter extends BasePresenter<MessengerView> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
+
+    }
+
+    @Override
+    protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
 
     }
 

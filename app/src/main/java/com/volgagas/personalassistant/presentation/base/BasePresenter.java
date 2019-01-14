@@ -2,6 +2,9 @@ package com.volgagas.personalassistant.presentation.base;
 
 import com.arellomobile.mvp.MvpPresenter;
 
+import java.util.List;
+
+import retrofit2.Response;
 import timber.log.Timber;
 
 /**
@@ -26,4 +29,6 @@ public abstract class BasePresenter<S extends BaseView> extends MvpPresenter<S> 
     }
 
     protected abstract void handlerErrorsFromBadRequests(Throwable throwable);
+
+    protected abstract void handlerErrorInSuccessfulResult(List<Response<Void>> result);
 }

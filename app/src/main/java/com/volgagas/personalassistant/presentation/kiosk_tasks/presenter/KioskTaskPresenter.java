@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
+import retrofit2.Response;
 
 /**
  * Created by CaramelHeaven on 17:12, 22.11.2018.
@@ -40,6 +41,11 @@ public class KioskTaskPresenter extends BasePresenter<KioskTaskView<TaskTemplate
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
+
+    }
+
+    @Override
+    protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
 
     }
 }

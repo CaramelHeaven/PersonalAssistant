@@ -22,6 +22,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 import timber.log.Timber;
 
 /**
@@ -120,6 +121,11 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
+
+    }
+
+    @Override
+    protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
 
     }
 }

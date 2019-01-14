@@ -6,7 +6,10 @@ import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 
+import java.util.List;
+
 import io.reactivex.disposables.CompositeDisposable;
+import retrofit2.Response;
 
 @InjectViewState
 public class ContractPresenter extends BasePresenter<ContractView> {
@@ -32,6 +35,11 @@ public class ContractPresenter extends BasePresenter<ContractView> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
+
+    }
+
+    @Override
+    protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
 
     }
 

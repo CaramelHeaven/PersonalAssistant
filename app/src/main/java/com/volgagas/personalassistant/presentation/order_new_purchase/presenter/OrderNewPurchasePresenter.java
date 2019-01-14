@@ -11,6 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import retrofit2.Response;
 import timber.log.Timber;
 
 /**
@@ -37,6 +38,11 @@ public class OrderNewPurchasePresenter extends BasePresenter<OrderNewPurchaseVie
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
+
+    }
+
+    @Override
+    protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
 
     }
 

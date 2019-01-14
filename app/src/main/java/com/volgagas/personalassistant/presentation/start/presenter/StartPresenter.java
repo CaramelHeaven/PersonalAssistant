@@ -12,12 +12,15 @@ import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
 
+import java.util.List;
+
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 @InjectViewState
 public class StartPresenter extends BasePresenter<StartView> {
@@ -87,6 +90,11 @@ public class StartPresenter extends BasePresenter<StartView> {
         } else {
             getViewState().commonError();
         }
+    }
+
+    @Override
+    protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+
     }
 
     public void setDataCodekey(String dataCodekey) {

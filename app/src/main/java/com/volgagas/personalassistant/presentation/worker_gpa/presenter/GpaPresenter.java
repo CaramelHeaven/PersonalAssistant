@@ -22,6 +22,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
+import timber.log.Timber;
 
 @InjectViewState
 public class GpaPresenter extends BasePresenter<GpaView> {
@@ -79,16 +80,22 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
     }
 
+    @Override
+    protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+        if (result.size() > 0) {
+            if (result.get(0).code() == 400) {
+                Timber.d("check result: " + result.toString());
+                getViewState().showError("Произошла ошибка на стороне сервера");
+            }
+        } else {
+            getViewState().completed();
+        }
+    }
+
     private void successfulResult(List<Response<Void>> result) {
         getViewState().hideProgress();
         if (result != null) {
-            if (result.size() > 0) {
-                if (result.get(0).code() == 400) {
-                    getViewState().showError("Произошла ошибка на стороне сервера");
-                }
-            } else {
-                getViewState().completed();
-            }
+            handlerErrorInSuccessfulResult(result);
         } else {
             getViewState().completed();
         }

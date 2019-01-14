@@ -7,6 +7,7 @@ import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Response;
 import timber.log.Timber;
 
 @InjectViewState
@@ -34,6 +35,11 @@ public class ResultPresenter extends BasePresenter<ResultView> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
+
+    }
+
+    @Override
+    protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
 
     }
 

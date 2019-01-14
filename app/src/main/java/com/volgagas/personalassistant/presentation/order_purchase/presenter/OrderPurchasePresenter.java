@@ -11,6 +11,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 /**
  * Created by CaramelHeaven on 16:56, 22.11.2018.
@@ -54,6 +55,11 @@ public class OrderPurchasePresenter extends BasePresenter<OrderPurchaseView<Orde
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
+
+    }
+
+    @Override
+    protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
 
     }
 }

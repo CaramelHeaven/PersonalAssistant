@@ -107,12 +107,24 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
         disposable.clear();
     }
 
+    /**
+     * Update token after each 10 minutes which user spent in the app.
+     * Class timer - UpdateTokensTime≈
+     *
+     * @param updateToken - special class helper which allow to us handler only this method in the
+     *                    all global bus listeners
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onTokenUpdated(UpdateToken updateToken) {
         refreshTokens();
         Timber.d("updated token: " + updateToken);
     }
 
+    /**
+     * Scanning NFC card and get first block.
+     *
+     * @param intent - intent for handler event.
+     */
     @SuppressLint("CheckResult")
     @Override
     protected void onNewIntent(Intent intent) {
@@ -157,6 +169,12 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
 
     protected abstract void sendDataToServer(String data);
 
+    /**
+     * Convert byte to string. Added 0x20 in the start position and 000000 to the end position
+     * for server.
+     *
+     * @param bytes - bytes from onNewIntent scanned first block from MifareClassic card
+     */
     private StringBuilder bytesToHexString(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int j = 0; j < bytes.length; j++) {
@@ -165,11 +183,18 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
             hexChars[j * 2 + 1] = hexArray[v & 0x0F];
         }
         StringBuilder builder = new StringBuilder(new String(hexChars));
+
         return spesialConvert(new StringBuilder(builder
                 .substring(0, 8))).insert(0, "0x20")
                 .append("000000");
     }
 
+    /**
+     * Change string position. When we scanned card we got numbers for example A59121 but we need
+     * reverse positions it.
+     *
+     * @param stringFromBlock - string firstly scanned block
+     */
     private StringBuilder spesialConvert(StringBuilder stringFromBlock) {
         if (stringFromBlock.length() == 8) {
             stringFromBlock = new StringBuilder(stringFromBlock).reverse();
@@ -184,14 +209,26 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
         return null;
     }
 
+    /**
+     * check if permission available and if yes - we can enable NFC scanning
+     */
     public boolean isPermissionToEnableNfc() {
         return permissionToEnableNfc;
     }
 
+    /**
+     * Set permission available
+     *
+     * @param permissionToEnableNfc - bool container for yes or no.
+     */
     public void setPermissionToEnableNfc(boolean permissionToEnableNfc) {
         this.permissionToEnableNfc = permissionToEnableNfc;
     }
 
+    /**
+     * Base method for refresh tokens from global bus listener in here. First of all - refresh
+     * dynamics 365 after - refresh SharePoint
+     */
     private void refreshTokens() {
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
         TwoPermissions.getInstance().resetValues();
@@ -200,6 +237,9 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
                 Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
     }
 
+    /**
+     * Channel where will be put states from two tokens refreshed.
+     */
     private void listenerForRefreshTokens() {
         disposable.add(CommonChannel.getInstance().getTwoPermissionsSubject()
                 .subscribeOn(Schedulers.io())
@@ -212,6 +252,9 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
                 }));
     }
 
+    /**
+     * Callback for check if token refreshed successful or not. Dynamics 365
+     */
     private AuthenticationCallback<AuthenticationResult> d365Callback = new AuthenticationCallback<AuthenticationResult>() {
         @SuppressLint("CheckResult")
         @Override
@@ -238,6 +281,9 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
         }
     };
 
+    /**
+     * Callback for check if token refreshed successful or not. SharePoint
+     */
     private AuthenticationCallback<AuthenticationResult> spCallback = new AuthenticationCallback<AuthenticationResult>() {
         @SuppressLint("CheckResult")
         @Override

@@ -8,7 +8,9 @@ import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -23,12 +25,9 @@ public class KioskAddedTaskPresenter extends BasePresenter<KioskAddedTaskView<Ta
     private CompositeDisposable disposable;
     private MainRepository repository;
 
-    private Set<TaskTemplate> addedTasks;
-
     public KioskAddedTaskPresenter() {
         repository = MainRemoteRepository.getInstance();
         disposable = new CompositeDisposable();
-        addedTasks = new LinkedHashSet<>();
     }
 
     @Override
@@ -45,19 +44,5 @@ public class KioskAddedTaskPresenter extends BasePresenter<KioskAddedTaskView<Ta
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
 
-    }
-
-    public void addedTask(TaskTemplate task) {
-        addedTasks.add(task);
-        CommonChannel.sendListTasks(addedTasks);
-    }
-
-    public void removeTask(TaskTemplate task) {
-        addedTasks.remove(task);
-        CommonChannel.sendListTasks(addedTasks);
-    }
-
-    public Set<TaskTemplate> getAddedTasks() {
-        return addedTasks;
     }
 }

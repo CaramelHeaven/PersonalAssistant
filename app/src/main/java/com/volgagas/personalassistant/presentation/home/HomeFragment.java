@@ -8,6 +8,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -19,6 +20,8 @@ import com.volgagas.personalassistant.presentation.kiosk.KioskActivity;
 import com.volgagas.personalassistant.presentation.order_purchase.OrderPurchaseActivity;
 import com.volgagas.personalassistant.presentation.query_create.QueryCreateActivity;
 import com.volgagas.personalassistant.presentation.worker.WorkerActivity;
+
+import es.dmoral.toasty.Toasty;
 
 public class HomeFragment extends BaseFragment implements HomeView {
 

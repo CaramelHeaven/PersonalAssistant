@@ -43,7 +43,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@id/tv_count"
-                android:background="@drawable/ic_minus" />
+                android:background="@drawable/ic_minus"
+                android:foreground="?attr/selectableItemBackground" />
 
             <TextView
                 android:id="@+id/tv_count"
@@ -61,9 +62,9 @@
                 android:id="@+id/btn_plus"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="4dp"
                 android:layout_toRightOf="@id/tv_count"
-                android:background="@drawable/ic_plus" />
+                android:background="@drawable/ic_plus"
+                android:foreground="?attr/selectableItemBackground" />
         </RelativeLayout>
     </RelativeLayout>
 

@@ -48,16 +48,25 @@ public class KioskTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void updateAdapter(List<TaskTemplate> models) {
-        uniqueTasks.addAll(models);
-        taskList.clear();
-        taskList.addAll(uniqueTasks);
+        taskList = models;
+
         notifyDataSetChanged();
     }
 
+    public void addItem(TaskTemplate taskTemplate) {
+        taskList.add(taskTemplate);
+
+        notifyDataSetChanged();
+    }
+
+    public List<TaskTemplate> getTaskList() {
+        return taskList;
+    }
+
     public void filterAdapter(List<TaskTemplate> filterList) {
-        Timber.d("filterSize: " + filterList.size());
         taskList.clear();
         taskList.addAll(filterList);
+
         notifyDataSetChanged();
     }
 
@@ -68,6 +77,12 @@ public class KioskTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public TaskTemplate getItemByPosition(int position) {
         return taskList.get(position);
+    }
+
+    public void removeByPosition(int position) {
+        taskList.remove(position);
+
+        notifyItemRemoved(position);
     }
 
     class TaskVH extends RecyclerView.ViewHolder implements View.OnClickListener {

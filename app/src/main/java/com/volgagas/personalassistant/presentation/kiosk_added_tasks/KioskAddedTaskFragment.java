@@ -75,11 +75,10 @@ public class KioskAddedTaskFragment extends BaseFragment implements KioskAddedTa
 
         //listener for removing item
         adapter.setMyOnItemClickListener(position -> {
-                    presenter.removeTask(adapter.getItemByPosition(position));
+                    TaskTemplate task = adapter.getItemByPosition(position);
+                    adapter.removeItemByPosition(position);
 
-                    if (presenter.getAddedTasks().size() == 0) {
-                        tvShowEmpty.setVisibility(View.VISIBLE);
-                    }
+                    GlobalBus.getEventBus().post(task);
                 }
         );
 
@@ -87,9 +86,9 @@ public class KioskAddedTaskFragment extends BaseFragment implements KioskAddedTa
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         recyclerView = null;
         tvShowEmpty = null;
+        super.onDestroyView();
     }
 
     @Override
@@ -114,13 +113,16 @@ public class KioskAddedTaskFragment extends BaseFragment implements KioskAddedTa
         super.onStop();
     }
 
+    /**
+     * Listener for add task in the AddedFragment from TemplateTasks
+     *
+     * @param data - container which contains simple data class Task
+     */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void addedTaskToList(AddedTask data) {
-        Timber.d("checking: " + data.toString());
         if (tvShowEmpty.getVisibility() == View.VISIBLE) {
             tvShowEmpty.setVisibility(View.GONE);
         }
         adapter.addItem(data.getTask());
-        presenter.addedTask(data.getTask());
     }
 }

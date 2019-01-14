@@ -24,13 +24,11 @@ import java.util.Set;
 public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<TaskTemplate> taskList;
-    private Set<TaskTemplate> uniqueTasks;
 
     private myOnItemClickListener myOnItemClickListener;
 
     public KioskAddedTaskAdapter(List<TaskTemplate> taskList) {
         this.taskList = taskList;
-        uniqueTasks = new LinkedHashSet<>();
     }
 
     @NonNull
@@ -52,18 +50,19 @@ public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public void addItem(TaskTemplate model) {
-        uniqueTasks.add(model);
-        taskList.clear();
-        taskList.addAll(uniqueTasks);
+        taskList.add(model);
 
         notifyDataSetChanged();
     }
 
     public void onItemDismiss(int position) {
-        uniqueTasks.remove(taskList.get(position));
         myOnItemClickListener.onItemClick(position);
-        taskList.remove(position);
-        notifyItemRemoved(position);
+    }
+
+    public void removeItemByPosition(int pos) {
+        taskList.remove(pos);
+
+        notifyItemRemoved(pos);
     }
 
     public TaskTemplate getItemByPosition(int position) {
@@ -86,10 +85,7 @@ public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             iBtnRemove.setVisibility(View.VISIBLE);
 
             iBtnRemove.setOnClickListener(v -> {
-                uniqueTasks.remove(taskList.get(getAdapterPosition()));
                 myOnItemClickListener.onItemClick(getAdapterPosition());
-                taskList.remove(getAdapterPosition());
-                notifyItemRemoved(getAdapterPosition());
             });
         }
     }

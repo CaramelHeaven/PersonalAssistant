@@ -25,8 +25,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
+import es.dmoral.toasty.Toasty;
 import timber.log.Timber;
 
 /**
@@ -39,7 +42,7 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
     private ProgressBar progressBar;
 
     private KioskTaskAdapter adapter;
-    private List<TaskTemplate> filterList;
+    private Set<TaskTemplate> filterList;
 
     @InjectPresenter
     KioskTaskPresenter presenter;
@@ -64,7 +67,7 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progress_bar);
 
-        filterList = new ArrayList<>();
+        filterList = new LinkedHashSet<>();
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -73,9 +76,15 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
         recyclerView.setAdapter(adapter);
 
         adapter.setMyOnItemClickListener(position -> {
-            Timber.d("click pos: " + position);
-            Timber.d("click pos: " + position);
+            TaskTemplate task = adapter.getItemByPosition(position);
+
             GlobalBus.getEventBus().post(new AddedTask(adapter.getItemByPosition(position)));
+            adapter.removeByPosition(position);
+            filterList.remove(task);
+
+            //successful add task
+            Toasty.normal(getActivity(), "Добавлено " + task.getDescription(),
+                    getActivity().getDrawable(R.drawable.ic_task)).show();
         });
     }
 
@@ -103,8 +112,20 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
             }
             adapter.filterAdapter(filtering);
         } else {
-            adapter.updateAdapter(filterList);
+            adapter.updateAdapter(new ArrayList<>(filterList));
         }
+    }
+
+    /**
+     * Add task again from AddedFragment
+     *
+     * @param taskTemplate - task from kiosk added screen for add again in the common list
+     */
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void addedTaskToList(TaskTemplate taskTemplate) {
+        adapter.addItem(taskTemplate);
+
+        filterList.add(taskTemplate);
     }
 
     @Override
@@ -129,6 +150,7 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
         if (models.size() != 0) {
             filterList.clear();
             filterList.addAll(models);
+
             adapter.updateAdapter(models);
         }
     }

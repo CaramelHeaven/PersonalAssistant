@@ -5,6 +5,7 @@ import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions
 import com.volgagas.personalassistant.utils.channels.check_auth.TwoPermissions;
 import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 
+import java.util.List;
 import java.util.Set;
 
 import io.reactivex.subjects.PublishSubject;
@@ -20,7 +21,7 @@ public class CommonChannel {
     private static PublishSubject<RequestData> requestDataSubject;
     private static PublishSubject<ThreePermissions> permissionsSubject;
     private static PublishSubject<String> actionsSubject;
-    private static PublishSubject<Set<TaskTemplate>> observableUpdatedTasks;
+    private static PublishSubject<List<TaskTemplate>> observableUpdatedTasks;
     private static PublishSubject<TwoPermissions> twoPermissionsSubject;
 
     public static CommonChannel getInstance() {
@@ -63,11 +64,11 @@ public class CommonChannel {
         actionsSubject.onNext(data);
     }
 
-    public static PublishSubject<Set<TaskTemplate>> getObservableUpdatedTasks() {
+    public static PublishSubject<List<TaskTemplate>> getObservableUpdatedTasks() {
         return observableUpdatedTasks;
     }
 
-    public static void sendListTasks(Set<TaskTemplate> data) {
+    public static void sendListTasks(List<TaskTemplate> data) {
         observableUpdatedTasks.onNext(data);
     }
 

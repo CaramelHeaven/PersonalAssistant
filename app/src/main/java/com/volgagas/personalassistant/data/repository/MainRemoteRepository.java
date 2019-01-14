@@ -155,7 +155,12 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Single<List<TaskHistory>> getHistoryTasks() {
-        return null;
+        String filter = "(AC_Worker eq '" + CacheUser.getUser().getName() + "')";
+        String date = " and (AC_ActivityStartDateTime lt " + UtilDateTimeProvider.getCurrentDataFormat() + ")";
+        String orderBy = "AC_ActivityStartDateTime desc";
+
+        return PersonalAssistant.getBaseApiService().getHistory(filter + date, "50", orderBy)
+                .map(tasksMapper::mapHistoryTasks);
     }
 
     @Override

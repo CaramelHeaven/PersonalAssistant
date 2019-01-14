@@ -11,30 +11,32 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 17:38, 27/12/2018.
  */
 public class TaskResponseToTaskHistory extends Mapper<TaskResponse, List<TaskHistory>> {
-
     @Override
     public List<TaskHistory> map(TaskResponse value) {
-        List<TaskHistory> taskHistories = new ArrayList<>();
-        fillData(taskHistories, value);
-
-        return taskHistories;
+        List<TaskHistory> tasks = new ArrayList<>();
+        fillData(tasks, value);
+        return tasks;
     }
 
     @Override
-    protected void fillData(List<TaskHistory> taskHistories, TaskResponse taskResponse) {
-//removing completed tasks
+    protected void fillData(List<TaskHistory> tasks, TaskResponse response) {
+        //removing completed tasks
         List<TaskNetwork> test = new ArrayList<>();
 
         //show completed tasks last days.. < today
-        for (TaskNetwork taskNetwork : taskResponse.getValue()) {
+        for (TaskNetwork taskNetwork : response.getValue()) {
             if (taskNetwork.getAcClosed().equals("Yes")) {
                 test.add(taskNetwork);
             }
         }
+
+        Timber.d("test test: " + test.size());
 
         Map<TaskHistory, List<SubTask>> map = new LinkedHashMap<>();
 
@@ -48,6 +50,8 @@ public class TaskResponseToTaskHistory extends Mapper<TaskResponse, List<TaskHis
             if (!map.containsKey(task))
                 map.put(task, new ArrayList<>());
         }
+
+        Timber.d("test map: " + map.size());
 
         Map<TaskHistory, List<SubTask>> updated = new LinkedHashMap<>();
 
@@ -65,6 +69,8 @@ public class TaskResponseToTaskHistory extends Mapper<TaskResponse, List<TaskHis
             }
         }
 
+        Timber.d("test updated: " + updated.size());
+
         List<TaskHistory> compeletedList = new ArrayList<>();
 
         for (Map.Entry<TaskHistory, List<SubTask>> entry : updated.entrySet()) {
@@ -73,14 +79,17 @@ public class TaskResponseToTaskHistory extends Mapper<TaskResponse, List<TaskHis
             compeletedList.add(task);
         }
 
-        taskHistories.addAll(compeletedList);
+        Timber.d("test completedList: " + compeletedList.size());
+
+        tasks.addAll(compeletedList);
+        Timber.d("test tasks: " + tasks.size());
     }
 
     private SubTask addSubTask(SubTask subTask, TaskNetwork network) {
         subTask.setDescription(network.getActivityDescription());
         subTask.setEndDate(network.getEndDate());
-        subTask.setStartDate(network.getStartDate());
-        subTask.setStartTime(network.getStartDate());
+        //subTask.setStartDate(Worker.getSimpleDateFormat(network.getStartDate()));
+        //subTask.setStartTime(Worker.getSimpleTimeFormat(network.getStartDate()));
         subTask.setIdSubTask(String.valueOf(network.getIdSubTask()));
         subTask.setStatus(network.getStatus());
         subTask.setWorker(network.getWorker());

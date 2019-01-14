@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_history.presenter.WorkerHistoryPresenter;
 import com.volgagas.personalassistant.presentation.worker_history.presenter.WorkerHistoryView;
@@ -22,7 +22,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class WorkerHistoryFragment extends BaseFragment implements WorkerHistoryView<Task> {
+public class WorkerHistoryFragment extends BaseFragment implements WorkerHistoryView<TaskHistory> {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -50,7 +50,9 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerView);
-        progressBar = view.findViewById(R.id.progress_bar);
+        progressBar = view.findViewById(R.id.progressBar);
+
+        provideRecyclerAndAdapter();
     }
 
     @Override
@@ -82,7 +84,7 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
     }
 
     @Override
-    public void showItems(List<Task> models) {
+    public void showItems(List<TaskHistory> models) {
         if (models.size() != 0) {
             adapter.updateItems(models);
         }

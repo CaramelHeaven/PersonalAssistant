@@ -116,8 +116,8 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
         Collections.sort(subTasks);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        String currentDate = dateFormat.format(Calendar.getInstance().getTime());
 
+        String currentDate = dateFormat.format(Calendar.getInstance().getTime());
         String dateString = subTasks.get(0).getStartServerTime().substring(0, 10);
 
         String[] mas = new String[2];
@@ -129,7 +129,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
         } else {
             mas[0] = subTasks.get(0).getStartTime();
         }
-        mas[1] = subTasks.get(0).getStartTime();
+        mas[1] = subTasks.get(0).getStartDate();
 
         return mas;
     }

@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.common.GlobalTask;
+import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.List;
  * Created by CaramelHeaven on 07:51, 04/12/2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
-public abstract class WorkerAdapter<T extends Task> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class WorkerAdapter<T extends GlobalTask> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private myOnItemClickListener myOnItemClickListener;
 
@@ -60,5 +62,25 @@ public abstract class WorkerAdapter<T extends Task> extends RecyclerView.Adapter
 
     public void setMyOnItemClickListener(com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener myOnItemClickListener) {
         this.myOnItemClickListener = myOnItemClickListener;
+    }
+
+    /**
+     * Merge subtasks to single line which will be reflect description
+     *
+     * @param builder  = helper class for manipulate string
+     * @param subTasks - list sub tasks where we extract each task and merge them.
+     * @return one single line
+     */
+    protected String toDescription(StringBuilder builder, List<SubTask> subTasks) {
+        for (int i = 0; i < subTasks.size(); i++) {
+            builder.append(subTasks.get(i).getDescription());
+            if (i != subTasks.size() - 2) {
+                builder.append(", ");
+            } else {
+                builder.append(".");
+                break;
+            }
+        }
+        return builder.toString();
     }
 }

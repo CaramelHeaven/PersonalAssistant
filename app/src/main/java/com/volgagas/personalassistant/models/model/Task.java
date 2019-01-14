@@ -3,6 +3,7 @@ package com.volgagas.personalassistant.models.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.volgagas.personalassistant.models.model.common.GlobalTask;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Objects;
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 
-public class Task implements Parcelable {
+public class Task implements Parcelable, GlobalTask {
     private String idTask;
     private String preferredTime;
     private String description;

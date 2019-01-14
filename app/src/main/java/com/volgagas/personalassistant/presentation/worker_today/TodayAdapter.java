@@ -46,18 +46,28 @@ public class TodayAdapter extends WorkerAdapter<Task> {
 
         Timber.d("check task: " + taskList.get(position).toString());
 
-        taskVH.tvTitle.setText(taskList.get(position).getDescription());
-        taskVH.tvDate.setText("Сегодня");
-        taskVH.tvTitle.setText(taskList.get(position).getDescription());
-        taskVH.tvSubTasks.setText(String.valueOf(taskList.get(position).getSubTasks().size() + " подзадачи"));
+        taskVH.tvTitle.setText("№" + convertIdTask(taskList.get(position).getIdTask()) + " " + taskList.get(position).getDescription());
 
-        taskVH.tvTime.setText(taskList.get(position).getSubTasks().get(0).getStartTime());
+        taskVH.tvSubTasks.setText(String.valueOf(taskList.get(position).getSubTasks().size() + " подзадачи"));
+        taskVH.tvDescription.setText(toDescription(new StringBuilder(), taskList.get(position).getSubTasks()));
         taskVH.tvLocation.setText(taskList.get(position).getGpa());
 
+        //set below icons text
+        if (!taskList.get(position).getStartDate().equals("Сегодня")) {
+            taskVH.tvDate.setText(taskList.get(position).getStartDate());
+            taskVH.tvTime.setText(taskList.get(position).getStartTime());
+        } else {
+            taskVH.tvDate.setText("Сегодня");
+            taskVH.tvTime.setText(taskList.get(position).getStartTime());
+        }
     }
 
     @Override
     public int getItemCount() {
         return taskList.size();
+    }
+
+    private String convertIdTask(String idTask) {
+        return idTask.replaceAll("[^0-9]", "");
     }
 }

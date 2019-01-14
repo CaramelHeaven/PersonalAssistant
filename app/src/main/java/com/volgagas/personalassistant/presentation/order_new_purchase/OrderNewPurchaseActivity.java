@@ -149,28 +149,30 @@ public class OrderNewPurchaseActivity extends MvpAppCompatActivity implements Or
 
         tabLayout.setupWithViewPager(vpContainer);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                coloringTabName(true, tab.getCustomView());
-            }
+        if (!getResources().getBoolean(R.bool.isTablet)) {
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    coloringTabName(true, tab.getCustomView());
+                }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                coloringTabName(false, tab.getCustomView());
-            }
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    coloringTabName(false, tab.getCustomView());
+                }
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
 
-            }
-        });
+                }
+            });
 
-        provideCustomTabNames();
+            provideCustomTabNames();
 
-        //small feature [bug]
-        vpContainer.setCurrentItem(1);
-        vpContainer.setCurrentItem(0);
+            //small feature [bug]
+            vpContainer.setCurrentItem(1);
+            vpContainer.setCurrentItem(0);
+        }
     }
 
     private void provideCustomTabNames() {

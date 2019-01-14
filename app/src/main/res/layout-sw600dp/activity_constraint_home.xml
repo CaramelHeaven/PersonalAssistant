@@ -39,7 +39,7 @@
     <View
         android:id="@+id/viewBackground"
         android:layout_width="0dp"
-        android:layout_height="290dp"
+        android:layout_height="390dp"
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -73,7 +73,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/viewBackground"
         app:layout_constraintTop_toTopOf="@+id/viewBackground"
-        app:layout_constraintVertical_bias="0.140" />
+        app:layout_constraintVertical_bias="0.26999998" />
 
     <FrameLayout
         android:id="@+id/fragment_container"

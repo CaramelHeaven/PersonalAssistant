@@ -48,7 +48,7 @@ public class StartActivity extends BaseActivity implements StartView {
         //UpdateTokensTimer.getInstance();
         //UpdateTokensTimer.startTimer();
 
-        sendDataToServer("0x201FA7D1F0000000");
+        sendDataToServer("0x2042231A26000000");
     }
 
     @Override

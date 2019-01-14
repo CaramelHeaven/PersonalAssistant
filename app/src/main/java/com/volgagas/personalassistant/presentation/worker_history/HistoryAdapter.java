@@ -4,29 +4,44 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
 import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.common.GlobalTask;
+import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
+import com.volgagas.personalassistant.models.model.worker.SubTask;
+import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.presentation.worker.WorkerAdapter;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 08:41, 04/12/2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
-public class HistoryAdapter extends WorkerAdapter<Task> {
+public class HistoryAdapter extends WorkerAdapter<TaskHistory> {
 
-    private List<Task> taskList;
-    private Set<Task> uniqueTasks;
+    private List<TaskHistory> taskList;
+    private Set<TaskHistory> uniqueTasks;
 
-    public HistoryAdapter(List<Task> taskList) {
+    public HistoryAdapter(List<TaskHistory> taskList) {
         this.taskList = taskList;
         uniqueTasks = new LinkedHashSet<>();
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+        TaskVH taskVH = (TaskVH) viewHolder;
 
+        taskVH.tvTitle.setText(taskList.get(position).getDescription());
+        taskVH.tvDescription.setText(toDescription(new StringBuilder(), taskList.get(position).getSubTasks()));
+        taskVH.tvDate.setText(taskList.get(position).getSubTasks().get(0).getStartDate());
+
+        taskVH.tvSubTasks.setText("Выполнено вами задач: " + taskList.get(position).getSubTasks().size());
+
+        taskVH.tvTime.setText(taskList.get(position).getSubTasks().get(0).getStartTime());
+        taskVH.tvLocation.setText(taskList.get(position).getGpa());
     }
 
     @Override
@@ -35,12 +50,13 @@ public class HistoryAdapter extends WorkerAdapter<Task> {
     }
 
     @Override
-    protected void updateItems(List<Task> items) {
-
+    protected void updateItems(List<TaskHistory> items) {
+        taskList = items;
+        notifyDataSetChanged();
     }
 
     @Override
-    protected Task getItemByPosition(int position) {
+    protected TaskHistory getItemByPosition(int position) {
         return taskList.get(position);
     }
 }

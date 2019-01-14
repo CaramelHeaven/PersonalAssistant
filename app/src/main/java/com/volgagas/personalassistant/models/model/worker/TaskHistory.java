@@ -3,12 +3,15 @@ package com.volgagas.personalassistant.models.model.worker;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.volgagas.personalassistant.models.model.common.GlobalTask;
+
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by CaramelHeaven on 17:39, 27/12/2018.
  */
-public class TaskHistory implements Parcelable {
+public class TaskHistory implements Parcelable, GlobalTask {
     private String idTask;
     private String preferredTime;
     private String description;
@@ -18,6 +21,19 @@ public class TaskHistory implements Parcelable {
 
     //Minimal time from all subtasks
     private String startTime;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskHistory that = (TaskHistory) o;
+        return Objects.equals(idTask, that.idTask);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idTask);
+    }
 
     public String getIdTask() {
         return idTask;

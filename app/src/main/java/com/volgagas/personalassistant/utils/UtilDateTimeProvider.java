@@ -56,4 +56,19 @@ public class UtilDateTimeProvider {
 
         return result + "23:59:59Z";
     }
+
+    /**
+     * Current data format for history request
+     */
+    public static String getCurrentDataFormat() {
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String result = dateFormat.format(Calendar.getInstance().getTime());
+
+        return result + "00:00:00Z";
+    }
+
+    public static String getCurrentFormatDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        return dateFormat.format(Calendar.getInstance().getTime());
+    }
 }

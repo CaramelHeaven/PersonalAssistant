@@ -9,7 +9,10 @@ import com.volgagas.personalassistant.models.network.SubTaskResponse;
 import com.volgagas.personalassistant.models.network.TaskKioskResponse;
 import com.volgagas.personalassistant.models.network.TaskResponse;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 17:43, 27/12/2018.
@@ -30,10 +33,15 @@ public class TaskMapper {
     }
 
     public List<TaskHistory> mapHistoryTasks(TaskResponse response) {
-        return taskResponseToTaskHistory.map(response);
+        List<TaskHistory> histories = new ArrayList<>();
+        histories = taskResponseToTaskHistory.map(response);
+        Timber.d("checking again: " + histories.size());
+
+        return histories;
     }
 
     public List<Task> mapTasks(TaskResponse response) {
+        Timber.d("size: " + taskResponseToTask.map(response).size());
         return taskResponseToTask.map(response);
     }
 

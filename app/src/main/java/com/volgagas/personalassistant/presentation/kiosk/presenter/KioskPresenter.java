@@ -1,8 +1,12 @@
 package com.volgagas.personalassistant.presentation.kiosk.presenter;
 
 import android.annotation.SuppressLint;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
@@ -12,8 +16,11 @@ import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.ObservableSource;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import timber.log.Timber;
@@ -27,7 +34,6 @@ public class KioskPresenter extends BasePresenter<KioskView> {
 
     private MainRepository repository;
     private CompositeDisposable disposable;
-    private boolean permissionToSend = false;
 
     private List<TaskTemplate> senderTasks;
 
@@ -55,7 +61,7 @@ public class KioskPresenter extends BasePresenter<KioskView> {
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
-
+        Timber.d("result result: " + result.toString());
     }
 
     @SuppressLint("CheckResult")
@@ -70,16 +76,34 @@ public class KioskPresenter extends BasePresenter<KioskView> {
                 });
     }
 
-    public boolean isPermissionToSend() {
-        return permissionToSend;
-    }
-
-    public void setPermissionToSend(boolean permissionToSend) {
-        this.permissionToSend = permissionToSend;
-    }
-
+    /**
+     * Create our templates on server
+     */
+    @SuppressLint("CheckResult")
     public void sendData() {
         Timber.d("lala; " + senderTasks.toString());
+        disposable.add(Single.just(senderTasks)
+                .subscribeOn(Schedulers.io())
+                .flattenAsObservable((Function<List<TaskTemplate>, Iterable<TaskTemplate>>) taskTemplates ->
+                        taskTemplates)
+                .flatMap((Function<TaskTemplate, ObservableSource<Response<Void>>>) taskTemplate -> {
+                    String query = "(dataAreaId='gns',ServiceOrderId='" + taskTemplate.getServiceOrderId() + "')";
+                    JsonObject object = new JsonObject();
+                    object.add("pn", new JsonPrimitive(CacheUser.getUser().getPersonalDynamics365Number()));
+
+                    return repository.sendTemplateTasks(query, object);
+                })
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
+    }
+
+    private void successfulResult(List<Response<Void>> responses) {
+        if (responses != null) {
+            handlerErrorInSuccessfulResult(responses);
+        } else {
+            Timber.d("COMPLETED COMPLETEDCOMPLETEDCOMPLETED COMPLETED");
+        }
     }
 
     public void addTask(TaskTemplate taskTemplate) {

@@ -6,10 +6,11 @@ import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
 /**
@@ -30,13 +31,26 @@ public class KioskTaskPresenter extends BasePresenter<KioskTaskView<TaskTemplate
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        getViewState().showItems(repository.testedData());
+        loadData();
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         disposable.clear();
+        super.onDestroy();
+    }
+
+    private void loadData() {
+        getViewState().showProgress();
+        disposable.add(repository.getTemplateTasks()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
+    }
+
+    private void successfulResult(List<TaskTemplate> tasks) {
+        getViewState().hideProgress();
+        getViewState().showItems(tasks);
     }
 
     @Override

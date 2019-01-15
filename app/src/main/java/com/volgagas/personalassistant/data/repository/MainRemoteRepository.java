@@ -51,7 +51,7 @@ public class MainRemoteRepository implements MainRepository {
     private static volatile MainRemoteRepository INSTANCE;
 
     private static UserMapper userMapper;
-    private static TaskMapper tasksMapper;
+    private static TaskMapper taskMapper;
     private static QueryTemplateMapper queryMapper;
     private static UniformRequestMapper uniformRequestMapper;
 
@@ -85,7 +85,7 @@ public class MainRemoteRepository implements MainRepository {
                             new SubTaskResponseToSubTask();
 
                     //Initial mappers
-                    tasksMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
+                    taskMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
                             taskKioskResponseToTaskTemplate, subTaskResponseToSubTask);
                     userMapper = new UserMapper(userResponseToUser, userResponseListToUserList,
                             userIdResponseToUserId, userDynamicsResponseToUserDynamics,
@@ -160,12 +160,16 @@ public class MainRemoteRepository implements MainRepository {
         String orderBy = "AC_ActivityStartDateTime desc";
 
         return PersonalAssistant.getBaseApiService().getHistory(filter + date, "50", orderBy)
-                .map(tasksMapper::mapHistoryTasks);
+                .map(taskMapper::mapHistoryTasks);
     }
 
     @Override
-    public Single<List<Task>> getTemplateTasks() {
-        return null;
+    public Single<List<TaskTemplate>> getTemplateTasks() {
+        String url = Constants.DYNAMICS_365 + "/data/SPEntity?$filter=(ProjCategoryId eq '"
+                + CacheUser.getUser().getCategory() + "') and (ActivityTypeId eq 'Эталон')";
+
+        return PersonalAssistant.getBaseApiService().getTemplateTasks(url)
+                .map(taskMapper::map);
     }
 
     @Override
@@ -185,7 +189,7 @@ public class MainRemoteRepository implements MainRepository {
                 + CacheUser.getUser().getName() + "')";
 
         return PersonalAssistant.getBaseApiService().getTasksToday(filter)
-                .map(tasksMapper::mapTasks);
+                .map(taskMapper::mapTasks);
     }
 
     @Override
@@ -195,7 +199,7 @@ public class MainRemoteRepository implements MainRepository {
                 + " and (SO_ServiceOrder eq '" + serviceOrder + "')";
 
         return PersonalAssistant.getBaseApiService().getSubTasksToday(filter)
-                .map(tasksMapper::map);
+                .map(taskMapper::map);
     }
 
     @Override
@@ -203,7 +207,7 @@ public class MainRemoteRepository implements MainRepository {
         String filter = "(SO_ServiceOrder eq '" + serviceOrder + "')";
 
         return PersonalAssistant.getBaseApiService().getSubTasksHistory(filter)
-                .map(tasksMapper::map);
+                .map(taskMapper::map);
     }
 
     @Override
@@ -240,20 +244,6 @@ public class MainRemoteRepository implements MainRepository {
 
         return PersonalAssistant.getSpApiService().getTemplateQueries(url)
                 .map(queryMapper::map);
-    }
-
-    @Override
-    public List<TaskTemplate> testedData() {
-        List<TaskTemplate> taskTemplates = new ArrayList<>();
-        taskTemplates.add(new TaskTemplate("РазДваТри"));
-        taskTemplates.add(new TaskTemplate("1 RRRw"));
-        taskTemplates.add(new TaskTemplate("FFKGPB"));
-        taskTemplates.add(new TaskTemplate("Четыре"));
-        taskTemplates.add(new TaskTemplate("nnnnnnn"));
-        taskTemplates.add(new TaskTemplate("NnNnNn"));
-        taskTemplates.add(new TaskTemplate("94lFkss"));
-
-        return taskTemplates;
     }
 
     @Override

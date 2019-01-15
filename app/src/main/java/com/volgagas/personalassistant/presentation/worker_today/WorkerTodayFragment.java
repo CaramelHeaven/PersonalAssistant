@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ public class WorkerTodayFragment extends BaseFragment implements WorkerTodayView
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefresh;
     private TextView tvCountTasks, tvDateNumber, tvDateDay, tvDate, tvEmptyTasks;
+    private ImageView ivEmptyTasks, ivPictureTasksCount;
 
     private TodayAdapter adapter;
 
@@ -68,6 +70,8 @@ public class WorkerTodayFragment extends BaseFragment implements WorkerTodayView
         tvDateDay = view.findViewById(R.id.tv_day_of_week);
         tvDate = view.findViewById(R.id.tv_date);
         tvEmptyTasks = view.findViewById(R.id.tv_empty_tasks);
+        ivEmptyTasks = view.findViewById(R.id.iv_empty_tasks);
+        ivPictureTasksCount = view.findViewById(R.id.iv_list);
 
         provideRecyclerAndAdapter();
         provideCurrentDate();
@@ -89,6 +93,8 @@ public class WorkerTodayFragment extends BaseFragment implements WorkerTodayView
     @Override
     public void showProgress() {
         tvEmptyTasks.setVisibility(View.GONE);
+        ivPictureTasksCount.setVisibility(View.GONE);
+
         progressBar.setVisibility(View.VISIBLE);
     }
 
@@ -116,9 +122,13 @@ public class WorkerTodayFragment extends BaseFragment implements WorkerTodayView
             adapter.updateItems(models);
 
             tvCountTasks.setText(models.size() + " задач");
+            ivPictureTasksCount.setVisibility(View.VISIBLE);
         } else {
             tvEmptyTasks.setVisibility(View.VISIBLE);
-            tvCountTasks.setText("Задач нет");
+            ivEmptyTasks.setVisibility(View.VISIBLE);
+
+            ivPictureTasksCount.setVisibility(View.GONE);
+            tvCountTasks.setVisibility(View.GONE);
         }
     }
 

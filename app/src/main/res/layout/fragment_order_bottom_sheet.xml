@@ -30,12 +30,21 @@
     <TextView
         android:id="@+id/tv_empty_basket"
         android:layout_width="wrap_content"
-        android:visibility="gone"
         android:layout_height="wrap_content"
+        android:layout_below="@id/iv_empty_basket"
         android:layout_centerInParent="true"
         android:gravity="center"
         android:text="Корзина пуста"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@android:color/black"
         android:textSize="@dimen/text_16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/iv_empty_basket"
+        android:layout_width="180dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_picture_empty_basket"
+        android:visibility="gone" />
 </RelativeLayout>

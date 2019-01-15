@@ -45,10 +45,10 @@ public class StartActivity extends BaseActivity implements StartView {
 
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
 
-        //UpdateTokensTimer.getInstance();
-        //UpdateTokensTimer.startTimer();
+        UpdateTokensTimer.getInstance();
+        UpdateTokensTimer.startTimer();
 
-        sendDataToServer("0x2042231A26000000");
+        //sendDataToServer("0x2042231A26000000");
     }
 
     @Override
@@ -61,12 +61,14 @@ public class StartActivity extends BaseActivity implements StartView {
         super.onStop();
     }
 
-    /*
-     *  Save current data from card and send it to server in the D365 callback
-     *  @param data - user codekey from mifare card
+    /**
+     * Save current data from card and send it to server in the D365 callback
+     *
+     * @param data - user codekey from mifare card
      */
     @Override
     protected void sendDataToServer(String data) {
+        setPermissionToEnableNfc(false);
         if (data != null && data.length() == 18) {
             presenter.setDataCodekey(data);
 
@@ -96,6 +98,12 @@ public class StartActivity extends BaseActivity implements StartView {
     @Override
     public void goToMainMenu() {
         startActivity(new Intent(StartActivity.this, MainActivity.class));
+    }
+
+    @Override
+    public void showErrorToEnter() {
+        setPermissionToEnableNfc(true);
+        Toast.makeText(this, "Произошла ошибка при входе. Повторите еще раз", Toast.LENGTH_SHORT).show();
     }
 
     @Override

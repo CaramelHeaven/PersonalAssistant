@@ -61,7 +61,14 @@ public class OrderNewPurchaseActivity extends MvpAppCompatActivity implements Or
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        toolbar.setNavigationOnClickListener(v -> finish());
+        //TODO clean up it!
+        toolbar.setNavigationOnClickListener(v -> {
+            if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            } else {
+                finish();
+            }
+        });
 
         getSupportFragmentManager()
                 .beginTransaction()

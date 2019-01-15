@@ -84,6 +84,8 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
         super.onResume();
         if (nfcAdapter != null && nfcAdapter.isEnabled() && permissionToEnableNfc) {
             nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListArray);
+        } else {
+            nfcAdapter.disableForegroundDispatch(this);
         }
     }
 
@@ -223,6 +225,13 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
      */
     public void setPermissionToEnableNfc(boolean permissionToEnableNfc) {
         this.permissionToEnableNfc = permissionToEnableNfc;
+    }
+
+    /**
+     * Helper method for controlling NFC enable or disable
+     */
+    public void handlerNFC() {
+        onResume();
     }
 
     /**

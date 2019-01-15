@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.data.datasource;
 
 import com.google.gson.JsonObject;
 import com.volgagas.personalassistant.models.network.SubTaskResponse;
+import com.volgagas.personalassistant.models.network.TaskKioskResponse;
 import com.volgagas.personalassistant.models.network.TaskResponse;
 import com.volgagas.personalassistant.models.network.UserDynamicsResponse;
 import com.volgagas.personalassistant.models.network.UserResponse;
@@ -20,11 +21,6 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface BaseApiService {
-    @GET
-    Single<JsonObject> getTest(@Url String url);
-
-    @GET
-    Single<JsonObject> getSharePointTest(@Url String url);
 
     @GET(Constants.MY_HOST + "database/findUser")
     Single<UserResponse> getCardInfo(@Query("userNumbers") String numbers);
@@ -73,6 +69,14 @@ public interface BaseApiService {
      */
     @PATCH
     Observable<Response<Void>> sendStartedSubTasks(@Url String url, @Body JsonObject object);
+
+    /**
+     * Get Template tasks from Kiosk.
+     *
+     * @param url - current url where we can get our tasks
+     */
+    @GET
+    Single<TaskKioskResponse> getTemplateTasks(@Url String url);
 
     @PATCH
     Observable<Response<Void>> sendCompletedSubTasks(@Url String url, @Body JsonObject object);

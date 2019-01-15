@@ -45,6 +45,9 @@ public class KioskTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         TaskVH taskVH = (TaskVH) viewHolder;
         taskVH.tvTaskName.setText(taskList.get(position).getDescription());
+        taskVH.tvCategory.setText(taskList.get(position).getCategoryId());
+
+        Timber.d("kek: " + taskList.get(position).toString());
     }
 
     public void updateAdapter(List<TaskTemplate> models) {

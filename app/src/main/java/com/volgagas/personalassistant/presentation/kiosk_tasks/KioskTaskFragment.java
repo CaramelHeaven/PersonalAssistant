@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
@@ -40,6 +41,7 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private TextView tvEmptyTasks;
 
     private KioskTaskAdapter adapter;
     private Set<TaskTemplate> filterList;
@@ -66,6 +68,7 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progress_bar);
+        tvEmptyTasks = view.findViewById(R.id.tv_empty_tasks);
 
         filterList = new LinkedHashSet<>();
 
@@ -102,7 +105,6 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void filterList(String str) {
-        Timber.d("string: " + str);
         if (!str.isEmpty()) {
             final List<TaskTemplate> filtering = new ArrayList<>();
             for (TaskTemplate val : filterList) {
@@ -138,6 +140,10 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
+
+        if (tvEmptyTasks.getVisibility() == View.VISIBLE) {
+            tvEmptyTasks.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -152,6 +158,8 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
             filterList.addAll(models);
 
             adapter.updateAdapter(models);
+        } else {
+            tvEmptyTasks.setVisibility(View.VISIBLE);
         }
     }
 }

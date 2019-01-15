@@ -7,6 +7,7 @@ import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.User;
+import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
@@ -21,6 +22,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
+import timber.log.Timber;
 
 @InjectViewState
 public class StartPresenter extends BasePresenter<StartView> {
@@ -70,16 +72,38 @@ public class StartPresenter extends BasePresenter<StartView> {
                         return Single.just(user);
                     }
                 })
+                .flatMap((Function<User, SingleSource<UserDynamics>>) user -> {
+                    //if successful user data
+                    Timber.d("im inside flat map");
+                    Timber.d("checkign user: " + user.toString());
+                    Timber.d("lalalalal: " + !user.getName().equals(""));
+                    if (user.getName() != null && !user.getName().equals("")) {
+                        Timber.d("successful user data");
+                        CacheUser.getUser().setBaseFields(user);
+                        return repository.getPersonalUserNumber(user.getName());
+                    } else {
+                        return Single.just(new UserDynamics());
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::successfulResponse, this::handlerErrorsFromBadRequests));
     }
 
-    private void successfulResponse(User user) {
-        CacheUser.getUser().setBaseFields(user);
-
+    private void successfulResponse(UserDynamics userDynamics) {
+        Timber.d("getInstance: " + userDynamics.toString());
         ThreePermissions permissions = ThreePermissions.getInstance();
-        permissions.setServer(true);
-        CommonChannel.sendPermissions(permissions);
+        if (userDynamics.getPersonalNumber() == null || userDynamics.getPersonalNumber().equals("")) {
+            permissions.setServer(false);
+            CommonChannel.sendPermissions(permissions);
+
+            //Show user if we get card data with empty fields
+            getViewState().showErrorToEnter();
+        } else {
+            CacheUser.getUser().setPersonalDynamics365Number(userDynamics.getPersonalNumber());
+
+            permissions.setServer(true);
+            CommonChannel.sendPermissions(permissions);
+        }
     }
 
     @Override

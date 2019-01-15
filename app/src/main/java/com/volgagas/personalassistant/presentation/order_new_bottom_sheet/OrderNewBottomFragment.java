@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
@@ -34,6 +35,7 @@ public class OrderNewBottomFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private Toolbar toolbar;
     private TextView tvEmptyBasket;
+    private ImageView ivEmptyBasket;
 
     private OrderBottomAdapter<NewOrder> adapter;
 
@@ -59,6 +61,7 @@ public class OrderNewBottomFragment extends BaseFragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         toolbar = view.findViewById(R.id.toolbar);
         tvEmptyBasket = view.findViewById(R.id.tv_empty_basket);
+        ivEmptyBasket = view.findViewById(R.id.iv_empty_basket);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -122,8 +125,10 @@ public class OrderNewBottomFragment extends BaseFragment {
     private void handlerTvEmptyBasket() {
         if (adapter.getData().size() == 0) {
             tvEmptyBasket.setVisibility(View.VISIBLE);
+            ivEmptyBasket.setVisibility(View.VISIBLE);
         } else {
             tvEmptyBasket.setVisibility(View.GONE);
+            ivEmptyBasket.setVisibility(View.VISIBLE);
         }
     }
 }

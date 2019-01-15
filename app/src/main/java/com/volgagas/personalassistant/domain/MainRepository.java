@@ -97,14 +97,14 @@ public interface MainRepository {
      */
     Single<List<QueryTemplate>> getTemplatesQueries();
 
-    Single<List<Task>> getTemplateTasks();
-
-    Single<UserDynamics> getPersonalUserNumber(String personalName);
+    Single<List<TaskTemplate>> getTemplateTasks();
 
     /**
-     * Template of tasks for kiosk screen
+     * Personal number which help us to get UserDynamics data for create template tasks!
+     *
+     * @param personalName - personal number
      */
-    List<TaskTemplate> testedData();
+    Single<UserDynamics> getPersonalUserNumber(String personalName);
 
     /**
      * data for order new base fragment

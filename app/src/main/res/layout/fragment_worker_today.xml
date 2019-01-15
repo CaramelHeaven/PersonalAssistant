@@ -100,23 +100,32 @@
                 android:layout_width="1dp"
                 android:layout_height="1dp" />
 
-            <TextView
-                android:id="@+id/tv_empty_tasks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Упс! Задач на сегодня больше нет."
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
             <ProgressBar
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/iv_empty_tasks"
+                android:layout_width="150dp"
+                android:layout_height="130dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_picture_empty_tasks"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_empty_tasks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_empty_tasks"
+                android:layout_centerInParent="true"
+                android:text="На сегодня задачи выполнены"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 android:visibility="gone" />
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>

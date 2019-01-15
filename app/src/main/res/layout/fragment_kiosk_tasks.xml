@@ -9,9 +9,21 @@
         android:layout_height="match_parent" />
 
     <ProgressBar
-        android:id="@+id/progress_bar"
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/_tv_empty_tasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="32dp"
+        android:gravity="center"
+        android:text="Упс. Эталонных работ на вашу категорию пока нет"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_16sp"
         android:visibility="gone" />
 </RelativeLayout>

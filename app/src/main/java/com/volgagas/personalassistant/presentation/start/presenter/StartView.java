@@ -14,4 +14,7 @@ public interface StartView extends BaseView {
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
     void goToMainMenu();
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void showErrorToEnter();
 }

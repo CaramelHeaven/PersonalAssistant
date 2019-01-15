@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
@@ -64,13 +65,15 @@ public class KioskActivity extends BaseActivity implements KioskView {
             if (presenter.getSenderTasks().size() > 0) {
                 buildAlertDialog();
                 setPermissionToEnableNfc(true);
-                onResume();
+                handlerNFC();
 
                 Timber.d("check permission: " + isPermissionToEnableNfc());
             } else {
                 Toast.makeText(KioskActivity.this, "Задачи не выбраны", Toast.LENGTH_SHORT).show();
             }
         });
+
+        Timber.d("I'm IN KEK: " + CacheUser.getUser().toString());
     }
 
     @Override
@@ -100,9 +103,12 @@ public class KioskActivity extends BaseActivity implements KioskView {
 
     @Override
     protected void sendDataToServer(String data) {
-        Timber.d("check permission 2: " + isPermissionToEnableNfc());
+        Timber.d("aalal: " + CacheUser.getUser().getCodekeyList().toString());
+        Timber.d("and data: " + data);
+        if (CacheUser.getUser().getCodekeyList().contains(data.substring(2, data.length()))) {
+            presenter.sendData();
 
-        presenter.sendData();
+        }
     }
 
     @Override
@@ -162,7 +168,11 @@ public class KioskActivity extends BaseActivity implements KioskView {
                 .setTitle("Сканирование")
                 .setMessage("Приложите карту для подтверждения задач")
                 .setCancelable(true)
-                .setOnCancelListener(dialog -> setPermissionToEnableNfc(false));
+                .setOnCancelListener(dialog -> {
+                    Timber.d("set on cancel listener");
+                    setPermissionToEnableNfc(false);
+                    handlerNFC();
+                });
 
         alertDialog = builder.create();
         alertDialog.show();

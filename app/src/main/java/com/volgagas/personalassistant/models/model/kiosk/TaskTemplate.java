@@ -30,6 +30,33 @@ public class TaskTemplate implements Parcelable {
     private String endDateTime;
     private String workerPreferredTechnicianName;
 
+    @Override
+    public String toString() {
+        return "TaskTemplate{" +
+                "dataAreaId='" + dataAreaId + '\'' +
+                ", serviceOrderId='" + serviceOrderId + '\'' +
+                ", hcmResponsiblePersonnelNumber='" + hcmResponsiblePersonnelNumber + '\'' +
+                ", description='" + description + '\'' +
+                ", activityTypeId='" + activityTypeId + '\'' +
+                ", preferredTechnicianPersonnelNumber='" + preferredTechnicianPersonnelNumber + '\'' +
+                ", stageId='" + stageId + '\'' +
+                ", projectId='" + projectId + '\'' +
+                ", serviceDateTime='" + serviceDateTime + '\'' +
+                ", categoryId='" + categoryId + '\'' +
+                ", workerResponsible=" + workerResponsible +
+                ", serviceTaskId='" + serviceTaskId + '\'' +
+                ", activityStartDateTime='" + activityStartDateTime + '\'' +
+                ", custAccount='" + custAccount + '\'' +
+                ", activityEndDateTime='" + activityEndDateTime + '\'' +
+                ", serviceObjectId='" + serviceObjectId + '\'' +
+                ", agreementId='" + agreementId + '\'' +
+                ", custCenter='" + custCenter + '\'' +
+                ", startDateTime='" + startDateTime + '\'' +
+                ", endDateTime='" + endDateTime + '\'' +
+                ", workerPreferredTechnicianName='" + workerPreferredTechnicianName + '\'' +
+                '}';
+    }
+
     public TaskTemplate(String description) {
         this.description = description;
     }

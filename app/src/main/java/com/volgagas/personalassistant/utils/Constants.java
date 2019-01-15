@@ -15,7 +15,7 @@ public class Constants {
     //main url for requests
     //TEST -- https://volgagas-tstdevaos.sandbox.ax.dynamics.com
     //RELEASE https://volgagas-prod73b403cba6259cd5cedevaos.cloudax.dynamics.com
-    public static final String DYNAMICS_365 = "https://volgagas-prod73b403cba6259cd5cedevaos.cloudax.dynamics.com";
+    public static final String DYNAMICS_365 = "https://volgagas-tstdevaos.sandbox.ax.dynamics.com";
     public static final String GRAPH = "https://volagas.sharepoint.com";
     public static final String SHARE_POINT_DOC_API_WEB = "https://volagas.sharepoint.com/doc/_api/web";
     public static final String SHARE_POINT_API_WEB = "https://volagas.sharepoint.com/_api/web";

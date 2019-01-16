@@ -1,6 +1,10 @@
 package com.volgagas.personalassistant.presentation.worker_result.presenter;
 
+import android.annotation.SuppressLint;
+
 import com.arellomobile.mvp.InjectViewState;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
@@ -9,7 +13,13 @@ import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.ObservableSource;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -42,11 +52,32 @@ public class ResultPresenter extends BasePresenter<ResultView> {
         super.onDestroy();
     }
 
+    @SuppressLint("CheckResult")
     public void sendData() {
         findNonSelectedSubTasks();
-        Timber.d("send SUB TASKS: " + chosenSubTasks);
+        getViewState().showSendStatus();
 
-        Timber.d("non selected tasks: " + nonSelectedSubTasks);
+        JsonObject completedJson = new JsonObject();
+        JsonObject canceledJson = new JsonObject();
+
+        completedJson.add("ActivityState", new JsonPrimitive("Completed"));
+        completedJson.add("PhaseId", new JsonPrimitive("Завершено"));
+        canceledJson.add("ActivityState", new JsonPrimitive("Completed"));
+        canceledJson.add("PhaseId", new JsonPrimitive("Отменено"));
+
+        Single.just(chosenSubTasks)
+                .subscribeOn(Schedulers.io())
+                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
+                .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
+                        repository.sendCompletedSubTasks(completedJson, subTask.getIdActivity()))
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(suc -> {
+                    getViewState().completed();
+                    Timber.d("sucL: " + suc);
+                }, throwable -> {
+                    Timber.d("THROWAB: " + throwable.getMessage());
+                });
     }
 
     @Override

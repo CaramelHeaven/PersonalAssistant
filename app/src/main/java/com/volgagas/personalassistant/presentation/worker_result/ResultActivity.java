@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.worker_result;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -30,14 +32,16 @@ import com.volgagas.personalassistant.utils.callbacks.OnResultItemClick;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import timber.log.Timber;
 
 public class ResultActivity extends BaseActivity implements ResultView {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
-    private Toolbar toolbar;
     private AlertDialog alertDialog;
+    private ProgressDialog progressDialog;
+    private Button btnStartCompleted;
 
     private ResultAdapter adapter;
 
@@ -54,39 +58,19 @@ public class ResultActivity extends BaseActivity implements ResultView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         recyclerView = findViewById(R.id.recyclerView);
-        toolbar = findViewById(R.id.toolbar);
-
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        btnStartCompleted = findViewById(R.id.btn_start_completed);
 
         setPermissionToEnableNfc(false);
 
         provideRecyclerAndAdapter(presenter.getAllSubTasks());
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_result, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_send_result:
-                if (presenter.getChosenSubTasks().size() > 0) {
-                    //TODO send data
-                    showAlertDialog();
-                } else {
-                    Toast.makeText(this, "Ничего не выбрано", Toast.LENGTH_SHORT).show();
-                }
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        btnStartCompleted.setOnClickListener(v -> {
+            if (presenter.getChosenSubTasks().size() != 0) {
+                showAlertDialog();
+            } else {
+                Toasty.error(ResultActivity.this, "Задачи не добавлены").show();
+            }
+        });
     }
 
     @Override
@@ -198,5 +182,23 @@ public class ResultActivity extends BaseActivity implements ResultView {
         alertDialog = builder.create();
 
         alertDialog.show();
+    }
+
+    @Override
+    public void showSendStatus() {
+        alertDialog.hide();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Отправляем задачи");
+
+        progressDialog.setCanceledOnTouchOutside(false);
+
+        progressDialog.show();
+    }
+
+    @Override
+    public void completed() {
+        progressDialog.hide();
+        Toasty.success(this, "Задания успешно завершены").show();
     }
 }

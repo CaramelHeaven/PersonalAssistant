@@ -16,7 +16,7 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/_tv_empty_tasks"
+        android:id="@+id/tv_empty_tasks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

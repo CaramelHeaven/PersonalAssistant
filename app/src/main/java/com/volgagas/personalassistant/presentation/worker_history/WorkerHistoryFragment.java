@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
@@ -16,6 +17,7 @@ import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_history.presenter.WorkerHistoryPresenter;
 import com.volgagas.personalassistant.presentation.worker_history.presenter.WorkerHistoryView;
+import com.volgagas.personalassistant.presentation.worker_task.TaskDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,8 +80,9 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
         recyclerView.setAdapter(adapter);
 
         adapter.setMyOnItemClickListener(position -> {
-            Timber.d("click");
-            Timber.d("click");
+            TaskDialogFragment fragment = TaskDialogFragment
+                    .newInstance(adapter.getItemByPosition(position), "HISTORY");
+            fragment.show(getActivity().getSupportFragmentManager(), null);
         });
     }
 
@@ -87,6 +90,8 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
     public void showItems(List<TaskHistory> models) {
         if (models.size() != 0) {
             adapter.updateItems(models);
+        } else {
+            Toast.makeText(getActivity(), "История пуста", Toast.LENGTH_SHORT).show();
         }
     }
 }

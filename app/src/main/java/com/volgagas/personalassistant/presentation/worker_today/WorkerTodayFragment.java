@@ -18,6 +18,7 @@ import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
+import com.volgagas.personalassistant.presentation.worker_task.TaskDialogFragment;
 import com.volgagas.personalassistant.presentation.worker_today.presenter.WorkerTodayPresenter;
 import com.volgagas.personalassistant.presentation.worker_today.presenter.WorkerTodayView;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
@@ -111,8 +112,9 @@ public class WorkerTodayFragment extends BaseFragment implements WorkerTodayView
         recyclerView.setAdapter(adapter);
 
         adapter.setMyOnItemClickListener(position -> {
-            Timber.d("click");
-            Timber.d("click");
+            TaskDialogFragment fragment = TaskDialogFragment
+                    .newInstance(adapter.getItemByPosition(position), "TODAY");
+            fragment.show(getActivity().getSupportFragmentManager(), null);
         });
     }
 

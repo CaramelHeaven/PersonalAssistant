@@ -67,7 +67,7 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerView);
-        progressBar = view.findViewById(R.id.progress_bar);
+        progressBar = view.findViewById(R.id.progressBar);
         tvEmptyTasks = view.findViewById(R.id.tv_empty_tasks);
 
         filterList = new LinkedHashSet<>();

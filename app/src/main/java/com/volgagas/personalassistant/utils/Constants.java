@@ -30,4 +30,8 @@ public class Constants {
     public static final String PRIORITY_NORMAL = "Обычная";
     public static final String PRIORITY_HIGH = "Высокая";
     public static final int IMAGE_COUNT = 1;
+
+    // HTTP RESPONSES
+    public static final int HTTP_400 = 400;
+    public static final int HTTP_204 = 204;
 }

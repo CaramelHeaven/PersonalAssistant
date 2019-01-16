@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.presentation.worker_gpa;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,11 +19,14 @@ import com.volgagas.personalassistant.presentation.worker_result.ResultActivity;
 
 import java.util.ArrayList;
 
+import es.dmoral.toasty.Toasty;
+
 public class GpaActivity extends BaseActivity implements GpaView {
 
     private ProgressBar progressBar;
     private TextView tvScanGpa;
     private TextView tvUncorrected;
+    private Toolbar toolbar;
 
     @InjectPresenter
     GpaPresenter presenter;
@@ -38,9 +42,15 @@ public class GpaActivity extends BaseActivity implements GpaView {
         setContentView(R.layout.activity_gpa);
         progressBar = findViewById(R.id.progressBar);
         tvScanGpa = findViewById(R.id.tv_scanGpa);
+        toolbar = findViewById(R.id.toolbar);
         tvUncorrected = findViewById(R.id.tv_uncorrectedPlace);
 
         setPermissionToEnableNfc(true);
+
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -64,17 +74,29 @@ public class GpaActivity extends BaseActivity implements GpaView {
     @Override
     public void showError(String error) {
         setPermissionToEnableNfc(true);
+        Toasty.error(this, error).show();
     }
 
     @Override
     public void completed() {
-        Toast.makeText(this, "Подтверждено о начале работы", Toast.LENGTH_SHORT).show();
+        Toasty.success(this, "Подтверждено о начале работы").show();
+
         Intent intent = new Intent(GpaActivity.this, ResultActivity.class);
 
-        intent.putParcelableArrayListExtra("LIST_SUB_TASKS", new ArrayList<>(presenter.getSubTaskList()));
         intent.putExtra("TASK", presenter.getTask());
 
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

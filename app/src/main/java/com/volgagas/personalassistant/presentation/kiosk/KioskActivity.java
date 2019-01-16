@@ -1,6 +1,8 @@
 package com.volgagas.personalassistant.presentation.kiosk;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -27,6 +29,7 @@ import com.volgagas.personalassistant.utils.bus.models.AddedTask;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import es.dmoral.toasty.Toasty;
 import timber.log.Timber;
 
 public class KioskActivity extends BaseActivity implements KioskView {
@@ -37,6 +40,7 @@ public class KioskActivity extends BaseActivity implements KioskView {
     private TabLayout tlContainer;
     private Button btnSend;
     private AlertDialog alertDialog;
+    private ProgressDialog progressDialog;
 
     private KioskPagerAdapter pagerAdapter;
 
@@ -176,5 +180,31 @@ public class KioskActivity extends BaseActivity implements KioskView {
 
         alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void sendTemplatesProgress() {
+        if (alertDialog != null) {
+            alertDialog.hide();
+        }
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Отправляем шаблоны");
+        progressDialog.setCanceledOnTouchOutside(false);
+
+        progressDialog.show();
+    }
+
+    @Override
+    public void completedKiosk() {
+        progressDialog.hide();
+        Toasty.success(KioskActivity.this, "Шаблоны созданы!", Toast.LENGTH_SHORT, true).show();
+
+        finish();
+    }
+
+    @Override
+    public void handlerError() {
+
     }
 }

@@ -30,9 +30,13 @@ import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseAc
 import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_task.presenter.TaskPresenter;
 import com.volgagas.personalassistant.presentation.worker_task.presenter.TaskView;
+import com.volgagas.personalassistant.utils.bus.GlobalBus;
+import com.volgagas.personalassistant.utils.bus.models.SendStartedTasks;
+import com.volgagas.personalassistant.utils.manager.TaskManager;
 
 import java.util.List;
 
+import androidx.work.WorkManager;
 import timber.log.Timber;
 
 /**
@@ -188,13 +192,18 @@ public class TaskDialogFragment extends MvpAppCompatDialogFragment implements Ta
                 task = (Task) presenter.getGlobalTask();
             }
 
+            //START BACKGROUND WORK FOR UPDATE START TIME IN SUBTASKS
+            TaskManager.getInstance().startBackgroundService(task);
+
             intent.putExtra("TASK", task);
             startActivity(intent);
 
             getDialog().dismiss();
         });
 
-        btnCancel.setOnClickListener(view -> dismiss());
+        btnCancel.setOnClickListener(v -> {
+            dismiss();
+        });
 
         //btnReconnect.setOnClickListener(view -> presenter.loadSubTasks());
 

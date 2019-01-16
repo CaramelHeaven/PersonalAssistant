@@ -10,6 +10,7 @@ import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,6 @@ public class GpaPresenter extends BasePresenter<GpaView> {
     private MainRepository repository;
     private CompositeDisposable disposable;
     private Task task;
-    private List<SubTask> subTaskList;
 
     public GpaPresenter(Task task) {
         this.task = task;
@@ -51,28 +51,25 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
     public void sendData(String userNumbers) {
         getViewState().showProgress();
-        subTaskList = mappingSubTasks(task);
-        disposable.add(repository.getCardInfo(userNumbers)
-                .subscribeOn(Schedulers.io())
-                .flatMap((Function<User, SingleSource<Boolean>>) gpa -> {
-                    if (gpa.getCategory().equals("Оборудование") && (gpa.getName().equals(task.getGpa()))) {
-                        return Single.just(true);
-                    } else {
-                        return Single.just(false);
-                    }
-                })
-                .flatMap((Function<Boolean, Single<List<SubTask>>>) aBoolean -> {
-                    if (aBoolean) {
-                        return Single.just(subTaskList);
-                    }
-                    return Single.error(new Exception("NPE"));
-                })
-                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTaskList)
-                .flatMap((Function<SubTask, ObservableSource<Response<Void>>>)
-                        subTask -> repository.sendStartedSubTasks(mappingJson(), subTask.getIdActivity()))
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
+            disposable.add(repository.getCardInfo(userNumbers)
+                    .subscribeOn(Schedulers.io())
+                    .flatMap((Function<User, SingleSource<Boolean>>) gpa -> {
+                        if (gpa.getCategory().equals("Оборудование") && (gpa.getName().equals(task.getGpa()))) {
+                            return Single.just(true);
+                        } else {
+                            return Single.just(false);
+                        }
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
+    }
+
+    private void successfulResult(Boolean aBoolean) {
+        if (aBoolean) {
+            getViewState().completed();
+        } else {
+
+        }
     }
 
     @Override
@@ -82,10 +79,14 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+        Timber.d("handler: " + result.toString());
         if (result.size() > 0) {
-            if (result.get(0).code() == 400) {
+            Timber.d("to string: " + result.size());
+            if (result.get(0).code() == Constants.HTTP_400) {
                 Timber.d("check result: " + result.toString());
                 getViewState().showError("Произошла ошибка на стороне сервера");
+            } else if (result.get(0).code() == Constants.HTTP_204) {
+                getViewState().completed();
             }
         } else {
             getViewState().completed();
@@ -103,25 +104,5 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
     public Task getTask() {
         return task;
-    }
-
-    private JsonObject mappingJson() {
-        JsonObject object = new JsonObject();
-        object.add("ActivityState", new JsonPrimitive("Started"));
-        return object;
-    }
-
-    private List<SubTask> mappingSubTasks(Task task) {
-        List<SubTask> subTasks = new ArrayList<>();
-        for (SubTask subTask : task.getSubTasks()) {
-            if (subTask.getWorker().equals(CacheUser.getUser().getName())) {
-                subTasks.add(subTask);
-            }
-        }
-        return subTasks;
-    }
-
-    public List<SubTask> getSubTaskList() {
-        return subTaskList;
     }
 }

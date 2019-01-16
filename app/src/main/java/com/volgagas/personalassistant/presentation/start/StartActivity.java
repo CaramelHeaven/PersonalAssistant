@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -29,6 +30,7 @@ import timber.log.Timber;
 public class StartActivity extends BaseActivity implements StartView {
 
     private ProgressBar progressBar;
+    private TextView tvTitle;
 
     private AuthenticationContext authContext;
 
@@ -40,6 +42,7 @@ public class StartActivity extends BaseActivity implements StartView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         progressBar = findViewById(R.id.progressBar);
+        tvTitle = findViewById(R.id.tv_title);
 
         setPermissionToEnableNfc(true);
 
@@ -68,6 +71,7 @@ public class StartActivity extends BaseActivity implements StartView {
      */
     @Override
     protected void sendDataToServer(String data) {
+        showProgress();
         setPermissionToEnableNfc(false);
         if (data != null && data.length() == 18) {
             presenter.setDataCodekey(data);
@@ -87,6 +91,7 @@ public class StartActivity extends BaseActivity implements StartView {
 
     @Override
     public void showProgress() {
+        tvTitle.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
@@ -103,6 +108,7 @@ public class StartActivity extends BaseActivity implements StartView {
     @Override
     public void showErrorToEnter() {
         setPermissionToEnableNfc(true);
+        tvTitle.setVisibility(View.VISIBLE);
         Toast.makeText(this, "Произошла ошибка при входе. Повторите еще раз", Toast.LENGTH_SHORT).show();
     }
 

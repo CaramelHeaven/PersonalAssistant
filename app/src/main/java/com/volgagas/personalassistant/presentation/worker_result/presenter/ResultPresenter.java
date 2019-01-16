@@ -1,22 +1,35 @@
 package com.volgagas.personalassistant.presentation.worker_result.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
+import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.Response;
 import timber.log.Timber;
 
 @InjectViewState
 public class ResultPresenter extends BasePresenter<ResultView> {
 
-    private List<SubTask> subTaskList;
+    private MainRepository repository;
+    private CompositeDisposable disposable;
 
-    public ResultPresenter() {
-        subTaskList = new ArrayList<>();
+    private List<SubTask> chosenSubTasks;
+    private List<SubTask> allSubTasks;
+    private List<SubTask> nonSelectedSubTasks;
+
+    public ResultPresenter(List<SubTask> subTasks) {
+        chosenSubTasks = new ArrayList<>();
+        nonSelectedSubTasks = new ArrayList<>();
+        this.allSubTasks = subTasks;
+
+        repository = MainRemoteRepository.getInstance();
+        disposable = new CompositeDisposable();
     }
 
     @Override
@@ -30,7 +43,10 @@ public class ResultPresenter extends BasePresenter<ResultView> {
     }
 
     public void sendData() {
-        Timber.d("YEEEE SEND");
+        findNonSelectedSubTasks();
+        Timber.d("send SUB TASKS: " + chosenSubTasks);
+
+        Timber.d("non selected tasks: " + nonSelectedSubTasks);
     }
 
     @Override
@@ -43,15 +59,27 @@ public class ResultPresenter extends BasePresenter<ResultView> {
 
     }
 
-    public List<SubTask> getSubTaskList() {
-        return subTaskList;
+    public List<SubTask> getChosenSubTasks() {
+        return chosenSubTasks;
     }
 
-    public void addSubTask(SubTask subTask) {
-        subTaskList.add(subTask);
+    public void addChosenSubTask(SubTask subTask) {
+        chosenSubTasks.add(subTask);
     }
 
-    public void removeSubTask(SubTask subTask) {
-        subTaskList.remove(subTask);
+    public void removeChosenSubTask(SubTask subTask) {
+        chosenSubTasks.remove(subTask);
+    }
+
+    private void findNonSelectedSubTasks() {
+        for (SubTask task : allSubTasks) {
+            if (!chosenSubTasks.contains(task)) {
+                nonSelectedSubTasks.add(task);
+            }
+        }
+    }
+
+    public List<SubTask> getAllSubTasks() {
+        return allSubTasks;
     }
 }

@@ -82,6 +82,7 @@ public class KioskPresenter extends BasePresenter<KioskView> {
     @SuppressLint("CheckResult")
     public void sendData() {
         Timber.d("lala; " + senderTasks.toString());
+        getViewState().sendTemplatesProgress();
         disposable.add(Single.just(senderTasks)
                 .subscribeOn(Schedulers.io())
                 .flattenAsObservable((Function<List<TaskTemplate>, Iterable<TaskTemplate>>) taskTemplates ->

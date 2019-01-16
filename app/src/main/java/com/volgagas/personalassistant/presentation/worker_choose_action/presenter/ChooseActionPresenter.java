@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.worker_choose_action.presenter;
 
+import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
@@ -12,6 +13,7 @@ import retrofit2.Response;
 /**
  * Created by CaramelHeaven on 17:08, 15/01/2019.
  */
+
 public class ChooseActionPresenter extends BasePresenter<ChooseView> {
 
     private MainRepository repository;

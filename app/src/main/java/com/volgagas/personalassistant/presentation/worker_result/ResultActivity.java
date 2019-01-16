@@ -17,7 +17,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.worker_camera.CameraActivity;
@@ -42,6 +44,11 @@ public class ResultActivity extends BaseActivity implements ResultView {
     @InjectPresenter
     ResultPresenter presenter;
 
+    @ProvidePresenter
+    ResultPresenter provideResultPresenter() {
+        return new ResultPresenter(((Task) getIntent().getParcelableExtra("TASK")).getSubTasks());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,16 +61,9 @@ public class ResultActivity extends BaseActivity implements ResultView {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        List<SubTask> subTasks = new ArrayList<>();
-        subTasks.add(new SubTask("Raz"));
-        subTasks.add(new SubTask("Сломалась труба. Просьба добыть навыки для его усовершенствования"));
-        subTasks.add(new SubTask("asld;ads"));
-        subTasks.add(new SubTask("lxczxczk;xkckxzzl;cxkc"));
-        subTasks.add(new SubTask("djshajkdhsjkdh"));
-
         setPermissionToEnableNfc(false);
 
-        provideRecyclerAndAdapter(subTasks);
+        provideRecyclerAndAdapter(presenter.getAllSubTasks());
     }
 
     @Override
@@ -77,7 +77,7 @@ public class ResultActivity extends BaseActivity implements ResultView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_send_result:
-                if (presenter.getSubTaskList().size() > 0) {
+                if (presenter.getChosenSubTasks().size() > 0) {
                     //TODO send data
                     showAlertDialog();
                 } else {
@@ -142,10 +142,10 @@ public class ResultActivity extends BaseActivity implements ResultView {
             @Override
             public void onClick(int position, View view, boolean status) {
                 if (status) {
-                    presenter.addSubTask(adapter.getItemByPos(position));
+                    presenter.addChosenSubTask(adapter.getItemByPos(position));
                     view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 } else {
-                    presenter.removeSubTask(adapter.getItemByPos(position));
+                    presenter.removeChosenSubTask(adapter.getItemByPos(position));
                     view.setBackgroundColor(getResources().getColor(R.color.colorBackgroundStatusNeutral));
                 }
             }
@@ -185,12 +185,16 @@ public class ResultActivity extends BaseActivity implements ResultView {
     public void showAlertDialog() {
         //permission from abstract class to enable NFC
         setPermissionToEnableNfc(true);
+        handlerNFC();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                 .setTitle("Сканирование")
                 .setMessage("Приложите карту для подтверждения задач")
                 .setCancelable(true)
-                .setOnCancelListener(dialogInterface -> setPermissionToEnableNfc(false));
+                .setOnCancelListener(dialogInterface -> {
+                    setPermissionToEnableNfc(false);
+                    handlerNFC();
+                });
         alertDialog = builder.create();
 
         alertDialog.show();

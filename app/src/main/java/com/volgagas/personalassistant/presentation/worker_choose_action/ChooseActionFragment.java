@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.NomenclatureFragment;
@@ -29,9 +30,10 @@ public class ChooseActionFragment extends BaseFragment {
     private Toolbar toolbar;
     private RelativeLayout rlSketch;
 
-    public static ChooseActionFragment newInstance() {
+    public static ChooseActionFragment newInstance(Task task) {
 
         Bundle args = new Bundle();
+        args.putParcelable("TASK", task);
 
         ChooseActionFragment fragment = new ChooseActionFragment();
         fragment.setArguments(args);
@@ -60,8 +62,10 @@ public class ChooseActionFragment extends BaseFragment {
         rlSketch.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.item_animation_up_down));
 
         btnToGpa.setOnClickListener(v -> {
-            Timber.d("q");
-            startActivity(new Intent(getActivity(), GpaActivity.class));
+            Intent intent = new Intent(getActivity(), GpaActivity.class);
+            intent.putExtra("TASK", (Task) getArguments().getParcelable("TASK"));
+
+            startActivity(intent);
         });
 
         btnToNomenclatureList.setOnClickListener(v -> {

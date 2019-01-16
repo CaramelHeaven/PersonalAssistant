@@ -85,6 +85,7 @@ dependencies {
     //pass data between layout
     implementation 'org.greenrobot:eventbus:3.0.0'
 
-    //service
-    implementation "android.arch.work:work-runtime:1.0.0-beta01"
+    //servicef
+    //mplementation "android.arch.work:work-runtime:1.0.0-beta01"
+    implementation "android.arch.work:work-rxjava2:1.0.0-beta01"
 }

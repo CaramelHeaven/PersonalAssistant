@@ -17,6 +17,7 @@ import com.volgagas.personalassistant.models.mapper.user.UserMapper;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseListToUserList;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseToUser;
 import com.volgagas.personalassistant.models.mapper.user.UserSimpleResponseToUserSimple;
+import com.volgagas.personalassistant.models.mapper.worker.NomenclatureResponseToNomenclature;
 import com.volgagas.personalassistant.models.mapper.worker.SubTaskResponseToSubTask;
 import com.volgagas.personalassistant.models.mapper.worker.TaskMapper;
 import com.volgagas.personalassistant.models.mapper.worker.TaskResponseToTask;
@@ -32,6 +33,7 @@ import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.models.model.queries.QueryToUser;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.model.user.UserSimple;
+import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 import com.volgagas.personalassistant.utils.Constants;
@@ -83,10 +85,13 @@ public class MainRemoteRepository implements MainRepository {
                             new UserSimpleResponseToUserSimple();
                     SubTaskResponseToSubTask subTaskResponseToSubTask =
                             new SubTaskResponseToSubTask();
+                    NomenclatureResponseToNomenclature nomenclatureResponseToNomenclature =
+                            new NomenclatureResponseToNomenclature();
 
                     //Initial mappers
                     taskMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
-                            taskKioskResponseToTaskTemplate, subTaskResponseToSubTask);
+                            taskKioskResponseToTaskTemplate, subTaskResponseToSubTask,
+                            nomenclatureResponseToNomenclature);
                     userMapper = new UserMapper(userResponseToUser, userResponseListToUserList,
                             userIdResponseToUserId, userDynamicsResponseToUserDynamics,
                             userSimpleResponseToUserSimple);
@@ -106,6 +111,12 @@ public class MainRemoteRepository implements MainRepository {
     public Single<User> getCardInfo(String numbers) {
         return PersonalAssistant.getBaseApiService().getCardInfo(numbers)
                 .map(userMapper::map);
+    }
+
+    @Override
+    public Single<Nomenclature> getNomenclatureData(String data) {
+        return PersonalAssistant.getBaseApiService().getNomenclatureInfo(data)
+                .map(taskMapper::map);
     }
 
     @Override

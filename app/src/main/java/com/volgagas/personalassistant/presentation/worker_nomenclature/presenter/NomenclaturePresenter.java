@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature.presenter;
 
+import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import retrofit2.Response;
 /**
  * Created by CaramelHeaven on 17:28, 15/01/2019.
  */
+@InjectViewState
 public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     public NomenclaturePresenter() {

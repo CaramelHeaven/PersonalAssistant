@@ -12,6 +12,7 @@ import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.models.model.user.UserSimple;
+import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 
@@ -29,6 +30,11 @@ public interface MainRepository {
      * Information from mifare card. Send to own small server and get user or equipment data
      */
     Single<User> getCardInfo(String numbers);
+
+    /**
+     * Get nomenclature data from the scanned current card
+     */
+    Single<Nomenclature> getNomenclatureData(String data);
 
     /**
      * Get all users from special folders from SCUD

@@ -4,7 +4,9 @@ import com.volgagas.personalassistant.models.mapper.kiosk.TaskKioskResponseToTas
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
+import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
+import com.volgagas.personalassistant.models.network.NomenclatureResponse;
 import com.volgagas.personalassistant.models.network.SubTaskResponse;
 import com.volgagas.personalassistant.models.network.TaskKioskResponse;
 import com.volgagas.personalassistant.models.network.TaskResponse;
@@ -21,14 +23,17 @@ public class TaskMapper {
     private final TaskResponseToTaskHistory taskResponseToTaskHistory;
     private final TaskKioskResponseToTaskTemplate taskKioskResponseToTaskTemplate;
     private final SubTaskResponseToSubTask subTaskResponseToSubTask;
+    private final NomenclatureResponseToNomenclature nomenclatureResponseToNomenclature;
 
     public TaskMapper(TaskResponseToTask taskResponseToTask, TaskResponseToTaskHistory taskResponseToTaskHistory,
                       TaskKioskResponseToTaskTemplate taskKioskResponseToTaskTemplate,
-                      SubTaskResponseToSubTask subTaskResponseToSubTask) {
+                      SubTaskResponseToSubTask subTaskResponseToSubTask,
+                      NomenclatureResponseToNomenclature nomenclatureResponseToNomenclature) {
         this.taskResponseToTask = taskResponseToTask;
         this.taskResponseToTaskHistory = taskResponseToTaskHistory;
         this.taskKioskResponseToTaskTemplate = taskKioskResponseToTaskTemplate;
         this.subTaskResponseToSubTask = subTaskResponseToSubTask;
+        this.nomenclatureResponseToNomenclature = nomenclatureResponseToNomenclature;
     }
 
     public List<TaskHistory> mapHistoryTasks(TaskResponse response) {
@@ -36,7 +41,6 @@ public class TaskMapper {
     }
 
     public List<Task> mapTasks(TaskResponse response) {
-        Timber.d("size: " + taskResponseToTask.map(response).size());
         return taskResponseToTask.map(response);
     }
 
@@ -46,5 +50,9 @@ public class TaskMapper {
 
     public List<SubTaskViewer> map(SubTaskResponse response) {
         return subTaskResponseToSubTask.map(response);
+    }
+
+    public Nomenclature map(NomenclatureResponse response) {
+        return nomenclatureResponseToNomenclature.map(response);
     }
 }

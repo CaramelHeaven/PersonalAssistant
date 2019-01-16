@@ -1,80 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ToolbarStyle"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:title="Выбор действия"
-            app:titleTextColor="@color/colorSecondaryLight" />
-    </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <RelativeLayout
-        android:id="@+id/rl_sketch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/appBar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp">
-
-        <ImageView
-            android:id="@+id/iv_sketch"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_sketch" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_sketch"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="Выберите действие"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_16sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
-
-        <Button
-            android:id="@+id/btn_to_gpa"
-            style="@style/AppTheme.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Перейти к оборудованию"
-            android:textColor="@android:color/white" />
-
-        <Button
-            android:id="@+id/btn_to_nomenclature"
-            style="@style/AppTheme.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_to_gpa"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp"
-            android:text="Перейти к номенклатурам" />
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@id/appBar" />
 </RelativeLayout>

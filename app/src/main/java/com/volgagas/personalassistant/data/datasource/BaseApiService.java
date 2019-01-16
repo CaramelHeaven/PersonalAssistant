@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.data.datasource;
 
 import com.google.gson.JsonObject;
+import com.volgagas.personalassistant.models.network.NomenclatureResponse;
 import com.volgagas.personalassistant.models.network.SubTaskResponse;
 import com.volgagas.personalassistant.models.network.TaskKioskResponse;
 import com.volgagas.personalassistant.models.network.TaskResponse;
@@ -24,6 +25,9 @@ public interface BaseApiService {
 
     @GET(Constants.MY_HOST + "database/findUser")
     Single<UserResponse> getCardInfo(@Query("userNumbers") String numbers);
+
+    @GET(Constants.MY_HOST + "database/findNomenclature")
+    Single<NomenclatureResponse> getNomenclatureInfo(@Query("nomenclatureNumbers") String numbers);
 
     @GET(Constants.MY_HOST + "database/getAllUsers")
     Single<List<UserResponse>> getSearchedUsers();

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
  * Created by CaramelHeaven on 17:53, 15/01/2019.
  */
 public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {

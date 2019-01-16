@@ -12,44 +12,36 @@ import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.NomenclatureFragment;
 
-public class ChooseActionActivity extends BaseActivity {
+import timber.log.Timber;
 
-    private Button btnToNomenclature, btnToGpa;
-    private RelativeLayout rlSketch;
+public class ChooseActionActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_action);
-        btnToGpa = findViewById(R.id.btn_to_gpa);
-        btnToNomenclature = findViewById(R.id.btn_to_nomenclature);
-        rlSketch = findViewById(R.id.rl_sketch);
 
         setPermissionToEnableNfc(false);
 
-        btnToGpa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ChooseActionActivity.this, GpaActivity.class));
-            }
-        });
-
-        btnToNomenclature.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, NomenclatureFragment.newInstance())
-                        .commit();
-            }
-        });
-
-        //animation
-        rlSketch.startAnimation(AnimationUtils.loadAnimation(this, R.anim.item_animation_up_down));
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, ChooseActionFragment.newInstance())
+                .commit();
     }
 
     @Override
     protected void sendDataToServer(String data) {
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

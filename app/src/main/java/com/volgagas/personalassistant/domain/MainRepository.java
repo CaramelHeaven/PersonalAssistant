@@ -16,12 +16,14 @@ import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 
-import org.json.JSONObject;
-
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Single;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 
 public interface MainRepository {
@@ -86,12 +88,23 @@ public interface MainRepository {
     /**
      * Patch tasks with field - completed
      */
-    Observable<Response<Void>> sendCompletedSubTasks(JsonObject object, String idSubTask);
+    ObservableSource<? extends Response<Void>> sendCompletedSubTasks(JsonObject object, String idSubTask);
 
     /**
      * Patch tasks with field - canceled
      */
     Observable<Response<Void>> sendCanceledSubTasks(JsonObject object, String idSubTask);
+
+    /**
+     * Kek
+     */
+    Observable<Response<Void>> sendImage(String url, Map<String, RequestBody> options,
+                                         MultipartBody.Part file);
+
+    /**
+     * another kek
+     */
+    Observable<Response<Void>> sendImageToDynamics(JsonObject object);
 
     /**
      * Send created templates tasks for user.

@@ -47,6 +47,25 @@ public class SubTask implements Parcelable, Comparable<SubTask> {
     }
 
     @Override
+    public String toString() {
+        return "SubTask{" +
+                "description='" + description + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", worker='" + worker + '\'' +
+                ", idSubTask='" + idSubTask + '\'' +
+                ", idActivity='" + idActivity + '\'' +
+                ", status='" + status + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", startServerTime='" + startServerTime + '\'' +
+                ", picturesPath=" + picturesPath +
+                ", stateBox=" + stateBox +
+                ", dateStart=" + dateStart +
+                ", filePath='" + filePath + '\'' +
+                '}';
+    }
+
+    @Override
     public int compareTo(SubTask o) {
         return getDateStart().compareTo(o.getDateStart());
     }

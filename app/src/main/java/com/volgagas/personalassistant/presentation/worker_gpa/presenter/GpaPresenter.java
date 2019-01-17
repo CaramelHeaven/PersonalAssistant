@@ -51,24 +51,24 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
     public void sendData(String userNumbers) {
         getViewState().showProgress();
-            disposable.add(repository.getCardInfo(userNumbers)
-                    .subscribeOn(Schedulers.io())
-                    .flatMap((Function<User, SingleSource<Boolean>>) gpa -> {
-                        if (gpa.getCategory().equals("Оборудование") && (gpa.getName().equals(task.getGpa()))) {
-                            return Single.just(true);
-                        } else {
-                            return Single.just(false);
-                        }
-                    })
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
+        disposable.add(repository.getCardInfo(userNumbers)
+                .subscribeOn(Schedulers.io())
+                .flatMap((Function<User, SingleSource<Boolean>>) gpa -> {
+                    if (gpa.getCategory().equals("Оборудование") && (gpa.getName().equals(task.getGpa()))) {
+                        return Single.just(true);
+                    } else {
+                        return Single.just(false);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
     }
 
     private void successfulResult(Boolean aBoolean) {
         if (aBoolean) {
             getViewState().completed();
         } else {
-
+            getViewState().showErrorEquipment();
         }
     }
 

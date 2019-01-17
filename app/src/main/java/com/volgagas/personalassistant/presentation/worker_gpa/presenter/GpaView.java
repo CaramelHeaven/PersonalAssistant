@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.worker_gpa.presenter;
 
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
@@ -11,4 +12,7 @@ public interface GpaView extends BaseView {
 
     @StateStrategyType(value = SkipStrategy.class)
     void completed();
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void showErrorEquipment();
 }

@@ -46,6 +46,8 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 
 public class MainRemoteRepository implements MainRepository {
@@ -240,6 +242,18 @@ public class MainRemoteRepository implements MainRepository {
         String url = Constants.DYNAMICS_365 + "/data/ActivitiesForMobile(dataAreaId='gns',ActivityNumber='" + idSubTask + "')";
 
         return PersonalAssistant.getBaseApiService().sendCanceledSubTasks(url, object);
+    }
+
+    @Override
+    public Observable<Response<Void>> sendImage(String url, Map<String, RequestBody> options, MultipartBody.Part file) {
+        return PersonalAssistant.getBaseApiService().sendImage(url, options, file);
+    }
+
+    @Override
+    public Observable<Response<Void>> sendImageToDynamics(JsonObject object) {
+        String url = Constants.DYNAMICS_365 + "/data/ActivitiesPictures";
+
+        return PersonalAssistant.getBaseApiService().sendImageToDynamics(url, object);
     }
 
     @Override

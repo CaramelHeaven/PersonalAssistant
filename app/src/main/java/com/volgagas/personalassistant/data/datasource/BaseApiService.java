@@ -11,13 +11,20 @@ import com.volgagas.personalassistant.models.network.UserSimpleResponse;
 import com.volgagas.personalassistant.utils.Constants;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -73,6 +80,14 @@ public interface BaseApiService {
      */
     @PATCH
     Observable<Response<Void>> sendStartedSubTasks(@Url String url, @Body JsonObject object);
+
+    @Multipart
+    @POST
+    Observable<Response<Void>> sendImage(@Url String url, @PartMap Map<String, RequestBody> options,
+                                         @Part MultipartBody.Part file);
+
+    @POST
+    Observable<Response<Void>> sendImageToDynamics(@Url String url, @Body JsonObject object);
 
     /**
      * Get Template tasks from Kiosk.

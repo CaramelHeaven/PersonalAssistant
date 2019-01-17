@@ -90,6 +90,11 @@ public class GpaActivity extends BaseActivity implements GpaView {
     }
 
     @Override
+    public void showErrorEquipment() {
+        Toasty.error(this, "Эта карточка не оборудование").show();
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;

@@ -183,6 +183,11 @@ public class StartActivity extends BaseActivity implements StartView {
 
     @Override
     public void resultMatchedWithEquipment() {
+        tvTitle.setVisibility(View.VISIBLE);
+
+        setPermissionToEnableNfc(true);
+        handlerNFC();
+
         Toast.makeText(this, "Вы приложили карточку оборудования", Toast.LENGTH_SHORT).show();
     }
 

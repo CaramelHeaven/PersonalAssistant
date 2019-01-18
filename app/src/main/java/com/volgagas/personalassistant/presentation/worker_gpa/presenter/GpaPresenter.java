@@ -11,6 +11,7 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.manager.TaskContentManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,8 @@ public class GpaPresenter extends BasePresenter<GpaView> {
     private Task task;
 
     public GpaPresenter(Task task) {
-        this.task = task;
+        this.task = TaskContentManager.getInstance().getTask();
+
         repository = MainRemoteRepository.getInstance();
         disposable = new CompositeDisposable();
     }
@@ -54,6 +56,9 @@ public class GpaPresenter extends BasePresenter<GpaView> {
         disposable.add(repository.getCardInfo(userNumbers)
                 .subscribeOn(Schedulers.io())
                 .flatMap((Function<User, SingleSource<Boolean>>) gpa -> {
+                    Timber.d("GPA: " + gpa);
+                    Timber.d("name: " + gpa.getName());
+                    Timber.d("get GPA: " + task.getGpa());
                     if (gpa.getCategory().equals("Оборудование") && (gpa.getName().equals(task.getGpa()))) {
                         return Single.just(true);
                     } else {

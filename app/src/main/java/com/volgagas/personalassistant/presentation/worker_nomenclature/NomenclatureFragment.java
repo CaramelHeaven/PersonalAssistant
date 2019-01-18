@@ -96,14 +96,8 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         adapter = new NomenclatureAdapter(presenter.loadData());
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnButtonPlusMinusClickListener((position, status, count) -> {
-            //1 - add, 0 - minus
-            if (status == 1) {
-                adapter.updateItemCount(position, count + 1);
-            } else {
-                adapter.updateItemCount(position, count - 1);
-            }
-        });
+        adapter.setOnButtonPlusMinusClickListener((position, status, count) ->
+                adapter.getItemByPosition(position).setCount(String.valueOf(count)));
     }
 
     @Override

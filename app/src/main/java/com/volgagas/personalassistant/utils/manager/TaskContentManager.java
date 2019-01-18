@@ -29,6 +29,10 @@ public class TaskContentManager {
         this.task = task;
     }
 
+    public Task getTask() {
+        return task;
+    }
+
     public List<SubTask> getSubTasks() {
         return task.getSubTasks();
     }

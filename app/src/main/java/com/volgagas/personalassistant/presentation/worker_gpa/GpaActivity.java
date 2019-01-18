@@ -55,8 +55,10 @@ public class GpaActivity extends BaseActivity implements GpaView {
 
     @Override
     protected void sendDataToServer(String data) {
-        presenter.sendData(data);
         setPermissionToEnableNfc(false);
+        handlerNFC();
+
+        presenter.sendData(data);
     }
 
     @Override
@@ -91,6 +93,9 @@ public class GpaActivity extends BaseActivity implements GpaView {
 
     @Override
     public void showErrorEquipment() {
+        setPermissionToEnableNfc(true);
+        handlerNFC();
+
         Toasty.error(this, "Эта карточка не оборудование").show();
     }
 

@@ -1,6 +1,5 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,12 +10,9 @@ import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
-import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclatureView;
 import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
 
 import java.util.List;
-
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 17:53, 15/01/2019.
@@ -48,12 +44,8 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         nomenclatureVH.tvTitle.setText(nomenclatureList.get(i).getName());
     }
 
-    public void updateItemCount(int position, int newCount) {
-        if (newCount >= 0) {
-            nomenclatureList.get(position).setCount(String.valueOf(newCount));
-        }
-
-        notifyItemChanged(position);
+    public Nomenclature getItemByPosition(int pos) {
+        return nomenclatureList.get(pos);
     }
 
     @Override
@@ -73,15 +65,24 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             tvTitle = itemView.findViewById(R.id.tv_title);
 
             btnMinus.setOnClickListener(v -> {
-                Timber.d("minus");
-                onButtonPlusMinusClickListener.onHandleCount(getAdapterPosition(), 0,
-                        Integer.parseInt(tvCount.getText().toString()));
+                int count = 0;
+
+                if (Integer.parseInt(tvCount.getText().toString()) > 0) {
+                    count = Integer.parseInt(tvCount.getText().toString());
+                    count--;
+                    tvCount.setText(String.valueOf(count));
+                } else {
+                    tvCount.setText(String.valueOf(0));
+                }
+
+                onButtonPlusMinusClickListener.onHandleCount(getAdapterPosition(), 0, count);
             });
 
             btnAdd.setOnClickListener(v -> {
-                Timber.d("add");
-                onButtonPlusMinusClickListener.onHandleCount(getAdapterPosition(), 1,
-                        Integer.parseInt(tvCount.getText().toString()));
+                int count = Integer.parseInt(tvCount.getText().toString());
+                count++;
+
+                onButtonPlusMinusClickListener.onHandleCount(getAdapterPosition(), 1, count);
             });
         }
     }

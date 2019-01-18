@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 17:19, 27/12/2018.
@@ -84,6 +87,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
             //set minimal time
             String[] massive = getMinimalTimeFromSubTasks(entry.getValue());
 
+            Timber.d("check massive: " + Arrays.toString(massive));
             task.setStartDate(massive[0]);
             task.setStartTime(massive[1]);
 
@@ -129,7 +133,8 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
         } else {
             mas[0] = subTasks.get(0).getStartTime();
         }
-        mas[1] = subTasks.get(0).getStartDate();
+        //TODO BUG HERE
+        mas[1] = subTasks.get(1).getStartDate();
 
         return mas;
     }

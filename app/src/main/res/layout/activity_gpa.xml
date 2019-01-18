@@ -16,7 +16,7 @@
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/ToolbarStyle"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:title="Сканирование оборудования"
+            app:title="Сканирование"
             app:titleTextColor="@color/colorSecondaryLight" />
     </android.support.design.widget.AppBarLayout>
 

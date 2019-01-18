@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.main;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,6 +32,7 @@ import com.volgagas.personalassistant.presentation.home.HomeFragment;
 import com.volgagas.personalassistant.presentation.main.presenter.MainPresenter;
 import com.volgagas.personalassistant.presentation.main.presenter.MainView;
 import com.volgagas.personalassistant.presentation.projects.FragmentProjects;
+import com.volgagas.personalassistant.presentation.start.StartActivity;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
 
 import java.nio.charset.StandardCharsets;
@@ -45,6 +49,7 @@ public class MainActivity extends BaseActivity implements MainView {
     private CircleImageView ivUserImage;
     private ConstraintLayout constraintLayout;
     private TextView tvName, tvCategory, tvTitleProblem;
+    private ImageView ivLogout;
 
     private ConstraintSet homeSet, projectsSet, infoSet;
 
@@ -65,6 +70,7 @@ public class MainActivity extends BaseActivity implements MainView {
         bnvNavigation = findViewById(R.id.bnv_navigation);
         tvName = findViewById(R.id.tv_name);
         tvCategory = findViewById(R.id.tv_category);
+        ivLogout = findViewById(R.id.iv_logout);
         constraintLayout = findViewById(R.id.constraintLayout);
 
         homeSet = new ConstraintSet();
@@ -113,7 +119,12 @@ public class MainActivity extends BaseActivity implements MainView {
                     Timber.d("tho: " + throwable.getMessage());
                 });
 
-        //provideMessanger();
+        ivLogout.setOnClickListener(v -> {
+            CacheUser.getUser().clear();
+
+            startActivity(new Intent(MainActivity.this, StartActivity.class));
+            finish();
+        });
     }
 
     @Override

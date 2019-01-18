@@ -69,10 +69,10 @@ public class ChooseActionFragment extends BaseFragment {
         });
 
         btnToNomenclatureList.setOnClickListener(v -> {
-            Timber.d("lala");
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, NomenclatureFragment.newInstance())
+                    .replace(R.id.fragment_container,
+                            NomenclatureFragment.newInstance(getArguments().getParcelable("TASK")))
                     .addToBackStack(null)
                     .commit();
         });

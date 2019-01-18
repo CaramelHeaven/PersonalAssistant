@@ -1,20 +1,13 @@
 package com.volgagas.personalassistant;
 
-import android.app.Activity;
 import android.app.Application;
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.Observer;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.volgagas.personalassistant.data.datasource.BaseApiService;
 import com.volgagas.personalassistant.data.datasource.SPApiService;
-import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.utils.Constants;
-import com.volgagas.personalassistant.utils.manager.TaskManager;
+import com.volgagas.personalassistant.utils.manager.TaskContentManager;
+import com.volgagas.personalassistant.utils.manager.TaskStartedManager;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,8 +16,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -32,7 +23,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
-public class PersonalAssistant extends Application  {
+public class PersonalAssistant extends Application {
 
     private PersonalAssistant application;
 
@@ -51,7 +42,8 @@ public class PersonalAssistant extends Application  {
 
         application = this;
 
-        TaskManager.getInstance();
+        TaskStartedManager.getInstance();
+        TaskContentManager.getInstance();
     }
 
     public PersonalAssistant getApplication() {

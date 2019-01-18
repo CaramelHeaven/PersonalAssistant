@@ -19,17 +19,17 @@ import timber.log.Timber;
  * Created by CaramelHeaven on 14:20, 16/01/2019.
  * task manager for control SendTaskStartedWorker service class
  */
-public class TaskManager implements LifecycleOwner {
-    private static volatile TaskManager INSTANCE;
+public class TaskStartedManager implements LifecycleOwner {
+    private static volatile TaskStartedManager INSTANCE;
 
     private Context context;
     private OneTimeWorkRequest oneTimeWorkRequest;
 
-    public static TaskManager getInstance() {
+    public static TaskStartedManager getInstance() {
         if (INSTANCE == null) {
-            synchronized (TaskManager.class) {
+            synchronized (TaskStartedManager.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new TaskManager();
+                    INSTANCE = new TaskStartedManager();
                 }
             }
         }

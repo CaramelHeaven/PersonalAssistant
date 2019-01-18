@@ -112,7 +112,10 @@ public class StartActivity extends BaseActivity implements StartView {
     @Override
     public void showErrorToEnter() {
         setPermissionToEnableNfc(true);
+        handlerNFC();
+
         tvTitle.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
         Toast.makeText(this, "Произошла ошибка при входе. Повторите еще раз", Toast.LENGTH_SHORT).show();
     }
 

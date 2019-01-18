@@ -2,7 +2,6 @@ package com.volgagas.personalassistant.presentation.base;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
@@ -21,19 +20,15 @@ import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.GlobalBus;
-import com.volgagas.personalassistant.utils.bus.models.SendStartedTasks;
 import com.volgagas.personalassistant.utils.bus.models.UpdateToken;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.TwoPermissions;
-import com.volgagas.personalassistant.utils.manager.TaskManager;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

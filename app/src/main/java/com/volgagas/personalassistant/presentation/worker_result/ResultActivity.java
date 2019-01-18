@@ -29,6 +29,7 @@ import com.volgagas.personalassistant.presentation.worker_camera.CameraActivity;
 import com.volgagas.personalassistant.presentation.worker_result.presenter.ResultPresenter;
 import com.volgagas.personalassistant.presentation.worker_result.presenter.ResultView;
 import com.volgagas.personalassistant.utils.callbacks.OnResultItemClick;
+import com.volgagas.personalassistant.utils.manager.TaskContentManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,7 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
         setPermissionToEnableNfc(false);
 
-        provideRecyclerAndAdapter(presenter.getAllSubTasks());
+        provideRecyclerAndAdapter(TaskContentManager.getInstance().getSubTasks());
 
         btnStartCompleted.setOnClickListener(v -> {
             if (presenter.getChosenSubTasks().size() != 0) {

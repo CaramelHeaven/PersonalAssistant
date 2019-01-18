@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -27,17 +26,12 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.common.GlobalTask;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseActionActivity;
-import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_task.presenter.TaskPresenter;
 import com.volgagas.personalassistant.presentation.worker_task.presenter.TaskView;
-import com.volgagas.personalassistant.utils.bus.GlobalBus;
-import com.volgagas.personalassistant.utils.bus.models.SendStartedTasks;
-import com.volgagas.personalassistant.utils.manager.TaskManager;
+import com.volgagas.personalassistant.utils.manager.TaskContentManager;
+import com.volgagas.personalassistant.utils.manager.TaskStartedManager;
 
 import java.util.List;
-
-import androidx.work.WorkManager;
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 08:51, 04/12/2018.
@@ -193,7 +187,9 @@ public class TaskDialogFragment extends MvpAppCompatDialogFragment implements Ta
             }
 
             //START BACKGROUND WORK FOR UPDATE START TIME IN SUBTASKS
-            TaskManager.getInstance().startBackgroundService(task);
+            TaskStartedManager.getInstance().startBackgroundService(task);
+
+            TaskContentManager.getInstance().setCurrentTask(task);
 
             intent.putExtra("TASK", task);
             startActivity(intent);

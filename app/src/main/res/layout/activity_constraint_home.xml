@@ -27,10 +27,11 @@
                 android:layout_height="match_parent">
 
                 <ImageView
+                    android:id="@+id/iv_logout"
                     android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_height="30dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_exit" />
+                    android:src="@drawable/ic_log_out" />
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>

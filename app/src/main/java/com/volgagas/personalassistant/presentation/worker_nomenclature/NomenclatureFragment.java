@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,8 +15,10 @@ import android.widget.Button;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
+import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclaturePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclatureView;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_scan.NomenclatureScanFragment;
@@ -37,9 +40,10 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     @InjectPresenter
     NomenclaturePresenter presenter;
 
-    public static NomenclatureFragment newInstance() {
+    public static NomenclatureFragment newInstance(Task task) {
 
         Bundle args = new Bundle();
+        args.putParcelable("TASK", task);
 
         NomenclatureFragment fragment = new NomenclatureFragment();
         fragment.setArguments(args);
@@ -73,11 +77,13 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
                     .commit();
         });
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnConfirm.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), GpaActivity.class);
+            intent.putExtra("TASK", (Task) getArguments().getParcelable("TASK"));
 
-            }
+            startActivity(intent);
+
+            //getActivity().getSupportFragmentManager().popBackStack();
         });
 
         provideRecyclerAndAdapter();

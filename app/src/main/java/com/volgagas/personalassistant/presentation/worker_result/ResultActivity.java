@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
@@ -86,8 +87,10 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
     @Override
     protected void sendDataToServer(String data) {
+        Timber.d("check data: " + data);
+        Timber.d("print list: " + CacheUser.getUser().toString());
         Timber.d("get data from NFC and send it");
-        presenter.sendData();
+        //presenter.sendData();
     }
 
     @Override

@@ -20,7 +20,19 @@
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/ToolbarStyle"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:titleTextColor="@color/colorSecondaryLight" />
+            app:titleTextColor="@color/colorSecondaryLight">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_exit" />
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.BottomNavigationView
@@ -52,8 +64,8 @@
         android:layout_height="81dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:visibility="visible"
         android:src="@color/colorTextGray"
+        android:visibility="visible"
         app:civ_border_color="@android:color/white"
         app:civ_border_width="2dp"
         app:layout_constraintBottom_toTopOf="@+id/bnv_navigation"

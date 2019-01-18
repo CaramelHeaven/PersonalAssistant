@@ -24,15 +24,38 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btn_find_nomenclature"
+        android:layout_above="@id/rl_container"
         android:layout_below="@id/appBar" />
 
-    <Button
-        android:id="@+id/btn_find_nomenclature"
+    <RelativeLayout
+        android:id="@+id/rl_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
-        android:text="Поиск номенклатуры"
-        android:textColor="@android:color/white" />
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btn_confirm"
+            style="@style/AppTheme.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/view"
+            android:text="Подтвердить"
+            android:textColor="@android:color/white" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="1dp"
+            android:layout_height="49dp"
+            android:layout_centerInParent="true" />
+
+        <Button
+            android:id="@+id/btn_find_nomenclature"
+            style="@style/AppTheme.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/view"
+            android:text="Поиск номенклатуры"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
 </RelativeLayout>

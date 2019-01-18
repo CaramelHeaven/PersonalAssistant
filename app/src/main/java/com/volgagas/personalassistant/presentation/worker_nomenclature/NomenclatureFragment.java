@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclaturePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclatureView;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_scan.NomenclatureScanFragment;
+import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
 
 import timber.log.Timber;
 
@@ -26,7 +28,7 @@ import timber.log.Timber;
  */
 public class NomenclatureFragment extends BaseFragment implements NomenclatureView {
 
-    private Button btnFindNomenclature;
+    private Button btnFindNomenclature, btnConfirm;
     private RecyclerView recyclerView;
     private Toolbar toolbar;
 
@@ -56,6 +58,7 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         recyclerView = view.findViewById(R.id.recyclerView);
         toolbar = view.findViewById(R.id.toolbar);
         btnFindNomenclature = view.findViewById(R.id.btn_find_nomenclature);
+        btnConfirm = view.findViewById(R.id.btn_confirm);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -70,11 +73,31 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
                     .commit();
         });
 
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         provideRecyclerAndAdapter();
     }
 
     private void provideRecyclerAndAdapter() {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
+        adapter = new NomenclatureAdapter(presenter.loadData());
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnButtonPlusMinusClickListener((position, status, count) -> {
+            //1 - add, 0 - minus
+            if (status == 1) {
+                adapter.updateItemCount(position, count + 1);
+            } else {
+                adapter.updateItemCount(position, count - 1);
+            }
+        });
     }
 
     @Override

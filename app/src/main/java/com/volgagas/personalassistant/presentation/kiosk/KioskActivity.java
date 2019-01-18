@@ -207,4 +207,9 @@ public class KioskActivity extends BaseActivity implements KioskView {
     public void handlerError() {
 
     }
+
+    @Override
+    public void errorFromCreatedTask(String error) {
+        Toasty.error(this, error).show();
+    }
 }

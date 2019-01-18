@@ -47,7 +47,7 @@ public class WorkerTodayPresenter extends BasePresenter<WorkerTodayView<Task>> {
 
     }
 
-    private void loadData() {
+    public void loadData() {
         getViewState().showProgress();
         disposable.add(repository.getTasksToday()
                 .subscribeOn(Schedulers.io())

@@ -11,6 +11,7 @@ import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 
 import java.util.ArrayList;
@@ -61,7 +62,25 @@ public class KioskPresenter extends BasePresenter<KioskView> {
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
-        Timber.d("result result: " + result.toString());
+        if (result.size() > 0) {
+            boolean isAllCompleted = true;
+            int indexTask = 0;
+
+            for (int i = 0; i < result.size(); i++) {
+                if (result.get(i).code() != Constants.HTTP_204) {
+                    isAllCompleted = false;
+                    break;
+                }
+            }
+
+            if (isAllCompleted) {
+                getViewState().completedKiosk();
+            } else {
+                getViewState().errorFromCreatedTask("Возникла ошибка при создании задачи с нумерацией " + indexTask + 1);
+            }
+        } else {
+            getViewState().completedKiosk();
+        }
     }
 
     @SuppressLint("CheckResult")
@@ -103,6 +122,7 @@ public class KioskPresenter extends BasePresenter<KioskView> {
         if (responses != null) {
             handlerErrorInSuccessfulResult(responses);
         } else {
+            getViewState().completedKiosk();
             Timber.d("COMPLETED COMPLETEDCOMPLETEDCOMPLETED COMPLETED");
         }
     }

@@ -40,6 +40,13 @@ public class TodayAdapter extends WorkerAdapter<Task> {
         return taskList.get(position);
     }
 
+    public void clear() {
+        uniqueTasks.clear();
+        taskList.clear();
+
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         TaskVH taskVH = (TaskVH) viewHolder;

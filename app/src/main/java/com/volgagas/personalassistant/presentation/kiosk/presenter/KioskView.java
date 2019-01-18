@@ -18,4 +18,7 @@ public interface KioskView extends BaseView {
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
     void handlerError();
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void errorFromCreatedTask(String error);
 }

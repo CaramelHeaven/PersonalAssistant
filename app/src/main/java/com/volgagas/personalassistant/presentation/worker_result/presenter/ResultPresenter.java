@@ -78,28 +78,28 @@ public class ResultPresenter extends BasePresenter<ResultView> {
 
         Timber.d("files : " + chosenSubTasks.toString());
 
-        Single.just(chosenSubTasks)
-                .subscribeOn(Schedulers.io())
-                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
-                .flatMap((Function<SubTask, ObservableSource<Observable<Object>>>) subTask ->
-                        Observable.zip(repository.sendCompletedSubTasks(completedJson, subTask.getIdActivity()),
-                                repository.sendImageToDynamics(mapImage(subTask)).subscribeOn(Schedulers.computation()),
-                                (BiFunction<Response<Void>, Response<Void>, Observable<Object>>) (voidResponse, voidResponse2) ->
-                                        Observable.just(new Object())))
-                .toList()
-                .flatMap((Function<List<Observable<Object>>, Single<List<SubTask>>>) observables ->
-                        Single.just(nonSelectedSubTasks))
-                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
-                .flatMap((Function<SubTask, ObservableSource<?>>) subTask ->
-                        repository.sendCanceledSubTasks(canceledJson, subTask.getIdActivity()))
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(suc -> {
-                    getViewState().completed();
-                    Timber.d("sucL: " + suc);
-                }, throwable -> {
-                    Timber.d("THROWAB: " + throwable.getMessage());
-                });
+//        Single.just(chosenSubTasks)
+//                .subscribeOn(Schedulers.computation())
+//                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
+//                .flatMap((Function<SubTask, ObservableSource<Observable<Object>>>) subTask ->
+//                        Observable.zip(repository.sendCompletedSubTasks(completedJson, subTask.getIdActivity()),
+//                                repository.sendImageToDynamics(mapImage(subTask)).subscribeOn(Schedulers.computation()),
+//                                (BiFunction<Response<Void>, Response<Void>, Observable<Object>>) (voidResponse, voidResponse2) ->
+//                                        Observable.just(new Object())))
+//                .toList()
+//                .flatMap((Function<List<Observable<Object>>, Single<List<SubTask>>>) observables ->
+//                        Single.just(nonSelectedSubTasks))
+//                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
+//                .flatMap((Function<SubTask, ObservableSource<?>>) subTask ->
+//                        repository.sendCanceledSubTasks(canceledJson, subTask.getIdActivity()))
+//                .toList()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(suc -> {
+//                    getViewState().completed();
+//                    Timber.d("sucL: " + suc);
+//                }, throwable -> {
+//                    Timber.d("THROWAB: " + throwable.getMessage());
+//                });
     }
 
 

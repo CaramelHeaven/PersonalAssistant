@@ -25,6 +25,7 @@ import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
 import com.volgagas.personalassistant.utils.UpdateTokensTimer;
 
+import es.dmoral.toasty.Toasty;
 import timber.log.Timber;
 
 public class StartActivity extends BaseActivity implements StartView {
@@ -51,6 +52,7 @@ public class StartActivity extends BaseActivity implements StartView {
         UpdateTokensTimer.getInstance();
         UpdateTokensTimer.startTimer();
 
+        //startActivity(new Intent(this, MainActivity.class));
         //sendDataToServer("0x2042231A26000000");
     }
 
@@ -73,6 +75,8 @@ public class StartActivity extends BaseActivity implements StartView {
     protected void sendDataToServer(String data) {
         showProgress();
         setPermissionToEnableNfc(false);
+        handlerNFC();
+
         if (data != null && data.length() == 18) {
             presenter.setDataCodekey(data);
 
@@ -181,6 +185,11 @@ public class StartActivity extends BaseActivity implements StartView {
 
     @Override
     public void commonError() {
-        Toast.makeText(this, "Common error", Toast.LENGTH_SHORT).show();
+        tvTitle.setVisibility(View.VISIBLE);
+
+        setPermissionToEnableNfc(true);
+        handlerNFC();
+
+        Toasty.info(this, "Приложите карту еще раз").show();
     }
 }

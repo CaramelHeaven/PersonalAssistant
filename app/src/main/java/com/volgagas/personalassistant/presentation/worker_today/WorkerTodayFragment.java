@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.worker_today;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -95,6 +96,8 @@ public class WorkerTodayFragment extends BaseFragment implements WorkerTodayView
     public void showProgress() {
         tvEmptyTasks.setVisibility(View.GONE);
         ivPictureTasksCount.setVisibility(View.GONE);
+        ivEmptyTasks.setVisibility(View.GONE);
+        tvCountTasks.setVisibility(View.GONE);
 
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -125,6 +128,7 @@ public class WorkerTodayFragment extends BaseFragment implements WorkerTodayView
 
             tvCountTasks.setText(models.size() + " задач");
             ivPictureTasksCount.setVisibility(View.VISIBLE);
+            tvCountTasks.setVisibility(View.VISIBLE);
         } else {
             tvEmptyTasks.setVisibility(View.VISIBLE);
             ivEmptyTasks.setVisibility(View.VISIBLE);
@@ -132,10 +136,6 @@ public class WorkerTodayFragment extends BaseFragment implements WorkerTodayView
             ivPictureTasksCount.setVisibility(View.GONE);
             tvCountTasks.setVisibility(View.GONE);
         }
-    }
-
-    private void provideRefreshingItems() {
-
     }
 
     private void provideCurrentDate() {
@@ -178,5 +178,16 @@ public class WorkerTodayFragment extends BaseFragment implements WorkerTodayView
         tvDateNumber.setText(day);
         tvDateDay.setText(dayOfWeek);
         tvDate.setText(month + " " + year);
+    }
+
+    private void provideRefreshingItems() {
+        swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        swipeRefresh.setOnRefreshListener(() -> {
+            adapter.clear();
+            presenter.loadData();
+            if (swipeRefresh.isRefreshing()) {
+                new Handler().postDelayed(() -> swipeRefresh.setRefreshing(false), 1000);
+            }
+        });
     }
 }

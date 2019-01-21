@@ -107,11 +107,10 @@ public class KioskActivity extends BaseActivity implements KioskView {
 
     @Override
     protected void sendDataToServer(String data) {
-        Timber.d("aalal: " + CacheUser.getUser().getCodekeyList().toString());
-        Timber.d("and data: " + data);
         if (CacheUser.getUser().getCodekeyList().contains(data.substring(2, data.length()))) {
             presenter.sendData();
-
+        } else {
+            Toasty.error(this, "Приложена не ваша карта").show();
         }
     }
 
@@ -197,7 +196,11 @@ public class KioskActivity extends BaseActivity implements KioskView {
 
     @Override
     public void completedKiosk() {
+        alertDialog.hide();
         progressDialog.hide();
+
+        alertDialog = null;
+        progressDialog = null;
         Toasty.success(KioskActivity.this, "Шаблоны созданы!", Toast.LENGTH_SHORT, true).show();
 
         finish();

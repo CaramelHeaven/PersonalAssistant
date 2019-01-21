@@ -54,7 +54,7 @@ public class UtilsDateTimeProvider {
     /**
      * @return last day data format for server. Example: 2019-01-19'T'23:59:59ZZ
      */
-    public static String getLastDayDataFormat() {
+    public static String formatLastDayDataFormat() {
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         Calendar calendar = Calendar.getInstance();
 
@@ -67,11 +67,11 @@ public class UtilsDateTimeProvider {
     /**
      * Current data format for history request
      */
-    public static String getCurrentDataFormat() {
+    public static String formatCurrentDayEnd() {
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         String result = dateFormat.format(Calendar.getInstance().getTime());
 
-        return result + "00:00:00Z";
+        return result + "23:59:59Z";
     }
 
     public static String getCurrentFormatDateTime() {

@@ -16,6 +16,7 @@ import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,11 +24,14 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -60,6 +64,7 @@ public class ResultPresenter extends BasePresenter<ResultView> {
 
     @Override
     public void onDestroy() {
+        disposable.clear();
         super.onDestroy();
     }
 
@@ -76,50 +81,58 @@ public class ResultPresenter extends BasePresenter<ResultView> {
         canceledJson.add("ActivityState", new JsonPrimitive("Completed"));
         canceledJson.add("PhaseId", new JsonPrimitive("Отменено"));
 
-        Timber.d("files : " + chosenSubTasks.toString());
-//        Single.just(chosenSubTasks)
-//                .subscribeOn(Schedulers.computation())
-//                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
-//                .flatMap((Function<SubTask, ObservableSource<Observable<Object>>>) subTask ->
-//                        Observable.zip(repository.sendCompletedSubTasks(completedJson, subTask.getIdActivity()),
-//                                repository.sendImageToDynamics(mapImage(subTask)).subscribeOn(Schedulers.computation()),
-//                                (BiFunction<Response<Void>, Response<Void>, Observable<Object>>) (voidResponse, voidResponse2) ->
-//                                        Observable.just(new Object())))
-//                .toList()
-//                .flatMap((Function<List<Observable<Object>>, Single<List<SubTask>>>) observables ->
-//                        Single.just(nonSelectedSubTasks))
-//                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
-//                .flatMap((Function<SubTask, ObservableSource<?>>) subTask ->
-//                        repository.sendCanceledSubTasks(canceledJson, subTask.getIdActivity()))
-//                .toList()
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(suc -> {
-//                    getViewState().completed();
-//                    Timber.d("sucL: " + suc);
-//                }, throwable -> {
-//                    Timber.d("THROWAB: " + throwable.getMessage());
-//                });
+        //TODO error null if we send empty task without image
+        disposable.add(Single.just(chosenSubTasks)
+                .subscribeOn(Schedulers.computation())
+                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
+                .flatMap((Function<SubTask, ObservableSource<Observable<Object>>>) subTask ->
+                        Observable.zip(repository.sendCompletedSubTasks(completedJson, subTask.getIdActivity()),
+                                repository.sendImageToDynamics(mapImage(subTask)).subscribeOn(Schedulers.computation()),
+                                (BiFunction<Response<Void>, Response<Void>, Observable<Object>>) (voidResponse, voidResponse2) ->
+                                        Observable.just(new Object())))
+                .toList()
+                .flatMap((Function<List<Observable<Object>>, Single<List<SubTask>>>) observables ->
+                        Single.just(nonSelectedSubTasks))
+                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
+                .flatMap((Function<SubTask, ObservableSource<?>>) subTask ->
+                        repository.sendCanceledSubTasks(canceledJson, subTask.getIdActivity()))
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(suc -> getViewState().completed(), throwable -> {
+                    Timber.d("THROWAB: " + throwable.getMessage());
+                    Timber.d("kek: " + throwable.getCause());
+                }));
     }
 
-
+    /**
+     * If file is empty we send a empty json.
+     */
     private JsonObject mapImage(SubTask subTask) {
-        Bitmap bitmap = BitmapFactory.decodeFile(subTask.getFilePath());
-        Matrix matrix = new Matrix();
-
-        matrix.postRotate(90);
-
-        Bitmap bitmapRotated = Bitmap.createBitmap(bitmap,
-                0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmapRotated.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+        File imageFile = new File(subTask.getFilePath());
 
         JsonObject object = new JsonObject();
+        if (imageFile.exists() && imageFile.length() > 0) {
+            Bitmap bitmap = BitmapFactory.decodeFile(subTask.getFilePath());
+            Matrix matrix = new Matrix();
 
-        object.add("ActivityNumber", new JsonPrimitive(subTask.getIdActivity()));
-        object.add("dataAreaId", new JsonPrimitive("gns"));
-        object.add("ImageNumber", new JsonPrimitive("0"));
-        object.add("Image",
-                new JsonPrimitive(Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)));
+            matrix.postRotate(90);
+
+            Bitmap bitmapRotated = Bitmap.createBitmap(bitmap,
+                    0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmapRotated.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+
+            object.add("ActivityNumber", new JsonPrimitive(subTask.getIdActivity()));
+            object.add("dataAreaId", new JsonPrimitive("gns"));
+            object.add("ImageNumber", new JsonPrimitive("1"));
+            object.add("Image",
+                    new JsonPrimitive(Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)));
+        } else {
+            object.add("ActivityNumber", new JsonPrimitive(subTask.getIdActivity()));
+            object.add("dataAreaId", new JsonPrimitive("gns"));
+            object.add("ImageNumber", new JsonPrimitive("2"));
+            object.add("Image", new JsonPrimitive("sfa"));
+        }
 
         return object;
     }

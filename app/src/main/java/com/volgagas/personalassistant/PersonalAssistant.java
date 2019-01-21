@@ -158,7 +158,8 @@ public class PersonalAssistant extends Application {
     public static String getCurrentDataFormat() {
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         String result = dateFormat.format(Calendar.getInstance().getTime());
-        return result + "00:00:00Z";
+
+        return result + "23:59:59Z";
     }
 
 }

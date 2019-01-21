@@ -81,11 +81,6 @@ public interface BaseApiService {
     @PATCH
     Observable<Response<Void>> sendStartedSubTasks(@Url String url, @Body JsonObject object);
 
-    @Multipart
-    @POST
-    Observable<Response<Void>> sendImage(@Url String url, @PartMap Map<String, RequestBody> options,
-                                         @Part MultipartBody.Part file);
-
     @POST
     Observable<Response<Void>> sendImageToDynamics(@Url String url, @Body JsonObject object);
 

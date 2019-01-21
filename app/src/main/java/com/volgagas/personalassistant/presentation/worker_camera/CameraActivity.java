@@ -137,7 +137,7 @@ public class CameraActivity extends AppCompatActivity {
 
                 Toast.makeText(this, "Сохранено", Toast.LENGTH_SHORT).show();
 
-                finish();
+                onBackPressed();
             }
         });
     }

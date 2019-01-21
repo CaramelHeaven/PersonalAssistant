@@ -46,9 +46,8 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class MainRemoteRepository implements MainRepository {
 
@@ -169,7 +168,7 @@ public class MainRemoteRepository implements MainRepository {
     @Override
     public Single<List<TaskHistory>> getHistoryTasks() {
         String filter = "(AC_Worker eq '" + CacheUser.getUser().getName() + "')";
-        String date = " and (AC_ActivityStartDateTime lt " + UtilsDateTimeProvider.getCurrentDataFormat() + ")";
+        String date = " and (AC_ActivityStartDateTime lt " + UtilsDateTimeProvider.formatCurrentDayEnd() + ")";
         String orderBy = "AC_ActivityStartDateTime desc";
 
         return PersonalAssistant.getBaseApiService().getHistory(filter + date, "50", orderBy)
@@ -196,10 +195,14 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Single<List<Task>> getTasksToday() {
-        String filter = "(AC_ActivityStartDateTime lt " + PersonalAssistant.getNextDayDataFormat()
-                + " and AC_ActivityEndDateTime gt " + PersonalAssistant.getLastDayDataFormat()
-                + ") and (SO_ServiceStage eq 'Распредел' or SO_ServiceStage eq 'ВРаботе') and (AC_Worker eq '"
-                + CacheUser.getUser().getName() + "')";
+        String filter = "(((AC_ActivityStartDateTime lt " + UtilsDateTimeProvider.formatCurrentDayEnd() + ")" +
+                " and (AC_ActivityEndDateTime gt " + UtilsDateTimeProvider.formatCurrentDayEnd() + "))" + " or " +
+                " (AC_ActivityStartDateTime lt " + UtilsDateTimeProvider.formatCurrentDayEnd() + " and " +
+                "AC_ActivityStartDateTime gt " + UtilsDateTimeProvider.formatLastDayDataFormat() + ") or " +
+                "(AC_ActivityEndDateTime lt " + UtilsDateTimeProvider.formatCurrentDayEnd() + " and " +
+                "AC_ActivityEndDateTime gt " + UtilsDateTimeProvider.formatLastDayDataFormat() + "))" +
+                " and (SO_ServiceStage eq 'Распредел' or SO_ServiceStage eq 'ВРаботе') and (AC_Worker eq '" +
+                CacheUser.getUser().getName() + "')";
 
         return PersonalAssistant.getBaseApiService().getTasksToday(filter)
                 .map(taskMapper::mapTasks);
@@ -208,7 +211,7 @@ public class MainRemoteRepository implements MainRepository {
     @Override
     public Single<List<SubTaskViewer>> getSubTasksToday(String serviceOrder) {
         String filter = "(AC_ActivityStartDateTime lt " + UtilsDateTimeProvider.getNextDayDataFormat()
-                + ") and (AC_ActivityEndDateTime gt " + UtilsDateTimeProvider.getLastDayDataFormat() + ")"
+                + ") and (AC_ActivityEndDateTime gt " + UtilsDateTimeProvider.formatLastDayDataFormat() + ")"
                 + " and (SO_ServiceOrder eq '" + serviceOrder + "')";
 
         return PersonalAssistant.getBaseApiService().getSubTasksToday(filter)
@@ -242,11 +245,6 @@ public class MainRemoteRepository implements MainRepository {
         String url = Constants.DYNAMICS_365 + "/data/ActivitiesForMobile(dataAreaId='gns',ActivityNumber='" + idSubTask + "')";
 
         return PersonalAssistant.getBaseApiService().sendCanceledSubTasks(url, object);
-    }
-
-    @Override
-    public Observable<Response<Void>> sendImage(String url, Map<String, RequestBody> options, MultipartBody.Part file) {
-        return PersonalAssistant.getBaseApiService().sendImage(url, options, file);
     }
 
     @Override

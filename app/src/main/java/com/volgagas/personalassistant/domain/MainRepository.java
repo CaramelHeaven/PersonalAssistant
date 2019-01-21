@@ -96,12 +96,6 @@ public interface MainRepository {
     Observable<Response<Void>> sendCanceledSubTasks(JsonObject object, String idSubTask);
 
     /**
-     * Kek
-     */
-    Observable<Response<Void>> sendImage(String url, Map<String, RequestBody> options,
-                                         MultipartBody.Part file);
-
-    /**
      * another kek
      */
     Observable<Response<Void>> sendImageToDynamics(JsonObject object);

@@ -25,6 +25,7 @@ import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
+import com.volgagas.personalassistant.presentation.worker.WorkerActivity;
 import com.volgagas.personalassistant.presentation.worker_camera.CameraActivity;
 import com.volgagas.personalassistant.presentation.worker_result.presenter.ResultPresenter;
 import com.volgagas.personalassistant.presentation.worker_result.presenter.ResultView;
@@ -207,5 +208,10 @@ public class ResultActivity extends BaseActivity implements ResultView {
     public void completed() {
         progressDialog.hide();
         Toasty.success(this, "Задания успешно завершены").show();
+
+        Intent intent = new Intent(ResultActivity.this, WorkerActivity.class);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

@@ -77,6 +77,9 @@ public class GpaActivity extends BaseActivity implements GpaView {
     public void showError(String error) {
         setPermissionToEnableNfc(true);
         Toasty.error(this, error).show();
+
+        tvScanGpa.setText("Приложите карту еще раз");
+        tvScanGpa.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -97,6 +100,9 @@ public class GpaActivity extends BaseActivity implements GpaView {
         handlerNFC();
 
         Toasty.error(this, "Эта карточка не оборудование").show();
+
+        tvScanGpa.setText("Приложите карту еще раз");
+        tvScanGpa.setVisibility(View.VISIBLE);
     }
 
     @Override

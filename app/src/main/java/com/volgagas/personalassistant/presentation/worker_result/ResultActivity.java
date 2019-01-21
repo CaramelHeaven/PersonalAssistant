@@ -88,10 +88,11 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
     @Override
     protected void sendDataToServer(String data) {
-        Timber.d("check data: " + data);
-        Timber.d("print list: " + CacheUser.getUser().toString());
-        Timber.d("get data from NFC and send it");
-        //presenter.sendData();
+        if (CacheUser.getUser().getCodekeyList().contains(data.substring(2, data.length()))) {
+            presenter.sendData();
+        } else {
+            Toasty.error(this, "Приложена другая карточка").show();
+        }
     }
 
     @Override
@@ -190,7 +191,9 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
     @Override
     public void showSendStatus() {
-        alertDialog.hide();
+        if (alertDialog != null) {
+            alertDialog.hide();
+        }
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Отправляем задачи");

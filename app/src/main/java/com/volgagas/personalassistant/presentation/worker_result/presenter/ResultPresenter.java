@@ -77,7 +77,6 @@ public class ResultPresenter extends BasePresenter<ResultView> {
         canceledJson.add("PhaseId", new JsonPrimitive("Отменено"));
 
         Timber.d("files : " + chosenSubTasks.toString());
-
 //        Single.just(chosenSubTasks)
 //                .subscribeOn(Schedulers.computation())
 //                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)

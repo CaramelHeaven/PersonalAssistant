@@ -119,6 +119,8 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
 
         Collections.sort(subTasks);
 
+        Timber.d("check: " + subTasks.toString());
+        Timber.d("check: " + subTasks.toString());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
         String currentDate = dateFormat.format(Calendar.getInstance().getTime());
@@ -131,11 +133,13 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
         if (currentDate.contains(dateString)) {
             mas[0] = "Сегодня";
         } else {
-            mas[0] = subTasks.get(0).getStartTime();
+            mas[0] = subTasks.get(0).getStartDate();
         }
         //TODO BUG HERE
-        mas[1] = subTasks.get(1).getStartDate();
+        mas[1] = subTasks.get(0).getStartTime();
 
+        System.out.println("mas: " + Arrays.toString(mas));
+        System.out.println("mas: " + Arrays.toString(mas));
         return mas;
     }
 

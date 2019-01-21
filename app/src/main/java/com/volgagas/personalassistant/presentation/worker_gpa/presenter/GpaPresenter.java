@@ -55,23 +55,17 @@ public class GpaPresenter extends BasePresenter<GpaView> {
         getViewState().showProgress();
         disposable.add(repository.getCardInfo(userNumbers)
                 .subscribeOn(Schedulers.io())
-                .flatMap((Function<User, SingleSource<Boolean>>) gpa -> {
-                    Timber.d("GPA: " + gpa);
-                    Timber.d("name: " + gpa.getName());
-                    Timber.d("get GPA: " + task.getGpa());
-                    if (gpa.getCategory().equals("Оборудование") && (gpa.getName().equals(task.getGpa()))) {
-                        return Single.just(true);
-                    } else {
-                        return Single.just(false);
-                    }
-                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
     }
 
-    private void successfulResult(Boolean aBoolean) {
-        if (aBoolean) {
+    private void successfulResult(User gpa) {
+        getViewState().hideProgress();
+        if (gpa.getCategory().equals("Оборудование") && (gpa.getName().equals(task.getGpa()))) {
             getViewState().completed();
+        } else if (gpa.getCategory().equals("Оборудование")) {
+            getViewState().completed();
+            //getViewState().showError("Оборудование не совпадает");
         } else {
             getViewState().showErrorEquipment();
         }
@@ -93,15 +87,6 @@ public class GpaPresenter extends BasePresenter<GpaView> {
             } else if (result.get(0).code() == Constants.HTTP_204) {
                 getViewState().completed();
             }
-        } else {
-            getViewState().completed();
-        }
-    }
-
-    private void successfulResult(List<Response<Void>> result) {
-        getViewState().hideProgress();
-        if (result != null) {
-            handlerErrorInSuccessfulResult(result);
         } else {
             getViewState().completed();
         }

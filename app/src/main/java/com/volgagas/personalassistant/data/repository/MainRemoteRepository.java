@@ -37,7 +37,7 @@ import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 import com.volgagas.personalassistant.utils.Constants;
-import com.volgagas.personalassistant.utils.UtilDateTimeProvider;
+import com.volgagas.personalassistant.utils.UtilsDateTimeProvider;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -169,7 +169,7 @@ public class MainRemoteRepository implements MainRepository {
     @Override
     public Single<List<TaskHistory>> getHistoryTasks() {
         String filter = "(AC_Worker eq '" + CacheUser.getUser().getName() + "')";
-        String date = " and (AC_ActivityStartDateTime lt " + UtilDateTimeProvider.getCurrentDataFormat() + ")";
+        String date = " and (AC_ActivityStartDateTime lt " + UtilsDateTimeProvider.getCurrentDataFormat() + ")";
         String orderBy = "AC_ActivityStartDateTime desc";
 
         return PersonalAssistant.getBaseApiService().getHistory(filter + date, "50", orderBy)
@@ -207,8 +207,8 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Single<List<SubTaskViewer>> getSubTasksToday(String serviceOrder) {
-        String filter = "(AC_ActivityStartDateTime lt " + UtilDateTimeProvider.getNextDayDataFormat()
-                + ") and (AC_ActivityEndDateTime gt " + UtilDateTimeProvider.getLastDayDataFormat() + ")"
+        String filter = "(AC_ActivityStartDateTime lt " + UtilsDateTimeProvider.getNextDayDataFormat()
+                + ") and (AC_ActivityEndDateTime gt " + UtilsDateTimeProvider.getLastDayDataFormat() + ")"
                 + " and (SO_ServiceOrder eq '" + serviceOrder + "')";
 
         return PersonalAssistant.getBaseApiService().getSubTasksToday(filter)

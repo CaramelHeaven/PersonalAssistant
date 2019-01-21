@@ -1,24 +1,31 @@
 package com.volgagas.personalassistant.utils;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
 /**
  * Created by CaramelHeaven on 17:22, 27/12/2018.
  */
-public class UtilDateTimeProvider {
+public class UtilsDateTimeProvider {
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'", Locale.getDefault());
+    private static DateFormat dateHistoryFormat = new SimpleDateFormat("MMM dd, yyyy", new Locale("RU"));
+    private static DateFormat timeHistoryFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
-    private static UtilDateTimeProvider INSTANCE;
+    private static SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
+            Locale.getDefault());
 
-    public static UtilDateTimeProvider getInstance() {
+    private static UtilsDateTimeProvider INSTANCE;
+
+    public static UtilsDateTimeProvider getInstance() {
         if (INSTANCE == null) {
-            synchronized (UtilDateTimeProvider.class) {
+            synchronized (UtilsDateTimeProvider.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new UtilDateTimeProvider();
+                    INSTANCE = new UtilsDateTimeProvider();
                 }
             }
         }
@@ -70,5 +77,31 @@ public class UtilDateTimeProvider {
     public static String getCurrentFormatDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         return dateFormat.format(Calendar.getInstance().getTime());
+    }
+
+    /**
+     * Start date format for history date
+     */
+    public static String formatHistoryDate(String serverDate) {
+        try {
+            Date date = serverFormat.parse(serverDate);
+            return dateHistoryFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * Start time format for history time
+     */
+    public static String formatHistoryTime(String serverTime) {
+        try {
+            serverFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+            return timeHistoryFormat.format(serverFormat.parse(serverTime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

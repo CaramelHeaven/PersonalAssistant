@@ -1,23 +1,19 @@
 package com.volgagas.personalassistant.presentation.worker_camera;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaActionSound;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.utils.UtilDateTimeProvider;
+import com.volgagas.personalassistant.utils.UtilsDateTimeProvider;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -59,20 +55,16 @@ public class CameraActivity extends AppCompatActivity {
 
     private boolean hasCameraPermission;
     private boolean activeCameraBack = true;
-    private boolean isVisible = false;
     private PhotoResult photoResult;
     private String filePath;
-    private int limitPictures, positionData;
+    private int positionData;
 
     private CameraView cameraView;
+    private Button btnSave, btnRemove;
     private FocusView focusView;
     private View capture;
     private AppCompatSeekBar seekBar;
     private ImageView imageResult;
-    private GestureDetector gestureDetector;
-
-    private static final int SWIPE_MIN_DISTANCE = 120;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +73,12 @@ public class CameraActivity extends AppCompatActivity {
         cameraView = findViewById(R.id.cameraView);
         focusView = findViewById(R.id.focusView);
         capture = findViewById(R.id.capture);
+        btnSave = findViewById(R.id.btn_save);
+        btnRemove = findViewById(R.id.btn_remove);
         seekBar = findViewById(R.id.zoomSeekBar);
         imageResult = findViewById(R.id.result);
 
         hasCameraPermission = permissionsDelegate.hasCameraPermission();
-        gestureDetector = new GestureDetector(CameraActivity.this, new GestureListener());
-        limitPictures = getIntent().getIntExtra("LIMIT", 0);
         positionData = getIntent().getIntExtra("POSITION_DATA", 0);
 
         if (hasCameraPermission) {
@@ -98,28 +90,54 @@ public class CameraActivity extends AppCompatActivity {
         fotoapparat = createFotoapparat();
 
         zoomSeekBar();
-        imageResultTouch();
 
         fotoapparat.switchTo(activeCameraBack ? back() : front(), cameraConfiguration);
 
         capture.setOnClickListener(view -> {
-            Timber.d("CLICK CLICK CLICK: " + limitPictures);
-            if (limitPictures != 0) {
-                isVisible = true;
-                imageResult.animate().translationX(0).start();
-                imageResult.setVisibility(View.VISIBLE);
-                photoResult = fotoapparat.takePicture();
+            photoResult = fotoapparat.takePicture();
 
-                photoResult.toBitmap(scaled(0.25f))
-                        .whenDone(bitmapPhoto -> {
-                            if (bitmapPhoto == null) {
-                                return;
-                            }
-                            imageResult.setImageBitmap(bitmapPhoto.bitmap);
-                            imageResult.setRotation(-bitmapPhoto.rotationDegrees);
-                        });
-            } else {
-                Toast.makeText(this, "Больше фотографий сделать нельзя", Toast.LENGTH_SHORT).show();
+            MediaActionSound sound = new MediaActionSound();
+            sound.play(MediaActionSound.SHUTTER_CLICK);
+
+            photoResult.toBitmap()
+                    .whenDone(bitmapPhoto -> {
+                        if (bitmapPhoto == null) {
+                            return;
+                        }
+
+//                        if (hasCameraPermission) {
+//                            fotoapparat.stop();
+//                        }
+
+                        imageResult.setImageBitmap(bitmapPhoto.bitmap);
+                        imageResult.setRotation(-bitmapPhoto.rotationDegrees);
+
+                        imageResult.setVisibility(View.VISIBLE);
+                    });
+        });
+
+        btnRemove.setOnClickListener(v -> {
+            if (imageResult.getVisibility() == View.VISIBLE) {
+                Timber.d("remove");
+                imageResult.setVisibility(View.GONE);
+            }
+
+            if (hasCameraPermission) {
+                fotoapparat.start();
+            }
+        });
+
+        btnSave.setOnClickListener(v -> {
+            if (imageResult.getVisibility() == View.VISIBLE) {
+                File file = new File(getCacheDir(), UtilsDateTimeProvider.folderNameTimeFormat());
+
+                photoResult.saveToFile(file);
+                filePath = file.getPath();
+                Timber.d("check file path: " + filePath);
+
+                Toast.makeText(this, "Сохранено", Toast.LENGTH_SHORT).show();
+
+                finish();
             }
         });
     }
@@ -146,6 +164,7 @@ public class CameraActivity extends AppCompatActivity {
         if (permissionsDelegate.resultGranted(requestCode, permissions, grantResults)) {
             hasCameraPermission = true;
             fotoapparat.start();
+
             cameraView.setVisibility(View.VISIBLE);
         }
     }
@@ -212,59 +231,6 @@ public class CameraActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private void imageResultTouch() {
-        imageResult.setOnTouchListener((view, motionEvent) -> {
-            gestureDetector.onTouchEvent(motionEvent);
-            return true;
-        });
-    }
-
-    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            if (isVisible) {
-                if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                    Toast.makeText(CameraActivity.this, "Удалено", Toast.LENGTH_SHORT).show();
-                    AlphaAnimation alphaAnimation = new AlphaAnimation(1f, 0f);
-                    alphaAnimation.setDuration(250);
-                    alphaAnimation.setFillAfter(true);
-                    imageResult.startAnimation(alphaAnimation);
-                    imageResult.animate().translationX(1200)
-                            .setListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    super.onAnimationEnd(animation);
-                                    imageResult.setVisibility(View.GONE);
-                                }
-                            });
-                    isVisible = false;
-                    return false;
-                } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                    limitPictures -= 1;
-                    Toast.makeText(CameraActivity.this, "Сохранено", Toast.LENGTH_SHORT).show();
-                    AlphaAnimation alphaAnimation = new AlphaAnimation(1f, 0f);
-                    alphaAnimation.setDuration(250);
-                    alphaAnimation.setFillAfter(true);
-                    imageResult.startAnimation(alphaAnimation);
-                    imageResult.animate().translationX(-1200)
-                            .setListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    super.onAnimationEnd(animation);
-                                    imageResult.setVisibility(View.GONE);
-                                }
-                            });
-                    File file = new File(getCacheDir(), UtilDateTimeProvider.folderNameTimeFormat());
-
-                    photoResult.saveToFile(file);
-                    filePath = file.getPath();
-                }
-            }
-            return false;
-        }
     }
 
     @Override

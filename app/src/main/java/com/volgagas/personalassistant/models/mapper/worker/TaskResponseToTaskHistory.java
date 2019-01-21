@@ -5,6 +5,7 @@ import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.TaskResponse;
 import com.volgagas.personalassistant.models.network.task.TaskNetwork;
+import com.volgagas.personalassistant.utils.UtilsDateTimeProvider;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -21,6 +22,7 @@ public class TaskResponseToTaskHistory extends Mapper<TaskResponse, List<TaskHis
     public List<TaskHistory> map(TaskResponse value) {
         List<TaskHistory> tasks = new ArrayList<>();
         fillData(tasks, value);
+
         return tasks;
     }
 
@@ -88,8 +90,8 @@ public class TaskResponseToTaskHistory extends Mapper<TaskResponse, List<TaskHis
     private SubTask addSubTask(SubTask subTask, TaskNetwork network) {
         subTask.setDescription(network.getActivityDescription());
         subTask.setEndDate(network.getEndDate());
-        //subTask.setStartDate(Worker.getSimpleDateFormat(network.getStartDate()));
-        //subTask.setStartTime(Worker.getSimpleTimeFormat(network.getStartDate()));
+        subTask.setStartDate(UtilsDateTimeProvider.formatHistoryDate(network.getStartDate()));
+        subTask.setStartTime(UtilsDateTimeProvider.formatHistoryTime(network.getStartDate()));
         subTask.setIdSubTask(String.valueOf(network.getIdSubTask()));
         subTask.setStatus(network.getStatus());
         subTask.setWorker(network.getWorker());

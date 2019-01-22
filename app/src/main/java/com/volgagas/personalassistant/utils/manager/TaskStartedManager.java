@@ -19,7 +19,7 @@ import timber.log.Timber;
  * Created by CaramelHeaven on 14:20, 16/01/2019.
  * task manager for control SendTaskStartedWorker service class
  */
-public class TaskStartedManager implements LifecycleOwner {
+public class TaskStartedManager {
     private static volatile TaskStartedManager INSTANCE;
 
     private Context context;
@@ -54,8 +54,6 @@ public class TaskStartedManager implements LifecycleOwner {
             arrayIdActivities[i] = task.getSubTasks().get(i).getIdActivity();
         }
 
-        Timber.d("check array: " + Arrays.toString(arrayIdActivities));
-
         Data data = new Data.Builder()
                 .putStringArray("ID_ACTIVITIES", arrayIdActivities)
                 .build();
@@ -66,11 +64,5 @@ public class TaskStartedManager implements LifecycleOwner {
 
         WorkManager.getInstance()
                 .enqueue(oneTimeWorkRequest);
-    }
-
-    @NonNull
-    @Override
-    public Lifecycle getLifecycle() {
-        return null;
     }
 }

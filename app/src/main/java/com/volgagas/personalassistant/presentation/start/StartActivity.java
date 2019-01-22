@@ -23,7 +23,6 @@ import com.volgagas.personalassistant.presentation.start.presenter.StartView;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
-import com.volgagas.personalassistant.utils.UpdateTokensTimer;
 
 import es.dmoral.toasty.Toasty;
 import timber.log.Timber;
@@ -48,9 +47,6 @@ public class StartActivity extends BaseActivity implements StartView {
         setPermissionToEnableNfc(true);
 
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
-
-        UpdateTokensTimer.getInstance();
-        UpdateTokensTimer.startTimer();
 
         //startActivity(new Intent(this, MainActivity.class));
         //sendDataToServer("0x2042231A26000000");

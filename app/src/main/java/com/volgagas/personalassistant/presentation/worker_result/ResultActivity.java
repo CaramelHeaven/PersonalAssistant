@@ -193,7 +193,7 @@ public class ResultActivity extends BaseActivity implements ResultView {
     @Override
     public void showSendStatus() {
         if (alertDialog != null) {
-            alertDialog.hide();
+            alertDialog.cancel();
         }
 
         progressDialog = new ProgressDialog(this);
@@ -206,7 +206,8 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
     @Override
     public void completed() {
-        progressDialog.hide();
+        progressDialog.cancel();
+
         Toasty.success(this, "Задания успешно завершены").show();
 
         Intent intent = new Intent(ResultActivity.this, WorkerActivity.class);

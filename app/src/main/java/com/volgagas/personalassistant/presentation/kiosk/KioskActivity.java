@@ -184,7 +184,7 @@ public class KioskActivity extends BaseActivity implements KioskView {
     @Override
     public void sendTemplatesProgress() {
         if (alertDialog != null) {
-            alertDialog.hide();
+            alertDialog.cancel();
         }
 
         progressDialog = new ProgressDialog(this);
@@ -196,11 +196,8 @@ public class KioskActivity extends BaseActivity implements KioskView {
 
     @Override
     public void completedKiosk() {
-        alertDialog.hide();
-        progressDialog.hide();
+        progressDialog.cancel();
 
-        alertDialog = null;
-        progressDialog = null;
         Toasty.success(KioskActivity.this, "Шаблоны созданы!", Toast.LENGTH_SHORT, true).show();
 
         finish();

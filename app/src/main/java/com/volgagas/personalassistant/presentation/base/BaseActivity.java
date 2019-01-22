@@ -35,22 +35,18 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public abstract class BaseActivity extends MvpAppCompatActivity {
+public abstract class BaseActivity extends BaseGodActivity {
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
     private IntentFilter[] intentFiltersArray;
     private String[][] techListArray;
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     private StringBuilder secretNumbers = null;
-    private CompositeDisposable disposable = new CompositeDisposable();
-    private AuthenticationContext authContext;
     private boolean permissionToEnableNfc = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        listenerForRefreshTokens();
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter != null && nfcAdapter.isEnabled()) {
@@ -74,12 +70,6 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        GlobalBus.getEventBus().register(this);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         if (nfcAdapter != null && nfcAdapter.isEnabled() && permissionToEnableNfc) {
@@ -95,31 +85,6 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
         if (nfcAdapter != null && nfcAdapter.isEnabled()) {
             nfcAdapter.disableForegroundDispatch(this);
         }
-    }
-
-    @Override
-    protected void onStop() {
-        GlobalBus.getEventBus().unregister(this);
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        disposable.clear();
-    }
-
-    /**
-     * Update token after each 10 minutes which user spent in the app.
-     * Class timer - UpdateTokensTime≈
-     *
-     * @param updateToken - special class helper which allow to us handler only this method in the
-     *                    all global bus listeners
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onTokenUpdated(UpdateToken updateToken) {
-        refreshTokens();
-        Timber.d("updated token: " + updateToken);
     }
 
     /**
@@ -233,85 +198,4 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
     public void handlerNFC() {
         onResume();
     }
-
-    /**
-     * Base method for refresh tokens from global bus listener in here. First of all - refresh
-     * dynamics 365 after - refresh SharePoint
-     */
-    private void refreshTokens() {
-        authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
-        TwoPermissions.getInstance().resetValues();
-
-        authContext.acquireToken(BaseActivity.this, Constants.DYNAMICS_365, Constants.CLIENT,
-                Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
-    }
-
-    /**
-     * Channel where will be put states from two tokens refreshed.
-     */
-    private void listenerForRefreshTokens() {
-        disposable.add(CommonChannel.getInstance().getTwoPermissionsSubject()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    if (result.allValuesIsTrue()) {
-                        Timber.d("REFRESHING TOKENS");
-                        //   getViewState().goToMainMenu();
-                    }
-                }));
-    }
-
-    /**
-     * Callback for check if token refreshed successful or not. Dynamics 365
-     */
-    private AuthenticationCallback<AuthenticationResult> d365Callback = new AuthenticationCallback<AuthenticationResult>() {
-        @SuppressLint("CheckResult")
-        @Override
-        public void onSuccess(AuthenticationResult result) {
-            if (result.getAccessToken() != null) {
-                CacheUser.getUser().setUserCliendId(result.getClientId());
-                CacheUser.getUser().setDynamics365Token(result.getAccessToken());
-
-                //Refresh d365 retrofit object
-                PersonalAssistant.provideDynamics365Auth(result.getAccessToken());
-
-                TwoPermissions permissions = TwoPermissions.getInstance();
-                permissions.setD365Token(true);
-                CommonChannel.sendTwoPermissions(permissions);
-
-                authContext.acquireToken(BaseActivity.this, Constants.GRAPH, Constants.CLIENT,
-                        Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", spCallback);
-            }
-        }
-
-        @Override
-        public void onError(Exception exc) {
-
-        }
-    };
-
-    /**
-     * Callback for check if token refreshed successful or not. SharePoint
-     */
-    private AuthenticationCallback<AuthenticationResult> spCallback = new AuthenticationCallback<AuthenticationResult>() {
-        @SuppressLint("CheckResult")
-        @Override
-        public void onSuccess(AuthenticationResult result) {
-            if (result.getAccessToken() != null) {
-                CacheUser.getUser().setSharePointToken(result.getAccessToken());
-
-                //Refresh SharePoint token
-                PersonalAssistant.provideSharePointAuth(result.getAccessToken());
-
-                TwoPermissions permissions = TwoPermissions.getInstance();
-                permissions.setSharePointToken(true);
-                CommonChannel.sendTwoPermissions(permissions);
-            }
-        }
-
-        @Override
-        public void onError(Exception exc) {
-
-        }
-    };
 }

@@ -47,7 +47,6 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Response;
-import timber.log.Timber;
 
 public class MainRemoteRepository implements MainRepository {
 

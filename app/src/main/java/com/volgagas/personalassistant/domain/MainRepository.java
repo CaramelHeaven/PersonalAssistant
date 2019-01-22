@@ -1,29 +1,25 @@
 package com.volgagas.personalassistant.domain;
 
 import com.google.gson.JsonObject;
+import com.volgagas.personalassistant.models.model.SubTaskViewer;
+import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.User;
+import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.models.model.order_purchase.Order;
 import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
-import com.volgagas.personalassistant.models.model.SubTaskViewer;
-import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.queries.QueryToUser;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
-import com.volgagas.personalassistant.models.model.User;
-import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.models.model.user.UserSimple;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.Single;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Response;
 
 public interface MainRepository {
@@ -88,7 +84,7 @@ public interface MainRepository {
     /**
      * Patch tasks with field - completed
      */
-    ObservableSource<? extends Response<Void>> sendCompletedSubTasks(JsonObject object, String idSubTask);
+    Observable<Response<Void>> sendCompletedSubTasks(JsonObject object, String idSubTask);
 
     /**
      * Patch tasks with field - canceled

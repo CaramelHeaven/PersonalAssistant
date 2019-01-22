@@ -33,6 +33,7 @@ import com.volgagas.personalassistant.presentation.main.presenter.MainPresenter;
 import com.volgagas.personalassistant.presentation.main.presenter.MainView;
 import com.volgagas.personalassistant.presentation.projects.FragmentProjects;
 import com.volgagas.personalassistant.presentation.start.StartActivity;
+import com.volgagas.personalassistant.utils.UpdateTokenHandler;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
 
 import java.nio.charset.StandardCharsets;
@@ -52,6 +53,7 @@ public class MainActivity extends BaseActivity implements MainView {
     private ImageView ivLogout;
 
     private ConstraintSet homeSet, projectsSet, infoSet;
+    private UpdateTokenHandler updateTokenHandler;
 
     @ProvidePresenter
     MainPresenter provideMainPresenter() {
@@ -72,6 +74,12 @@ public class MainActivity extends BaseActivity implements MainView {
         tvCategory = findViewById(R.id.tv_category);
         ivLogout = findViewById(R.id.iv_logout);
         constraintLayout = findViewById(R.id.constraintLayout);
+
+        Timber.d("MAIN ACTIVITY CREATED");
+
+        //handler for updates token each 10 minutes
+        updateTokenHandler = new UpdateTokenHandler("UpdateTokenHandler");
+        updateTokenHandler.start();
 
         homeSet = new ConstraintSet();
         projectsSet = new ConstraintSet();
@@ -128,15 +136,18 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
+    protected void onDestroy() {
+        Timber.d("ON ACTIVITY DESTROY");
+        updateTokenHandler.removePeriodicWork();
+        updateTokenHandler.quit();
+        super.onDestroy();
+    }
+
+    @Override
     public void onBackPressed() {
         getSupportFragmentManager().popBackStack();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 
     @Override
     protected void sendDataToServer(String data) {

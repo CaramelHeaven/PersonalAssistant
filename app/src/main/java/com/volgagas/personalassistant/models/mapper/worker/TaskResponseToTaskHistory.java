@@ -38,8 +38,6 @@ public class TaskResponseToTaskHistory extends Mapper<TaskResponse, List<TaskHis
             }
         }
 
-        Timber.d("test test: " + test.size());
-
         Map<TaskHistory, List<SubTask>> map = new LinkedHashMap<>();
 
         for (int i = 0; i < test.size(); i++) {
@@ -52,8 +50,6 @@ public class TaskResponseToTaskHistory extends Mapper<TaskResponse, List<TaskHis
             if (!map.containsKey(task))
                 map.put(task, new ArrayList<>());
         }
-
-        Timber.d("test map: " + map.size());
 
         Map<TaskHistory, List<SubTask>> updated = new LinkedHashMap<>();
 
@@ -71,8 +67,6 @@ public class TaskResponseToTaskHistory extends Mapper<TaskResponse, List<TaskHis
             }
         }
 
-        Timber.d("test updated: " + updated.size());
-
         List<TaskHistory> compeletedList = new ArrayList<>();
 
         for (Map.Entry<TaskHistory, List<SubTask>> entry : updated.entrySet()) {
@@ -81,10 +75,7 @@ public class TaskResponseToTaskHistory extends Mapper<TaskResponse, List<TaskHis
             compeletedList.add(task);
         }
 
-        Timber.d("test completedList: " + compeletedList.size());
-
         tasks.addAll(compeletedList);
-        Timber.d("test tasks: " + tasks.size());
     }
 
     private SubTask addSubTask(SubTask subTask, TaskNetwork network) {

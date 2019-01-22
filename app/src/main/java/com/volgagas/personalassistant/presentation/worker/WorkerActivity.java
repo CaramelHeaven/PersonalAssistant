@@ -1,20 +1,17 @@
 package com.volgagas.personalassistant.presentation.worker;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.presentation.base.BaseGodActivity;
 import com.volgagas.personalassistant.presentation.worker.presenter.WorkerPresenter;
 import com.volgagas.personalassistant.presentation.worker.presenter.WorkerView;
-import com.volgagas.personalassistant.presentation.worker_camera.CameraActivity;
-import com.volgagas.personalassistant.presentation.worker_result.ResultActivity;
 
-public class WorkerActivity extends MvpAppCompatActivity implements WorkerView {
+public class WorkerActivity extends BaseGodActivity implements WorkerView {
 
     private ViewPager viewPager;
     private TabLayout tabLayout;

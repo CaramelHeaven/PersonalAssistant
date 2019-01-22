@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.NomenclatureFragment;
@@ -43,7 +44,6 @@ public class ChooseActionFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_choose_action, container, false);
     }
 
@@ -68,18 +68,26 @@ public class ChooseActionFragment extends BaseFragment {
             startActivity(intent);
         });
 
-        btnToNomenclatureList.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container,
-                            NomenclatureFragment.newInstance(getArguments().getParcelable("TASK")))
-                    .addToBackStack(null)
-                    .commit();
-        });
+        btnToNomenclatureList.setOnClickListener(v ->
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container,
+                                NomenclatureFragment.newInstance(getArguments().getParcelable("TASK")))
+                        .addToBackStack(null)
+                        .commit());
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public void onDestroyView() {
+        toolbar = null;
+        rlSketch = null;
+        btnToGpa = null;
+        btnToNomenclatureList = null;
         super.onDestroyView();
     }
 }

@@ -2,11 +2,19 @@ package com.volgagas.personalassistant.presentation.worker_choose_action;
 
 import android.os.Bundle;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
+import com.volgagas.personalassistant.presentation.worker_choose_action.presenter_activity.ChooseActivityPresenter;
+import com.volgagas.personalassistant.presentation.worker_choose_action.presenter_activity.ChooseActivityView;
 
-public class ChooseActionActivity extends BaseActivity {
+import timber.log.Timber;
+
+public class ChooseActionActivity extends BaseActivity implements ChooseActivityView {
+
+    @InjectPresenter
+    ChooseActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +31,13 @@ public class ChooseActionActivity extends BaseActivity {
     }
 
     @Override
-    protected void sendDataToServer(String data) {
+    protected void onResume() {
+        super.onResume();
+    }
 
+    @Override
+    protected void sendDataToServer(String data) {
+        Timber.d("scanning data: " + data);
     }
 
     @Override
@@ -36,5 +49,20 @@ public class ChooseActionActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void enableNFC() {
+
     }
 }

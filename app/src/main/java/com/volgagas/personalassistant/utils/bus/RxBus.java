@@ -11,6 +11,7 @@ public class RxBus {
     private static volatile RxBus instance;
 
     private PublishSubject<String> updateTokenSubject = PublishSubject.create();
+    private PublishSubject<String> enableNfc = PublishSubject.create();
 
     public static RxBus getInstance() {
         if (instance == null) {
@@ -26,7 +27,17 @@ public class RxBus {
         }
     }
 
+    public void passActionForEnableNfc(String action) {
+        if (action.equals("ENABLE_NFC")) {
+            enableNfc.onNext(action);
+        }
+    }
+
     public Observable<String> getUpdates() {
         return updateTokenSubject;
+    }
+
+    public Observable<String> getStatementNfc() {
+        return enableNfc;
     }
 }

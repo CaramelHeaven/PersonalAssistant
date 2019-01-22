@@ -14,6 +14,8 @@ import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickList
 
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 17:53, 15/01/2019.
  */
@@ -21,6 +23,7 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private List<Nomenclature> nomenclatureList;
 
+    private int NOMENCLATURE_SCAN = -1;
     private OnButtonPlusMinusClickListener onButtonPlusMinusClickListener;
 
     public NomenclatureAdapter(List<Nomenclature> nomenclatureList) {
@@ -30,6 +33,12 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        if (i == NOMENCLATURE_SCAN) {
+            View view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.item_nomenclature_scan, viewGroup, false);
+
+            return new NomenclatureScanVH(view);
+        }
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_nomenclature, viewGroup, false);
 
@@ -38,10 +47,15 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        NomenclatureVH nomenclatureVH = (NomenclatureVH) viewHolder;
+        if (getItemViewType(i) == NOMENCLATURE_SCAN) {
+            NomenclatureScanVH nomenclatureScanVH = (NomenclatureScanVH) viewHolder;
+            //non
+        } else {
+            NomenclatureVH nomenclatureVH = (NomenclatureVH) viewHolder;
 
-        nomenclatureVH.tvCount.setText(nomenclatureList.get(i).getCount());
-        nomenclatureVH.tvTitle.setText(nomenclatureList.get(i).getName());
+            nomenclatureVH.tvCount.setText(nomenclatureList.get(i).getCount());
+            nomenclatureVH.tvTitle.setText(nomenclatureList.get(i).getName());
+        }
     }
 
     public Nomenclature getItemByPosition(int pos) {
@@ -51,6 +65,21 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public int getItemCount() {
         return nomenclatureList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == nomenclatureList.size() - 1) {
+            return NOMENCLATURE_SCAN;
+        }
+        return position;
+    }
+
+    class NomenclatureScanVH extends RecyclerView.ViewHolder {
+
+        public NomenclatureScanVH(@NonNull View itemView) {
+            super(itemView);
+        }
     }
 
     class NomenclatureVH extends RecyclerView.ViewHolder {
@@ -82,6 +111,7 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 int count = Integer.parseInt(tvCount.getText().toString());
                 count++;
 
+                tvCount.setText(String.valueOf(count));
                 onButtonPlusMinusClickListener.onHandleCount(getAdapterPosition(), 1, count);
             });
         }

@@ -38,6 +38,11 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onDestroy() {
         disposable.clear();
         super.onDestroy();

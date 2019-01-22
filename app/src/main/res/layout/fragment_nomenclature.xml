@@ -41,21 +41,5 @@
             android:layout_toStartOf="@id/view"
             android:text="Подтвердить"
             android:textColor="@android:color/white" />
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="1dp"
-            android:layout_height="49dp"
-            android:layout_centerInParent="true" />
-
-        <Button
-            android:id="@+id/btn_find_nomenclature"
-            style="@style/AppTheme.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@id/view"
-            android:text="Поиск номенклатуры"
-            android:textColor="@android:color/white" />
     </RelativeLayout>
 </RelativeLayout>

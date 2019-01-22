@@ -3,6 +3,7 @@ package com.volgagas.personalassistant.presentation.worker_nomenclature.presente
 import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+       // RxBus.getInstance().passActionForEnableNfc("ENABLE_NFC");
         // loadData();
     }
 

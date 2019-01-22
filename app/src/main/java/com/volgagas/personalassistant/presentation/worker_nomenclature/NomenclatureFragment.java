@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.presentation.worker_nomenclature;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +18,9 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
+import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
+import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseActionActivity;
 import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclaturePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclatureView;
@@ -31,7 +34,7 @@ import timber.log.Timber;
  */
 public class NomenclatureFragment extends BaseFragment implements NomenclatureView {
 
-    private Button btnFindNomenclature, btnConfirm;
+    private Button btnConfirm;
     private RecyclerView recyclerView;
     private Toolbar toolbar;
 
@@ -53,7 +56,6 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_nomenclature, container, false);
     }
 
@@ -61,32 +63,39 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerView);
         toolbar = view.findViewById(R.id.toolbar);
-        btnFindNomenclature = view.findViewById(R.id.btn_find_nomenclature);
         btnConfirm = view.findViewById(R.id.btn_confirm);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        btnFindNomenclature.setOnClickListener(v -> {
-            Timber.d("kek");
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, NomenclatureScanFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit();
-        });
+        //((BaseActivity) getActivity()).handlerNFC();
+
+        //enable NFC with delay 1 second
+        new Handler().postDelayed(() -> {
+            ((ChooseActionActivity) getActivity()).setPermissionToEnableNfc(true);
+            ((ChooseActionActivity) getActivity()).handlerNFC();
+        }, 1000);
 
         btnConfirm.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), GpaActivity.class);
-            intent.putExtra("TASK", (Task) getArguments().getParcelable("TASK"));
+            //Intent intent = new Intent(getActivity(), GpaActivity.class);
+            //intent.putExtra("TASK", (Task) getArguments().getParcelable("TASK"));
 
-            startActivity(intent);
+            //startActivity(intent);
 
-            //getActivity().getSupportFragmentManager().popBackStack();
         });
 
         provideRecyclerAndAdapter();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     private void provideRecyclerAndAdapter() {
@@ -96,14 +105,15 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         adapter = new NomenclatureAdapter(presenter.loadData());
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnButtonPlusMinusClickListener((position, status, count) ->
-                adapter.getItemByPosition(position).setCount(String.valueOf(count)));
+        adapter.setOnButtonPlusMinusClickListener((position, status, count) -> {
+            Timber.d("kek: " + count);
+            adapter.getItemByPosition(position).setCount(String.valueOf(count));
+        });
     }
 
     @Override
     public void onDestroyView() {
         recyclerView = null;
-        btnFindNomenclature = null;
         super.onDestroyView();
     }
 

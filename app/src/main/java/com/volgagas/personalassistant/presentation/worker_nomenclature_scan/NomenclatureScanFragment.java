@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 
 public class NomenclatureScanFragment extends BaseFragment {
@@ -42,6 +43,8 @@ public class NomenclatureScanFragment extends BaseFragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
         ivNfc.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.item_animation_up_down));
     }

@@ -112,7 +112,12 @@
             android:name=".presentation.worker_camera.CameraActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".presentation.order_new_purchase.OrderNewPurchaseActivity" />
-        <activity android:name=".presentation.worker_choose_action.ChooseActionActivity"></activity>
+        <activity android:name=".presentation.worker_choose_action.ChooseActionActivity" />
+
+        <activity
+            android:name=".presentation.settings.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

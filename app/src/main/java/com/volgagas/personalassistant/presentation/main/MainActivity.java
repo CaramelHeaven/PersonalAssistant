@@ -14,12 +14,9 @@ import android.support.transition.Transition;
 import android.support.transition.TransitionListenerAdapter;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -32,7 +29,7 @@ import com.volgagas.personalassistant.presentation.home.HomeFragment;
 import com.volgagas.personalassistant.presentation.main.presenter.MainPresenter;
 import com.volgagas.personalassistant.presentation.main.presenter.MainView;
 import com.volgagas.personalassistant.presentation.projects.FragmentProjects;
-import com.volgagas.personalassistant.presentation.start.StartActivity;
+import com.volgagas.personalassistant.presentation.settings.SettingsActivity;
 import com.volgagas.personalassistant.utils.UpdateTokenHandler;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
 
@@ -50,7 +47,7 @@ public class MainActivity extends BaseActivity implements MainView {
     private CircleImageView ivUserImage;
     private ConstraintLayout constraintLayout;
     private TextView tvName, tvCategory, tvTitleProblem;
-    private ImageView ivLogout;
+    private ImageView ivSettings;
 
     private ConstraintSet homeSet, projectsSet, infoSet;
     private UpdateTokenHandler updateTokenHandler;
@@ -72,10 +69,11 @@ public class MainActivity extends BaseActivity implements MainView {
         bnvNavigation = findViewById(R.id.bnv_navigation);
         tvName = findViewById(R.id.tv_name);
         tvCategory = findViewById(R.id.tv_category);
-        ivLogout = findViewById(R.id.iv_logout);
+        ivSettings = findViewById(R.id.iv_logout);
+        toolbar = findViewById(R.id.toolbar);
         constraintLayout = findViewById(R.id.constraintLayout);
 
-        Timber.d("MAIN ACTIVITY CREATED");
+        setSupportActionBar(toolbar);
 
         //handler for updates token each 10 minutes
         updateTokenHandler = new UpdateTokenHandler("UpdateTokenHandler");
@@ -119,19 +117,18 @@ public class MainActivity extends BaseActivity implements MainView {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    Timber.d("result: " + result);
                     TransitionManager.beginDelayedTransition(constraintLayout);
-                    // requestFullSet.applyTo(constraintLayout);
                 }, throwable -> {
                     Timber.d("tho: " + throwable.getCause());
                     Timber.d("tho: " + throwable.getMessage());
                 });
 
-        ivLogout.setOnClickListener(v -> {
-            CacheUser.getUser().clear();
+        ivSettings.setOnClickListener(v -> {
+            //CacheUser.getUser().clear();
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 
-            startActivity(new Intent(MainActivity.this, StartActivity.class));
-            finish();
+//            startActivity(new Intent(MainActivity.this, StartActivity.class));
+//            finish();
         });
     }
 

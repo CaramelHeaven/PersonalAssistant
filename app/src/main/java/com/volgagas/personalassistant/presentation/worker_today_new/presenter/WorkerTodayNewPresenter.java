@@ -52,10 +52,6 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
     }
 
     private void successfulResult(List<Task> tasks) {
-        Timber.d("task is here");
-        for (Task task : tasks) {
-            Timber.d("test: " + task.toString());
-        }
         getViewState().showItems(tasks);
     }
 

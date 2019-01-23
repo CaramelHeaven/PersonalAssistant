@@ -45,11 +45,14 @@ dependencies {
     implementation 'com.android.support:support-vector-drawable:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
-    implementation 'com.github.aakira:expandable-layout:1.6.0@aar'
+    implementation 'com.github.aakira:expandable-layout:1.6.0@aar' //legacy
     //circle image
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     //toast
     implementation 'com.github.GrenderG:Toasty:1.3.1'
+
+    //preferenses screen
+    implementation 'com.android.support:preference-v7:28.0.0'
 
     //rxJava2
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'

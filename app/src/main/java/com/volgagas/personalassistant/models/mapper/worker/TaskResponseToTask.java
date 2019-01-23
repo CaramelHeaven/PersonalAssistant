@@ -31,6 +31,9 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
     public List<Task> map(TaskResponse value) {
         List<Task> tasks = new ArrayList<>();
         fillData(tasks, value);
+
+        Collections.sort(tasks);
+
         return tasks;
     }
 
@@ -85,11 +88,13 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
             Task task = entry.getKey();
 
             //set minimal time
-            String[] massive = getMinimalTimeFromSubTasks(entry.getValue());
+            Object[] values = getMinimalTimeFromSubTasks(entry.getValue());
 
-            Timber.d("check massive: " + Arrays.toString(massive));
-            task.setStartDate(massive[0]);
-            task.setStartTime(massive[1]);
+            task.setStartDate((String) values[0]);
+            task.setStartTime((String) values[1]);
+            task.setServerDateTime((Date) values[2]);
+
+            formatDayOfWeekAndDayOfMounth(task);
 
             task.setSubTasks(entry.getValue());
 
@@ -111,40 +116,48 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
         return subTask;
     }
 
-    /* First subTask contains minimal date and time after fillDateStartInSubTasks method.
-     *  Just get it and set each Task this is date and time.
-     * */
-    private String[] getMinimalTimeFromSubTasks(List<SubTask> subTasks) {
+    /**
+     * First subTask contains minimal date and time after fillDateStartInSubTasks method.
+     * Just get it and set each Task this is date and time.
+     */
+    private Object[] getMinimalTimeFromSubTasks(List<SubTask> subTasks) {
+        Object[] massiveData = new Object[3];
+
         fillDateStartInSubTasks(subTasks);
 
         Collections.sort(subTasks);
 
-        Timber.d("check: " + subTasks.toString());
-        Timber.d("check: " + subTasks.toString());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
         String currentDate = dateFormat.format(Calendar.getInstance().getTime());
         String dateString = subTasks.get(0).getStartServerTime().substring(0, 10);
 
-        String[] mas = new String[2];
-
         /* if date equal current date - just put "Today", another return minimal time.
          * */
         if (currentDate.contains(dateString)) {
-            mas[0] = "Сегодня";
+            massiveData[0] = "Сегодня";
         } else {
-            mas[0] = subTasks.get(0).getStartDate();
+            massiveData[0] = subTasks.get(0).getStartDate();
         }
-        //TODO BUG HERE
-        mas[1] = subTasks.get(0).getStartTime();
 
-        System.out.println("mas: " + Arrays.toString(mas));
-        System.out.println("mas: " + Arrays.toString(mas));
-        return mas;
+        massiveData[1] = subTasks.get(0).getStartTime();
+
+        /**
+         * Add to massive last value which we will be add to task and after all will use collection sort
+         * */
+        try {
+            Date date = dateFormat.parse(subTasks.get(0).getStartServerTime());
+            massiveData[2] = date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return massiveData;
     }
 
-    /* format date and time in each subTask
-     * */
+    /**
+     * format date and time in each subTask
+     */
     private void fillDateStartInSubTasks(List<SubTask> subTasks) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         DateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy", new Locale("RU"));
@@ -166,5 +179,22 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Format server time to day in week and day in month for reflect this data to UI inside
+     * WorkerTodayNewFragment
+     */
+    private void formatDayOfWeekAndDayOfMounth(Task task) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        DateFormat dayInWeek = new SimpleDateFormat("E", new Locale("RU"));
+        DateFormat dayInMonth = new SimpleDateFormat("d", new Locale("RU"));
+
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC+4"));
+
+        Date date = task.getServerDateTime();
+
+        task.setDayOfWeek(dayInWeek.format(date));
+        task.setDayOfMonth(dayInMonth.format(date));
     }
 }

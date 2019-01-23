@@ -18,7 +18,7 @@ import timber.log.Timber;
  * Created by CaramelHeaven on 12:41, 23/01/2019.
  */
 @InjectViewState
-public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView> {
+public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Task>> {
 
     private CompositeDisposable disposable;
     private MainRepository repository;
@@ -53,6 +53,10 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView> {
 
     private void successfulResult(List<Task> tasks) {
         Timber.d("task is here");
+        for (Task task : tasks) {
+            Timber.d("test: " + task.toString());
+        }
+        getViewState().showItems(tasks);
     }
 
 

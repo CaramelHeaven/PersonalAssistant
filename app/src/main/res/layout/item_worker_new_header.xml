@@ -6,7 +6,7 @@
     android:layout_marginStart="8dp">
 
     <TextView
-        android:id="@+id/tv_date"
+        android:id="@+id/tv_day_in_week"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -19,7 +19,7 @@
         android:id="@+id/cv_container"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_below="@id/tv_date"
+        android:layout_below="@id/tv_day_in_week"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="32dp">
 
@@ -28,6 +28,7 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/tv_day_in_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

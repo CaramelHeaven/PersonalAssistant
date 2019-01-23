@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_today_new.presenter.WorkerTodayNewPresenter;
 import com.volgagas.personalassistant.presentation.worker_today_new.presenter.WorkerTodayNewView;
@@ -22,7 +23,10 @@ import java.util.List;
 /**
  * Created by CaramelHeaven on 11:48, 23/01/2019.
  */
-public class WorkerTodayNewFragment extends BaseFragment implements WorkerTodayNewView {
+public class WorkerTodayNewFragment extends BaseFragment implements WorkerTodayNewView<Task> {
+
+    private TodayNewAdapter adapter;
+
     private RecyclerView recyclerView;
 
     @InjectPresenter
@@ -47,30 +51,11 @@ public class WorkerTodayNewFragment extends BaseFragment implements WorkerTodayN
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerView);
 
-        List<String> kek = new ArrayList<>();
-        kek.add("Ararara");
-        kek.add("Abbbbb");
-        kek.add("Ablkclvc");
-        kek.add("Avlkclv");
-        kek.add("Blckvlx");
-        kek.add("Borewkro");
-        kek.add("Bkjklvx");
-        kek.add("Bckjvxclv");
-        kek.add("Bckjvxclv");
-        kek.add("Bckjvxclv");
-        kek.add("Bckjvxclv");
-        kek.add("Bckjvxclv");
-        kek.add("Bckjvxclv");
-        kek.add("Cckjvxclv");
-        kek.add("Cckjvxclv");
-        kek.add("Cckjvxclv");
-        kek.add("Cckjvxclv");
-
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        TodayNewAdapter adapter = new TodayNewAdapter(kek);
+        adapter = new TodayNewAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
-
         recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
     }
 
@@ -87,6 +72,11 @@ public class WorkerTodayNewFragment extends BaseFragment implements WorkerTodayN
     @Override
     public void hideProgress() {
 
+    }
+
+    @Override
+    public void showItems(List<Task> models) {
+        adapter.updateItems(models);
     }
 }
 

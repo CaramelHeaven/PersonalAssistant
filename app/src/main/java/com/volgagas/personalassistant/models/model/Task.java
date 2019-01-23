@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.volgagas.personalassistant.models.model.common.GlobalTask;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,7 +15,7 @@ import java.util.Objects;
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 
-public class Task implements Parcelable, GlobalTask {
+public class Task implements Parcelable, GlobalTask, Comparable<Task> {
     private String idTask;
     private String preferredTime;
     private String description;
@@ -26,6 +27,18 @@ public class Task implements Parcelable, GlobalTask {
     private String startDate;
     private String startTime;
 
+    //field for sorting tasks
+    private Date serverDateTime;
+
+    //feilds for reflect data in worker today
+    private String dayOfMonth;
+    private String dayOfWeek;
+
+    @Override
+    public int compareTo(Task o) {
+        return serverDateTime.compareTo(o.getServerDateTime());
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -33,10 +46,12 @@ public class Task implements Parcelable, GlobalTask {
                 ", preferredTime='" + preferredTime + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
-                ", subTasks=" + subTasks +
                 ", gpa='" + gpa + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", startTime='" + startTime + '\'' +
+                ", serverDateTime=" + serverDateTime +
+                ", dayOfMonth='" + dayOfMonth + '\'' +
+                ", dayOfWeek='" + dayOfWeek + '\'' +
                 '}';
     }
 
@@ -101,6 +116,14 @@ public class Task implements Parcelable, GlobalTask {
         return gpa;
     }
 
+    public Date getServerDateTime() {
+        return serverDateTime;
+    }
+
+    public void setServerDateTime(Date serverDateTime) {
+        this.serverDateTime = serverDateTime;
+    }
+
     public String getStartDate() {
         return startDate;
     }
@@ -111,6 +134,22 @@ public class Task implements Parcelable, GlobalTask {
 
     public String getStartTime() {
         return startTime;
+    }
+
+    public String getDayOfMonth() {
+        return dayOfMonth;
+    }
+
+    public void setDayOfMonth(String dayOfMonth) {
+        this.dayOfMonth = dayOfMonth;
+    }
+
+    public String getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     public void setStartTime(String startTime) {

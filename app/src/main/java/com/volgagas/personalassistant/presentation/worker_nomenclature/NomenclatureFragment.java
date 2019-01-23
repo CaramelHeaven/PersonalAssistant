@@ -1,6 +1,5 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -17,15 +16,10 @@ import android.widget.Button;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
-import com.volgagas.personalassistant.models.model.worker.Nomenclature;
-import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseActionActivity;
-import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclaturePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclatureView;
-import com.volgagas.personalassistant.presentation.worker_nomenclature_scan.NomenclatureScanFragment;
-import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
 
 import timber.log.Timber;
 

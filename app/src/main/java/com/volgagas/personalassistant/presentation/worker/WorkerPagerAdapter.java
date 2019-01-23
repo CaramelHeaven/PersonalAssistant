@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.volgagas.personalassistant.presentation.worker_history.WorkerHistoryFragment;
-import com.volgagas.personalassistant.presentation.worker_today.WorkerTodayFragment;
+import com.volgagas.personalassistant.presentation.worker_today_new.WorkerTodayNewFragment;
 
 public class WorkerPagerAdapter extends FragmentPagerAdapter {
 
@@ -18,7 +18,7 @@ public class WorkerPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch (i) {
             case 0:
-                return WorkerTodayFragment.newInstance();
+                return WorkerTodayNewFragment.newInstance();
             case 1:
                 return WorkerHistoryFragment.newInstance();
             default:

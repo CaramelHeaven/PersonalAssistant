@@ -131,6 +131,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             //REFRESH TOKEN
             RxBus.getInstance().passActionForUpdateToken(referenceHttp);
+
+            //Replace our base constant for current url
+            Constants.DYNAMICS_365 = referenceHttp;
         } else if (preference instanceof SwitchPreference) {
             editor.putBoolean(Constants.SP_ENABLE_FUNCTIONS, (boolean) newValue);
         }

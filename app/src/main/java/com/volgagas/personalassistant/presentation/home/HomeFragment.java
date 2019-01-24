@@ -1,6 +1,8 @@
 package com.volgagas.personalassistant.presentation.home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +25,7 @@ import com.volgagas.personalassistant.presentation.kiosk.KioskActivity;
 import com.volgagas.personalassistant.presentation.order_purchase.OrderPurchaseActivity;
 import com.volgagas.personalassistant.presentation.query_create.QueryCreateActivity;
 import com.volgagas.personalassistant.presentation.worker.WorkerActivity;
+import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.ArrayList;
@@ -73,19 +76,32 @@ public class HomeFragment extends BaseFragment implements HomeView {
         adapter = new HomeAdapter(homeModelList);
         recyclerView.setAdapter(adapter);
 
+        SharedPreferences sharedPreferences = getActivity()
+                .getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
+
+        boolean value = sharedPreferences.getBoolean(Constants.SP_ENABLE_FUNCTIONS, false);
+
         adapter.setMyOnItemClickListener(position -> {
             switch (position) {
                 case 0:
                     startActivity(new Intent(getActivity(), KioskActivity.class));
                     break;
                 case 1:
-                    startActivity(new Intent(getActivity(), QueryCreateActivity.class));
+                    if (!value) {
+                        Toast.makeText(getActivity(), "В разработке", Toast.LENGTH_SHORT).show();
+                    } else {
+                        startActivity(new Intent(getActivity(), QueryCreateActivity.class));
+                    }
                     break;
                 case 2:
                     startActivity(new Intent(getActivity(), WorkerActivity.class));
                     break;
                 case 3:
-                    startActivity(new Intent(getActivity(), OrderPurchaseActivity.class));
+                    if (!value) {
+                        Toast.makeText(getActivity(), "В разработке", Toast.LENGTH_SHORT).show();
+                    } else {
+                        startActivity(new Intent(getActivity(), OrderPurchaseActivity.class));
+                    }
                     break;
             }
         });

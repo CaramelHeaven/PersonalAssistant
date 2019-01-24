@@ -12,10 +12,8 @@ public class Constants {
     public static final String UNIFORM_REQUESTS_URL = "(guid'895e45dd-17ac-41bd-9a41-3d72bd0cbfc7')";
     public static final String UNIFORM_REQUESTS_TO_USER_URL = "(guid'59C1EE57-5726-4B27-B9DD-B39775E170D5')";
 
-    //main url for requests
-    //TEST -- https://volgagas-tstdevaos.sandbox.ax.dynamics.com
-    //RELEASE https://volgagas-prod73b403cba6259cd5cedevaos.cloudax.dynamics.com
-    public static final String DYNAMICS_365 = "https://volgagas-tstdevaos.sandbox.ax.dynamics.com";
+    //MAIN reference. It works on many place. Don't ignore this
+    public static String DYNAMICS_365 = "https://volgagas-tstdevaos.sandbox.ax.dynamics.com";
     public static final String GRAPH = "https://volagas.sharepoint.com";
     public static final String SHARE_POINT_DOC_API_WEB = "https://volagas.sharepoint.com/doc/_api/web";
     public static final String SHARE_POINT_API_WEB = "https://volagas.sharepoint.com/_api/web";

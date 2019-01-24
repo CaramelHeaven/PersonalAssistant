@@ -1,7 +1,9 @@
 package com.volgagas.personalassistant.presentation.main;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -30,8 +33,9 @@ import com.volgagas.personalassistant.presentation.main.presenter.MainPresenter;
 import com.volgagas.personalassistant.presentation.main.presenter.MainView;
 import com.volgagas.personalassistant.presentation.projects.FragmentProjects;
 import com.volgagas.personalassistant.presentation.settings.SettingsActivity;
-import com.volgagas.personalassistant.utils.threads.UpdateTokenHandler;
+import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
+import com.volgagas.personalassistant.utils.threads.UpdateTokenHandler;
 
 import java.nio.charset.StandardCharsets;
 
@@ -51,6 +55,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
     private ConstraintSet homeSet, projectsSet, infoSet;
     private UpdateTokenHandler updateTokenHandler;
+    private SharedPreferences sharedPreferences;
 
     @ProvidePresenter
     MainPresenter provideMainPresenter() {
@@ -83,20 +88,7 @@ public class MainActivity extends BaseActivity implements MainView {
         projectsSet = new ConstraintSet();
         infoSet = new ConstraintSet();
 
-        if (CacheUser.getUser().getUserImage() != null) {
-            Timber.d("cache != null");
-            byte[] data = Base64.decode(CacheUser.getUser().getUserImage().getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-            if (bitmap != null) {
-                Bitmap croppedBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - 240);
-                ivUserImage.setImageBitmap(croppedBmp);
-            }
-        } else {
-            Timber.d("cache == null");
-        }
-
-        tvName.setText(CacheUser.getUser().getName());
-        tvCategory.setText(CacheUser.getUser().getPosition());
+        provideBackgroundUIData();
 
         homeSet.clone(constraintLayout);
         projectsSet.clone(this, R.layout.activity_constraint_projects);
@@ -116,20 +108,13 @@ public class MainActivity extends BaseActivity implements MainView {
         passDataChannel.getSubject()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    TransitionManager.beginDelayedTransition(constraintLayout);
-                }, throwable -> {
+                .subscribe(result -> TransitionManager.beginDelayedTransition(constraintLayout), throwable -> {
                     Timber.d("tho: " + throwable.getCause());
                     Timber.d("tho: " + throwable.getMessage());
                 });
 
-        ivSettings.setOnClickListener(v -> {
-            //CacheUser.getUser().clear();
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-
-//            startActivity(new Intent(MainActivity.this, StartActivity.class));
-//            finish();
-        });
+        ivSettings.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class)));
     }
 
     @Override
@@ -153,6 +138,11 @@ public class MainActivity extends BaseActivity implements MainView {
 
     private void setBottomNavigation() {
         bnvNavigation.setOnNavigationItemSelectedListener(menuItem -> {
+            sharedPreferences = getApplicationContext()
+                    .getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
+
+            boolean value = sharedPreferences.getBoolean(Constants.SP_ENABLE_FUNCTIONS, false);
+
             switch (menuItem.getItemId()) {
                 case R.id.action_home:
                     TransitionManager.beginDelayedTransition(constraintLayout);
@@ -167,45 +157,53 @@ public class MainActivity extends BaseActivity implements MainView {
 
                     break;
                 case R.id.action_project:
-                    Fragment fragment2 = getSupportFragmentManager().findFragmentByTag("PROJECTS");
+                    if (!value) {
+                        Toast.makeText(this, "В разработке", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Fragment fragment2 = getSupportFragmentManager().findFragmentByTag("PROJECTS");
 
-                    AutoTransition autoTransition = new AutoTransition();
+                        AutoTransition autoTransition = new AutoTransition();
 
-                    autoTransition.addListener(new TransitionListenerAdapter() {
-                        @Override
-                        public void onTransitionEnd(@NonNull Transition transition) {
-                            if (fragment2 == null) {
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.fragment_container_projects, FragmentProjects.newInstance(), "PROJECTS")
-                                        .commit();
+                        autoTransition.addListener(new TransitionListenerAdapter() {
+                            @Override
+                            public void onTransitionEnd(@NonNull Transition transition) {
+                                if (fragment2 == null) {
+                                    getSupportFragmentManager()
+                                            .beginTransaction()
+                                            .replace(R.id.fragment_container_projects, FragmentProjects.newInstance(), "PROJECTS")
+                                            .commit();
+                                }
                             }
-                        }
-                    });
+                        });
 
-                    TransitionManager.beginDelayedTransition(constraintLayout, autoTransition);
-                    projectsSet.applyTo(constraintLayout);
+                        TransitionManager.beginDelayedTransition(constraintLayout, autoTransition);
+                        projectsSet.applyTo(constraintLayout);
+                    }
 
                     break;
                 case R.id.action_info:
-                    Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("INFO");
+                    if (!value) {
+                        Toast.makeText(this, "В разработке", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("INFO");
 
-                    AutoTransition autoTransition1 = new AutoTransition();
+                        AutoTransition autoTransition1 = new AutoTransition();
 
-                    autoTransition1.addListener(new TransitionListenerAdapter() {
-                        @Override
-                        public void onTransitionEnd(@NonNull Transition transition) {
-                            if (fragment1 == null) {
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.fragment_container_about, InfoFragment.newInstance(), "INFO")
-                                        .commit();
+                        autoTransition1.addListener(new TransitionListenerAdapter() {
+                            @Override
+                            public void onTransitionEnd(@NonNull Transition transition) {
+                                if (fragment1 == null) {
+                                    getSupportFragmentManager()
+                                            .beginTransaction()
+                                            .replace(R.id.fragment_container_about, InfoFragment.newInstance(), "INFO")
+                                            .commit();
+                                }
                             }
-                        }
-                    });
+                        });
 
-                    TransitionManager.beginDelayedTransition(constraintLayout, autoTransition1);
-                    infoSet.applyTo(constraintLayout);
+                        TransitionManager.beginDelayedTransition(constraintLayout, autoTransition1);
+                        infoSet.applyTo(constraintLayout);
+                    }
 
                     break;
             }
@@ -213,5 +211,20 @@ public class MainActivity extends BaseActivity implements MainView {
         });
     }
 
+    private void provideBackgroundUIData() {
+        if (CacheUser.getUser().getUserImage() != null) {
+            Timber.d("cache != null");
+            byte[] data = Base64.decode(CacheUser.getUser().getUserImage().getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+            if (bitmap != null) {
+                Bitmap croppedBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - 240);
+                ivUserImage.setImageBitmap(croppedBmp);
+            }
+        } else {
+            Timber.d("cache == null");
+        }
 
+        tvName.setText(CacheUser.getUser().getName());
+        tvCategory.setText(CacheUser.getUser().getPosition());
+    }
 }

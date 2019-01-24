@@ -38,10 +38,6 @@ public class SendTaskStartedWorker extends RxWorker {
         repository = MainRemoteRepository.getInstance();
         String[] arrayIds = getInputData().getStringArray("ID_ACTIVITIES");
 
-        Timber.d("inside doWork: " + Arrays.toString(arrayIds));
-
-        GlobalBus.getEventBus().postSticky(new SendStartedTasks());
-
         return Single.just(new ArrayList<>(Arrays.asList(arrayIds)))
                 .flattenAsObservable((Function<ArrayList<String>, Iterable<String>>) strings -> strings)
                 .flatMap((Function<String, ObservableSource<Response<Void>>>) activityId ->

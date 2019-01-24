@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.utils;
+package com.volgagas.personalassistant.utils.threads;
 
 import android.os.Handler;
 import android.os.HandlerThread;

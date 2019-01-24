@@ -25,11 +25,12 @@ public class RxBus {
     }
 
     public void passActionForUpdateToken(String action) {
+        Timber.d("inside method");
         if (action.equals("UPDATE_TOKEN")) {
             updateTokenSubject.onNext(action);
         } else if (action.equals(Constants.DYNAMICS_TST) ||
                 action.equals(Constants.DYNAMICS_PROD)) {
-            Timber.d("CHEck my action: " + action);
+            Timber.d("onNext: " + action);
             updateTokenSubject.onNext(action);
         }
     }

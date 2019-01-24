@@ -17,6 +17,7 @@ import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.TwoPermissions;
 
+import es.dmoral.toasty.Toasty;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -56,10 +57,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      */
     private void updateToken() {
         disposable.add(RxBus.getInstance().getUpdates().subscribe(result -> {
-            if (result.contains(Constants.DYNAMICS_PROD) || result.contains(Constants.DYNAMICS_TST)) {
-                refreshTokens(result);
-            }
-            refreshTokens("");
+            refreshTokens();
         }));
     }
 
@@ -82,18 +80,12 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      * Base method for refresh tokens from global bus listener in here. First of all - refresh
      * dynamics 365 after - refresh SharePoint
      */
-    private void refreshTokens(String newUrl) {
+    private void refreshTokens() {
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
         TwoPermissions.getInstance().resetValues();
 
-        if (newUrl.length() > 0) {
-            authContext.acquireToken(BaseGodActivity.this, newUrl, Constants.CLIENT,
-                    Constants.REDIRECT_URL, "", PromptBehavior.Auto, "",
-                    d365CallbackWithNewUrl);
-        } else {
-            authContext.acquireToken(BaseGodActivity.this, Constants.DYNAMICS_365, Constants.CLIENT,
-                    Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
-        }
+        authContext.acquireToken(BaseGodActivity.this, Constants.DYNAMICS_365, Constants.CLIENT,
+                Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
     }
 
     /**
@@ -141,29 +133,6 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
                 TwoPermissions permissions = TwoPermissions.getInstance();
                 permissions.setSharePointToken(true);
                 CommonChannel.sendTwoPermissions(permissions);
-            }
-        }
-
-        @Override
-        public void onError(Exception exc) {
-
-        }
-    };
-
-    private AuthenticationCallback<AuthenticationResult> d365CallbackWithNewUrl = new AuthenticationCallback<AuthenticationResult>() {
-        @SuppressLint("CheckResult")
-        @Override
-        public void onSuccess(AuthenticationResult result) {
-            if (result.getAccessToken() != null) {
-                CacheUser.getUser().setUserCliendId(result.getClientId());
-                CacheUser.getUser().setDynamics365Token(result.getAccessToken());
-
-                SharedPreferences sharedPreferences = getApplicationContext()
-                        .getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
-
-                //Refresh d365 retrofit object
-                PersonalAssistant.provideDynamics365Auth(result.getAccessToken(),
-                        sharedPreferences.getString(Constants.SP_CURRENT_HTTP, ""));
             }
         }
 

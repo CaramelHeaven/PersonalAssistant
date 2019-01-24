@@ -11,7 +11,6 @@ import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.view.MenuItem;
 
-import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
@@ -63,13 +62,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         @Override
         public void onStop() {
-            String value = sharedPreferences.getString(Constants.SP_CURRENT_HTTP, "");
-            Timber.d("get value: " + value);
-
-            PersonalAssistant.changeHttpUrlDynamics365(value);
-            RxBus.getInstance().passActionForUpdateToken(value);
             sharedPreferences = null;
-
             super.onStop();
         }
 
@@ -124,8 +117,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     ? listPreference.getEntries()[index]
                     : null);
 
-            Timber.d("check string: " + stringValue);
-
             String[] array = preference.getContext().getResources().getStringArray(R.array.pref_upload_http_references);
             String value = array[Integer.parseInt(stringValue)];
 
@@ -137,6 +128,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
 
             editor.putString(Constants.SP_CURRENT_HTTP, referenceHttp);
+
+            //REFRESH TOKEN
+            RxBus.getInstance().passActionForUpdateToken(referenceHttp);
         } else if (preference instanceof SwitchPreference) {
             editor.putBoolean(Constants.SP_ENABLE_FUNCTIONS, (boolean) newValue);
         }

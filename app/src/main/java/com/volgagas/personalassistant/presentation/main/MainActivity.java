@@ -30,7 +30,7 @@ import com.volgagas.personalassistant.presentation.main.presenter.MainPresenter;
 import com.volgagas.personalassistant.presentation.main.presenter.MainView;
 import com.volgagas.personalassistant.presentation.projects.FragmentProjects;
 import com.volgagas.personalassistant.presentation.settings.SettingsActivity;
-import com.volgagas.personalassistant.utils.UpdateTokenHandler;
+import com.volgagas.personalassistant.utils.threads.UpdateTokenHandler;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
 
 import java.nio.charset.StandardCharsets;

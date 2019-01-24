@@ -1,5 +1,8 @@
 package com.volgagas.personalassistant.presentation.settings;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -12,19 +15,79 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.microsoft.aad.adal.AuthenticationCallback;
+import com.microsoft.aad.adal.AuthenticationContext;
+import com.microsoft.aad.adal.AuthenticationResult;
+import com.microsoft.aad.adal.PromptBehavior;
+import com.volgagas.personalassistant.PersonalAssistant;
+import com.volgagas.personalassistant.data.cache.CacheUser;
+import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
+
+import es.dmoral.toasty.Toasty;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
+
 /**
  * Preferences abstract
  */
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
 
     private AppCompatDelegate mDelegate;
+    private CompositeDisposable disposable;
+    private AuthenticationContext authenticationContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
+
+        disposable = new CompositeDisposable();
+        disposable.add(RxBus.getInstance().getUpdates()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    Timber.d("RX RESULT");
+                    if (result.contains(Constants.DYNAMICS_PROD) || result.contains(Constants.DYNAMICS_TST)) {
+                        refreshTokens(result);
+                    }
+                }));
     }
+
+    private void refreshTokens(String resultIrl) {
+        Timber.d("REFRESH TOKENS");
+        authenticationContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
+
+        authenticationContext.acquireToken(AppCompatPreferenceActivity.this, resultIrl, Constants.CLIENT,
+                Constants.REDIRECT_URL, "", PromptBehavior.Auto, "",
+                d365CallbackWithNewUrl);
+    }
+
+    private AuthenticationCallback<AuthenticationResult> d365CallbackWithNewUrl = new AuthenticationCallback<AuthenticationResult>() {
+        @SuppressLint("CheckResult")
+        @Override
+        public void onSuccess(AuthenticationResult result) {
+            if (result.getAccessToken() != null) {
+                CacheUser.getUser().setUserCliendId(result.getClientId());
+                CacheUser.getUser().setDynamics365Token(result.getAccessToken());
+
+                SharedPreferences sharedPreferences = getApplicationContext()
+                        .getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
+
+                //Refresh d365 retrofit object
+                PersonalAssistant.provideDynamics365Auth(result.getAccessToken(),
+                        sharedPreferences.getString(Constants.SP_CURRENT_HTTP, ""));
+
+                Toasty.info(getApplicationContext(), "Ссылка обновлена").show();
+            }
+        }
+
+        @Override
+        public void onError(Exception exc) {
+
+        }
+    };
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -91,6 +154,8 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
 
     @Override
     protected void onDestroy() {
+        disposable.clear();
+        authenticationContext = null;
         super.onDestroy();
         getDelegate().onDestroy();
     }

@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
+import timber.log.Timber;
 
 public class HomeFragment extends BaseFragment implements HomeView {
 
@@ -76,18 +77,13 @@ public class HomeFragment extends BaseFragment implements HomeView {
         adapter = new HomeAdapter(homeModelList);
         recyclerView.setAdapter(adapter);
 
-        SharedPreferences sharedPreferences = getActivity()
-                .getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
-
-        boolean value = sharedPreferences.getBoolean(Constants.SP_ENABLE_FUNCTIONS, false);
-
         adapter.setMyOnItemClickListener(position -> {
             switch (position) {
                 case 0:
                     startActivity(new Intent(getActivity(), KioskActivity.class));
                     break;
                 case 1:
-                    if (!value) {
+                    if (!getPermissionCap()) {
                         Toast.makeText(getActivity(), "В разработке", Toast.LENGTH_SHORT).show();
                     } else {
                         startActivity(new Intent(getActivity(), QueryCreateActivity.class));
@@ -97,7 +93,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     startActivity(new Intent(getActivity(), WorkerActivity.class));
                     break;
                 case 3:
-                    if (!value) {
+                    if (!getPermissionCap()) {
                         Toast.makeText(getActivity(), "В разработке", Toast.LENGTH_SHORT).show();
                     } else {
                         startActivity(new Intent(getActivity(), OrderPurchaseActivity.class));
@@ -105,6 +101,13 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     break;
             }
         });
+    }
+
+    private boolean getPermissionCap() {
+        SharedPreferences sharedPreferences = getActivity()
+                .getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
+
+        return sharedPreferences.getBoolean(Constants.SP_ENABLE_FUNCTIONS, false);
     }
 
     @Override

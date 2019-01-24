@@ -20,6 +20,8 @@ import timber.log.Timber;
 @InjectViewState
 public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Task>> {
 
+
+
     private CompositeDisposable disposable;
     private MainRepository repository;
 
@@ -52,6 +54,10 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
     }
 
     private void successfulResult(List<Task> tasks) {
+        getViewState().hideProgress();
+        for (Task task : tasks){
+            Timber.d("check Tasks: " + task.toString());
+        }
         getViewState().showItems(tasks);
     }
 

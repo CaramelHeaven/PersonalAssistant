@@ -64,8 +64,7 @@ public class GpaPresenter extends BasePresenter<GpaView> {
         if (gpa.getCategory().equals("Оборудование") && (gpa.getName().equals(task.getGpa()))) {
             getViewState().completed();
         } else if (gpa.getCategory().equals("Оборудование")) {
-            getViewState().completed();
-            //getViewState().showError("Оборудование не совпадает");
+            getViewState().showError("Оборудование не совпадает");
         } else {
             getViewState().showErrorEquipment();
         }

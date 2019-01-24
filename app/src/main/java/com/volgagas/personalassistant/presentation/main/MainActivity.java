@@ -138,11 +138,6 @@ public class MainActivity extends BaseActivity implements MainView {
 
     private void setBottomNavigation() {
         bnvNavigation.setOnNavigationItemSelectedListener(menuItem -> {
-            sharedPreferences = getApplicationContext()
-                    .getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
-
-            boolean value = sharedPreferences.getBoolean(Constants.SP_ENABLE_FUNCTIONS, false);
-
             switch (menuItem.getItemId()) {
                 case R.id.action_home:
                     TransitionManager.beginDelayedTransition(constraintLayout);
@@ -157,7 +152,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
                     break;
                 case R.id.action_project:
-                    if (!value) {
+                    if (!getPermissionCap()) {
                         Toast.makeText(this, "В разработке", Toast.LENGTH_SHORT).show();
                     } else {
                         Fragment fragment2 = getSupportFragmentManager().findFragmentByTag("PROJECTS");
@@ -182,7 +177,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
                     break;
                 case R.id.action_info:
-                    if (!value) {
+                    if (!getPermissionCap()) {
                         Toast.makeText(this, "В разработке", Toast.LENGTH_SHORT).show();
                     } else {
                         Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("INFO");
@@ -209,6 +204,13 @@ public class MainActivity extends BaseActivity implements MainView {
             }
             return true;
         });
+    }
+
+    private boolean getPermissionCap() {
+        sharedPreferences = getApplicationContext()
+                .getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
+
+        return sharedPreferences.getBoolean(Constants.SP_ENABLE_FUNCTIONS, false);
     }
 
     private void provideBackgroundUIData() {

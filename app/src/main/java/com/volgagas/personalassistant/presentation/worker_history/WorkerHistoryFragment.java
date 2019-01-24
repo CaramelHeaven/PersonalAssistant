@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -28,6 +29,7 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private TextView tvEmptyTasks;
 
     private HistoryAdapter adapter;
 
@@ -53,6 +55,7 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
+        tvEmptyTasks = view.findViewById(R.id.tv_empty_tasks);
 
         provideRecyclerAndAdapter();
     }
@@ -65,6 +68,7 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
+        tvEmptyTasks.setVisibility(View.GONE);
     }
 
     @Override
@@ -91,7 +95,7 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
         if (models.size() != 0) {
             adapter.updateItems(models);
         } else {
-            Toast.makeText(getActivity(), "История пуста", Toast.LENGTH_SHORT).show();
+            tvEmptyTasks.setVisibility(View.VISIBLE);
         }
     }
 }

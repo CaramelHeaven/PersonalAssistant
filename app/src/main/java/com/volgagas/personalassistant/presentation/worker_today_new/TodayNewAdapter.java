@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
+import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 import com.volgagas.personalassistant.utils.views.sticky_header.StickyRecyclerHeadersAdapter;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class TodayNewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
 
     private List<Task> items;
+    private myOnItemClickListener myOnItemClickListener;
 
     public TodayNewAdapter(List<Task> items) {
         this.items = items;
@@ -93,8 +95,14 @@ public class TodayNewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    class TaskVH extends RecyclerView.ViewHolder {
+    public void clear() {
+        items.clear();
+        notifyDataSetChanged();
+    }
+
+    class TaskVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvTitle, tvTime, tvLocation, tvDescription;
+        private CardView cvContainer;
 
         public TaskVH(@NonNull View itemView) {
             super(itemView);
@@ -102,6 +110,14 @@ public class TodayNewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             tvTime = itemView.findViewById(R.id.tv_time);
             tvLocation = itemView.findViewById(R.id.tv_location);
             tvDescription = itemView.findViewById(R.id.tv_description);
+            cvContainer = itemView.findViewById(R.id.cv_container);
+
+            cvContainer.setOnClickListener(this::onClick);
+        }
+
+        @Override
+        public void onClick(View v) {
+            myOnItemClickListener.onItemClick(getAdapterPosition());
         }
     }
 
@@ -128,5 +144,9 @@ public class TodayNewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         }
         return builder.toString();
+    }
+
+    public void setMyOnItemClickListener(com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener myOnItemClickListener) {
+        this.myOnItemClickListener = myOnItemClickListener;
     }
 }

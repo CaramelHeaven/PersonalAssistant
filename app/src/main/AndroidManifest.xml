@@ -118,6 +118,10 @@
             android:name=".presentation.settings.SettingsActivity"
             android:label="Настройки"
             android:theme="@style/AppTheme" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="075240ad26eaddd82d54b9a729f3201daf1ee85e" />
     </application>
 
 </manifest>

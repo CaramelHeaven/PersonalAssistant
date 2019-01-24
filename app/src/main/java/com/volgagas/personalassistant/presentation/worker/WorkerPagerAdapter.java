@@ -19,7 +19,7 @@ public class WorkerPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch (i) {
             case 0:
-                return WorkerTodayFragment.newInstance();
+                return WorkerTodayNewFragment.newInstance();
             case 1:
                 return WorkerHistoryFragment.newInstance();
             default:

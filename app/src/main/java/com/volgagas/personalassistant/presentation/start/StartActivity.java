@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.crashlytics.android.Crashlytics;
 import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationContext;
 import com.microsoft.aad.adal.AuthenticationResult;
@@ -25,6 +26,7 @@ import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
 
 import es.dmoral.toasty.Toasty;
+import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 public class StartActivity extends BaseActivity implements StartView {
@@ -102,6 +104,9 @@ public class StartActivity extends BaseActivity implements StartView {
 
     @Override
     public void goToMainMenu() {
+        Fabric.with(this, new Crashlytics());
+
+        Crashlytics.setUserIdentifier(CacheUser.getUser().getName());
         startActivity(new Intent(StartActivity.this, MainActivity.class));
     }
 

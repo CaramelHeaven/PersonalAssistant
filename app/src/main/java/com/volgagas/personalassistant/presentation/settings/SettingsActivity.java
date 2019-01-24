@@ -92,6 +92,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private static void bindPreferenceSwitch(Preference preference) {
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
+        //Enable if user set it true
+        if (sharedPreferences.getBoolean(Constants.SP_ENABLE_FUNCTIONS, false)) {
+            preference.setEnabled(true);
+        }
+
         sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())

@@ -2,7 +2,7 @@
 <resources>
     <string-array name="pref_upload_http_references">
         <item>tst.dynamics.com</item>
-        <item>dev.dynamics.com</item>
+        <item>prod.dynamics.com</item>
     </string-array>
     <string-array name="pref_upload_quality_values">
         <item>0</item>

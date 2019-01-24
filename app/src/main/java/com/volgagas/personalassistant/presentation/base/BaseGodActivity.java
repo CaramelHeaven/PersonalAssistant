@@ -1,6 +1,8 @@
 package com.volgagas.personalassistant.presentation.base;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -54,8 +56,10 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      */
     private void updateToken() {
         disposable.add(RxBus.getInstance().getUpdates().subscribe(result -> {
-            Timber.d("call refreshTokens");
-            refreshTokens();
+            if (result.contains(Constants.DYNAMICS_PROD) || result.contains(Constants.DYNAMICS_TST)) {
+                refreshTokens(result);
+            }
+            refreshTokens("");
         }));
     }
 
@@ -78,12 +82,18 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      * Base method for refresh tokens from global bus listener in here. First of all - refresh
      * dynamics 365 after - refresh SharePoint
      */
-    private void refreshTokens() {
+    private void refreshTokens(String newUrl) {
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
         TwoPermissions.getInstance().resetValues();
 
-        authContext.acquireToken(BaseGodActivity.this, Constants.DYNAMICS_365, Constants.CLIENT,
-                Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
+        if (newUrl.length() > 0) {
+            authContext.acquireToken(BaseGodActivity.this, newUrl, Constants.CLIENT,
+                    Constants.REDIRECT_URL, "", PromptBehavior.Auto, "",
+                    d365CallbackWithNewUrl);
+        } else {
+            authContext.acquireToken(BaseGodActivity.this, Constants.DYNAMICS_365, Constants.CLIENT,
+                    Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
+        }
     }
 
     /**
@@ -98,7 +108,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
                 CacheUser.getUser().setDynamics365Token(result.getAccessToken());
 
                 //Refresh d365 retrofit object
-                PersonalAssistant.provideDynamics365Auth(result.getAccessToken());
+                PersonalAssistant.provideDynamics365Auth(result.getAccessToken(), "");
 
                 TwoPermissions permissions = TwoPermissions.getInstance();
                 permissions.setD365Token(true);
@@ -131,6 +141,29 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
                 TwoPermissions permissions = TwoPermissions.getInstance();
                 permissions.setSharePointToken(true);
                 CommonChannel.sendTwoPermissions(permissions);
+            }
+        }
+
+        @Override
+        public void onError(Exception exc) {
+
+        }
+    };
+
+    private AuthenticationCallback<AuthenticationResult> d365CallbackWithNewUrl = new AuthenticationCallback<AuthenticationResult>() {
+        @SuppressLint("CheckResult")
+        @Override
+        public void onSuccess(AuthenticationResult result) {
+            if (result.getAccessToken() != null) {
+                CacheUser.getUser().setUserCliendId(result.getClientId());
+                CacheUser.getUser().setDynamics365Token(result.getAccessToken());
+
+                SharedPreferences sharedPreferences = getApplicationContext()
+                        .getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
+
+                //Refresh d365 retrofit object
+                PersonalAssistant.provideDynamics365Auth(result.getAccessToken(),
+                        sharedPreferences.getString(Constants.SP_CURRENT_HTTP, ""));
             }
         }
 

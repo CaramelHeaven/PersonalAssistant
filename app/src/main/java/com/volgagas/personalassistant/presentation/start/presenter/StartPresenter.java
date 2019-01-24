@@ -57,6 +57,7 @@ public class StartPresenter extends BasePresenter<StartView> {
         disposable.clear();
     }
 
+    //TODO rewrite this shit
     public void getUserData(String data) {
         getViewState().showProgress();
         disposable.add(repository.getCardInfo(data)
@@ -74,11 +75,7 @@ public class StartPresenter extends BasePresenter<StartView> {
                 })
                 .flatMap((Function<User, SingleSource<UserDynamics>>) user -> {
                     //if successful user data
-                    Timber.d("im inside flat map");
-                    Timber.d("checkign user: " + user.toString());
-                    Timber.d("lalalalal: " + !user.getName().equals(""));
                     if (user.getName() != null && !user.getName().equals("")) {
-                        Timber.d("successful user data");
                         CacheUser.getUser().setBaseFields(user);
                         return repository.getPersonalUserNumber(user.getName());
                     } else {
@@ -90,7 +87,6 @@ public class StartPresenter extends BasePresenter<StartView> {
     }
 
     private void successfulResponse(UserDynamics userDynamics) {
-        Timber.d("getInstance: " + userDynamics.toString());
         ThreePermissions permissions = ThreePermissions.getInstance();
         if (userDynamics.getPersonalNumber() == null || userDynamics.getPersonalNumber().equals("")) {
             permissions.setServer(false);

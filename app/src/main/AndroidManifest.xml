@@ -116,7 +116,7 @@
 
         <activity
             android:name=".presentation.settings.SettingsActivity"
-            android:label="@string/title_activity_settings"
+            android:label="Настройки"
             android:theme="@style/AppTheme" />
     </application>
 

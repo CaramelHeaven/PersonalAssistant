@@ -20,6 +20,10 @@ public class Constants {
     public static final String SHARE_POINT_DOC_API_WEB = "https://volagas.sharepoint.com/doc/_api/web";
     public static final String SHARE_POINT_API_WEB = "https://volagas.sharepoint.com/_api/web";
 
+    //references for shared preference inside setting activity
+    public static final String DYNAMICS_TST = "https://volgagas-tstdevaos.sandbox.ax.dynamics.com";
+    public static final String DYNAMICS_PROD = "https://volgagas-prod73b403cba6259cd5cedevaos.cloudax.dynamics.com";
+
     public static final String AUTH_URL = "https://login.microsoftonline.com/common/oauth2/authorize";
 
     //other
@@ -34,4 +38,9 @@ public class Constants {
     // HTTP RESPONSES
     public static final int HTTP_400 = 400;
     public static final int HTTP_204 = 204;
+
+    //PREFERENCES
+    public static final String SP_USER_PREFERENCE = "USER_DATA";
+    public static final String SP_CURRENT_HTTP = "CURRENT_HTTP";
+    public static final String SP_ENABLE_FUNCTIONS = "ENABLE_FUNCTIONS";
 }

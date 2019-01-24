@@ -133,7 +133,7 @@ public class StartActivity extends BaseActivity implements StartView {
 
                 if (PersonalAssistant.getBaseApiService() == null) {
                     Timber.d("INIT D365");
-                    PersonalAssistant.provideDynamics365Auth(result.getAccessToken());
+                    PersonalAssistant.provideDynamics365Auth(result.getAccessToken(), "");
                 }
 
                 ThreePermissions permissions = ThreePermissions.getInstance();

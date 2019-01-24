@@ -26,6 +26,7 @@ import timber.log.Timber;
 public class PersonalAssistant extends Application {
 
     private PersonalAssistant application;
+    private static String lastTokenDynamics365 = "";
 
     private static BaseApiService baseApiService;
     private static SPApiService spApiService;
@@ -58,17 +59,31 @@ public class PersonalAssistant extends Application {
         return spApiService;
     }
 
-    public static void provideDynamics365Auth(String token) {
-        OkHttpClient.Builder builderWithAuth = initBuilderAuth(token, "D365");
+    public static void changeHttpUrlDynamics365(String newUrl) {
+        provideDynamics365Auth(lastTokenDynamics365, newUrl);
+    }
+
+    public static void provideDynamics365Auth(String token, String url) {
+        lastTokenDynamics365 = token;
+
+        OkHttpClient.Builder builderWithAuth = initBuilderAuth(lastTokenDynamics365, "D365");
         OkHttpClient client = builderWithAuth.build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.DYNAMICS_365)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
+        Retrofit retrofit;
+        if (url.length() > 0) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
+                    .build();
+        } else {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(Constants.DYNAMICS_365)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
+                    .build();
+        }
         baseApiService = retrofit.create(BaseApiService.class);
     }
 
@@ -129,26 +144,6 @@ public class PersonalAssistant extends Application {
                 return builderSP;
         }
         return null;
-    }
-
-    public static String getNextDayDataFormat() {
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
-        String result = dateFormat.format(calendar.getTime());
-
-        return result + "00:00:00Z";
-    }
-
-    public static String getLastDayDataFormat() {
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.add(Calendar.DAY_OF_YEAR, -1);
-        String result = dateFormat.format(calendar.getTime());
-
-        return result + "00:00:00Z";
     }
 
     public static SimpleDateFormat getPatternFromServer() {

@@ -1,7 +1,10 @@
 package com.volgagas.personalassistant.utils.bus;
 
+import com.volgagas.personalassistant.utils.Constants;
+
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 11:08, 22/01/2019.
@@ -23,6 +26,10 @@ public class RxBus {
 
     public void passActionForUpdateToken(String action) {
         if (action.equals("UPDATE_TOKEN")) {
+            updateTokenSubject.onNext(action);
+        } else if (action.equals(Constants.DYNAMICS_TST) ||
+                action.equals(Constants.DYNAMICS_PROD)) {
+            Timber.d("CHEck my action: " + action);
             updateTokenSubject.onNext(action);
         }
     }

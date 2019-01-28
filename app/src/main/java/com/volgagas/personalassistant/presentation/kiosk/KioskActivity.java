@@ -81,8 +81,15 @@ public class KioskActivity extends BaseActivity implements KioskView {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
+        GlobalBus.getEventBus().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        GlobalBus.getEventBus().unregister(this);
+        super.onStop();
     }
 
     /**
@@ -92,6 +99,7 @@ public class KioskActivity extends BaseActivity implements KioskView {
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void addedTaskToPresenter(AddedTask data) {
+        Timber.d("ADDED TASK: " + data.toString());
         presenter.addTask(data.getTask());
     }
 

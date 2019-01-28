@@ -91,6 +91,7 @@ public class KioskPresenter extends BasePresenter<KioskView> {
                 .subscribe(result -> {
                     senderTasks.clear();
                     senderTasks.addAll(result);
+                    Timber.d("size senders: " + senderTasks);
                     Timber.d("checking size: " + senderTasks.size());
                 });
     }

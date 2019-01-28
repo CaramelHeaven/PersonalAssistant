@@ -75,7 +75,9 @@ public abstract class BaseActivity extends BaseGodActivity {
         if (nfcAdapter != null && nfcAdapter.isEnabled() && permissionToEnableNfc) {
             nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListArray);
         } else {
-            nfcAdapter.disableForegroundDispatch(this);
+            if (nfcAdapter != null) {
+                nfcAdapter.disableForegroundDispatch(this);
+            }
         }
     }
 

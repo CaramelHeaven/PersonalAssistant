@@ -219,5 +219,9 @@ public class KioskActivity extends BaseActivity implements KioskView {
     @Override
     public void errorFromCreatedTask(String error) {
         Toasty.error(this, error).show();
+
+        if (progressDialog != null) {
+            progressDialog.cancel();
+        }
     }
 }

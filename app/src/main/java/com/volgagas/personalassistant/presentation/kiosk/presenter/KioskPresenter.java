@@ -63,20 +63,24 @@ public class KioskPresenter extends BasePresenter<KioskView> {
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
         if (result.size() > 0) {
-            boolean isAllCompleted = true;
-            int indexTask = 0;
+            String effect = "";
 
             for (int i = 0; i < result.size(); i++) {
-                if (result.get(i).code() != Constants.HTTP_204) {
-                    isAllCompleted = false;
+                if (result.get(i).code() == Constants.HTTP_204) {
+                    effect = "OK";
+                    break;
+                } else if (result.get(i).code() == Constants.HTTP_400) {
+                    effect = "400";
                     break;
                 }
             }
 
-            if (isAllCompleted) {
+            if (effect.equals("OK")) {
                 getViewState().completedKiosk();
+            } else if (effect.equals("400")) {
+                getViewState().errorFromCreatedTask("Ошибка 400 при создании задач");
             } else {
-                getViewState().errorFromCreatedTask("Возникла ошибка при создании задачи с нумерацией " + indexTask + 1);
+                getViewState().errorFromCreatedTask("Ошибка при создании. ");
             }
         } else {
             getViewState().completedKiosk();

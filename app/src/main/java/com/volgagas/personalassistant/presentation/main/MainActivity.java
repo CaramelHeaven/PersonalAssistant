@@ -18,6 +18,7 @@ import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import com.volgagas.personalassistant.presentation.main.presenter.MainPresenter;
 import com.volgagas.personalassistant.presentation.main.presenter.MainView;
 import com.volgagas.personalassistant.presentation.projects.FragmentProjects;
 import com.volgagas.personalassistant.presentation.settings.SettingsActivity;
+import com.volgagas.personalassistant.presentation.start.StartActivity;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
 import com.volgagas.personalassistant.utils.threads.UpdateTokenHandler;
@@ -51,7 +53,7 @@ public class MainActivity extends BaseActivity implements MainView {
     private CircleImageView ivUserImage;
     private ConstraintLayout constraintLayout;
     private TextView tvName, tvCategory, tvTitleProblem;
-    private ImageView ivSettings;
+    private ImageView ivSettings, ivLogout;
 
     private ConstraintSet homeSet, projectsSet, infoSet;
     private UpdateTokenHandler updateTokenHandler;
@@ -74,7 +76,8 @@ public class MainActivity extends BaseActivity implements MainView {
         bnvNavigation = findViewById(R.id.bnv_navigation);
         tvName = findViewById(R.id.tv_name);
         tvCategory = findViewById(R.id.tv_category);
-        ivSettings = findViewById(R.id.iv_logout);
+        ivSettings = findViewById(R.id.iv_settings);
+        ivLogout = findViewById(R.id.iv_logout);
         toolbar = findViewById(R.id.toolbar);
         constraintLayout = findViewById(R.id.constraintLayout);
 
@@ -115,6 +118,12 @@ public class MainActivity extends BaseActivity implements MainView {
 
         ivSettings.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class)));
+
+        ivLogout.setOnClickListener(v -> {
+            CacheUser.clear();
+            startActivity(new Intent(MainActivity.this, StartActivity.class));
+            finish();
+        });
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseActionActivity;
+import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclaturePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclatureView;
 
@@ -84,13 +86,9 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
             } else if (adapter.getNomenclatureList().size() == 0) {
                 Toast.makeText(getActivity(), "Список элементов пуст", Toast.LENGTH_SHORT).show();
             } else {
-                Timber.d("ADD");
+                Intent intent = new Intent(getActivity(), GpaActivity.class);
+                startActivity(intent);
             }
-            //Intent intent = new Intent(getActivity(), GpaActivity.class);
-            //intent.putExtra("TASK", (Task) getArguments().getParcelable("TASK"));
-
-            //startActivity(intent);
-
         });
 
         provideRecyclerAndAdapter();
@@ -114,7 +112,6 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         recyclerView.setAdapter(adapter);
 
         adapter.setOnButtonPlusMinusClickListener((position, status, count) -> {
-            Timber.d("kek: " + count);
             adapter.getItemByPosition(position).setCount(String.valueOf(count));
         });
     }

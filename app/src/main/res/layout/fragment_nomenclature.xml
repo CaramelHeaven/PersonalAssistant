@@ -24,7 +24,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/rl_container"
+        android:layout_above="@id/btn_confirm"
         android:layout_below="@id/appBar" />
 
     <ProgressBar
@@ -34,19 +34,13 @@
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
-    <RelativeLayout
-        android:id="@+id/rl_container"
+    <Button
+        android:id="@+id/btn_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <Button
-            android:id="@+id/btn_confirm"
-            style="@style/AppTheme.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/view"
-            android:text="Подтвердить"
-            android:textColor="@android:color/white" />
-    </RelativeLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@id/view"
+        android:background="@color/colorPrimary"
+        android:text="Подтвердить"
+        android:textColor="@android:color/white" />
 </RelativeLayout>

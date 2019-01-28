@@ -43,7 +43,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
         disposable.add(RxBus.getInstance().getScanData()
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::addDataFromNfc));
+                .subscribe(this::addDataFromNfc, this::handlerErrorsFromBadRequests));
     }
 
     @Override
@@ -53,7 +53,6 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
     }
 
     @Override
-
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
 
     }

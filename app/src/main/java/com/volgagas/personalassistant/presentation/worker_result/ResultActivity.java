@@ -206,13 +206,15 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
     @Override
     public void completed() {
-        progressDialog.cancel();
+        if (progressBar != null) {
+            progressDialog.cancel();
+        }
 
         Toasty.success(this, "Задания успешно завершены").show();
 
         Intent intent = new Intent(ResultActivity.this, WorkerActivity.class);
 
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }

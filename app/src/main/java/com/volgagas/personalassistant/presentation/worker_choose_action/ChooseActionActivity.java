@@ -8,6 +8,7 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.worker_choose_action.presenter_activity.ChooseActivityPresenter;
 import com.volgagas.personalassistant.presentation.worker_choose_action.presenter_activity.ChooseActivityView;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import timber.log.Timber;
 
@@ -37,7 +38,7 @@ public class ChooseActionActivity extends BaseActivity implements ChooseActivity
 
     @Override
     protected void sendDataToServer(String data) {
-        Timber.d("scanning data: " + data);
+        RxBus.getInstance().passScanData(data);
     }
 
     @Override

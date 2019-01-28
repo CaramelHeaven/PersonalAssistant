@@ -17,6 +17,7 @@ import com.volgagas.personalassistant.models.mapper.user.UserMapper;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseListToUserList;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseToUser;
 import com.volgagas.personalassistant.models.mapper.user.UserSimpleResponseToUserSimple;
+import com.volgagas.personalassistant.models.mapper.worker.NomenclatureHostRespToNomenclatureHost;
 import com.volgagas.personalassistant.models.mapper.worker.NomenclatureResponseToNomenclature;
 import com.volgagas.personalassistant.models.mapper.worker.SubTaskResponseToSubTask;
 import com.volgagas.personalassistant.models.mapper.worker.TaskMapper;
@@ -87,11 +88,13 @@ public class MainRemoteRepository implements MainRepository {
                             new SubTaskResponseToSubTask();
                     NomenclatureResponseToNomenclature nomenclatureResponseToNomenclature =
                             new NomenclatureResponseToNomenclature();
+                    NomenclatureHostRespToNomenclatureHost nomenclatureHostRespToNomenclatureHost =
+                            new NomenclatureHostRespToNomenclatureHost();
 
                     //Initial mappers
                     taskMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
                             taskKioskResponseToTaskTemplate, subTaskResponseToSubTask,
-                            nomenclatureResponseToNomenclature);
+                            nomenclatureResponseToNomenclature, nomenclatureHostRespToNomenclatureHost);
                     userMapper = new UserMapper(userResponseToUser, userResponseListToUserList,
                             userIdResponseToUserId, userDynamicsResponseToUserDynamics,
                             userSimpleResponseToUserSimple);
@@ -114,8 +117,8 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public Single<Nomenclature> getNomenclatureData(String data) {
-        return PersonalAssistant.getBaseApiService().getNomenclatureInfo(data)
+    public Single<Nomenclature> findNomenclatureByCardInfo(String data) {
+        return PersonalAssistant.getBaseApiService().findNomenclatureCardInfo(data)
                 .map(taskMapper::map);
     }
 
@@ -314,5 +317,14 @@ public class MainRemoteRepository implements MainRepository {
     public Single<UserSimple> getUserPhotoByName(String userName) {
         return PersonalAssistant.getBaseApiService().getUserSimpleByName(userName)
                 .map(userMapper::map);
+    }
+
+    @Override
+    public Single<List<Nomenclature>> getNomenclaturesBySO(String soId) {
+        String filter = "TransactionSubType eq Microsoft.Dynamics.DataEntities." +
+                "SMATransactionSubType'Consumption' and ServiceOrderId eq '" + soId + "'";
+
+        return PersonalAssistant.getBaseApiService().getNomenclatures(filter)
+                .map(taskMapper::map);
     }
 }

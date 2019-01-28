@@ -32,7 +32,7 @@ public interface MainRepository {
     /**
      * Get nomenclature data from the scanned current card
      */
-    Single<Nomenclature> getNomenclatureData(String data);
+    Single<Nomenclature> findNomenclatureByCardInfo(String data);
 
     /**
      * Get all users from special folders from SCUD
@@ -134,4 +134,6 @@ public interface MainRepository {
      * GET user preview photo by name for messenger chat
      */
     Single<UserSimple> getUserPhotoByName(String userName);
+
+    Single<List<Nomenclature>> getNomenclaturesBySO(String soId);
 }

@@ -6,14 +6,13 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
+import com.volgagas.personalassistant.models.network.NomenclatureHostResponse;
 import com.volgagas.personalassistant.models.network.NomenclatureResponse;
 import com.volgagas.personalassistant.models.network.SubTaskResponse;
 import com.volgagas.personalassistant.models.network.TaskKioskResponse;
 import com.volgagas.personalassistant.models.network.TaskResponse;
 
 import java.util.List;
-
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 17:43, 27/12/2018.
@@ -24,16 +23,19 @@ public class TaskMapper {
     private final TaskKioskResponseToTaskTemplate taskKioskResponseToTaskTemplate;
     private final SubTaskResponseToSubTask subTaskResponseToSubTask;
     private final NomenclatureResponseToNomenclature nomenclatureResponseToNomenclature;
+    private final NomenclatureHostRespToNomenclatureHost nomenclatureHostRespToNomenclatureHost;
 
     public TaskMapper(TaskResponseToTask taskResponseToTask, TaskResponseToTaskHistory taskResponseToTaskHistory,
                       TaskKioskResponseToTaskTemplate taskKioskResponseToTaskTemplate,
                       SubTaskResponseToSubTask subTaskResponseToSubTask,
-                      NomenclatureResponseToNomenclature nomenclatureResponseToNomenclature) {
+                      NomenclatureResponseToNomenclature nomenclatureResponseToNomenclature,
+                      NomenclatureHostRespToNomenclatureHost nomenclatureHostRespToNomenclatureHost) {
         this.taskResponseToTask = taskResponseToTask;
         this.taskResponseToTaskHistory = taskResponseToTaskHistory;
         this.taskKioskResponseToTaskTemplate = taskKioskResponseToTaskTemplate;
         this.subTaskResponseToSubTask = subTaskResponseToSubTask;
         this.nomenclatureResponseToNomenclature = nomenclatureResponseToNomenclature;
+        this.nomenclatureHostRespToNomenclatureHost = nomenclatureHostRespToNomenclatureHost;
     }
 
     public List<TaskHistory> mapHistoryTasks(TaskResponse response) {
@@ -52,7 +54,11 @@ public class TaskMapper {
         return subTaskResponseToSubTask.map(response);
     }
 
-    public Nomenclature map(NomenclatureResponse response) {
+    public List<Nomenclature> map(NomenclatureResponse response) {
         return nomenclatureResponseToNomenclature.map(response);
+    }
+
+    public Nomenclature map(NomenclatureHostResponse response) {
+        return nomenclatureHostRespToNomenclatureHost.map(response);
     }
 }

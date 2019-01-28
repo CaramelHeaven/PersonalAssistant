@@ -14,7 +14,7 @@ public class RxBus {
     private static volatile RxBus instance;
 
     private PublishSubject<String> updateTokenSubject = PublishSubject.create();
-    private PublishSubject<String> enableNfc = PublishSubject.create();
+    private PublishSubject<String> scanData = PublishSubject.create();
 
     public static RxBus getInstance() {
         if (instance == null) {
@@ -30,22 +30,19 @@ public class RxBus {
             updateTokenSubject.onNext(action);
         } else if (action.equals(Constants.DYNAMICS_TST) ||
                 action.equals(Constants.DYNAMICS_PROD)) {
-            Timber.d("onNext: " + action);
             updateTokenSubject.onNext(action);
         }
     }
 
-    public void passActionForEnableNfc(String action) {
-        if (action.equals("ENABLE_NFC")) {
-            enableNfc.onNext(action);
-        }
+    public void passScanData(String data) {
+        scanData.onNext(data);
     }
 
     public Observable<String> getUpdates() {
         return updateTokenSubject;
     }
 
-    public Observable<String> getStatementNfc() {
-        return enableNfc;
+    public PublishSubject<String> getScanData() {
+        return scanData;
     }
 }

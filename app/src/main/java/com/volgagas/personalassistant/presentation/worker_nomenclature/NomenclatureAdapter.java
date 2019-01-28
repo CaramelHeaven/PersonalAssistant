@@ -33,6 +33,7 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        Timber.d("onCreateViewHolder: " + i);
         if (i == NOMENCLATURE_SCAN) {
             View view = LayoutInflater.from(viewGroup.getContext())
                     .inflate(R.layout.item_nomenclature_scan, viewGroup, false);
@@ -64,19 +65,30 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return nomenclatureList.size();
+        return nomenclatureList.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == nomenclatureList.size() - 1) {
+        if (position == nomenclatureList.size()) {
             return NOMENCLATURE_SCAN;
         }
+
         return position;
     }
 
-    class NomenclatureScanVH extends RecyclerView.ViewHolder {
+    public void updateAdapter(List<Nomenclature> values) {
+        nomenclatureList.clear();
+        nomenclatureList.addAll(values);
 
+        notifyItemRangeInserted(0, nomenclatureList.size() - 1);
+    }
+
+    public List<Nomenclature> getNomenclatureList() {
+        return nomenclatureList;
+    }
+
+    class NomenclatureScanVH extends RecyclerView.ViewHolder {
         public NomenclatureScanVH(@NonNull View itemView) {
             super(itemView);
         }

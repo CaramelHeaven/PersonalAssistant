@@ -28,10 +28,6 @@ public class ChooseActivityPresenter extends BasePresenter<ChooseActivityView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-
-        disposable.add(RxBus.getInstance().getStatementNfc().subscribe(result -> {
-            getViewState().enableNFC();
-        }));
     }
 
     @Override

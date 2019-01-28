@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.data.datasource;
 
 import com.google.gson.JsonObject;
+import com.volgagas.personalassistant.models.network.NomenclatureHostResponse;
 import com.volgagas.personalassistant.models.network.NomenclatureResponse;
 import com.volgagas.personalassistant.models.network.SubTaskResponse;
 import com.volgagas.personalassistant.models.network.TaskKioskResponse;
@@ -34,7 +35,7 @@ public interface BaseApiService {
     Single<UserResponse> getCardInfo(@Query("userNumbers") String numbers);
 
     @GET(Constants.MY_HOST + "database/findNomenclature")
-    Single<NomenclatureResponse> getNomenclatureInfo(@Query("nomenclatureNumbers") String numbers);
+    Single<NomenclatureHostResponse> findNomenclatureCardInfo(@Query("nomenclatureNumbers") String numbers);
 
     @GET(Constants.MY_HOST + "database/getAllUsers")
     Single<List<UserResponse>> getSearchedUsers();
@@ -53,6 +54,9 @@ public interface BaseApiService {
 
     @GET("data/SOWithAC?")
     Single<SubTaskResponse> getSubTasksHistory(@Query("$filter") String filter);
+
+    @GET("data/SOLinesEntity?")
+    Single<NomenclatureResponse> getNomenclatures(@Query("$filter") String filter);
 
     /**
      * Provide history tasks which user has been completed

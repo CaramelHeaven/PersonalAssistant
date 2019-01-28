@@ -12,15 +12,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseActionActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclaturePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclatureView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 import timber.log.Timber;
 
 /**
@@ -31,6 +38,7 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     private Button btnConfirm;
     private RecyclerView recyclerView;
     private Toolbar toolbar;
+    private ProgressBar progressBar;
 
     private NomenclatureAdapter adapter;
 
@@ -56,14 +64,13 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerView);
+        progressBar = view.findViewById(R.id.progressBar);
         toolbar = view.findViewById(R.id.toolbar);
         btnConfirm = view.findViewById(R.id.btn_confirm);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //((BaseActivity) getActivity()).handlerNFC();
 
         //enable NFC with delay 1 second
         new Handler().postDelayed(() -> {
@@ -72,6 +79,13 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         }, 1000);
 
         btnConfirm.setOnClickListener(v -> {
+            if (progressBar.getVisibility() == View.VISIBLE) {
+                Toast.makeText(getActivity(), "Список еще грузится", Toast.LENGTH_SHORT).show();
+            } else if (adapter.getNomenclatureList().size() == 0) {
+                Toast.makeText(getActivity(), "Список элементов пуст", Toast.LENGTH_SHORT).show();
+            } else {
+                Timber.d("ADD");
+            }
             //Intent intent = new Intent(getActivity(), GpaActivity.class);
             //intent.putExtra("TASK", (Task) getArguments().getParcelable("TASK"));
 
@@ -96,7 +110,7 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        adapter = new NomenclatureAdapter(presenter.loadData());
+        adapter = new NomenclatureAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
         adapter.setOnButtonPlusMinusClickListener((position, status, count) -> {
@@ -113,11 +127,27 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
 
     @Override
     public void showProgress() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+    }
 
+    @Override
+    public void showBaseList(List<Nomenclature> values) {
+        if (values.size() > 0) {
+            adapter.updateAdapter(values);
+        }
+    }
+
+    @Override
+    public void addNomenclatureToBaseList(Nomenclature value) {
+
+    }
+
+    public void showErrorCard() {
+        Toasty.error(getActivity(), "Приложена не ваша карта").show();
     }
 }

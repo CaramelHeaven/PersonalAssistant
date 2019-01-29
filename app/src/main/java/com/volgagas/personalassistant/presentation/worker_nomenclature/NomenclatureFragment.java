@@ -70,15 +70,19 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         toolbar = view.findViewById(R.id.toolbar);
         btnConfirm = view.findViewById(R.id.btn_confirm);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         //enable NFC with delay 1 second
         new Handler().postDelayed(() -> {
-            ((ChooseActionActivity) getActivity()).setPermissionToEnableNfc(true);
-            ((ChooseActionActivity) getActivity()).handlerNFC();
-        }, 1000);
+            if (getActivity() != null) {
+                ((ChooseActionActivity) getActivity()).setPermissionToEnableNfc(true);
+                ((ChooseActionActivity) getActivity()).handlerNFC();
+            }
+        }, 10);
 
         btnConfirm.setOnClickListener(v -> {
             if (progressBar.getVisibility() == View.VISIBLE) {

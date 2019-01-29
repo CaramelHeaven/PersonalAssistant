@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:gravity="center"
-        android:text="Пунжер"
+        android:text="Пунжер fkldkf"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_16sp" />
 

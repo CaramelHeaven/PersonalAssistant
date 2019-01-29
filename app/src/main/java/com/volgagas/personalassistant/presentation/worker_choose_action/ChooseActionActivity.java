@@ -32,11 +32,6 @@ public class ChooseActionActivity extends BaseActivity implements ChooseActivity
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void sendDataToServer(String data) {
         RxBus.getInstance().passScanData(data);
     }

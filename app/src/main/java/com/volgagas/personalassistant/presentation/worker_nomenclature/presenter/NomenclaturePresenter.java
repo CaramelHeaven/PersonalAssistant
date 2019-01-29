@@ -1,5 +1,7 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature.presenter;
 
+import android.annotation.SuppressLint;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
@@ -54,7 +56,8 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-
+        Timber.d("thorwable: " + throwable.getCause());
+        Timber.d("thorwable: " + throwable.getMessage());
     }
 
     @Override
@@ -66,12 +69,14 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
         Timber.d("SCANNED AND ADD: " + data);
     }
 
+    @SuppressLint("CheckResult")
     private void loadData() {
         getViewState().showProgress();
-        disposable.add(repository.getNomenclaturesBySO(task.getIdTask()).delay(3, TimeUnit.SECONDS)
+        disposable.add(repository.getNomenclaturesBySO(task.getIdTask())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
+                    Timber.d("COMPLETED");
                     getViewState().hideProgress();
                     getViewState().showBaseList(result);
                 }, this::handlerErrorsFromBadRequests));

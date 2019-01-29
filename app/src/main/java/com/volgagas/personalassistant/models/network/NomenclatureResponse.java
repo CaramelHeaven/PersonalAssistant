@@ -2,32 +2,21 @@ package com.volgagas.personalassistant.models.network;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.volgagas.personalassistant.models.model.worker.Nomenclature;
+import com.volgagas.personalassistant.models.network.nomenclature.NomenclatureNetwork;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by CaramelHeaven on 12:16, 16/01/2019.
  */
 public class NomenclatureResponse {
-    @SerializedName("name")
+    @SerializedName("value")
     @Expose
-    private String name;
-    @SerializedName("position")
-    @Expose
-    private String position;
-    @SerializedName("codekeyList")
-    @Expose
-    private List<String> codekeyList;
+    private List<NomenclatureNetwork> value = null;
 
-    public String getName() {
-        return name;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public List<String> getCodekeyList() {
-        return codekeyList;
+    public List<NomenclatureNetwork> getValue() {
+        return value;
     }
 }

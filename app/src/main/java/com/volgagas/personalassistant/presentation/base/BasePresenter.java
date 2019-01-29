@@ -13,22 +13,13 @@ import timber.log.Timber;
  */
 public abstract class BasePresenter<S extends BaseView> extends MvpPresenter<S> {
 
-    public BasePresenter() {
-        Timber.d("CALL BASE PRESENTER");
-    }
-
-    @Override
-    protected void onFirstViewAttach() {
-        Timber.d("CALL FIRST ATTACH");
-        super.onFirstViewAttach();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
+    /**
+     * Base handler for catch errors from server
+     */
     protected abstract void handlerErrorsFromBadRequests(Throwable throwable);
 
+    /**
+     * Dynamics can response error in the successful result to us.
+     */
     protected abstract void handlerErrorInSuccessfulResult(List<Response<Void>> result);
 }

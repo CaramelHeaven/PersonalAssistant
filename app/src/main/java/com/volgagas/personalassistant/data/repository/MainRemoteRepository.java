@@ -36,6 +36,7 @@ import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.model.user.UserSimple;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
+import com.volgagas.personalassistant.models.network.NomenclatureResponse;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.UtilsDateTimeProvider;
@@ -47,7 +48,9 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.functions.Function;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class MainRemoteRepository implements MainRepository {
 

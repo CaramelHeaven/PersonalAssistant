@@ -3,9 +3,12 @@ package com.volgagas.personalassistant.models.mapper.worker;
 import com.volgagas.personalassistant.models.mapper.Mapper;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.network.NomenclatureResponse;
+import com.volgagas.personalassistant.models.network.nomenclature.NomenclatureNetwork;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 12:17, 16/01/2019.
@@ -21,6 +24,11 @@ public class NomenclatureResponseToNomenclature extends Mapper<NomenclatureRespo
 
     @Override
     protected void fillData(List<Nomenclature> nomenclatures, NomenclatureResponse nomenclatureResponse) {
+        for (NomenclatureNetwork network : nomenclatureResponse.getValue()) {
+            Nomenclature data = new Nomenclature(network.getItemId(), network.getQty(),
+                    network.getUnit());
 
+            nomenclatures.add(data);
+        }
     }
 }

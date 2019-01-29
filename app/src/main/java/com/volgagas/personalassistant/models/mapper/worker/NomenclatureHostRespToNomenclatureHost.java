@@ -14,7 +14,7 @@ public class NomenclatureHostRespToNomenclatureHost extends Mapper<NomenclatureH
 
     @Override
     public Nomenclature map(NomenclatureHostResponse value) {
-        Nomenclature nomenclatureHost = new Nomenclature();
+        Nomenclature nomenclatureHost = new Nomenclature("a", 0, "");
         fillData(nomenclatureHost, value);
 
         return nomenclatureHost;

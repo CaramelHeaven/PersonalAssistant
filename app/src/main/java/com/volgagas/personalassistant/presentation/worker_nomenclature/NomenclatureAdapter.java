@@ -49,13 +49,13 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         if (getItemViewType(i) == NOMENCLATURE_SCAN) {
-            NomenclatureScanVH nomenclatureScanVH = (NomenclatureScanVH) viewHolder;
             //non
         } else {
             NomenclatureVH nomenclatureVH = (NomenclatureVH) viewHolder;
 
-            nomenclatureVH.tvCount.setText(nomenclatureList.get(i).getCount());
             nomenclatureVH.tvTitle.setText(nomenclatureList.get(i).getName());
+            nomenclatureVH.tvCount.setText(String.valueOf(nomenclatureList.get(i).getCount()));
+            nomenclatureVH.tvUnit.setText(nomenclatureList.get(i).getUnit());
         }
     }
 
@@ -96,7 +96,7 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     class NomenclatureVH extends RecyclerView.ViewHolder {
         Button btnAdd, btnMinus;
-        TextView tvTitle, tvCount;
+        TextView tvTitle, tvCount, tvUnit;
 
         public NomenclatureVH(@NonNull View itemView) {
             super(itemView);
@@ -104,6 +104,7 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             btnMinus = itemView.findViewById(R.id.btn_minus);
             tvCount = itemView.findViewById(R.id.tv_count);
             tvTitle = itemView.findViewById(R.id.tv_title);
+            tvUnit = itemView.findViewById(R.id.tv_unit);
 
             btnMinus.setOnClickListener(v -> {
                 int count = 0;

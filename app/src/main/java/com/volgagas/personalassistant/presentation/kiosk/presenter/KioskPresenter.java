@@ -95,17 +95,14 @@ public class KioskPresenter extends BasePresenter<KioskView> {
                 .subscribe(result -> {
                     senderTasks.clear();
                     senderTasks.addAll(result);
-                    Timber.d("size senders: " + senderTasks);
-                    Timber.d("checking size: " + senderTasks.size());
                 });
     }
 
     /**
-     * Create our templates on server
+     * Map our chosen tasks and send it to server
      */
     @SuppressLint("CheckResult")
     public void sendData() {
-        Timber.d("lala; " + senderTasks.toString());
         getViewState().sendTemplatesProgress();
         disposable.add(Single.just(senderTasks)
                 .subscribeOn(Schedulers.io())
@@ -128,7 +125,6 @@ public class KioskPresenter extends BasePresenter<KioskView> {
             handlerErrorInSuccessfulResult(responses);
         } else {
             getViewState().completedKiosk();
-            Timber.d("COMPLETED COMPLETEDCOMPLETEDCOMPLETED COMPLETED");
         }
     }
 

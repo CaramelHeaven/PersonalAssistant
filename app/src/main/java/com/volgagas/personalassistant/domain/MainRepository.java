@@ -54,6 +54,11 @@ public interface MainRepository {
      */
     Observable<UserId> getUserIdByUserName(String name);
 
+    /**
+     * Create uniform query (заявку) to the SharePoint
+     *
+     * @param jsonObject - object which contains data for cra
+     */
     Single<Response<Void>> createUniformQueryItem(JsonObject jsonObject);
 
     /**
@@ -98,6 +103,8 @@ public interface MainRepository {
 
     /**
      * Send created templates tasks for user.
+     *
+     * @param query - query for create each task on the server
      */
     Observable<Response<Void>> sendTemplateTasks(String query, JsonObject object);
 
@@ -132,8 +139,15 @@ public interface MainRepository {
 
     /**
      * GET user preview photo by name for messenger chat
+     *
+     * @param userName - user name.
      */
     Single<UserSimple> getUserPhotoByName(String userName);
 
+    /**
+     * Get all nomenclatures for current Service Order
+     *
+     * @param soId - service order id
+     */
     Single<List<Nomenclature>> getNomenclaturesBySO(String soId);
 }

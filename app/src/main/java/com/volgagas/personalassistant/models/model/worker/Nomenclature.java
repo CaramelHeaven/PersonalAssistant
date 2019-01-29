@@ -5,21 +5,28 @@ package com.volgagas.personalassistant.models.model.worker;
  */
 public class Nomenclature {
     private String name;
-    private String count;
+    private int count;
+    private String unit;
+
+    public Nomenclature(String name, int count, String unit) {
+        this.name = name;
+        this.count = count;
+        this.unit = unit;
+    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCount() {
+    public int getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setCount(int count) {
         this.count = count;
     }
 }

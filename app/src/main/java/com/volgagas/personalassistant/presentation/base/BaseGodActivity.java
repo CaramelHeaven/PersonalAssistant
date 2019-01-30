@@ -79,7 +79,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      */
     private void updateToken() {
         disposable.add(RxBus.getInstance().getUpdates().subscribe(result -> {
-            Timber.d("REFRESHING MY TOKENS");
+            Timber.d("REFRESHING MY TOKENS: " + result);
             refreshTokens(result);
         }));
     }
@@ -93,7 +93,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result.allValuesIsTrue()) {
-                        Timber.d("COMPLETED");
+                        Timber.d("COMPLETED LALALA");
                         RxBus.getInstance().passUpdatedToken(TwoPermissions.getInstance().getUpdatedString());
 
                         TwoPermissions.getInstance().resetValues();
@@ -159,6 +159,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
 
                 TwoPermissions permissions = TwoPermissions.getInstance();
                 permissions.setSharePointToken(true);
+
                 CommonChannel.sendTwoPermissions(permissions);
             }
         }

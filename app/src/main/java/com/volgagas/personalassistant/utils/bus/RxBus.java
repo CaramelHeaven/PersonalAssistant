@@ -26,7 +26,6 @@ public class RxBus {
     }
 
     public void passActionForUpdateToken(String action) {
-        Timber.d("inside method");
         updateTokenSubject.onNext(action);
     }
 

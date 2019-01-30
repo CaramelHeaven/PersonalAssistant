@@ -57,7 +57,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-        if (throwable.getMessage().equals(Constants.HTTP_401)) {
+        if (throwable.getMessage().contains(Constants.HTTP_401)) {
             handlerAuthenticationRepeat();
         } else {
             Timber.d("THROWABLE: " + throwable.getMessage());
@@ -86,6 +86,8 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     Timber.d("COMPLETED");
+                    Nomenclature nomenclature = new Nomenclature("kek", 0, "шт");
+                    result.add(nomenclature);
                     getViewState().hideProgress();
                     getViewState().showBaseList(result);
                 }, this::handlerErrorsFromBadRequests));

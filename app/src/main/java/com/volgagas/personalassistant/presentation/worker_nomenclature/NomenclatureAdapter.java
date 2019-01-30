@@ -1,11 +1,14 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature;
 
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
@@ -54,7 +57,7 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             NomenclatureVH nomenclatureVH = (NomenclatureVH) viewHolder;
 
             nomenclatureVH.tvTitle.setText(nomenclatureList.get(i).getName());
-            nomenclatureVH.tvCount.setText(String.valueOf(nomenclatureList.get(i).getCount()));
+            nomenclatureVH.etCount.setText(String.valueOf(nomenclatureList.get(i).getCount()));
             nomenclatureVH.tvUnit.setText(nomenclatureList.get(i).getUnit());
         }
     }
@@ -96,35 +99,47 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     class NomenclatureVH extends RecyclerView.ViewHolder {
         Button btnAdd, btnMinus;
-        TextView tvTitle, tvCount, tvUnit;
+        TextView tvTitle, tvUnit;
+        TextInputEditText etCount;
+        private RelativeLayout rlContainer;
 
         public NomenclatureVH(@NonNull View itemView) {
             super(itemView);
             btnAdd = itemView.findViewById(R.id.btn_plus);
             btnMinus = itemView.findViewById(R.id.btn_minus);
-            tvCount = itemView.findViewById(R.id.tv_count);
+            etCount = itemView.findViewById(R.id.et_count);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvUnit = itemView.findViewById(R.id.tv_unit);
 
             btnMinus.setOnClickListener(v -> {
                 int count = 0;
 
-                if (Integer.parseInt(tvCount.getText().toString()) > 0) {
-                    count = Integer.parseInt(tvCount.getText().toString());
-                    count--;
-                    tvCount.setText(String.valueOf(count));
+                if (!etCount.getText().toString().equals("")) {
+                    if (Integer.parseInt(etCount.getText().toString()) > 0) {
+                        count = Integer.parseInt(etCount.getText().toString());
+                        count--;
+                        etCount.setText(String.valueOf(count));
+                    } else {
+                        etCount.setText(String.valueOf(0));
+                    }
                 } else {
-                    tvCount.setText(String.valueOf(0));
+                    etCount.setText(String.valueOf(0));
                 }
 
                 onButtonPlusMinusClickListener.onHandleCount(getAdapterPosition(), 0, count);
             });
 
             btnAdd.setOnClickListener(v -> {
-                int count = Integer.parseInt(tvCount.getText().toString());
-                count++;
+                int count;
 
-                tvCount.setText(String.valueOf(count));
+                if (etCount.getText().toString().equals("")) {
+                    count = 1;
+                } else {
+                    count = Integer.parseInt(etCount.getText().toString());
+                    count++;
+                }
+
+                etCount.setText(String.valueOf(count));
                 onButtonPlusMinusClickListener.onHandleCount(getAdapterPosition(), 1, count);
             });
         }

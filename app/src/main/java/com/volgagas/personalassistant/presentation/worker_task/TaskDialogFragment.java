@@ -28,6 +28,7 @@ import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseActionActivity;
 import com.volgagas.personalassistant.presentation.worker_task.presenter.TaskPresenter;
 import com.volgagas.personalassistant.presentation.worker_task.presenter.TaskView;
+import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.manager.TaskContentManager;
 import com.volgagas.personalassistant.utils.manager.TaskStartedManager;
 
@@ -174,34 +175,33 @@ public class TaskDialogFragment extends MvpAppCompatDialogFragment implements Ta
 
         adapter = new TaskAdapter(subTasks);
         recyclerView.setAdapter(adapter);
+
+        adapter.setMyOnItemClickListener(position -> adapter.updateItem(position));
     }
 
     private void provideButtons() {
         btnAccept.setOnClickListener(view -> {
-            Intent intent = new Intent(getActivity(), ChooseActionActivity.class);
+            if (adapter.getSelectedTasks().size() > 0) {
+                Intent intent = new Intent(getActivity(), ChooseActionActivity.class);
+                intent.putExtra("ACTION", Constants.USUAL);
 
-            Task task = null;
+                if (presenter.getGlobalTask() instanceof Task) {
+                    Task task = (Task) presenter.getGlobalTask();
+                    TaskContentManager.getInstance().setCurrentTask(task);
+                    TaskContentManager.getInstance().setSubTasks(adapter.getSelectedTasks());
+                }
 
-            if (presenter.getGlobalTask() instanceof Task) {
-                task = (Task) presenter.getGlobalTask();
+                //START BACKGROUND WORK FOR UPDATE START TIME IN SUB-TASKS
+                TaskStartedManager.getInstance().startBackgroundService(adapter.getSelectedTasks());
+
+                startActivity(intent);
+                getDialog().dismiss();
+            } else {
+                Toast.makeText(getActivity(), "Задачи не выбраны", Toast.LENGTH_SHORT).show();
             }
-
-            //START BACKGROUND WORK FOR UPDATE START TIME IN SUBTASKS
-            TaskStartedManager.getInstance().startBackgroundService(task);
-
-            TaskContentManager.getInstance().setCurrentTask(task);
-
-            intent.putExtra("TASK", task);
-            startActivity(intent);
-
-            getDialog().dismiss();
         });
 
-        btnCancel.setOnClickListener(v -> {
-            dismiss();
-        });
-
-        //btnReconnect.setOnClickListener(view -> presenter.loadSubTasks());
+        btnCancel.setOnClickListener(v -> dismiss());
 
         btnExit.setOnClickListener(view -> dismiss());
 

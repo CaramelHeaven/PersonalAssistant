@@ -47,6 +47,26 @@ public class SubTaskNetwork {
     @Expose
     private String state;
 
+    @Override
+    public String toString() {
+        return "SubTaskNetwork{" +
+                "odataEtag='" + odataEtag + '\'' +
+                ", dataAreaId='" + dataAreaId + '\'' +
+                ", sOServiceOrder='" + sOServiceOrder + '\'' +
+                ", aCActivityId='" + aCActivityId + '\'' +
+                ", aCActivityEndDateTime='" + aCActivityEndDateTime + '\'' +
+                ", sOPreferredServiceTime='" + sOPreferredServiceTime + '\'' +
+                ", sODescription='" + sODescription + '\'' +
+                ", sOServiceStage='" + sOServiceStage + '\'' +
+                ", aCWorker='" + aCWorker + '\'' +
+                ", aCDescription='" + aCDescription + '\'' +
+                ", aCActivityStartDateTime='" + aCActivityStartDateTime + '\'' +
+                ", aCServiceObject='" + aCServiceObject + '\'' +
+                ", aCServiceOrderLineNum=" + aCServiceOrderLineNum +
+                ", state='" + state + '\'' +
+                '}';
+    }
+
     public String getOdataEtag() {
         return odataEtag;
     }

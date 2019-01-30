@@ -20,18 +20,10 @@
             app:titleTextColor="@color/colorSecondaryLight" />
     </android.support.design.widget.AppBarLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/btn_start_completed"
-        android:layout_gravity="center"
-        android:visibility="gone" />
-
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btn_start_completed"
+        android:layout_above="@id/ll_container"
         android:layout_below="@id/appBar">
 
         <RelativeLayout
@@ -57,12 +49,33 @@
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <Button
-        android:id="@+id/btn_start_completed"
+    <LinearLayout
+        android:id="@+id/ll_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
-        android:text="Завершить работу"
-        android:textColor="@android:color/white" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_start_completed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_button"
+            android:gravity="center"
+            android:text="Завершить работу"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btn_to_nomenclature"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_button"
+            android:text="Добавить номенклатуру"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 </RelativeLayout>

@@ -32,6 +32,7 @@ public class SubTask implements Parcelable, Comparable<SubTask> {
     private List<String> picturesPath;
     //for check boxes
     private boolean stateBox;
+
     //date for sorting subtasks
     private Date dateStart;
 

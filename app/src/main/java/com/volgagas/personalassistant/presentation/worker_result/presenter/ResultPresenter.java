@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.ObservableSource;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -75,7 +76,7 @@ public class ResultPresenter extends BasePresenter<ResultView> {
         Timber.d("chosen: " + chosenSubTasks.toString());
 
         disposable.add(Single.just(chosenSubTasks)
-                .subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
                 .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
                 .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
                         repository.sendCompletedSubTasks(completedJson, subTask.getIdActivity()))
@@ -88,6 +89,7 @@ public class ResultPresenter extends BasePresenter<ResultView> {
                         repository.sendImageToDynamics(mapImage(subTask))
                                 .subscribeOn(Schedulers.computation()))
                 .toList()
+                .observeOn(Schedulers.io())
                 .flatMap((Function<List<Response<Void>>, SingleSource<List<SubTask>>>) objects ->
                         Single.just(nonSelectedSubTasks))
                 .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
@@ -102,7 +104,7 @@ public class ResultPresenter extends BasePresenter<ResultView> {
     }
 
     /**
-     * If file is empty we send a empty json.
+     * Method for map image to base64 before we send it
      */
     private JsonObject mapImage(SubTask subTask) {
         File imageFile = new File(subTask.getFilePath());

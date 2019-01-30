@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp">
+    android:layout_marginBottom="4dp"
+    android:foreground="?attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/iv_square"
@@ -10,7 +12,8 @@
         android:layout_height="14dp"
         android:layout_marginStart="18dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/ic_square_shape" />
+        android:background="@drawable/ic_square_shape"
+        android:visibility="visible" />
 
     <ImageView
         android:id="@+id/iv_check_mark"
@@ -25,11 +28,10 @@
         android:id="@+id/tv_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="46dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="2dp"
-        android:layout_toEndOf="@id/iv_square"
         android:ellipsize="end"
         android:maxLines="2"
         android:text="@string/text_errorWorkType"
@@ -41,10 +43,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_description"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="46dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:layout_toEndOf="@id/iv_square"
         android:text="Fominov Sergey Mikhailovich"
         android:textColor="@android:color/black" />
 
@@ -52,8 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/tv_worker_name"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="46dp"
         android:layout_marginTop="2dp"
-        android:layout_toEndOf="@id/iv_square"
         android:background="@color/colorTextGrayLight" />
 </RelativeLayout>

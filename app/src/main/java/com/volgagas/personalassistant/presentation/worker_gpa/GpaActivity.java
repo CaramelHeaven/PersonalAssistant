@@ -76,6 +76,8 @@ public class GpaActivity extends BaseActivity implements GpaView {
     @Override
     public void showError(String error) {
         setPermissionToEnableNfc(true);
+        handlerNFC();
+
         Toasty.error(this, error).show();
 
         tvScanGpa.setText("Приложите карту еще раз");

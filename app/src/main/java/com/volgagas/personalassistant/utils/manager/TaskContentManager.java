@@ -1,8 +1,10 @@
 package com.volgagas.personalassistant.utils.manager;
 
+import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +14,7 @@ import java.util.List;
 public class TaskContentManager {
     private static TaskContentManager INSTANCE;
     private Task task;
+    private List<SubTask> subTasks;
 
     public static TaskContentManager getInstance() {
         if (INSTANCE == null) {
@@ -34,6 +37,24 @@ public class TaskContentManager {
     }
 
     public List<SubTask> getSubTasks() {
-        return task.getSubTasks();
+        return subTasks;
+    }
+
+    public void setSubTasks(List<SubTaskViewer> list) {
+        subTasks = new ArrayList<>();
+
+        fillData(subTasks, list);
+    }
+
+    private void fillData(List<SubTask> subTasks, List<SubTaskViewer> list) {
+        for (SubTaskViewer temp : list) {
+            SubTask subTask = new SubTask();
+
+            subTask.setWorker(temp.getWorkerName());
+            subTask.setIdActivity(temp.getActivityId());
+            subTask.setDescription(temp.getDescription());
+
+            subTasks.add(subTask);
+        }
     }
 }

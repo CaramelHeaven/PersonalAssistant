@@ -25,6 +25,8 @@ import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseAc
 import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclaturePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclatureView;
+import com.volgagas.personalassistant.presentation.worker_result.ResultActivity;
+import com.volgagas.personalassistant.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +44,15 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     private ProgressBar progressBar;
 
     private NomenclatureAdapter adapter;
+    private String action;
 
     @InjectPresenter
     NomenclaturePresenter presenter;
 
-    public static NomenclatureFragment newInstance(Task task) {
+    public static NomenclatureFragment newInstance(Task task, String action) {
         Bundle args = new Bundle();
         args.putParcelable("TASK", task);
+        args.putString("ACTION", action);
 
         NomenclatureFragment fragment = new NomenclatureFragment();
         fragment.setArguments(args);
@@ -74,6 +78,8 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        action = getArguments().getString("ACTION");
+
         //enable NFC with delay 10 milliseconds
         new Handler().postDelayed(() -> {
             if (getActivity() != null) {
@@ -88,12 +94,21 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
             } else if (adapter.getNomenclatureList().size() == 0) {
                 Toast.makeText(getActivity(), "Список элементов пуст", Toast.LENGTH_SHORT).show();
             } else {
-                Intent intent = new Intent(getActivity(), GpaActivity.class);
-                startActivity(intent);
+
+                if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
+                    //TODO SAVE DATA
+
+                    getActivity().finish();
+                } else if (action.equals(Constants.USUAL)) {
+                    Intent intent = new Intent(getActivity(), GpaActivity.class);
+
+                    startActivity(intent);
+                }
             }
         });
 
         provideRecyclerAndAdapter();
+
     }
 
     @Override

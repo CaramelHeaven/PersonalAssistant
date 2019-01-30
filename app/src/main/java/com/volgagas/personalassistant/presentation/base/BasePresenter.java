@@ -58,13 +58,7 @@ public abstract class BasePresenter<S extends BaseView> extends MvpPresenter<S> 
                 .subscribeOn(Schedulers.io())
                 .filter(result -> result.equals("UPDATE_TOKEN_PRESENTER"))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    Timber.d("checking result FUCK YOU: " + result);
-
-                    Timber.d("IM INSIDE RESULT FUCK YOU");
-                    if (result.equals("TOKEN_UPDATED_PRESENTER"))
-                        loadData();
-                }));
+                .subscribe(result -> loadData()));
     }
 
     public void clearListenerIfScreenNotVisible() {

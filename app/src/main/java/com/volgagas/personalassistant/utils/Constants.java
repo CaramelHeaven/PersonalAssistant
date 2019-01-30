@@ -38,10 +38,14 @@ public class Constants {
     public static final int HTTP_204 = 204;
 
     //errors
-    public static final String HTTP_401 = "HTTP 401";
+    public static final String HTTP_401 = "401";
 
     //PREFERENCES
     public static final String SP_USER_PREFERENCE = "USER_DATA";
     public static final String SP_CURRENT_HTTP = "CURRENT_HTTP";
     public static final String SP_ENABLE_FUNCTIONS = "ENABLE_FUNCTIONS";
+
+    //other
+    public static final String ADD_MORE_NOMENCLATURES = "ADD_MORE_NOMENCLATURES";
+    public static final String USUAL = "USUAL";
 }

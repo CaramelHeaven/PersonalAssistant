@@ -31,6 +31,16 @@
         <item name="colorControlActivated">@color/colorTextGray</item>
     </style>
 
+    <style name="TextLabelNomenclature" parent="TextAppearance.AppCompat">
+        <item name="android:textColorHint">@android:color/black</item>
+        <item name="android:textSize">16sp</item>
+
+        <item name="colorAccent">#b41f55</item>
+        <item name="colorControlNormal">@android:color/black</item>
+        <item name="colorControlActivated">@android:color/black</item>
+    </style>
+
+
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
         <item name="android:colorButtonNormal">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorSecondaryLight</item>

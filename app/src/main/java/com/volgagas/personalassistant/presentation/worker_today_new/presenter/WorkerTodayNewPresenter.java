@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.worker_today_new.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Task;
@@ -45,29 +46,20 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
         disposable.add(repository.getTasksToday()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResult, this::unsuccessfulResult));
-    }
-
-    private void unsuccessfulResult(Throwable throwable) {
-
+                .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
     }
 
     private void successfulResult(List<Task> tasks) {
-        if (k == 0)
-            handlerAuthenticationRepeat();
-        k++;
-
         getViewState().hideProgress();
-        for (Task task : tasks) {
-            Timber.d("check Tasks: " + task.toString());
-        }
         getViewState().showItems(tasks);
     }
 
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-        if (throwable.getMessage().equals(Constants.HTTP_401)) {
+        Timber.d("thowable: " + throwable.getMessage());
+        if (throwable.getMessage().contains(Constants.HTTP_401)) {
+            Timber.d("REPEAT");
             handlerAuthenticationRepeat();
         } else {
             Timber.d("THROWABLE: " + throwable.getMessage());
@@ -76,7 +68,14 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+        if (result.size() > 0) {
+            for (Response<Void> response : result) {
+                Timber.d("sout: " + response.code());
+            }
+            Timber.d("checking size: " + result.toString());
+        } else {
 
+        }
     }
 
     @Override

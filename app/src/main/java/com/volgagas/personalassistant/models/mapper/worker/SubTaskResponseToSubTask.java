@@ -9,6 +9,8 @@ import com.volgagas.personalassistant.models.network.sub_task.SubTaskNetwork;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 16:20, 11/01/2019.
  */
@@ -24,12 +26,14 @@ public class SubTaskResponseToSubTask extends Mapper<SubTaskResponse, List<SubTa
     @Override
     protected void fillData(List<SubTaskViewer> subTaskViewers, SubTaskResponse response) {
         for (SubTaskNetwork network : response.getValue()) {
+            Timber.d("network: " + network.toString());
             SubTaskViewer subTaskViewer = new SubTaskViewer();
 
             subTaskViewer.setDescription(network.getaCDescription());
             subTaskViewer.setStartTime(network.getaCActivityStartDateTime());
             subTaskViewer.setWorkerName(network.getaCWorker());
             subTaskViewer.setState(network.getState());
+            subTaskViewer.setActivityId(network.getaCActivityId());
 
             subTaskViewers.add(subTaskViewer);
         }

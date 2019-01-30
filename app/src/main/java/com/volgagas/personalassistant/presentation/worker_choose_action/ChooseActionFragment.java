@@ -19,6 +19,7 @@ import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.NomenclatureFragment;
+import com.volgagas.personalassistant.utils.Constants;
 
 import timber.log.Timber;
 
@@ -71,7 +72,8 @@ public class ChooseActionFragment extends BaseFragment {
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container,
-                                NomenclatureFragment.newInstance(getArguments().getParcelable("TASK")))
+                                NomenclatureFragment.newInstance(getArguments().getParcelable("TASK"),
+                                        Constants.USUAL))
                         .addToBackStack(null)
                         .commit());
     }

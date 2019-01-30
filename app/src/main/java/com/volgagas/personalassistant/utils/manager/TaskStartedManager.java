@@ -1,19 +1,15 @@
 package com.volgagas.personalassistant.utils.manager;
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
-import android.support.annotation.NonNull;
 
-import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.utils.services.SendTaskStartedWorker;
 
-import java.util.Arrays;
+import java.util.List;
 
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 14:20, 16/01/2019.
@@ -37,21 +33,15 @@ public class TaskStartedManager {
         return INSTANCE;
     }
 
-    public void initContext(Context context) {
-        this.context = context;
-
-
-    }
-
     public OneTimeWorkRequest getWork() {
         return oneTimeWorkRequest;
     }
 
-    public void startBackgroundService(Task task) {
-        String[] arrayIdActivities = new String[task.getSubTasks().size()];
+    public void startBackgroundService(List<SubTaskViewer> list) {
+        String[] arrayIdActivities = new String[list.size()];
 
-        for (int i = 0; i < task.getSubTasks().size(); i++) {
-            arrayIdActivities[i] = task.getSubTasks().get(i).getIdActivity();
+        for (int i = 0; i < list.size(); i++) {
+            arrayIdActivities[i] = list.get(i).getActivityId();
         }
 
         Data data = new Data.Builder()

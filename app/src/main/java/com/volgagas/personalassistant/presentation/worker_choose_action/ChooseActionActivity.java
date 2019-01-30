@@ -8,11 +8,15 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.worker_choose_action.presenter_activity.ChooseActivityPresenter;
 import com.volgagas.personalassistant.presentation.worker_choose_action.presenter_activity.ChooseActivityView;
+import com.volgagas.personalassistant.presentation.worker_nomenclature.NomenclatureFragment;
+import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import timber.log.Timber;
 
 public class ChooseActionActivity extends BaseActivity implements ChooseActivityView {
+
+    private String action;
 
     @InjectPresenter
     ChooseActivityPresenter presenter;
@@ -24,11 +28,26 @@ public class ChooseActionActivity extends BaseActivity implements ChooseActivity
 
         setPermissionToEnableNfc(false);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, ChooseActionFragment
-                        .newInstance(getIntent().getParcelableExtra("TASK")))
-                .commit();
+        action = getIntent().getStringExtra("ACTION");
+
+        switch (action) {
+            case "ADD_MORE_NOMENCLATURES":
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container,
+                                NomenclatureFragment.newInstance(getIntent().getParcelableExtra("TASK"),
+                                        Constants.ADD_MORE_NOMENCLATURES))
+                        .commit();
+                break;
+            case "USUAL":
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, ChooseActionFragment
+                                .newInstance(getIntent().getParcelableExtra("TASK")))
+                        .commit();
+                break;
+        }
+
     }
 
     @Override

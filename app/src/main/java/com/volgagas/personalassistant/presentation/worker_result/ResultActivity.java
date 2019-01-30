@@ -27,8 +27,10 @@ import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.worker.WorkerActivity;
 import com.volgagas.personalassistant.presentation.worker_camera.CameraActivity;
+import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseActionActivity;
 import com.volgagas.personalassistant.presentation.worker_result.presenter.ResultPresenter;
 import com.volgagas.personalassistant.presentation.worker_result.presenter.ResultView;
+import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.callbacks.OnResultItemClick;
 import com.volgagas.personalassistant.utils.manager.TaskContentManager;
 
@@ -41,10 +43,10 @@ import timber.log.Timber;
 public class ResultActivity extends BaseActivity implements ResultView {
 
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
+    ;
     private AlertDialog alertDialog;
     private ProgressDialog progressDialog;
-    private Button btnStartCompleted;
+    private Button btnStartCompleted, btnToNomenclatures;
 
     private ResultAdapter adapter;
 
@@ -62,6 +64,7 @@ public class ResultActivity extends BaseActivity implements ResultView {
         setContentView(R.layout.activity_result);
         recyclerView = findViewById(R.id.recyclerView);
         btnStartCompleted = findViewById(R.id.btn_start_completed);
+        btnToNomenclatures = findViewById(R.id.btn_to_nomenclature);
 
         setPermissionToEnableNfc(false);
 
@@ -73,6 +76,13 @@ public class ResultActivity extends BaseActivity implements ResultView {
             } else {
                 Toasty.error(ResultActivity.this, "Задачи не добавлены").show();
             }
+        });
+
+        btnToNomenclatures.setOnClickListener(v -> {
+            Intent intent = new Intent(ResultActivity.this, ChooseActionActivity.class);
+            intent.putExtra("ACTION", Constants.ADD_MORE_NOMENCLATURES);
+
+            startActivity(intent);
         });
     }
 
@@ -98,12 +108,12 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -178,7 +188,6 @@ public class ResultActivity extends BaseActivity implements ResultView {
         setPermissionToEnableNfc(true);
         handlerNFC();
 
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                 .setMessage("Приложите карту исполнителя " + CacheUser.getUser().getName())
                 .setCancelable(true)
@@ -214,7 +223,7 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
     @Override
     public void completed() {
-        if (progressBar != null) {
+        if (progressDialog != null) {
             progressDialog.cancel();
         }
 

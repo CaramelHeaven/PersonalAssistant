@@ -27,6 +27,8 @@ import com.volgagas.personalassistant.utils.views.sticky_header.StickyRecyclerHe
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 11:48, 23/01/2019.
  */
@@ -123,6 +125,11 @@ public class WorkerTodayNewFragment extends BaseFragment implements WorkerTodayN
                 new Handler().postDelayed(() -> swipeRefresh.setRefreshing(false), 1000);
             }
         });
+    }
+
+    @Override
+    public void initialBasePresenter() {
+        setBasePresenter(presenter);
     }
 }
 

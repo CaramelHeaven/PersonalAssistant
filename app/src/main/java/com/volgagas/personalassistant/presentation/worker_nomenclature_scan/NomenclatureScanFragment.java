@@ -44,13 +44,16 @@ public class NomenclatureScanFragment extends BaseFragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
         ivNfc.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.item_animation_up_down));
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void initialBasePresenter() {
+        //nothing
     }
 }

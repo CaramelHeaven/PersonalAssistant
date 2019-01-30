@@ -104,4 +104,9 @@ public class OrderNewAdditionallyFragment extends BaseFragment implements OrderN
     public void showItems(List<NewOrder> orders) {
         adapter.updateAdapter(orders);
     }
+
+    @Override
+    public void initialBasePresenter() {
+
+    }
 }

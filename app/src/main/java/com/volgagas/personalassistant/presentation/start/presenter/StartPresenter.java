@@ -28,13 +28,12 @@ import timber.log.Timber;
 public class StartPresenter extends BasePresenter<StartView> {
 
     private MainRepository repository;
-    private CompositeDisposable disposable;
     private String dataCodekey = "";
 
     @SuppressLint("CheckResult")
     public StartPresenter() {
+        super();
         repository = MainRemoteRepository.getInstance();
-        disposable = new CompositeDisposable();
 
         disposable.add(CommonChannel.getInstance().getPermissionsSubject()
                 .subscribeOn(Schedulers.io())
@@ -49,12 +48,6 @@ public class StartPresenter extends BasePresenter<StartView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        disposable.clear();
     }
 
     //TODO rewrite this shit
@@ -114,6 +107,16 @@ public class StartPresenter extends BasePresenter<StartView> {
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+
+    }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
 
     }
 

@@ -1,13 +1,12 @@
 package com.volgagas.personalassistant.presentation.base;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationContext;
+import com.microsoft.aad.adal.AuthenticationException;
 import com.microsoft.aad.adal.AuthenticationResult;
 import com.microsoft.aad.adal.PromptBehavior;
 import com.volgagas.personalassistant.PersonalAssistant;
@@ -17,7 +16,6 @@ import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.TwoPermissions;
 
-import es.dmoral.toasty.Toasty;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -35,19 +33,43 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         disposable = new CompositeDisposable();
-
-        updateToken();
-        listenerForRefreshTokens();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        updateToken();
+        listenerForRefreshTokens();
+    }
+
+    @Override
+    protected void onStop() {
+        disposable.clear();
+        super.onStop();
     }
 
     @Override
     protected void onDestroy() {
+        Timber.d("ON DESTROY GOD ACTIVITY");
         disposable.clear();
+        try {
+            if (authContext != null) {
+                if (d365Callback != null) {
+                    authContext.cancelAuthenticationActivity(d365Callback.hashCode());
+                }
+
+                if (spCallback != null) {
+                    authContext.cancelAuthenticationActivity(spCallback.hashCode());
+                }
+            }
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
+        }
+
+        authContext = null;
+        d365Callback = null;
+        spCallback = null;
+
         super.onDestroy();
     }
 
@@ -57,7 +79,8 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      */
     private void updateToken() {
         disposable.add(RxBus.getInstance().getUpdates().subscribe(result -> {
-            refreshTokens();
+            Timber.d("REFRESHING MY TOKENS");
+            refreshTokens(result);
         }));
     }
 
@@ -70,8 +93,10 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result.allValuesIsTrue()) {
-                        Timber.d("REFRESHING TOKENS");
-                        //   getViewState().goToMainMenu();
+                        Timber.d("COMPLETED");
+                        RxBus.getInstance().passUpdatedToken(TwoPermissions.getInstance().getUpdatedString());
+
+                        TwoPermissions.getInstance().resetValues();
                     }
                 }));
     }
@@ -80,9 +105,11 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      * Base method for refresh tokens from global bus listener in here. First of all - refresh
      * dynamics 365 after - refresh SharePoint
      */
-    private void refreshTokens() {
+    private void refreshTokens(String result) {
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
+
         TwoPermissions.getInstance().resetValues();
+        TwoPermissions.getInstance().setUpdatedString(result);
 
         authContext.acquireToken(BaseGodActivity.this, Constants.DYNAMICS_365, Constants.CLIENT,
                 Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
@@ -92,11 +119,11 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      * Callback for check if token refreshed successful or not. Dynamics 365
      */
     private AuthenticationCallback<AuthenticationResult> d365Callback = new AuthenticationCallback<AuthenticationResult>() {
-        @SuppressLint("CheckResult")
         @Override
         public void onSuccess(AuthenticationResult result) {
             if (result.getAccessToken() != null) {
                 CacheUser.getUser().setUserCliendId(result.getClientId());
+                Timber.d("DIFFERENCE BETWEEN: " + result.getAccessToken());
                 CacheUser.getUser().setDynamics365Token(result.getAccessToken());
 
                 //Refresh d365 retrofit object

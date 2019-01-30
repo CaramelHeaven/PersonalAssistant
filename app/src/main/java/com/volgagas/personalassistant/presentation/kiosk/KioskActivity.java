@@ -224,4 +224,9 @@ public class KioskActivity extends BaseActivity implements KioskView {
             progressDialog.cancel();
         }
     }
+
+    @Override
+    public void initialBasePresenter() {
+        //nothing
+    }
 }

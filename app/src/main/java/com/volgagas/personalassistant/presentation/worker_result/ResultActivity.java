@@ -69,7 +69,7 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
         btnStartCompleted.setOnClickListener(v -> {
             if (presenter.getChosenSubTasks().size() != 0) {
-                showAlertDialog();
+                showAlertDialog(presenter.getChosenSubTasks().size());
             } else {
                 Toasty.error(ResultActivity.this, "Задачи не добавлены").show();
             }
@@ -121,6 +121,7 @@ public class ResultActivity extends BaseActivity implements ResultView {
     private void provideRecyclerAndAdapter(List<SubTask> subTasks) {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setNestedScrollingEnabled(false);
 
         adapter = new ResultAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
@@ -172,19 +173,26 @@ public class ResultActivity extends BaseActivity implements ResultView {
         startActivityForResult(intent, 1);
     }
 
-    public void showAlertDialog() {
+    public void showAlertDialog(int size) {
         //permission from abstract class to enable NFC
         setPermissionToEnableNfc(true);
         handlerNFC();
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom)
-                .setTitle("Сканирование")
-                .setMessage("Приложите карту для подтверждения задач")
+                .setMessage("Приложите карту исполнителя " + CacheUser.getUser().getName())
                 .setCancelable(true)
                 .setOnCancelListener(dialogInterface -> {
                     setPermissionToEnableNfc(false);
                     handlerNFC();
                 });
+
+        if (size > 1) {
+            builder.setTitle("Подтверждение выполнение мероприятий");
+        } else if (size == 1) {
+            builder.setTitle("Подтверждение выполнение мероприятия");
+        }
+
         alertDialog = builder.create();
 
         alertDialog.show();
@@ -216,5 +224,10 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    @Override
+    public void initialBasePresenter() {
+        setBasePresenter(presenter);
     }
 }

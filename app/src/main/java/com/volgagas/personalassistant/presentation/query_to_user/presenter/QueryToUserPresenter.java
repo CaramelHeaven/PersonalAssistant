@@ -60,4 +60,14 @@ public class QueryToUserPresenter extends BasePresenter<QueryToUserView<QueryToU
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
 
     }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
 }

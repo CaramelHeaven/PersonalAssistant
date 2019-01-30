@@ -80,8 +80,8 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void updateAdapter(List<Nomenclature> values) {
         nomenclatureList.clear();
         nomenclatureList.addAll(values);
-
-        notifyItemRangeInserted(0, nomenclatureList.size() - 1);
+        notifyDataSetChanged();
+        //notifyItemRangeInserted(0, nomenclatureList.size() - 1);
     }
 
     public List<Nomenclature> getNomenclatureList() {

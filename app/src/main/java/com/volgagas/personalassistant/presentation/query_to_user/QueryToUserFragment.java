@@ -91,4 +91,9 @@ public class QueryToUserFragment extends BaseFragment implements QueryToUserView
             adapter.updateAdapter(items);
         }
     }
+
+    @Override
+    public void initialBasePresenter() {
+        setBasePresenter(presenter);
+    }
 }

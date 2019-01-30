@@ -131,4 +131,9 @@ public class OrderNewBottomFragment extends BaseFragment {
             ivEmptyBasket.setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    public void initialBasePresenter() {
+        //nothing
+    }
 }

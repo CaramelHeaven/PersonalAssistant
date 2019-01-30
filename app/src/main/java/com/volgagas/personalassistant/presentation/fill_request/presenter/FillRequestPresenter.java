@@ -45,6 +45,16 @@ public class FillRequestPresenter extends BasePresenter<FillRequestView> {
 
     }
 
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
     public QueryTemplate getQueryTemplate() {
         return queryTemplate;
     }

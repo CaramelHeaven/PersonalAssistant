@@ -62,4 +62,9 @@ public class OrderPurchasePresenter extends BasePresenter<OrderPurchaseView<Orde
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
 
     }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
 }

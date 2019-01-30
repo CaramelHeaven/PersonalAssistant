@@ -80,6 +80,7 @@ public class ResultPresenter extends BasePresenter<ResultView> {
                 .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
                         repository.sendCompletedSubTasks(completedJson, subTask.getIdActivity()))
                 .toList()
+                .observeOn(Schedulers.computation())
                 .flatMap((Function<List<Response<Void>>, SingleSource<List<SubTask>>>) objects ->
                         Single.just(findPictures(chosenSubTasks)))
                 .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
@@ -135,6 +136,16 @@ public class ResultPresenter extends BasePresenter<ResultView> {
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+
+    }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
 
     }
 

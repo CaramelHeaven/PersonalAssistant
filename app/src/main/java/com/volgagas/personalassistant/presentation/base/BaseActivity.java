@@ -11,31 +11,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
-import com.microsoft.aad.adal.AuthenticationCallback;
-import com.microsoft.aad.adal.AuthenticationContext;
-import com.microsoft.aad.adal.AuthenticationResult;
-import com.microsoft.aad.adal.PromptBehavior;
-import com.volgagas.personalassistant.PersonalAssistant;
-import com.volgagas.personalassistant.data.cache.CacheUser;
-import com.volgagas.personalassistant.utils.Constants;
-import com.volgagas.personalassistant.utils.bus.GlobalBus;
-import com.volgagas.personalassistant.utils.bus.models.UpdateToken;
-import com.volgagas.personalassistant.utils.channels.CommonChannel;
-import com.volgagas.personalassistant.utils.channels.check_auth.TwoPermissions;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.IOException;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public abstract class BaseActivity extends BaseGodActivity {
+public abstract class BaseActivity extends BaseGodActivity implements Presentable {
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
     private IntentFilter[] intentFiltersArray;
     private String[][] techListArray;
@@ -43,6 +26,8 @@ public abstract class BaseActivity extends BaseGodActivity {
     private PendingIntent pendingIntent;
     private StringBuilder secretNumbers = null;
     private boolean permissionToEnableNfc = false;
+
+    private BasePresenter basePresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +72,12 @@ public abstract class BaseActivity extends BaseGodActivity {
         if (nfcAdapter != null && nfcAdapter.isEnabled()) {
             nfcAdapter.disableForegroundDispatch(this);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        basePresenter = null;
+        super.onDestroy();
     }
 
     /**
@@ -153,7 +144,7 @@ public abstract class BaseActivity extends BaseGodActivity {
         }
         StringBuilder builder = new StringBuilder(new String(hexChars));
 
-        return spesialConvert(new StringBuilder(builder
+        return specialConvert(new StringBuilder(builder
                 .substring(0, 8))).insert(0, "0x20")
                 .append("000000");
     }
@@ -164,7 +155,7 @@ public abstract class BaseActivity extends BaseGodActivity {
      *
      * @param stringFromBlock - string firstly scanned block
      */
-    private StringBuilder spesialConvert(StringBuilder stringFromBlock) {
+    private StringBuilder specialConvert(StringBuilder stringFromBlock) {
         if (stringFromBlock.length() == 8) {
             stringFromBlock = new StringBuilder(stringFromBlock).reverse();
             char[] array = stringFromBlock.toString().toCharArray();
@@ -199,5 +190,9 @@ public abstract class BaseActivity extends BaseGodActivity {
      */
     public void handlerNFC() {
         onResume();
+    }
+
+    public void setBasePresenter(BasePresenter basePresenter) {
+        this.basePresenter = basePresenter;
     }
 }

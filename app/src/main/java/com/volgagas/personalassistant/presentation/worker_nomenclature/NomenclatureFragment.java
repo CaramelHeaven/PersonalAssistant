@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 17:25, 15/01/2019.
@@ -48,7 +47,6 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     NomenclaturePresenter presenter;
 
     public static NomenclatureFragment newInstance(Task task) {
-
         Bundle args = new Bundle();
         args.putParcelable("TASK", task);
 
@@ -76,7 +74,7 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        //enable NFC with delay 1 second
+        //enable NFC with delay 10 milliseconds
         new Handler().postDelayed(() -> {
             if (getActivity() != null) {
                 ((ChooseActionActivity) getActivity()).setPermissionToEnableNfc(true);
@@ -149,5 +147,10 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
 
     public void showErrorCard() {
         Toasty.error(getActivity(), "Приложена не ваша карта").show();
+    }
+
+    @Override
+    public void initialBasePresenter() {
+        setBasePresenter(presenter);
     }
 }

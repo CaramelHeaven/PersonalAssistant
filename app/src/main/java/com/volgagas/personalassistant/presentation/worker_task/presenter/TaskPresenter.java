@@ -28,14 +28,13 @@ public class TaskPresenter extends BasePresenter<TaskView<SubTaskViewer>> {
 
     private GlobalTask task;
     private String status;
-    private CompositeDisposable disposable;
     private MainRepository repository;
 
     public TaskPresenter(GlobalTask task, String status) {
+        super();
         this.task = task;
         this.status = status;
         repository = MainRemoteRepository.getInstance();
-        disposable = new CompositeDisposable();
     }
 
     @Override
@@ -61,7 +60,12 @@ public class TaskPresenter extends BasePresenter<TaskView<SubTaskViewer>> {
 
     }
 
-    private void loadData() {
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    protected void loadData() {
         getViewState().showProgress();
         if (status.equals("TODAY") && task instanceof Task) {
             disposable.add(repository.getSubTasksToday(((Task) task).getIdTask())

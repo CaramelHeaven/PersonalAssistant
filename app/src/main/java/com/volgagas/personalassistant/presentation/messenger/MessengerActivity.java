@@ -160,4 +160,9 @@ public class MessengerActivity extends BaseActivity implements MessengerView {
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+    @Override
+    public void initialBasePresenter() {
+        //nothing
+    }
 }

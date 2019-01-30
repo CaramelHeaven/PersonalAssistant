@@ -58,4 +58,14 @@ public class CategoryPresenter extends BasePresenter<CategoryView<QueryTemplate>
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
 
     }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
 }

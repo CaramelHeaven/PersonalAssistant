@@ -162,4 +162,9 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
             tvEmptyTasks.setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    public void initialBasePresenter() {
+        setBasePresenter(presenter);
+    }
 }

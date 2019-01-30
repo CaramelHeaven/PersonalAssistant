@@ -9,8 +9,10 @@ import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.manager.TaskContentManager;
+import com.volgagas.personalassistant.utils.threads.UpdateTokenHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +31,11 @@ import timber.log.Timber;
 public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     private MainRepository repository;
-    private CompositeDisposable disposable;
     private Task task;
 
     public NomenclaturePresenter() {
+        super();
         repository = MainRemoteRepository.getInstance();
-        disposable = new CompositeDisposable();
         task = TaskContentManager.getInstance().getTask();
     }
 
@@ -56,8 +57,11 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-        Timber.d("thorwable: " + throwable.getCause());
-        Timber.d("thorwable: " + throwable.getMessage());
+        if (throwable.getMessage().equals(Constants.HTTP_401)) {
+            handlerAuthenticationRepeat();
+        } else {
+            Timber.d("THROWABLE: " + throwable.getMessage());
+        }
     }
 
     @Override
@@ -65,12 +69,17 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     }
 
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+        loadData();
+    }
+
     private void addDataFromNfc(String data) {
         Timber.d("SCANNED AND ADD: " + data);
     }
 
     @SuppressLint("CheckResult")
-    private void loadData() {
+    protected void loadData() {
         getViewState().showProgress();
         disposable.add(repository.getNomenclaturesBySO(task.getIdTask())
                 .subscribeOn(Schedulers.io())

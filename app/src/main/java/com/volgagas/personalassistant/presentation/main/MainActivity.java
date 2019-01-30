@@ -83,10 +83,6 @@ public class MainActivity extends BaseActivity implements MainView {
 
         setSupportActionBar(toolbar);
 
-        //handler for updates token each 10 minutes
-        updateTokenHandler = new UpdateTokenHandler("UpdateTokenHandler");
-        updateTokenHandler.start();
-
         homeSet = new ConstraintSet();
         projectsSet = new ConstraintSet();
         infoSet = new ConstraintSet();
@@ -127,10 +123,17 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
-        Timber.d("ON ACTIVITY DESTROY");
-        updateTokenHandler.removePeriodicWork();
-        updateTokenHandler.quit();
         super.onDestroy();
     }
 
@@ -237,5 +240,10 @@ public class MainActivity extends BaseActivity implements MainView {
 
         tvName.setText(CacheUser.getUser().getName());
         tvCategory.setText(CacheUser.getUser().getPosition());
+    }
+
+    @Override
+    public void initialBasePresenter() {
+        //nothing
     }
 }

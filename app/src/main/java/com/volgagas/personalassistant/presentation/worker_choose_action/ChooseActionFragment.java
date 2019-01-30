@@ -32,7 +32,6 @@ public class ChooseActionFragment extends BaseFragment {
     private RelativeLayout rlSketch;
 
     public static ChooseActionFragment newInstance(Task task) {
-
         Bundle args = new Bundle();
         args.putParcelable("TASK", task);
 
@@ -89,5 +88,10 @@ public class ChooseActionFragment extends BaseFragment {
         btnToGpa = null;
         btnToNomenclatureList = null;
         super.onDestroyView();
+    }
+
+    @Override
+    public void initialBasePresenter() {
+        //nothing
     }
 }

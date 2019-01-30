@@ -7,10 +7,11 @@ package com.volgagas.personalassistant.utils.channels.check_auth;
  * This class only for update tokens from D365 and SharePoint
  */
 public class TwoPermissions {
-    private static volatile TwoPermissions INSTANCE;
+    private static TwoPermissions INSTANCE;
 
     private Boolean d365Token = false;
     private Boolean sharePointToken = false;
+    private String updatedString = "";
 
     public static TwoPermissions getInstance() {
         if (INSTANCE == null) {
@@ -28,6 +29,7 @@ public class TwoPermissions {
         return "TwoPermissions{" +
                 "d365Token=" + d365Token +
                 ", sharePointToken=" + sharePointToken +
+                ", updatedString='" + updatedString + '\'' +
                 '}';
     }
 
@@ -50,10 +52,18 @@ public class TwoPermissions {
     public void resetValues() {
         this.d365Token = false;
         this.sharePointToken = false;
+        updatedString = "";
     }
 
     public Boolean allValuesIsTrue() {
         return d365Token && sharePointToken;
     }
 
+    public String getUpdatedString() {
+        return updatedString;
+    }
+
+    public void setUpdatedString(String updatedString) {
+        this.updatedString = updatedString;
+    }
 }

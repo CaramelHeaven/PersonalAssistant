@@ -34,4 +34,19 @@ public class NomenclatureScanPresenter extends BasePresenter<NomenclatureScanVie
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
 
     }
+
+    @Override
+    protected void handlerAuthenticationRepeat() {
+
+    }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
 }

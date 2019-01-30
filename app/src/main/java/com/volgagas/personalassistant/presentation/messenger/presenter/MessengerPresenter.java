@@ -46,6 +46,16 @@ public class MessengerPresenter extends BasePresenter<MessengerView> {
 
     }
 
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
     public Observable<UUID> postMessage(Message message) {
         OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(ReplyWorker.class)
                 .setConstraints(new Constraints.Builder()

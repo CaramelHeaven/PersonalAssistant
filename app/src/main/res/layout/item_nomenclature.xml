@@ -13,39 +13,20 @@
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_16sp" />
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_title"
-        android:layout_centerVertical="true">
-
-        <Button
-            android:id="@+id/btn_minus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:background="@null"
-            android:text="-1"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_16sp" />
-
-        <Button
-            android:id="@+id/btn_plus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="24dp"
-            android:background="@null"
-            android:text="+1"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_16sp" />
+        android:layout_below="@id/tv_title">
 
         <TextView
             android:id="@+id/tv_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
             android:text="0"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/text_18sp" />
 
         <TextView
@@ -56,7 +37,31 @@
             android:layout_marginStart="4dp"
             android:layout_toEndOf="@id/tv_count"
             android:text="шт"
-            android:textSize="@dimen/text_18sp" />
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_18sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_minus"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/rounded_button_nomenclature"
+            android:text="-1"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_16sp" />
+
+        <Button
+            android:id="@+id/btn_plus"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/rounded_button_nomenclature"
+            android:text="+1"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_16sp" />
     </RelativeLayout>
 
     <View

@@ -42,4 +42,14 @@ public class WorkerPresenter extends BasePresenter<WorkerView> {
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
 
     }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
 }

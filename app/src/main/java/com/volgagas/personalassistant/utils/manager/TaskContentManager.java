@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Created by CaramelHeaven on 12:18, 18/01/2019.
- * TaskContentManager it's observer for manipulate the current task & subtasks anywhere
+ * TaskContentManager it's observer for manipulate the current task [and] sub-tasks anywhere
  */
 public class TaskContentManager {
     private static TaskContentManager INSTANCE;

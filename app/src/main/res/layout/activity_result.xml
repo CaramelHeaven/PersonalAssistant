@@ -28,13 +28,34 @@
         android:layout_gravity="center"
         android:visibility="gone" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/btn_start_completed"
-        android:layout_below="@id/appBar"
-        android:layoutAnimation="@anim/layout_animation_fall_down" />
+        android:layout_below="@id/appBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:text="Выберите завершаемое мероприятие"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_16sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tv_description"
+                android:layoutAnimation="@anim/layout_animation_fall_down" />
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 
     <Button
         android:id="@+id/btn_start_completed"

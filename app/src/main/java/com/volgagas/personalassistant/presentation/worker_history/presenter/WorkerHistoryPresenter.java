@@ -47,7 +47,12 @@ public class WorkerHistoryPresenter extends BasePresenter<WorkerHistoryView<Task
 
     }
 
-    private void loadData() {
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    protected void loadData() {
         disposable.add(repository.getHistoryTasks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

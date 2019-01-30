@@ -20,12 +20,11 @@ import retrofit2.Response;
 @InjectViewState
 public class KioskTaskPresenter extends BasePresenter<KioskTaskView<TaskTemplate>> {
 
-    private CompositeDisposable disposable;
     private MainRepository repository;
 
     public KioskTaskPresenter() {
+        super();
         repository = MainRemoteRepository.getInstance();
-        disposable = new CompositeDisposable();
     }
 
     @Override
@@ -40,7 +39,7 @@ public class KioskTaskPresenter extends BasePresenter<KioskTaskView<TaskTemplate
         super.onDestroy();
     }
 
-    private void loadData() {
+    protected void loadData() {
         getViewState().showProgress();
         disposable.add(repository.getTemplateTasks()
                 .subscribeOn(Schedulers.io())
@@ -60,6 +59,11 @@ public class KioskTaskPresenter extends BasePresenter<KioskTaskView<TaskTemplate
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+
+    }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
 
     }
 }

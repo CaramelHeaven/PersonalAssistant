@@ -12,13 +12,14 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 14:23, 24/12/2018.
  */
 @InjectViewState
-public class UniformsPresenter extends MvpPresenter<QueryFromUserView<UniformRequest>> {
+public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRequest>> {
 
     private CompositeDisposable disposable;
     private MainRepository repository;
@@ -32,11 +33,7 @@ public class UniformsPresenter extends MvpPresenter<QueryFromUserView<UniformReq
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         getViewState().showProgress();
-
-        disposable.add(repository.getUniformRequestsFromUser()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::result, this::handlerErrorsFromBadRequests));
+        loadData();
     }
 
     @Override
@@ -52,5 +49,23 @@ public class UniformsPresenter extends MvpPresenter<QueryFromUserView<UniformReq
 
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
 
+    }
+
+    @Override
+    protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+
+    }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
+        disposable.add(repository.getUniformRequestsFromUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::result, this::handlerErrorsFromBadRequests));
     }
 }

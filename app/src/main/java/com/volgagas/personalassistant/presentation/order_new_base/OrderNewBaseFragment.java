@@ -105,4 +105,19 @@ public class OrderNewBaseFragment extends BaseFragment implements OrderNewBaseVi
     public void showItems(List<NewOrder> orders) {
         adapter.updateAdapter(orders);
     }
+
+    @Override
+    public void initialBasePresenter() {
+        setBasePresenter(presenter);
+    }
+
+    @Override
+    public void showProgress() {
+        //nothing
+    }
+
+    @Override
+    public void hideProgress() {
+        //nothing
+    }
 }

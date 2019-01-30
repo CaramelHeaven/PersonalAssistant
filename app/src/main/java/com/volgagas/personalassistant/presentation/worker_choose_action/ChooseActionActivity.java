@@ -61,4 +61,9 @@ public class ChooseActionActivity extends BaseActivity implements ChooseActivity
     public void enableNFC() {
 
     }
+
+    @Override
+    public void initialBasePresenter() {
+        setBasePresenter(presenter);
+    }
 }

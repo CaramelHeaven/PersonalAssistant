@@ -91,6 +91,16 @@ public class GpaPresenter extends BasePresenter<GpaView> {
         }
     }
 
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
     public Task getTask() {
         return task;
     }

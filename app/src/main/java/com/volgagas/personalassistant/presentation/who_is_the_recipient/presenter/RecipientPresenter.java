@@ -34,11 +34,10 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
 
     private MainRepository repository;
     private PassDataChannel passDataChannel;
-    private CompositeDisposable disposable;
 
     public RecipientPresenter() {
+        super();
         repository = MainRemoteRepository.getInstance();
-        disposable = new CompositeDisposable();
     }
 
     @Override
@@ -115,17 +114,22 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
 
     }
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+
+    }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
 
     }
 }

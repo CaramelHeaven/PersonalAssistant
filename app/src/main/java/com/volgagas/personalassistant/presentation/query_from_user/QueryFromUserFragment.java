@@ -91,4 +91,9 @@ public class QueryFromUserFragment extends BaseFragment implements QueryFromUser
             adapter.updateAdapter(items);
         }
     }
+
+    @Override
+    public void initialBasePresenter() {
+        setBasePresenter(presenter);
+    }
 }

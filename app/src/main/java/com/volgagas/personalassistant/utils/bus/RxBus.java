@@ -15,6 +15,7 @@ public class RxBus {
 
     private PublishSubject<String> updateTokenSubject = PublishSubject.create();
     private PublishSubject<String> scanData = PublishSubject.create();
+    private PublishSubject<String> subscribeToUpdateToken = PublishSubject.create();
 
     public static RxBus getInstance() {
         if (instance == null) {
@@ -26,12 +27,7 @@ public class RxBus {
 
     public void passActionForUpdateToken(String action) {
         Timber.d("inside method");
-        if (action.equals("UPDATE_TOKEN")) {
-            updateTokenSubject.onNext(action);
-        } else if (action.equals(Constants.DYNAMICS_TST) ||
-                action.equals(Constants.DYNAMICS_PROD)) {
-            updateTokenSubject.onNext(action);
-        }
+        updateTokenSubject.onNext(action);
     }
 
     public void passScanData(String data) {
@@ -44,5 +40,13 @@ public class RxBus {
 
     public PublishSubject<String> getScanData() {
         return scanData;
+    }
+
+    public void passUpdatedToken(String result) {
+        subscribeToUpdateToken.onNext(result);
+    }
+
+    public PublishSubject<String> getSubscribeToUpdateToken() {
+        return subscribeToUpdateToken;
     }
 }

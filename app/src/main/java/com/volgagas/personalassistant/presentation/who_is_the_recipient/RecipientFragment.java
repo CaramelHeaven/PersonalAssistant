@@ -177,4 +177,9 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
             }
         });
     }
+
+    @Override
+    public void initialBasePresenter() {
+        setBasePresenter(presenter);
+    }
 }

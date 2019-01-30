@@ -98,4 +98,9 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
             tvEmptyTasks.setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    public void initialBasePresenter() {
+        setBasePresenter(presenter);
+    }
 }

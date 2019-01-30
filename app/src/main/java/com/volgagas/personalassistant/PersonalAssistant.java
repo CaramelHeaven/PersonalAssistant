@@ -3,6 +3,7 @@ package com.volgagas.personalassistant;
 import android.app.Application;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.squareup.leakcanary.LeakCanary;
 import com.volgagas.personalassistant.data.datasource.BaseApiService;
 import com.volgagas.personalassistant.data.datasource.SPApiService;
 import com.volgagas.personalassistant.utils.Constants;
@@ -39,6 +40,11 @@ public class PersonalAssistant extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            return;
+//        }
+//        LeakCanary.install(this);
+
         Timber.plant(new Timber.DebugTree());
 
         application = this;

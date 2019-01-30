@@ -37,6 +37,9 @@ public class Constants {
     public static final int HTTP_400 = 400;
     public static final int HTTP_204 = 204;
 
+    //errors
+    public static final String HTTP_401 = "HTTP 401";
+
     //PREFERENCES
     public static final String SP_USER_PREFERENCE = "USER_DATA";
     public static final String SP_CURRENT_HTTP = "CURRENT_HTTP";

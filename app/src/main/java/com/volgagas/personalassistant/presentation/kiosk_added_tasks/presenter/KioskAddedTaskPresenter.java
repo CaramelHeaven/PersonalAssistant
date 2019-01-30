@@ -23,23 +23,16 @@ import retrofit2.Response;
 @InjectViewState
 public class KioskAddedTaskPresenter extends BasePresenter<KioskAddedTaskView<TaskTemplate>> {
 
-    private CompositeDisposable disposable;
     private MainRepository repository;
 
     public KioskAddedTaskPresenter() {
+        super();
         repository = MainRemoteRepository.getInstance();
-        disposable = new CompositeDisposable();
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        disposable.clear();
     }
 
     @Override
@@ -49,6 +42,16 @@ public class KioskAddedTaskPresenter extends BasePresenter<KioskAddedTaskView<Ta
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
-        
+
+    }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
+
     }
 }

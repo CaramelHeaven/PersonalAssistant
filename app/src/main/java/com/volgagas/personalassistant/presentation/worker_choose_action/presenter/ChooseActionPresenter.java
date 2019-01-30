@@ -1,6 +1,5 @@
 package com.volgagas.personalassistant.presentation.worker_choose_action.presenter;
 
-import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
@@ -41,6 +40,16 @@ public class ChooseActionPresenter extends BasePresenter<ChooseView> {
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+
+    }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
 
     }
 

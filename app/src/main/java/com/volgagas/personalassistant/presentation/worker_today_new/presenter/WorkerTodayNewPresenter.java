@@ -5,6 +5,7 @@ import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.Constants;
 
 import java.util.List;
 
@@ -19,11 +20,9 @@ import timber.log.Timber;
  */
 @InjectViewState
 public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Task>> {
-
-
-
     private CompositeDisposable disposable;
     private MainRepository repository;
+    int k = 0;
 
     public WorkerTodayNewPresenter() {
         repository = MainRemoteRepository.getInstance();
@@ -54,8 +53,12 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
     }
 
     private void successfulResult(List<Task> tasks) {
+        if (k == 0)
+            handlerAuthenticationRepeat();
+        k++;
+
         getViewState().hideProgress();
-        for (Task task : tasks){
+        for (Task task : tasks) {
             Timber.d("check Tasks: " + task.toString());
         }
         getViewState().showItems(tasks);
@@ -64,11 +67,20 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-
+        if (throwable.getMessage().equals(Constants.HTTP_401)) {
+            handlerAuthenticationRepeat();
+        } else {
+            Timber.d("THROWABLE: " + throwable.getMessage());
+        }
     }
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+
+    }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
 
     }
 }

@@ -46,6 +46,16 @@ public class OrderNewPurchasePresenter extends BasePresenter<OrderNewPurchaseVie
 
     }
 
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
     public void sendData() {
         Timber.d("size sendData: " + chosenOrders);
         Timber.d("toString: " + chosenOrders.toString());

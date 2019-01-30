@@ -81,4 +81,8 @@ public class ContractFragment extends BaseFragment implements ContractView {
         progressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void initialBasePresenter() {
+        //nothing
+    }
 }

@@ -18,11 +18,10 @@ import retrofit2.Response;
 public class ChooseActivityPresenter extends BasePresenter<ChooseActivityView> {
 
     private MainRepository repository;
-    private CompositeDisposable disposable;
 
     public ChooseActivityPresenter() {
+        super();
         this.repository = MainRemoteRepository.getInstance();
-        disposable = new CompositeDisposable();
     }
 
     @Override
@@ -43,6 +42,16 @@ public class ChooseActivityPresenter extends BasePresenter<ChooseActivityView> {
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+
+    }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
 
     }
 }

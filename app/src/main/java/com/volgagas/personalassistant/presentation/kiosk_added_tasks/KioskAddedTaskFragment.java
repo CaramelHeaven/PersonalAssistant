@@ -125,4 +125,9 @@ public class KioskAddedTaskFragment extends BaseFragment implements KioskAddedTa
         }
         adapter.addItem(data.getTask());
     }
+
+    @Override
+    public void initialBasePresenter() {
+        setBasePresenter(presenter);
+    }
 }

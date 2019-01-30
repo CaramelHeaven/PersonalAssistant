@@ -201,4 +201,9 @@ public class StartActivity extends BaseActivity implements StartView {
 
         Toasty.info(this, "Приложите карту еще раз").show();
     }
+
+    @Override
+    public void initialBasePresenter() {
+        //nothing
+    }
 }

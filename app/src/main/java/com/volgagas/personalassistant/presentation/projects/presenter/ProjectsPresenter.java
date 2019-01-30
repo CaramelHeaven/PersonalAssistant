@@ -15,11 +15,10 @@ import retrofit2.Response;
 @InjectViewState
 public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
-    private CompositeDisposable disposable;
     private boolean isOpen = true;
 
     public ProjectsPresenter() {
-        disposable = new CompositeDisposable();
+        super();
     }
 
     @Override
@@ -45,6 +44,16 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+
+    }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
+
+    }
+
+    @Override
+    protected void loadData() {
 
     }
 }

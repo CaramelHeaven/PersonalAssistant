@@ -18,11 +18,9 @@ import timber.log.Timber;
 public class WorkerTodayPresenter extends BasePresenter<WorkerTodayView<Task>> {
 
     private MainRepository repository;
-    private CompositeDisposable disposable;
 
     public WorkerTodayPresenter() {
         repository = MainRemoteRepository.getInstance();
-        disposable = new CompositeDisposable();
     }
 
     @Override
@@ -32,18 +30,22 @@ public class WorkerTodayPresenter extends BasePresenter<WorkerTodayView<Task>> {
     }
 
     @Override
-    public void onDestroy() {
-        disposable.clear();
-        super.onDestroy();
-    }
-
-    @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
 
     }
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+
+    }
+
+    @Override
+    protected void handlerAuthenticationRepeat() {
+
+    }
+
+    @Override
+    protected void tokenUpdatedCallLoadDataAgain() {
 
     }
 

@@ -13,6 +13,7 @@ import io.reactivex.subjects.PublishSubject;
 /**
  * Created by CaramelHeaven on 12:16, 16.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * Another RxBus. Legasy. Used inside StartActivity and some places in kiosk
  */
 public class CommonChannel {
     private static CommonChannel INSTANCE;

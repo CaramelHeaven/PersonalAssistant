@@ -13,6 +13,7 @@
     <application
         android:name=".PersonalAssistant"
         android:allowBackup="false"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -108,20 +109,30 @@
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_container" />
         </activity>
+
         <activity
             android:name=".presentation.worker_camera.CameraActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".presentation.order_new_purchase.OrderNewPurchaseActivity" />
-        <activity android:name=".presentation.worker_choose_action.ChooseActionActivity" />
+
+        <activity
+            android:name=".presentation.order_new_purchase.OrderNewPurchaseActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".presentation.worker_choose_action.ChooseActionActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".presentation.settings.SettingsActivity"
             android:label="Настройки"
             android:theme="@style/AppTheme" />
 
+        <activity
+            android:name=".presentation.worker_nomenclature_barcode.NomenclatureBarcodeActivity"
+            android:screenOrientation="portrait" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="075240ad26eaddd82d54b9a729f3201daf1ee85e" />
     </application>
-
 </manifest>

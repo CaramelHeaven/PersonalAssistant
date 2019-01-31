@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.data.datasource;
 
 import com.google.gson.JsonObject;
+import com.volgagas.personalassistant.models.network.BarcodeResponse;
 import com.volgagas.personalassistant.models.network.NomenclatureHostResponse;
 import com.volgagas.personalassistant.models.network.NomenclatureResponse;
 import com.volgagas.personalassistant.models.network.SubTaskResponse;
@@ -101,4 +102,6 @@ public interface BaseApiService {
 
     @PATCH
     Observable<Response<Void>> sendCanceledSubTasks(@Url String url, @Body JsonObject object);
+
+    Single<BarcodeResponse> getBarcodeByString(String barcodeResult);
 }

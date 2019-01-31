@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.worker_choose_action;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -9,6 +10,7 @@ import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.worker_choose_action.presenter_activity.ChooseActivityPresenter;
 import com.volgagas.personalassistant.presentation.worker_choose_action.presenter_activity.ChooseActivityView;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.NomenclatureFragment;
+import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.NomenclatureBarcodeActivity;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 
@@ -40,11 +42,12 @@ public class ChooseActionActivity extends BaseActivity implements ChooseActivity
                         .commit();
                 break;
             case "USUAL":
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, ChooseActionFragment
-                                .newInstance(getIntent().getParcelableExtra("TASK")))
-                        .commit();
+//                getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.fragment_container, ChooseActionFragment
+//                                .newInstance(getIntent().getParcelableExtra("TASK")))
+//                        .commit();
+                startActivity(new Intent(ChooseActionActivity.this, NomenclatureBarcodeActivity.class));
                 break;
         }
 

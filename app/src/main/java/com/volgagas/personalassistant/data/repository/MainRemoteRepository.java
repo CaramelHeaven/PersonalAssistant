@@ -17,6 +17,7 @@ import com.volgagas.personalassistant.models.mapper.user.UserMapper;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseListToUserList;
 import com.volgagas.personalassistant.models.mapper.user.UserResponseToUser;
 import com.volgagas.personalassistant.models.mapper.user.UserSimpleResponseToUserSimple;
+import com.volgagas.personalassistant.models.mapper.worker.BarcodeResponseToBarcode;
 import com.volgagas.personalassistant.models.mapper.worker.NomenclatureHostRespToNomenclatureHost;
 import com.volgagas.personalassistant.models.mapper.worker.NomenclatureResponseToNomenclature;
 import com.volgagas.personalassistant.models.mapper.worker.SubTaskResponseToSubTask;
@@ -34,6 +35,7 @@ import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.models.model.queries.QueryToUser;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.model.user.UserSimple;
+import com.volgagas.personalassistant.models.model.worker.Barcode;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.NomenclatureResponse;
@@ -93,11 +95,13 @@ public class MainRemoteRepository implements MainRepository {
                             new NomenclatureResponseToNomenclature();
                     NomenclatureHostRespToNomenclatureHost nomenclatureHostRespToNomenclatureHost =
                             new NomenclatureHostRespToNomenclatureHost();
+                    BarcodeResponseToBarcode barcodeResponseToBarcode = new BarcodeResponseToBarcode();
 
                     //Initial mappers
                     taskMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
                             taskKioskResponseToTaskTemplate, subTaskResponseToSubTask,
-                            nomenclatureResponseToNomenclature, nomenclatureHostRespToNomenclatureHost);
+                            nomenclatureResponseToNomenclature, nomenclatureHostRespToNomenclatureHost,
+                            barcodeResponseToBarcode);
                     userMapper = new UserMapper(userResponseToUser, userResponseListToUserList,
                             userIdResponseToUserId, userDynamicsResponseToUserDynamics,
                             userSimpleResponseToUserSimple);
@@ -328,6 +332,12 @@ public class MainRemoteRepository implements MainRepository {
                 "SMATransactionSubType'Consumption' and ServiceOrderId eq '" + soId + "'";
 
         return PersonalAssistant.getBaseApiService().getNomenclatures(filter)
+                .map(taskMapper::map);
+    }
+
+    @Override
+    public Single<Barcode> getBarcodeByScannedString(String barcodeResult) {
+        return PersonalAssistant.getBaseApiService().getBarcodeByString(barcodeResult)
                 .map(taskMapper::map);
     }
 }

@@ -4,8 +4,10 @@ import com.volgagas.personalassistant.models.mapper.kiosk.TaskKioskResponseToTas
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
+import com.volgagas.personalassistant.models.model.worker.Barcode;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
+import com.volgagas.personalassistant.models.network.BarcodeResponse;
 import com.volgagas.personalassistant.models.network.NomenclatureHostResponse;
 import com.volgagas.personalassistant.models.network.NomenclatureResponse;
 import com.volgagas.personalassistant.models.network.SubTaskResponse;
@@ -26,18 +28,21 @@ public class TaskMapper {
     private final SubTaskResponseToSubTask subTaskResponseToSubTask;
     private final NomenclatureResponseToNomenclature nomenclatureResponseToNomenclature;
     private final NomenclatureHostRespToNomenclatureHost nomenclatureHostRespToNomenclatureHost;
+    private final BarcodeResponseToBarcode barcodeResponseToBarcode;
 
     public TaskMapper(TaskResponseToTask taskResponseToTask, TaskResponseToTaskHistory taskResponseToTaskHistory,
                       TaskKioskResponseToTaskTemplate taskKioskResponseToTaskTemplate,
                       SubTaskResponseToSubTask subTaskResponseToSubTask,
                       NomenclatureResponseToNomenclature nomenclatureResponseToNomenclature,
-                      NomenclatureHostRespToNomenclatureHost nomenclatureHostRespToNomenclatureHost) {
+                      NomenclatureHostRespToNomenclatureHost nomenclatureHostRespToNomenclatureHost,
+                      BarcodeResponseToBarcode barcodeResponseToBarcode) {
         this.taskResponseToTask = taskResponseToTask;
         this.taskResponseToTaskHistory = taskResponseToTaskHistory;
         this.taskKioskResponseToTaskTemplate = taskKioskResponseToTaskTemplate;
         this.subTaskResponseToSubTask = subTaskResponseToSubTask;
         this.nomenclatureResponseToNomenclature = nomenclatureResponseToNomenclature;
         this.nomenclatureHostRespToNomenclatureHost = nomenclatureHostRespToNomenclatureHost;
+        this.barcodeResponseToBarcode = barcodeResponseToBarcode;
     }
 
     public List<TaskHistory> mapHistoryTasks(TaskResponse response) {
@@ -62,5 +67,9 @@ public class TaskMapper {
 
     public Nomenclature map(NomenclatureHostResponse response) {
         return nomenclatureHostRespToNomenclatureHost.map(response);
+    }
+
+    public Barcode map(BarcodeResponse response) {
+        return barcodeResponseToBarcode.map(response);
     }
 }

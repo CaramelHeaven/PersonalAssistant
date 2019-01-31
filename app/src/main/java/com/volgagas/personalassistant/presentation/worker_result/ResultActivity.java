@@ -7,16 +7,10 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -44,7 +38,7 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
     private RecyclerView recyclerView;
     ;
-    private AlertDialog alertDialog;
+    private AlertDialog alCardScan;
     private ProgressDialog progressDialog;
     private Button btnStartCompleted, btnToNomenclatures;
 
@@ -72,7 +66,7 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
         btnStartCompleted.setOnClickListener(v -> {
             if (presenter.getChosenSubTasks().size() != 0) {
-                showAlertDialog(presenter.getChosenSubTasks().size());
+                showAlScanCard(presenter.getChosenSubTasks().size());
             } else {
                 Toasty.error(ResultActivity.this, "Задачи не добавлены").show();
             }
@@ -183,7 +177,7 @@ public class ResultActivity extends BaseActivity implements ResultView {
         startActivityForResult(intent, 1);
     }
 
-    public void showAlertDialog(int size) {
+    private void showAlScanCard(int size) {
         //permission from abstract class to enable NFC
         setPermissionToEnableNfc(true);
         handlerNFC();
@@ -202,15 +196,15 @@ public class ResultActivity extends BaseActivity implements ResultView {
             builder.setTitle("Подтверждение выполнение мероприятия");
         }
 
-        alertDialog = builder.create();
+        alCardScan = builder.create();
 
-        alertDialog.show();
+        alCardScan.show();
     }
 
     @Override
     public void showSendStatus() {
-        if (alertDialog != null) {
-            alertDialog.cancel();
+        if (alCardScan != null) {
+            alCardScan.cancel();
         }
 
         progressDialog = new ProgressDialog(this);

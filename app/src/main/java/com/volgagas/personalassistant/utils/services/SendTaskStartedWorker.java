@@ -53,6 +53,7 @@ public class SendTaskStartedWorker extends RxWorker {
     private JsonObject mappingJson() {
         JsonObject object = new JsonObject();
         object.add("ActivityState", new JsonPrimitive("Started"));
+
         return object;
     }
 }

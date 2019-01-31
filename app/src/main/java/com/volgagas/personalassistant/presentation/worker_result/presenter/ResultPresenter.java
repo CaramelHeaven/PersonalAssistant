@@ -73,8 +73,6 @@ public class ResultPresenter extends BasePresenter<ResultView> {
         canceledJson.add("ActivityState", new JsonPrimitive("Completed"));
         canceledJson.add("PhaseId", new JsonPrimitive("Отменено"));
 
-        Timber.d("chosen: " + chosenSubTasks.toString());
-
         disposable.add(Single.just(chosenSubTasks)
                 .subscribeOn(Schedulers.io())
                 .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)

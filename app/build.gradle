@@ -103,4 +103,7 @@ dependencies {
 
     //servicef
     implementation "android.arch.work:work-rxjava2:1.0.0-beta01"
+
+    //zling barcode scanner
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 }

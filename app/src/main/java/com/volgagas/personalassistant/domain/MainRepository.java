@@ -12,6 +12,7 @@ import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.models.model.queries.QueryToUser;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.model.user.UserSimple;
+import com.volgagas.personalassistant.models.model.worker.Barcode;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
@@ -150,4 +151,11 @@ public interface MainRepository {
      * @param soId - service order id
      */
     Single<List<Nomenclature>> getNomenclaturesBySO(String soId);
+
+    /**
+     * Get barcode data from D365
+     *
+     * @param barcodeResult - scanned string data from NomenclatureBarcodeActivity
+     */
+    Single<Barcode> getBarcodeByScannedString(String barcodeResult);
 }

@@ -64,17 +64,23 @@ public class StartActivity extends BaseActivity implements StartView {
         sharedPreferences = this.getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
 
         d365Cache = sharedPreferences.getString(Constants.SP_D365_USER_CACHE, "");
+        Timber.d("onCreate: " + d365Cache);
         sharePointCache = sharedPreferences.getString(Constants.SP_SHARE_POINT_USER_CACHE, "");
+        Timber.d("ON LALALLA");
         dynamicsCurrentHttp = sharedPreferences.getString(Constants.SP_CURRENT_HTTP, "");
 
         if (dynamicsCurrentHttp.equals("")) {
             dynamicsCurrentHttp = Constants.DYNAMICS_PROD;
         }
 
+        Timber.d("IM HERE AGAIN: " + dynamicsCurrentHttp);
+
         if (d365Cache.equals("")) {
+            Timber.d("SIMPLE");
             authContext.acquireToken(StartActivity.this, dynamicsCurrentHttp, Constants.CLIENT,
                     Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
         } else {
+            Timber.d("ASYNS");
             authContext.acquireTokenSilentAsync(dynamicsCurrentHttp, Constants.CLIENT, d365Cache, d365Callback);
         }
     }
@@ -102,8 +108,7 @@ public class StartActivity extends BaseActivity implements StartView {
         handlerNFC();
 
         if (data != null && data.length() == 18) {
-            presenter.setDataCodekey(data);
-            presenter.getUserData(presenter.getDataCodekey());
+            presenter.getUserData(data);
             //repeat auth
 //            if (ThreePermissions.getInstance().anyValueIsTrue()) {
 //                ThreePermissions.getInstance().resetValues();
@@ -168,26 +173,26 @@ public class StartActivity extends BaseActivity implements StartView {
                 d365Cache = result.getUserInfo().getUserId();
 
                 editor.putString(Constants.SP_D365_USER_CACHE, d365Cache);
+                editor.apply();
             }
 
             //Init first D365 interface retrofit network and send to observer data success API
             if (PersonalAssistant.getBaseApiService() == null) {
                 PersonalAssistant.provideDynamics365Auth(result.getAccessToken(), "");
-
-                ThreePermissions permissions = ThreePermissions.getInstance();
-                permissions.setD365Token(true);
-                CommonChannel.sendPermissions(permissions);
-
-                //presenter.getUserData(presenter.getDataCodekey());
-
-                if (sharePointCache.equals("")) {
-                    authContext.acquireToken(StartActivity.this, Constants.GRAPH, Constants.CLIENT,
-                            Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", spCallback);
-                } else {
-                    authContext.acquireTokenSilentAsync(Constants.GRAPH, Constants.CLIENT,
-                            sharePointCache, spCallback);
-                }
             }
+
+            ThreePermissions permissions = ThreePermissions.getInstance();
+            permissions.setD365Token(true);
+            CommonChannel.sendPermissions(permissions);
+
+            if (sharePointCache.equals("")) {
+                authContext.acquireToken(StartActivity.this, Constants.GRAPH, Constants.CLIENT,
+                        Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", spCallback);
+            } else {
+                authContext.acquireTokenSilentAsync(Constants.GRAPH, Constants.CLIENT,
+                        sharePointCache, spCallback);
+            }
+
         }
 
         @Override
@@ -197,7 +202,6 @@ public class StartActivity extends BaseActivity implements StartView {
     };
 
     private AuthenticationCallback<AuthenticationResult> spCallback = new AuthenticationCallback<AuthenticationResult>() {
-        @SuppressLint("CheckResult")
         @Override
         public void onSuccess(AuthenticationResult result) {
             //share point cache
@@ -206,7 +210,12 @@ public class StartActivity extends BaseActivity implements StartView {
                 sharePointCache = result.getUserInfo().getUserId();
 
                 editor.putString(Constants.SP_SHARE_POINT_USER_CACHE, sharePointCache);
+                editor.apply();
+
+                Timber.d("FUCK U: " + sharedPreferences.getString(Constants.SP_SHARE_POINT_USER_CACHE, ""));
             }
+
+            Timber.d("SHARE POINT");
 
             //init network share point api
             if (PersonalAssistant.getSpApiService() == null) {

@@ -51,6 +51,26 @@ public class TaskNetwork {
     @Expose
     private String acClosed;
 
+    @Override
+    public String toString() {
+        return "TaskNetwork{" +
+                "serviceOrderId='" + serviceOrderId + '\'' +
+                ", odataEtag='" + odataEtag + '\'' +
+                ", company='" + company + '\'' +
+                ", preferredTime='" + preferredTime + '\'' +
+                ", serviceOrderDescription='" + serviceOrderDescription + '\'' +
+                ", status='" + status + '\'' +
+                ", activityDescription='" + activityDescription + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", worker='" + worker + '\'' +
+                ", idSubTask=" + idSubTask +
+                ", activityId='" + activityId + '\'' +
+                ", gpa='" + gpa + '\'' +
+                ", acClosed='" + acClosed + '\'' +
+                '}';
+    }
+
     public String getServiceOrderId() {
         return serviceOrderId;
     }

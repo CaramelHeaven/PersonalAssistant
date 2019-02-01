@@ -16,6 +16,7 @@ import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions
 
 import java.util.List;
 
+import io.reactivex.MaybeSource;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -29,7 +30,6 @@ import timber.log.Timber;
 public class StartPresenter extends BasePresenter<StartView> {
 
     private MainRepository repository;
-    private String dataCodekey = "";
 
     @SuppressLint("CheckResult")
     public StartPresenter() {
@@ -54,30 +54,16 @@ public class StartPresenter extends BasePresenter<StartView> {
                 .subscribe(result -> getViewState().enableNFC()));
     }
 
-    //TODO rewrite this shit
     public void getUserData(String data) {
         getViewState().showProgress();
         disposable.add(repository.getCardInfo(data)
                 .subscribeOn(Schedulers.io())
-                .flatMap((Function<User, SingleSource<User>>) user -> {
-                    if (user.getCategory() != null) {
-                        if (!user.getCategory().equals(Constants.EQUIPMENT)) {
-                            return Single.just(user);
-                        } else {
-                            return Single.error(new IllegalArgumentException("Equipment"));
-                        }
-                    } else {
-                        return Single.just(user);
-                    }
-                })
+                .filter(user -> user.getCategory() != null && !user.getCategory().equals(Constants.EQUIPMENT))
+                .filter(user -> user.getName() != null && !user.getName().equals(""))
+                .toSingle()
                 .flatMap((Function<User, SingleSource<UserDynamics>>) user -> {
-                    //if successful user data
-                    if (user.getName() != null && !user.getName().equals("")) {
-                        CacheUser.getUser().setBaseFields(user);
-                        return repository.getPersonalUserNumber(user.getName());
-                    } else {
-                        return Single.just(new UserDynamics());
-                    }
+                    CacheUser.getUser().setBaseFields(user);
+                    return repository.getPersonalUserNumber(user.getName());
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::successfulResponse, this::handlerErrorsFromBadRequests));
@@ -122,13 +108,5 @@ public class StartPresenter extends BasePresenter<StartView> {
     @Override
     protected void loadData() {
 
-    }
-
-    public void setDataCodekey(String dataCodekey) {
-        this.dataCodekey = dataCodekey;
-    }
-
-    public String getDataCodekey() {
-        return dataCodekey;
     }
 }

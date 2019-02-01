@@ -34,6 +34,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
 
         Collections.sort(tasks);
 
+
         return tasks;
     }
 
@@ -42,7 +43,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
         //removing completed tasks
         List<TaskNetwork> test = new ArrayList<>();
         for (TaskNetwork taskNetwork : taskResponse.getValue()) {
-            if (!taskNetwork.getAcClosed().equals("Yes")) {
+            if (!taskNetwork.getAcClosed().equals("Yes") && !taskNetwork.getGpa().equals("")) {
                 test.add(taskNetwork);
             }
         }

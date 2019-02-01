@@ -12,7 +12,4 @@ public interface GpaView extends BaseView {
 
     @StateStrategyType(value = SkipStrategy.class)
     void completed();
-
-    @StateStrategyType(value = OneExecutionStateStrategy.class)
-    void showErrorEquipment();
 }

@@ -191,9 +191,6 @@ public class TaskDialogFragment extends MvpAppCompatDialogFragment implements Ta
                     TaskContentManager.getInstance().setSubTasks(adapter.getSelectedTasks());
                 }
 
-                //START BACKGROUND WORK FOR UPDATE START TIME IN SUB-TASKS
-                TaskStartedManager.getInstance().startBackgroundService(adapter.getSelectedTasks());
-
                 startActivity(intent);
                 getDialog().dismiss();
             } else {

@@ -40,6 +40,8 @@ public class ResultPresenter extends BasePresenter<ResultView> {
     private List<SubTask> allSubTasks;
     private List<SubTask> nonSelectedSubTasks;
 
+    private boolean stoppingTasks;
+
     public ResultPresenter(List<SubTask> subTasks) {
         chosenSubTasks = new ArrayList<>();
         nonSelectedSubTasks = new ArrayList<>();
@@ -183,5 +185,13 @@ public class ResultPresenter extends BasePresenter<ResultView> {
 
     public List<SubTask> getNonSelectedSubTasks() {
         return nonSelectedSubTasks;
+    }
+
+    public boolean isStoppingTasks() {
+        return stoppingTasks;
+    }
+
+    public void setStoppingTasks(boolean stoppingTasks) {
+        this.stoppingTasks = stoppingTasks;
     }
 }

@@ -22,6 +22,7 @@ import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import timber.log.Timber;
@@ -55,18 +56,17 @@ public class GpaPresenter extends BasePresenter<GpaView> {
         getViewState().showProgress();
         disposable.add(repository.getCardInfo(userNumbers)
                 .subscribeOn(Schedulers.io())
+                .filter(gpa -> gpa.getCategory().equals("Оборудование"))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
     }
 
     private void successfulResult(User gpa) {
         getViewState().hideProgress();
-        if (gpa.getCategory().equals("Оборудование") && (gpa.getName().equals(task.getGpa()))) {
+        if (gpa.getName().equals(task.getGpa())) {
             getViewState().completed();
-        } else if (gpa.getCategory().equals("Оборудование")) {
-            getViewState().showError("Оборудование не совпадает");
         } else {
-            getViewState().showErrorEquipment();
+            getViewState().showError("Оборудование не совпадает");
         }
     }
 
@@ -77,11 +77,8 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
-        Timber.d("handler: " + result.toString());
         if (result.size() > 0) {
-            Timber.d("to string: " + result.size());
             if (result.get(0).code() == Constants.HTTP_400) {
-                Timber.d("check result: " + result.toString());
                 getViewState().showError("Произошла ошибка на стороне сервера");
             } else if (result.get(0).code() == Constants.HTTP_204) {
                 getViewState().completed();

@@ -74,7 +74,6 @@ public class ResultActivity extends BaseActivity implements ResultView {
                 ResultDialogFragment fragment = ResultDialogFragment
                         .newInstance(new ArrayList<>(presenter.getNonSelectedSubTasks()));
                 fragment.show(getSupportFragmentManager(), null);
-                //showAlScanCard(presenter.getChosenSubTasks().size());
             } else {
                 Toasty.error(ResultActivity.this, "Задачи не добавлены").show();
             }
@@ -239,7 +238,9 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
     @Override
     public void callbackFromResultDialog(boolean bool) {
-        Timber.d("CALLBACK");
+        presenter.setStoppingTasks(bool);
+
+        showAlScanCard(presenter.getChosenSubTasks().size());
     }
 
     @Override

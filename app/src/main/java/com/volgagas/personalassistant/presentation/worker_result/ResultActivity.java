@@ -19,11 +19,13 @@ import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
+import com.volgagas.personalassistant.presentation.start_splash.StartSplashFragment;
 import com.volgagas.personalassistant.presentation.worker.WorkerActivity;
 import com.volgagas.personalassistant.presentation.worker_camera.CameraActivity;
 import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseActionActivity;
 import com.volgagas.personalassistant.presentation.worker_result.presenter.ResultPresenter;
 import com.volgagas.personalassistant.presentation.worker_result.presenter.ResultView;
+import com.volgagas.personalassistant.presentation.worker_result_dialog.ResultDialogFragment;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.callbacks.OnResultItemClick;
 import com.volgagas.personalassistant.utils.manager.TaskContentManager;
@@ -65,8 +67,14 @@ public class ResultActivity extends BaseActivity implements ResultView {
         provideRecyclerAndAdapter(TaskContentManager.getInstance().getSubTasks());
 
         btnStartCompleted.setOnClickListener(v -> {
-            if (presenter.getChosenSubTasks().size() != 0) {
+            if (presenter.getChosenSubTasks().size() == presenter.getAllSubTasks().size()) {
                 showAlScanCard(presenter.getChosenSubTasks().size());
+            } else if (presenter.getChosenSubTasks().size() != 0) {
+                presenter.findNonSelectedSubTasks();
+                ResultDialogFragment fragment = ResultDialogFragment
+                        .newInstance(new ArrayList<>(presenter.getNonSelectedSubTasks()));
+                fragment.show(getSupportFragmentManager(), null);
+                //showAlScanCard(presenter.getChosenSubTasks().size());
             } else {
                 Toasty.error(ResultActivity.this, "Задачи не добавлены").show();
             }
@@ -227,6 +235,11 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    @Override
+    public void callbackFromResultDialog(boolean bool) {
+        Timber.d("CALLBACK");
     }
 
     @Override

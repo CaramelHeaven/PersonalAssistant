@@ -10,6 +10,7 @@ import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
 
@@ -34,20 +35,23 @@ public class StartPresenter extends BasePresenter<StartView> {
     public StartPresenter() {
         super();
         repository = MainRemoteRepository.getInstance();
-
-        disposable.add(CommonChannel.getInstance().getPermissionsSubject()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    if (result.allValuesIsTrue()) {
-                        getViewState().goToMainMenu();
-                    }
-                }));
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+        //subscriber to get permissions state for start MainActivity
+        disposable.add(CommonChannel.getInstance().getPermissionsSubject()
+                .subscribeOn(Schedulers.io())
+                .filter(ThreePermissions::allValuesIsTrue)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> getViewState().goToMainMenu()));
+
+        //subscriber to get enable NFC reader
+        disposable.add(RxBus.getInstance().getCommonChannel()
+                .filter(result -> result.equals("ENABLE_NFC"))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> getViewState().enableNFC()));
     }
 
     //TODO rewrite this shit

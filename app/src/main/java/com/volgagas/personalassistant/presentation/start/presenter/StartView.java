@@ -17,4 +17,7 @@ public interface StartView extends BaseView {
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
     void showErrorToEnter();
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void enableNFC();
 }

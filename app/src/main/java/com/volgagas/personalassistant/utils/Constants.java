@@ -13,14 +13,14 @@ public class Constants {
     public static final String UNIFORM_REQUESTS_TO_USER_URL = "(guid'59C1EE57-5726-4B27-B9DD-B39775E170D5')";
 
     //MAIN reference. It works on many place. Don't ignore this
-    public static String DYNAMICS_365 = "https://volgagas-tstdevaos.sandbox.ax.dynamics.com";
+    public static String DYNAMICS_365 = "https://volgagas-prod81363c7256ed48a071bdevaos.cloudax.dynamics.com";
     public static final String GRAPH = "https://volagas.sharepoint.com";
     public static final String SHARE_POINT_DOC_API_WEB = "https://volagas.sharepoint.com/doc/_api/web";
     public static final String SHARE_POINT_API_WEB = "https://volagas.sharepoint.com/_api/web";
 
     //references for shared preference inside setting activity
     public static final String DYNAMICS_TST = "https://volgagas-tstdevaos.sandbox.ax.dynamics.com";
-    public static final String DYNAMICS_PROD = "https://volgagas-prod73b403cba6259cd5cedevaos.cloudax.dynamics.com";
+    public static final String DYNAMICS_PROD = "https://volgagas-prod81363c7256ed48a071bdevaos.cloudax.dynamics.com";
 
     public static final String AUTH_URL = "https://login.microsoftonline.com/common/oauth2/authorize";
 
@@ -40,10 +40,13 @@ public class Constants {
     //errors
     public static final String HTTP_401 = "401";
 
-    //PREFERENCES
-    public static final String SP_USER_PREFERENCE = "USER_DATA";
+    public static final String SP_USER_PREFERENCE = "USER_DATA"; // base shared preference data
+
+    //shared preferences fields
     public static final String SP_CURRENT_HTTP = "CURRENT_HTTP";
     public static final String SP_ENABLE_FUNCTIONS = "ENABLE_FUNCTIONS";
+    public static final String SP_D365_USER_CACHE = "D365_USER_CACHE";
+    public static final String SP_SHARE_POINT_USER_CACHE = "SP_SHARE_POINT_USER_CACHE";
 
     //other
     public static final String ADD_MORE_NOMENCLATURES = "ADD_MORE_NOMENCLATURES";

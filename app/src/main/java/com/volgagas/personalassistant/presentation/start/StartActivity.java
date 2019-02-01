@@ -1,7 +1,9 @@
 package com.volgagas.personalassistant.presentation.start;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -21,7 +23,10 @@ import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.main.MainActivity;
 import com.volgagas.personalassistant.presentation.start.presenter.StartPresenter;
 import com.volgagas.personalassistant.presentation.start.presenter.StartView;
+import com.volgagas.personalassistant.presentation.start_login_card.StartLoginCardFragment;
+import com.volgagas.personalassistant.presentation.start_splash.StartSplashFragment;
 import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
 import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions;
 
@@ -35,6 +40,8 @@ public class StartActivity extends BaseActivity implements StartView {
     private TextView tvTitle;
 
     private AuthenticationContext authContext;
+    private SharedPreferences sharedPreferences;
+    private String d365Cache, sharePointCache, dynamicsCurrentHttp;
 
     @InjectPresenter
     StartPresenter presenter;
@@ -46,12 +53,30 @@ public class StartActivity extends BaseActivity implements StartView {
         progressBar = findViewById(R.id.progressBar);
         tvTitle = findViewById(R.id.tv_title);
 
-        setPermissionToEnableNfc(true);
+        setPermissionToEnableNfc(false);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, StartSplashFragment.newInstance())
+                .commit();
 
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
+        sharedPreferences = this.getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
 
-        //startActivity(new Intent(this, MainActivity.class));
-        //sendDataToServer("0x2042231A26000000");
+        d365Cache = sharedPreferences.getString(Constants.SP_D365_USER_CACHE, "");
+        sharePointCache = sharedPreferences.getString(Constants.SP_SHARE_POINT_USER_CACHE, "");
+        dynamicsCurrentHttp = sharedPreferences.getString(Constants.SP_CURRENT_HTTP, "");
+
+        if (dynamicsCurrentHttp.equals("")) {
+            dynamicsCurrentHttp = Constants.DYNAMICS_PROD;
+        }
+
+        if (d365Cache.equals("")) {
+            authContext.acquireToken(StartActivity.this, dynamicsCurrentHttp, Constants.CLIENT,
+                    Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
+        } else {
+            authContext.acquireTokenSilentAsync(dynamicsCurrentHttp, Constants.CLIENT, d365Cache, d365Callback);
+        }
     }
 
     @Override
@@ -72,20 +97,18 @@ public class StartActivity extends BaseActivity implements StartView {
     @Override
     protected void sendDataToServer(String data) {
         showProgress();
+
         setPermissionToEnableNfc(false);
         handlerNFC();
 
         if (data != null && data.length() == 18) {
             presenter.setDataCodekey(data);
-
+            presenter.getUserData(presenter.getDataCodekey());
             //repeat auth
-            if (ThreePermissions.getInstance().anyValueIsTrue()) {
-                ThreePermissions.getInstance().resetValues();
-            }
-            CacheUser.getUser().clear();
-
-            authContext.acquireToken(StartActivity.this, Constants.DYNAMICS_365, Constants.CLIENT,
-                    Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
+//            if (ThreePermissions.getInstance().anyValueIsTrue()) {
+//                ThreePermissions.getInstance().resetValues();
+//            }
+//            CacheUser.getUser().clear();
         } else {
             Toast.makeText(this, "Приложите карту еще раз", Toast.LENGTH_SHORT).show();
         }
@@ -121,6 +144,13 @@ public class StartActivity extends BaseActivity implements StartView {
     }
 
     @Override
+    public void enableNFC() {
+        Timber.d("PERMISSION");
+        setPermissionToEnableNfc(true);
+        handlerNFC();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (authContext != null) {
@@ -132,23 +162,31 @@ public class StartActivity extends BaseActivity implements StartView {
         @SuppressLint("CheckResult")
         @Override
         public void onSuccess(AuthenticationResult result) {
-            if (result.getAccessToken() != null) {
-                CacheUser.getUser().setUserCliendId(result.getClientId());
-                CacheUser.getUser().setDynamics365Token(result.getAccessToken());
+            //d365 cache
+            if (d365Cache.equals("")) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                d365Cache = result.getUserInfo().getUserId();
 
-                if (PersonalAssistant.getBaseApiService() == null) {
-                    Timber.d("INIT D365");
-                    PersonalAssistant.provideDynamics365Auth(result.getAccessToken(), "");
-                }
+                editor.putString(Constants.SP_D365_USER_CACHE, d365Cache);
+            }
+
+            //Init first D365 interface retrofit network and send to observer data success API
+            if (PersonalAssistant.getBaseApiService() == null) {
+                PersonalAssistant.provideDynamics365Auth(result.getAccessToken(), "");
 
                 ThreePermissions permissions = ThreePermissions.getInstance();
                 permissions.setD365Token(true);
                 CommonChannel.sendPermissions(permissions);
 
-                presenter.getUserData(presenter.getDataCodekey());
+                //presenter.getUserData(presenter.getDataCodekey());
 
-                authContext.acquireToken(StartActivity.this, Constants.GRAPH, Constants.CLIENT,
-                        Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", spCallback);
+                if (sharePointCache.equals("")) {
+                    authContext.acquireToken(StartActivity.this, Constants.GRAPH, Constants.CLIENT,
+                            Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", spCallback);
+                } else {
+                    authContext.acquireTokenSilentAsync(Constants.GRAPH, Constants.CLIENT,
+                            sharePointCache, spCallback);
+                }
             }
         }
 
@@ -162,18 +200,30 @@ public class StartActivity extends BaseActivity implements StartView {
         @SuppressLint("CheckResult")
         @Override
         public void onSuccess(AuthenticationResult result) {
-            if (result.getAccessToken() != null) {
-                CacheUser.getUser().setSharePointToken(result.getAccessToken());
+            //share point cache
+            if (sharePointCache.equals("")) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                sharePointCache = result.getUserInfo().getUserId();
 
-                if (PersonalAssistant.getSpApiService() == null) {
-                    Timber.d("INIT SHARE POINT");
-                    PersonalAssistant.provideSharePointAuth(result.getAccessToken());
-                }
-
-                ThreePermissions permissions = ThreePermissions.getInstance();
-                permissions.setSharePointToken(true);
-                CommonChannel.sendPermissions(permissions);
+                editor.putString(Constants.SP_SHARE_POINT_USER_CACHE, sharePointCache);
             }
+
+            //init network share point api
+            if (PersonalAssistant.getSpApiService() == null) {
+                PersonalAssistant.provideSharePointAuth(result.getAccessToken());
+            }
+
+            ThreePermissions permissions = ThreePermissions.getInstance();
+            permissions.setSharePointToken(true);
+            CommonChannel.sendPermissions(permissions);
+
+            RxBus.getInstance().passDataToCommonChannel("ENABLE_NFC");
+
+            //change screen for login via card
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, StartLoginCardFragment.newInstance())
+                    .commit();
         }
 
         @Override

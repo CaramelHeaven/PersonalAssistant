@@ -13,6 +13,7 @@ import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -34,7 +35,6 @@ import timber.log.Timber;
 public class ResultPresenter extends BasePresenter<ResultView> {
 
     private MainRepository repository;
-    private CompositeDisposable disposable;
 
     private List<SubTask> chosenSubTasks;
     private List<SubTask> allSubTasks;
@@ -46,23 +46,18 @@ public class ResultPresenter extends BasePresenter<ResultView> {
         this.allSubTasks = subTasks;
 
         repository = MainRemoteRepository.getInstance();
-        disposable = new CompositeDisposable();
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+        //Listener for bool value from ResultDialogFragment
+        disposable.add(RxBus.getInstance().getResultCallback()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> getViewState().callbackFromResultDialog(result)));
     }
 
-    @Override
-    public void onDestroy() {
-        disposable.clear();
-        super.onDestroy();
-    }
-
-    @SuppressLint("CheckResult")
     public void sendData() {
-        findNonSelectedSubTasks();
         getViewState().showSendStatus();
 
         JsonObject completedJson = new JsonObject();
@@ -161,7 +156,7 @@ public class ResultPresenter extends BasePresenter<ResultView> {
         chosenSubTasks.remove(subTask);
     }
 
-    private void findNonSelectedSubTasks() {
+    public void findNonSelectedSubTasks() {
         for (SubTask task : allSubTasks) {
             if (!chosenSubTasks.contains(task)) {
                 nonSelectedSubTasks.add(task);
@@ -184,5 +179,9 @@ public class ResultPresenter extends BasePresenter<ResultView> {
 
     public List<SubTask> getAllSubTasks() {
         return allSubTasks;
+    }
+
+    public List<SubTask> getNonSelectedSubTasks() {
+        return nonSelectedSubTasks;
     }
 }

@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.worker_result.presenter;
 
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.volgagas.personalassistant.presentation.base.BaseView;
@@ -10,4 +11,7 @@ public interface ResultView extends BaseView {
 
     @StateStrategyType(value = SingleStateStrategy.class)
     void completed();
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void callbackFromResultDialog(boolean bool);
 }

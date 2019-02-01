@@ -54,13 +54,22 @@ public class ResultDialogFragment extends MvpAppCompatDialogFragment {
         adapter = new ResultDFAdapter(getArguments().getParcelableArrayList("ARRAY"));
         recyclerView.setAdapter(adapter);
 
-        btnCompleted.setOnClickListener(v -> RxBus.getInstance().passResultCallback(true));
+        btnCompleted.setOnClickListener(v -> {
+            RxBus.getInstance().passResultCallback(true);
+            dismiss();
+        });
 
-        btnCancel.setOnClickListener(v -> RxBus.getInstance().passResultCallback(false));
+        btnCancel.setOnClickListener(v -> {
+            RxBus.getInstance().passResultCallback(false);
+            dismiss();
+        });
     }
 
     @Override
     public void onDestroyView() {
+        recyclerView = null;
+        btnCancel = null;
+        btnCompleted = null;
         super.onDestroyView();
     }
 }

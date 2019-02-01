@@ -14,6 +14,7 @@ import timber.log.Timber;
 public class RxBus {
     private static volatile RxBus instance;
 
+    //TODO refactoring this shit
     private PublishSubject<String> updateTokenSubject = PublishSubject.create();
     //scan data for scan mifare card
     private PublishSubject<String> scanData = PublishSubject.create();
@@ -21,8 +22,10 @@ public class RxBus {
     private PublishSubject<String> subscribeToUpdateToken = PublishSubject.create();
     //scan barcode result
     private PublishSubject<Barcode> barcodeBus = PublishSubject.create();
-    //result callback where we ask user: Want you to stop current activities or not
+    //result callback where we ask user: Want you to stop current activities or not, not refactor
     private PublishSubject<Boolean> resultCallback = PublishSubject.create();
+
+    private PublishSubject<String> commonChannel = PublishSubject.create();
 
     public static RxBus getInstance() {
         if (instance == null) {
@@ -68,4 +71,11 @@ public class RxBus {
         resultCallback.onNext(bool);
     }
 
+    public void passDataToCommonChannel(String data) {
+        commonChannel.onNext(data);
+    }
+
+    public PublishSubject<String> getCommonChannel() {
+        return commonChannel;
+    }
 }

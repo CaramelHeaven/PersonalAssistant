@@ -48,8 +48,6 @@ public class ResultPresenter extends BasePresenter<ResultView> {
         this.allSubTasks = TaskContentManager.getInstance().getSubTasks();
 
         repository = MainRemoteRepository.getInstance();
-
-        PersonalAssistant.provideDynamics365Auth("token", "");
     }
 
     @Override

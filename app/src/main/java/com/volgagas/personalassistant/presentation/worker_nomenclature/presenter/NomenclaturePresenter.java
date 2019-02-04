@@ -3,7 +3,6 @@ package com.volgagas.personalassistant.presentation.worker_nomenclature.presente
 import android.annotation.SuppressLint;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Task;
@@ -12,14 +11,10 @@ import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.manager.TaskContentManager;
-import com.volgagas.personalassistant.utils.threads.UpdateTokenHandler;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import timber.log.Timber;
@@ -42,11 +37,15 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        loadData();
-
         disposable.add(RxBus.getInstance().getScanData()
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::addDataFromNfc, this::handlerErrorsFromBadRequests));
+
+        disposable.add(RxBus.getInstance().getCommonChannel()
+                .subscribeOn(Schedulers.io())
+                .filter(result -> result.equals("PERMISSION_TO_LOAD_NOMENCLATURES"))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> loadData()));
     }
 
     @Override
@@ -58,7 +57,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
-            handlerAuthenticationRepeat();
+            Timber.d("IM HERE");
         } else {
             Timber.d("THROWABLE: " + throwable.getMessage());
         }
@@ -71,7 +70,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     @Override
     protected void tokenUpdatedCallLoadDataAgain() {
-        loadData();
+
     }
 
     private void addDataFromNfc(String data) {
@@ -80,6 +79,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     @SuppressLint("CheckResult")
     protected void loadData() {
+        Timber.d("LOAD DATA");
         getViewState().showProgress();
         disposable.add(repository.getNomenclaturesBySO(task.getIdTask())
                 .subscribeOn(Schedulers.io())

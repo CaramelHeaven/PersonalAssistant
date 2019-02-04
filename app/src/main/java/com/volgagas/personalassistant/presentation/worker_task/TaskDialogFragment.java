@@ -98,9 +98,9 @@ public class TaskDialogFragment extends MvpAppCompatDialogFragment implements Ta
 
 
         if (presenter.getGlobalTask() instanceof Task) {
-            tvTitle.setText(((Task) presenter.getGlobalTask()).getIdTask());
+            tvTitle.setText(((Task) presenter.getGlobalTask()).getDescription());
         } else if (presenter.getGlobalTask() instanceof TaskHistory) {
-            tvTitle.setText(((TaskHistory) presenter.getGlobalTask()).getIdTask());
+            tvTitle.setText(((TaskHistory) presenter.getGlobalTask()).getDescription());
         }
 
         switch (presenter.getStatus()) {

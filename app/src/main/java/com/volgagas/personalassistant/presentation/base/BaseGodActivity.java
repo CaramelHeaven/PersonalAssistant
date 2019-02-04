@@ -52,10 +52,15 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         updateToken();
         listenerForRefreshTokens();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -198,4 +203,5 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
 
         }
     };
+
 }

@@ -36,7 +36,6 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        Timber.d("for example: " + i);
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_dialog_task, viewGroup, false);
         return new SubTaskVH(view);
     }
@@ -47,17 +46,21 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         subTaskVH.tvDescription.setText(subTasks.get(position).getDescription());
         subTaskVH.tvName.setText(subTasks.get(position).getWorkerName());
 
-        if (subTasks.get(position).getState().equals("Yes")) {
-            subTaskVH.ivCheckMark.setVisibility(View.VISIBLE);
-            subTaskVH.tvDescription.setPaintFlags(subTaskVH.tvDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        } else if (subTasks.get(position).getWorkerName().equals(CacheUser.getUser().getName())) {
-            subTaskVH.rlContainer.setOnClickListener(v -> myOnItemClickListener.onItemClick(position));
-        }
-
+        //if user click on element, we selected it and make visible iv check mark
         if (subTasks.get(position).isWorking()) {
             subTaskVH.ivCheckMark.setVisibility(View.VISIBLE);
         } else {
             subTaskVH.ivCheckMark.setVisibility(View.GONE);
+        }
+
+        //and after all we selected tasks which had been completed
+        if (subTasks.get(position).getState().equals("Yes")) {
+            Timber.d("IM HERE");
+            subTaskVH.tvDescription.setPaintFlags(subTaskVH.tvDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            subTaskVH.ivCheckMark.setVisibility(View.VISIBLE);
+        } else if (subTasks.get(position).getWorkerName().equals(CacheUser.getUser().getName())) {
+            //subTaskVH.ivCheckMark.setVisibility(View.GONE);
+            subTaskVH.rlContainer.setOnClickListener(v -> myOnItemClickListener.onItemClick(position));
         }
     }
 

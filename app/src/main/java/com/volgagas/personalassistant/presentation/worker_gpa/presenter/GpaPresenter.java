@@ -3,6 +3,7 @@ package com.volgagas.personalassistant.presentation.worker_gpa.presenter;
 import com.arellomobile.mvp.InjectViewState;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
@@ -11,16 +12,21 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.manager.TaskContentManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Maybe;
+import io.reactivex.MaybeSource;
 import io.reactivex.ObservableSource;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
@@ -32,13 +38,25 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
     private MainRepository repository;
     private CompositeDisposable disposable;
+    private List<SubTask> selectedTasks;
     private Task task;
+    private String userNumbers = "";
 
-    public GpaPresenter(Task task) {
-        this.task = TaskContentManager.getInstance().getTask();
+    public GpaPresenter() {
+        selectedTasks = TaskContentManager.getInstance().getSubTasks();
+        task = TaskContentManager.getInstance().getTask();
 
         repository = MainRemoteRepository.getInstance();
         disposable = new CompositeDisposable();
+
+        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
+                .subscribeOn(Schedulers.io())
+                .filter(result -> result.equals("UPDATE_TOKEN_PRESENTER"))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    Timber.d("IM HERE FUCK YOU");
+                    loadData();
+                }));
     }
 
     @Override
@@ -52,21 +70,46 @@ public class GpaPresenter extends BasePresenter<GpaView> {
         super.onDestroy();
     }
 
+    //&& gpa.getName().equals(task.getGpa()))
     public void sendData(String userNumbers) {
+        this.userNumbers = userNumbers;
+
         getViewState().showProgress();
+
         disposable.add(repository.getCardInfo(userNumbers)
                 .subscribeOn(Schedulers.io())
-                .filter(gpa -> gpa.getCategory().equals("Оборудование"))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
+                .subscribe(result -> {
+                    if (result.getCategory().equals("Оборудование")) {
+//                        if (result.getName().equals(task.getGpa())) {
+                        disposable.add(Single.just(selectedTasks)
+                                .subscribeOn(Schedulers.io())
+                                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
+                                .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
+                                        repository.sendStartedSubTasks(mappingJson(), subTask.getIdActivity()))
+                                .toList()
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
+
+//                        } else {
+//                            getViewState().hideProgress();
+//                            getViewState().showError("Приложена другая карта оборудования");
+//                        }
+                    } else {
+                        getViewState().hideProgress();
+                        getViewState().showError("Приложена карточка сотрудника");
+                    }
+                }));
     }
 
-    private void successfulResult(User gpa) {
+    private void successfulResult(List<Response<Void>> responses) {
         getViewState().hideProgress();
-        if (gpa.getName().equals(task.getGpa())) {
-            getViewState().completed();
+        Timber.d("ff: " + responses.toString());
+        if (responses.size() > 0) {
+            handlerErrorInSuccessfulResult(responses);
         } else {
-            getViewState().showError("Оборудование не совпадает");
+            Timber.d("SUCCESSFUL");
+            //getViewState().completed();
         }
     }
 
@@ -78,10 +121,28 @@ public class GpaPresenter extends BasePresenter<GpaView> {
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
         if (result.size() > 0) {
-            if (result.get(0).code() == Constants.HTTP_400) {
-                getViewState().showError("Произошла ошибка на стороне сервера");
-            } else if (result.get(0).code() == Constants.HTTP_204) {
-                getViewState().completed();
+            String error = "";
+            for (Response<Void> response : result) {
+                if (String.valueOf(response.code()).equals(Constants.HTTP_401)) {
+                    error = "401";
+                    break;
+                } else if (response.code() == Constants.HTTP_400) {
+                    error = "400";
+                    break;
+                }
+            }
+
+            switch (error) {
+                case "401":
+                    Timber.d("EACH ONE");
+                    RxBus.getInstance().passActionForUpdateToken("UPDATE_TOKEN_PRESENTER");
+                    break;
+                case "400":
+                    getViewState().showError("Ошибка на стороне сервера");
+                    break;
+                    default:
+                        getViewState().completed();
+                        break;
             }
         } else {
             getViewState().completed();
@@ -95,10 +156,13 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
     @Override
     protected void loadData() {
-
+        sendData(userNumbers);
     }
 
-    public Task getTask() {
-        return task;
+    private JsonObject mappingJson() {
+        JsonObject object = new JsonObject();
+        object.add("ActivityState", new JsonPrimitive("Started"));
+
+        return object;
     }
 }

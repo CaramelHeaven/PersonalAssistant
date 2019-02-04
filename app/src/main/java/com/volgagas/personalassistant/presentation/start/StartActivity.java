@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -37,7 +38,6 @@ import timber.log.Timber;
 public class StartActivity extends BaseActivity implements StartView {
 
     private ProgressBar progressBar;
-    private TextView tvTitle;
 
     private AuthenticationContext authContext;
     private SharedPreferences sharedPreferences;
@@ -51,7 +51,6 @@ public class StartActivity extends BaseActivity implements StartView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         progressBar = findViewById(R.id.progressBar);
-        tvTitle = findViewById(R.id.tv_title);
 
         setPermissionToEnableNfc(false);
 
@@ -72,7 +71,7 @@ public class StartActivity extends BaseActivity implements StartView {
         dynamicsCurrentHttp = sharedPreferences.getString(Constants.SP_CURRENT_HTTP, "");
 
         if (dynamicsCurrentHttp.equals("")) {
-            dynamicsCurrentHttp = Constants.DYNAMICS_PROD;
+            dynamicsCurrentHttp = Constants.DYNAMICS_365;
         }
 
         if (d365Cache.equals("")) {
@@ -121,8 +120,8 @@ public class StartActivity extends BaseActivity implements StartView {
 
     @Override
     public void showProgress() {
-        tvTitle.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
+        RxBus.getInstance().passDataToCommonChannel("TITLE_HIDE");
     }
 
     @Override
@@ -143,7 +142,7 @@ public class StartActivity extends BaseActivity implements StartView {
         setPermissionToEnableNfc(true);
         handlerNFC();
 
-        tvTitle.setVisibility(View.VISIBLE);
+        RxBus.getInstance().passDataToCommonChannel("TITLE_SHOW");
         progressBar.setVisibility(View.GONE);
         Toast.makeText(this, "Произошла ошибка при входе. Повторите еще раз", Toast.LENGTH_SHORT).show();
     }
@@ -226,9 +225,9 @@ public class StartActivity extends BaseActivity implements StartView {
             permissions.setSharePointToken(true);
             CommonChannel.sendPermissions(permissions);
 
-            //change screen for login via card
             getSupportFragmentManager()
                     .beginTransaction()
+                    .setCustomAnimations(R.anim.enter, R.anim.exit)
                     .replace(R.id.fragment_container, StartLoginCardFragment.newInstance())
                     .commit();
         }
@@ -241,7 +240,7 @@ public class StartActivity extends BaseActivity implements StartView {
 
     @Override
     public void resultMatchedWithEquipment() {
-        tvTitle.setVisibility(View.VISIBLE);
+        RxBus.getInstance().passDataToCommonChannel("TITLE_SHOW");
 
         setPermissionToEnableNfc(true);
         handlerNFC();
@@ -251,7 +250,7 @@ public class StartActivity extends BaseActivity implements StartView {
 
     @Override
     public void commonError() {
-        tvTitle.setVisibility(View.VISIBLE);
+        RxBus.getInstance().passDataToCommonChannel("TITLE_SHOW");
 
         setPermissionToEnableNfc(true);
         handlerNFC();

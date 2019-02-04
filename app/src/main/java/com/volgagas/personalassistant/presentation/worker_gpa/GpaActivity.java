@@ -31,11 +31,6 @@ public class GpaActivity extends BaseActivity implements GpaView {
     @InjectPresenter
     GpaPresenter presenter;
 
-    @ProvidePresenter
-    GpaPresenter provideTaskDialogPresenter() {
-        return new GpaPresenter(getIntent().getParcelableExtra("TASK"));
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,11 +83,7 @@ public class GpaActivity extends BaseActivity implements GpaView {
     public void completed() {
         Toasty.success(this, "Подтверждено о начале работы").show();
 
-        Intent intent = new Intent(GpaActivity.this, ResultActivity.class);
-
-        intent.putExtra("TASK", presenter.getTask());
-
-        startActivity(intent);
+        startActivity(new Intent(GpaActivity.this, ResultActivity.class));
         finish();
     }
 

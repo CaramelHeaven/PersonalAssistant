@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.volgagas.personalassistant.R;
 
@@ -14,6 +17,8 @@ import com.volgagas.personalassistant.R;
  * Created by CaramelHeaven on 11:55, 01/02/2019.
  */
 public class StartSplashFragment extends Fragment {
+
+    private ImageView ivFactory;
 
     public static StartSplashFragment newInstance() {
 
@@ -32,7 +37,13 @@ public class StartSplashFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        ivFactory = view.findViewById(R.id.iv_volgagas);
+
+        final Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.bounce);
+
+        ivFactory.startAnimation(animation);
+
+
     }
 
     @Override

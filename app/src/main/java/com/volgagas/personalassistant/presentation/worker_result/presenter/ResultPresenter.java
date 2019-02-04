@@ -1,6 +1,5 @@
 package com.volgagas.personalassistant.presentation.worker_result.presenter;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -9,11 +8,14 @@ import android.util.Base64;
 import com.arellomobile.mvp.InjectViewState;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
+import com.volgagas.personalassistant.utils.manager.TaskContentManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -21,11 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.ObservableSource;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -42,12 +42,14 @@ public class ResultPresenter extends BasePresenter<ResultView> {
 
     private boolean stoppingTasks;
 
-    public ResultPresenter(List<SubTask> subTasks) {
+    public ResultPresenter() {
         chosenSubTasks = new ArrayList<>();
         nonSelectedSubTasks = new ArrayList<>();
-        this.allSubTasks = subTasks;
+        this.allSubTasks = TaskContentManager.getInstance().getSubTasks();
 
         repository = MainRemoteRepository.getInstance();
+
+        PersonalAssistant.provideDynamics365Auth("token", "");
     }
 
     @Override
@@ -57,45 +59,26 @@ public class ResultPresenter extends BasePresenter<ResultView> {
         disposable.add(RxBus.getInstance().getResultCallback()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> getViewState().callbackFromResultDialog(result)));
+
+        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
+                .subscribeOn(Schedulers.io())
+                .filter(result -> result.equals("UPDATE_TOKEN_PRESENTER"))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (isStoppingTasks()) {
+                        sendDataWithStoppingSubTasks();
+                    } else {
+                        sendDataWithoutStoppingSubTasks();
+                    }
+                }));
     }
 
+    /**
+     * We need to update token before to send data to server.
+     */
     public void sendData() {
         getViewState().showSendStatus();
-
-        JsonObject completedJson = new JsonObject();
-        JsonObject canceledJson = new JsonObject();
-
-        completedJson.add("ActivityState", new JsonPrimitive("Completed"));
-        completedJson.add("PhaseId", new JsonPrimitive("Завершено"));
-        canceledJson.add("ActivityState", new JsonPrimitive("Completed"));
-        canceledJson.add("PhaseId", new JsonPrimitive("Отменено"));
-
-        disposable.add(Single.just(chosenSubTasks)
-                .subscribeOn(Schedulers.io())
-                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
-                .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
-                        repository.sendCompletedSubTasks(completedJson, subTask.getIdActivity()))
-                .toList()
-                .observeOn(Schedulers.computation())
-                .flatMap((Function<List<Response<Void>>, SingleSource<List<SubTask>>>) objects ->
-                        Single.just(findPictures(chosenSubTasks)))
-                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
-                .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
-                        repository.sendImageToDynamics(mapImage(subTask))
-                                .subscribeOn(Schedulers.computation()))
-                .toList()
-                .observeOn(Schedulers.io())
-                .flatMap((Function<List<Response<Void>>, SingleSource<List<SubTask>>>) objects ->
-                        Single.just(nonSelectedSubTasks))
-                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
-                .flatMap((Function<SubTask, ObservableSource<?>>) subTask ->
-                        repository.sendCanceledSubTasks(canceledJson, subTask.getIdActivity()))
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(suc -> getViewState().completed(), throwable -> {
-                    Timber.d("THROWAB: " + throwable.getMessage());
-                    Timber.d("kek: " + throwable.getCause());
-                }));
+        RxBus.getInstance().passActionForUpdateToken("UPDATE_TOKEN_PRESENTER");
     }
 
     /**
@@ -126,24 +109,85 @@ public class ResultPresenter extends BasePresenter<ResultView> {
         return object;
     }
 
+    private void sendDataWithoutStoppingSubTasks() {
+        JsonObject completedJson = new JsonObject();
+        JsonObject canceledJson = new JsonObject();
+
+        completedJson.add("ActivityState", new JsonPrimitive("Completed"));
+        completedJson.add("PhaseId", new JsonPrimitive("Завершено"));
+        canceledJson.add("ActivityState", new JsonPrimitive("Completed"));
+        canceledJson.add("PhaseId", new JsonPrimitive("Отменено"));
+
+        disposable.add(Single.just(chosenSubTasks)
+                .subscribeOn(Schedulers.io())
+                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
+                .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
+                        repository.sendCompletedSubTasks(completedJson, subTask.getIdActivity()))
+                .toList()
+                .observeOn(Schedulers.computation())
+                .flatMap((Function<List<Response<Void>>, SingleSource<List<SubTask>>>) objects ->
+                        Single.just(findPictures(chosenSubTasks)))
+                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
+                .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
+                        repository.sendImageToDynamics(mapImage(subTask))
+                                .subscribeOn(Schedulers.computation()))
+                .toList()
+                .observeOn(Schedulers.io())
+                .flatMap((Function<List<Response<Void>>, SingleSource<List<SubTask>>>) objects ->
+                        Single.just(nonSelectedSubTasks))
+                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
+                .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
+                        repository.sendCanceledSubTasks(canceledJson, subTask.getIdActivity()))
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::successfulResult, throwable -> {
+                    if (throwable.getMessage().equals("timeout")) {
+                        getViewState().timeout();
+                    }
+                }));
+    }
+
+    private void successfulResult(List<Response<Void>> responses) {
+        Timber.d("responses: " + responses.toString());
+        if (responses.size() > 0) {
+            handlerErrorInSuccessfulResult(responses);
+        } else {
+            getViewState().completed();
+        }
+    }
+
+    private void sendDataWithStoppingSubTasks() {
+
+    }
+
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-
+        Timber.d("checking: " + throwable.getMessage());
+        Timber.d("checking: " + throwable.getCause());
     }
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+        boolean ifError = false;
+        for (Response<Void> response : result) {
+            if (response.code() != Constants.HTTP_204) {
+                ifError = true;
+            }
+        }
 
+        if (!ifError) {
+            getViewState().completed();
+        }
     }
 
     @Override
     protected void tokenUpdatedCallLoadDataAgain() {
-
+        //nothing
     }
 
     @Override
     protected void loadData() {
-
+        sendData();
     }
 
     public List<SubTask> getChosenSubTasks() {
@@ -159,6 +203,8 @@ public class ResultPresenter extends BasePresenter<ResultView> {
     }
 
     public void findNonSelectedSubTasks() {
+        nonSelectedSubTasks.clear(); // clear for removing bugs
+
         for (SubTask task : allSubTasks) {
             if (!chosenSubTasks.contains(task)) {
                 nonSelectedSubTasks.add(task);

@@ -94,7 +94,6 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
             } else if (adapter.getNomenclatureList().size() == 0) {
                 Toast.makeText(getActivity(), "Список элементов пуст", Toast.LENGTH_SHORT).show();
             } else {
-
                 if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
                     //TODO SAVE DATA
 

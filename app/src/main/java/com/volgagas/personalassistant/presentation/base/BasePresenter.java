@@ -41,7 +41,7 @@ public abstract class BasePresenter<S extends BaseView> extends MvpPresenter<S> 
     protected abstract void handlerErrorInSuccessfulResult(List<Response<Void>> result);
 
     protected void handlerAuthenticationRepeat() {
-        RxBus.getInstance().passActionForUpdateToken("UPDATE_TOKEN_PRESENTER");
+        Timber.d("HANDLER REPEAT");
     }
 
     protected abstract void tokenUpdatedCallLoadDataAgain();
@@ -53,12 +53,7 @@ public abstract class BasePresenter<S extends BaseView> extends MvpPresenter<S> 
      * exception
      */
     public void setListenerUpdatedToken() {
-        Timber.d("setListenerUpdatedToken!");
-        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
-                .subscribeOn(Schedulers.io())
-                .filter(result -> result.equals("UPDATE_TOKEN_PRESENTER"))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> loadData()));
+
     }
 
     public void clearListenerIfScreenNotVisible() {

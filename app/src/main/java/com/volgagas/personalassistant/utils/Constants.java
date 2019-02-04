@@ -13,14 +13,15 @@ public class Constants {
     public static final String UNIFORM_REQUESTS_TO_USER_URL = "(guid'59C1EE57-5726-4B27-B9DD-B39775E170D5')";
 
     //MAIN reference. It works on many place. Don't ignore this
-    public static String DYNAMICS_365 = "https://volgagas-prod81363c7256ed48a071bdevaos.cloudax.dynamics.com";
+    public static String DYNAMICS_365 = "https://volgagas-testdevaos.sandbox.ax.dynamics.com";
     public static final String GRAPH = "https://volagas.sharepoint.com";
     public static final String SHARE_POINT_DOC_API_WEB = "https://volagas.sharepoint.com/doc/_api/web";
     public static final String SHARE_POINT_API_WEB = "https://volagas.sharepoint.com/_api/web";
 
     //references for shared preference inside setting activity
-    public static final String DYNAMICS_TST = "https://volgagas-tstdevaos.sandbox.ax.dynamics.com";
+    public static final String DYNAMICS_TEST = "https://volgagas-testdevaos.sandbox.ax.dynamics.com";
     public static final String DYNAMICS_PROD = "https://volgagas-prod81363c7256ed48a071bdevaos.cloudax.dynamics.com";
+    public static final String DYNAMICS_FAKE_URL = "https://volgagas-tstlalala.sandbox.ax.dynamics.com";
 
     public static final String AUTH_URL = "https://login.microsoftonline.com/common/oauth2/authorize";
 

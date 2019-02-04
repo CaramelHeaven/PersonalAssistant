@@ -14,7 +14,7 @@ import java.util.List;
 public class TaskContentManager {
     private static TaskContentManager INSTANCE;
     private Task task;
-    private List<SubTask> subTasks;
+    private List<SubTask> subTasks; // selected current tasks
 
     public static TaskContentManager getInstance() {
         if (INSTANCE == null) {

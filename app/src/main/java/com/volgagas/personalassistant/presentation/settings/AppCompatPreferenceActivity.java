@@ -49,7 +49,7 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     Timber.d("RX RESULT");
-                    if (result.contains(Constants.DYNAMICS_PROD) || result.contains(Constants.DYNAMICS_TST)) {
+                    if (result.contains(Constants.DYNAMICS_PROD) || result.contains(Constants.DYNAMICS_TEST)) {
                         refreshTokens(result);
                     }
                 }));

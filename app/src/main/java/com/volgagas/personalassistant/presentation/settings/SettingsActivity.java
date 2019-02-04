@@ -15,8 +15,6 @@ import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 
-import timber.log.Timber;
-
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
  * handset devices, settings are presented as a single list. On tablets,
@@ -127,7 +125,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             String referenceHttp = "";
             if (value.contains("tst")) {
-                referenceHttp = Constants.DYNAMICS_TST;
+                referenceHttp = Constants.DYNAMICS_TEST;
             } else if (value.contains("prod")) {
                 referenceHttp = Constants.DYNAMICS_PROD;
             }

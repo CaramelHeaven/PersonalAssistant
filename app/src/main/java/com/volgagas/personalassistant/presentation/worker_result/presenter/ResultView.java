@@ -14,4 +14,10 @@ public interface ResultView extends BaseView {
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
     void callbackFromResultDialog(boolean bool);
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void timeout();
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void showError(String error);
 }

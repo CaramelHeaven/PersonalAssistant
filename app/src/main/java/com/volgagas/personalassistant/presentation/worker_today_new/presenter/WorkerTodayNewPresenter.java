@@ -7,6 +7,7 @@ import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import java.util.List;
 
@@ -23,11 +24,16 @@ import timber.log.Timber;
 public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Task>> {
     private CompositeDisposable disposable;
     private MainRepository repository;
-    int k = 0;
 
     public WorkerTodayNewPresenter() {
         repository = MainRemoteRepository.getInstance();
         disposable = new CompositeDisposable();
+
+        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
+                .subscribeOn(Schedulers.io())
+                .filter(result -> result.equals("UPDATE_TOKEN_PRESENTER"))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> loadData()));
     }
 
     @Override
@@ -54,13 +60,11 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
         getViewState().showItems(tasks);
     }
 
-
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
         Timber.d("thowable: " + throwable.getMessage());
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
-            Timber.d("REPEAT");
-            handlerAuthenticationRepeat();
+            RxBus.getInstance().passActionForUpdateToken("UPDATE_TOKEN_PRESENTER");
         } else {
             Timber.d("THROWABLE: " + throwable.getMessage());
         }

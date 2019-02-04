@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.worker_result;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
@@ -20,6 +21,8 @@ import com.volgagas.personalassistant.utils.callbacks.OnResultItemClick;
 
 import java.io.File;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 13:43, 06/12/2018.
@@ -49,6 +52,14 @@ public class ResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         SubTaskVH subTaskVH = (SubTaskVH) viewHolder;
 
         subTaskVH.tvDescription.setText(subTaskList.get(i).getDescription());
+
+        if (subTaskList.get(i).isStateBox()) {
+            subTaskVH.rlStatus.setBackgroundColor(subTaskVH.rlStatus.getContext()
+                    .getResources().getColor(R.color.colorPrimary));
+        } else {
+            subTaskVH.rlStatus.setBackgroundColor(subTaskVH.rlStatus.getContext()
+                    .getResources().getColor(R.color.colorBackgroundStatusNeutral));
+        }
 
         if (subTaskList.get(i).getFilePath() != null && subTaskList.get(i).getFilePath().length() > 0) {
             Glide.with(subTaskVH.ivImage.getContext())
@@ -93,6 +104,12 @@ public class ResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyItemChanged(position);
     }
 
+    public void updateStateSubTask(int position, boolean status) {
+        Timber.d("CHECK STATUS: " + status);
+        subTaskList.get(position).setStateBox(status);
+        notifyItemChanged(position);
+    }
+
     class SubTaskVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvDescription;
         CardView cardView;
@@ -100,8 +117,6 @@ public class ResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         RelativeLayout rlStatus;
         ImageView ivImage;
         Button btnCancel;
-
-        private boolean status = false;
 
         public SubTaskVH(@NonNull View itemView) {
             super(itemView);
@@ -126,12 +141,11 @@ public class ResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     onResultItemClick.makePhotoClick(getAdapterPosition());
                 }
             } else {
-                if (status) {
-                    status = false;
-                    onResultItemClick.onClick(getAdapterPosition(), rlStatus, status);
+                if (((ColorDrawable) rlStatus.getBackground()).getColor() ==
+                        rlStatus.getContext().getResources().getColor(R.color.colorPrimary)) {
+                    onResultItemClick.onClick(getAdapterPosition(), false);
                 } else {
-                    status = true;
-                    onResultItemClick.onClick(getAdapterPosition(), rlStatus, status);
+                    onResultItemClick.onClick(getAdapterPosition(), true);
                 }
             }
         }

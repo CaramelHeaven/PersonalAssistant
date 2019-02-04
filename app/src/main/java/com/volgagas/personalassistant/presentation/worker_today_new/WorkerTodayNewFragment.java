@@ -85,6 +85,16 @@ public class WorkerTodayNewFragment extends BaseFragment implements WorkerTodayN
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
     public void onDestroyView() {
         swipeRefresh = null;
         recyclerView = null;

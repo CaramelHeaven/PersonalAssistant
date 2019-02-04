@@ -28,10 +28,8 @@ public class CacheUser {
 
     public static User getUser() {
         if (user == null) {
-            Timber.d("CREATE USER INSTANCE");
             user = new User();
         }
-        Timber.d("SIMPLE GET USER");
         return user;
     }
 

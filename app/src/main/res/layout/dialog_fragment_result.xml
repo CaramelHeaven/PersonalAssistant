@@ -17,6 +17,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/tv_kek"
         android:layout_below="@id/tv_title"
         android:layout_marginTop="8dp" />
 
@@ -24,17 +25,17 @@
         android:id="@+id/tv_kek"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/recyclerView"
+        android:layout_above="@id/ll_container"
         android:gravity="center"
         android:text="Отменить мероприятия или вернуться позже?"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_16sp" />
 
     <LinearLayout
+        android:id="@+id/ll_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_kek"
-        android:layout_marginTop="8dp"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <Button
@@ -42,7 +43,8 @@
             style="@style/AppTheme.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="Отменить" />
@@ -52,7 +54,8 @@
             style="@style/AppTheme.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="Выполнить позже" />

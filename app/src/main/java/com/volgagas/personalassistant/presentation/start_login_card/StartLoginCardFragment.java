@@ -7,14 +7,23 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.utils.bus.RxBus;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by CaramelHeaven on 11:56, 01/02/2019.
  */
 public class StartLoginCardFragment extends Fragment {
+
+    private CompositeDisposable disposable;
+
+    private TextView tvTitle;
+
     public static StartLoginCardFragment newInstance() {
 
         Bundle args = new Bundle();
@@ -32,7 +41,22 @@ public class StartLoginCardFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        tvTitle = view.findViewById(R.id.tv_title);
+
+        disposable = new CompositeDisposable();
+
+        disposable.add(RxBus.getInstance().getCommonChannel()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    switch (result) {
+                        case "TITLE_HIDE":
+                            tvTitle.setVisibility(View.GONE);
+                            break;
+                        case "TITLE_SHOW":
+                            tvTitle.setVisibility(View.VISIBLE);
+                            break;
+                    }
+                }));
     }
 
     @Override
@@ -43,6 +67,8 @@ public class StartLoginCardFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        disposable.clear();
+        tvTitle = null;
         super.onDestroyView();
     }
 }

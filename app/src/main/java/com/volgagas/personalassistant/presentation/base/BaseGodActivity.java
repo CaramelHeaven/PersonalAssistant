@@ -1,6 +1,8 @@
 package com.volgagas.personalassistant.presentation.base;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -28,11 +30,25 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
 
     private CompositeDisposable disposable;
     private AuthenticationContext authContext;
+    private String d365UserCache;
+    private String dynamicsCurrentHttp;
+    private String sharePointCache;
+
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         disposable = new CompositeDisposable();
+        sharedPreferences = this.getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
+
+        d365UserCache = sharedPreferences.getString(Constants.SP_D365_USER_CACHE, "");
+        sharePointCache = sharedPreferences.getString(Constants.SP_SHARE_POINT_USER_CACHE, "");
+        dynamicsCurrentHttp = sharedPreferences.getString(Constants.SP_CURRENT_HTTP, "");
+
+        if (dynamicsCurrentHttp.equals("")) {
+            dynamicsCurrentHttp = Constants.DYNAMICS_365;
+        }
     }
 
     @Override
@@ -43,14 +59,13 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
+    protected void onPause() {
         disposable.clear();
-        super.onStop();
+        super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        Timber.d("ON DESTROY GOD ACTIVITY");
         disposable.clear();
         try {
             if (authContext != null) {
@@ -78,10 +93,13 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      * Class handler UpdateTokenHandler
      */
     private void updateToken() {
-        disposable.add(RxBus.getInstance().getUpdates().subscribe(result -> {
-            Timber.d("REFRESHING MY TOKENS: " + result);
-            refreshTokens(result);
-        }));
+        disposable.add(RxBus.getInstance().getUpdates()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    Timber.d("check result: " + result);
+                    Timber.d("LALAL: " + this.getClass().getSimpleName());
+                    refreshTokens(result);
+                }));
     }
 
     /**
@@ -90,14 +108,13 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     private void listenerForRefreshTokens() {
         disposable.add(CommonChannel.getInstance().getTwoPermissionsSubject()
                 .subscribeOn(Schedulers.io())
+                .filter(TwoPermissions::allValuesIsTrue)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    if (result.allValuesIsTrue()) {
-                        Timber.d("COMPLETED LALALA");
-                        RxBus.getInstance().passUpdatedToken(TwoPermissions.getInstance().getUpdatedString());
+                    Timber.d("two permissions subject completed: send data");
+                    RxBus.getInstance().passUpdatedToken(TwoPermissions.getInstance().getUpdatedString());
 
-                        TwoPermissions.getInstance().resetValues();
-                    }
+                    TwoPermissions.getInstance().resetValues();
                 }));
     }
 
@@ -106,13 +123,19 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      * dynamics 365 after - refresh SharePoint
      */
     private void refreshTokens(String result) {
+        Timber.d("CHECK RESULT: " + result);
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
 
         TwoPermissions.getInstance().resetValues();
         TwoPermissions.getInstance().setUpdatedString(result);
 
-        authContext.acquireToken(BaseGodActivity.this, Constants.DYNAMICS_365, Constants.CLIENT,
-                Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
+        if (d365UserCache.equals("")) {
+            authContext.acquireToken(BaseGodActivity.this, Constants.DYNAMICS_365, Constants.CLIENT,
+                    Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
+        } else {
+            Timber.d("CALLED SYLENT");
+            authContext.acquireTokenSilentAsync(dynamicsCurrentHttp, Constants.CLIENT, d365UserCache, d365Callback);
+        }
     }
 
     /**
@@ -122,8 +145,8 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
         @Override
         public void onSuccess(AuthenticationResult result) {
             if (result.getAccessToken() != null) {
+                Timber.d("CALLED CHECK");
                 CacheUser.getUser().setUserCliendId(result.getClientId());
-                Timber.d("DIFFERENCE BETWEEN: " + result.getAccessToken());
                 CacheUser.getUser().setDynamics365Token(result.getAccessToken());
 
                 //Refresh d365 retrofit object
@@ -133,8 +156,14 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
                 permissions.setD365Token(true);
                 CommonChannel.sendTwoPermissions(permissions);
 
-                authContext.acquireToken(BaseGodActivity.this, Constants.GRAPH, Constants.CLIENT,
-                        Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", spCallback);
+                if (sharePointCache.equals("")) {
+                    authContext.acquireToken(BaseGodActivity.this, Constants.GRAPH, Constants.CLIENT,
+                            Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", spCallback);
+                } else {
+                    authContext.acquireTokenSilentAsync(Constants.GRAPH, Constants.CLIENT,
+                            sharePointCache, spCallback);
+                }
+
             }
         }
 

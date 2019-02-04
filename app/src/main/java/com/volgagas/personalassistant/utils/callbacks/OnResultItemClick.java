@@ -7,7 +7,7 @@ import android.view.View;
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public interface OnResultItemClick {
-    void onClick(int position, View view, boolean status);
+    void onClick(int position, boolean status);
 
     void makePhotoClick(int position);
 

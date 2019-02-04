@@ -19,6 +19,8 @@ import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Created by CaramelHeaven on 12:50, 31/01/2019.
@@ -55,7 +57,9 @@ public class ResultDialogFragment extends MvpAppCompatDialogFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        adapter = new ResultDFAdapter(getArguments().getParcelableArrayList("ARRAY"));
+        Set<SubTask> removeDuplicated = new LinkedHashSet<>(getArguments().getParcelableArrayList("ARRAY"));
+
+        adapter = new ResultDFAdapter(new ArrayList<>(removeDuplicated));
         recyclerView.setAdapter(adapter);
 
         btnCompleted.setOnClickListener(v -> {

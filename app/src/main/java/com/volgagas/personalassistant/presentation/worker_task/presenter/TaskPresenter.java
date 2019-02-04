@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.worker_task.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
@@ -8,6 +9,7 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.common.GlobalTask;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.services.SendTaskStartedWorker;
 
 import java.util.List;
@@ -52,8 +54,15 @@ public class TaskPresenter extends BasePresenter<TaskView<SubTaskViewer>> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-        getViewState().hideProgress();
-        getViewState().showError();
+        Timber.d("thowable: " + throwable.getMessage());
+        if (throwable.getMessage().contains(Constants.HTTP_401)) {
+            Timber.d("REPEAT");
+            handlerAuthenticationRepeat();
+        } else {
+            getViewState().hideProgress();
+            Timber.d("THROWABLE: " + throwable.getMessage());
+            getViewState().showError();
+        }
     }
 
     @Override
@@ -66,7 +75,9 @@ public class TaskPresenter extends BasePresenter<TaskView<SubTaskViewer>> {
 
     }
 
+    @Override
     protected void loadData() {
+        Timber.d("CALLED LOAD DATA AGAIN");
         getViewState().showProgress();
         if (status.equals("TODAY") && task instanceof Task) {
             disposable.add(repository.getSubTasksToday(((Task) task).getIdTask())
@@ -74,6 +85,7 @@ public class TaskPresenter extends BasePresenter<TaskView<SubTaskViewer>> {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(result -> {
                         getViewState().hideProgress();
+                        Timber.d("CHECK RESULT: " + result);
                         getViewState().showItems(result);
                     }, this::handlerErrorsFromBadRequests));
         } else if (status.equals("HISTORY") && task instanceof TaskHistory) {
@@ -86,6 +98,7 @@ public class TaskPresenter extends BasePresenter<TaskView<SubTaskViewer>> {
                     }, this::handlerErrorsFromBadRequests));
         }
     }
+
 
     private void startedBackgroundService() {
         OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(SendTaskStartedWorker.class)

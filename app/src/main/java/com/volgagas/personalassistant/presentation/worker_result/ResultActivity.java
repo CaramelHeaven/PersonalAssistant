@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -49,11 +50,6 @@ public class ResultActivity extends BaseActivity implements ResultView {
     @InjectPresenter
     ResultPresenter presenter;
 
-    @ProvidePresenter
-    ResultPresenter provideResultPresenter() {
-        return new ResultPresenter(((Task) getIntent().getParcelableExtra("TASK")).getSubTasks());
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,15 +63,19 @@ public class ResultActivity extends BaseActivity implements ResultView {
         provideRecyclerAndAdapter(TaskContentManager.getInstance().getSubTasks());
 
         btnStartCompleted.setOnClickListener(v -> {
-            if (presenter.getChosenSubTasks().size() == presenter.getAllSubTasks().size()) {
+            Timber.d("CHECK: " + presenter.getChosenSubTasks().size());
+            Timber.d("prenseter: " + presenter.getAllSubTasks().size());
+            if (presenter.getChosenSubTasks().size() == 0) {
+                Toasty.error(ResultActivity.this, "Задачи не добавлены").show();
+            } else if (presenter.getChosenSubTasks().size() == presenter.getAllSubTasks().size()) {
+
                 showAlScanCard(presenter.getChosenSubTasks().size());
             } else if (presenter.getChosenSubTasks().size() != 0) {
                 presenter.findNonSelectedSubTasks();
+                Timber.d("chosen subtassk: " + presenter.getNonSelectedSubTasks().size());
                 ResultDialogFragment fragment = ResultDialogFragment
                         .newInstance(new ArrayList<>(presenter.getNonSelectedSubTasks()));
                 fragment.show(getSupportFragmentManager(), null);
-            } else {
-                Toasty.error(ResultActivity.this, "Задачи не добавлены").show();
             }
         });
 
@@ -142,14 +142,14 @@ public class ResultActivity extends BaseActivity implements ResultView {
 
         adapter.setOnResultItemClick(new OnResultItemClick() {
             @Override
-            public void onClick(int position, View view, boolean status) {
+            public void onClick(int position, boolean status) {
                 if (status) {
                     presenter.addChosenSubTask(adapter.getItemByPos(position));
-                    view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     presenter.removeChosenSubTask(adapter.getItemByPos(position));
-                    view.setBackgroundColor(getResources().getColor(R.color.colorBackgroundStatusNeutral));
                 }
+
+                adapter.updateStateSubTask(position, status);
             }
 
             @Override
@@ -241,6 +241,23 @@ public class ResultActivity extends BaseActivity implements ResultView {
         presenter.setStoppingTasks(bool);
 
         showAlScanCard(presenter.getChosenSubTasks().size());
+    }
+
+    @Override
+    public void timeout() {
+        if (progressDialog != null) {
+            progressDialog.cancel();
+        }
+
+        Toast.makeText(this, "Проблемы с сетью. Попробуйте еще раз", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showError(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+        if (progressDialog != null) {
+            progressDialog.cancel();
+        }
     }
 
     @Override

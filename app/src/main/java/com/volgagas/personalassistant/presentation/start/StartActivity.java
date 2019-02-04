@@ -55,6 +55,10 @@ public class StartActivity extends BaseActivity implements StartView {
 
         setPermissionToEnableNfc(false);
 
+        //clear permissions
+        ThreePermissions permissions = ThreePermissions.getInstance();
+        permissions.resetValues();
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, StartSplashFragment.newInstance())
@@ -64,16 +68,12 @@ public class StartActivity extends BaseActivity implements StartView {
         sharedPreferences = this.getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
 
         d365Cache = sharedPreferences.getString(Constants.SP_D365_USER_CACHE, "");
-        Timber.d("onCreate: " + d365Cache);
         sharePointCache = sharedPreferences.getString(Constants.SP_SHARE_POINT_USER_CACHE, "");
-        Timber.d("ON LALALLA");
         dynamicsCurrentHttp = sharedPreferences.getString(Constants.SP_CURRENT_HTTP, "");
 
         if (dynamicsCurrentHttp.equals("")) {
             dynamicsCurrentHttp = Constants.DYNAMICS_PROD;
         }
-
-        Timber.d("IM HERE AGAIN: " + dynamicsCurrentHttp);
 
         if (d365Cache.equals("")) {
             Timber.d("SIMPLE");
@@ -225,8 +225,6 @@ public class StartActivity extends BaseActivity implements StartView {
             ThreePermissions permissions = ThreePermissions.getInstance();
             permissions.setSharePointToken(true);
             CommonChannel.sendPermissions(permissions);
-
-            RxBus.getInstance().passDataToCommonChannel("ENABLE_NFC");
 
             //change screen for login via card
             getSupportFragmentManager()

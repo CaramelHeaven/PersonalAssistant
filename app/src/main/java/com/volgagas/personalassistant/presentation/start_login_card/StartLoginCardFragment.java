@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
 /**
  * Created by CaramelHeaven on 11:56, 01/02/2019.
@@ -32,6 +33,12 @@ public class StartLoginCardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        RxBus.getInstance().passDataToCommonChannel("ENABLE_NFC");
     }
 
     @Override

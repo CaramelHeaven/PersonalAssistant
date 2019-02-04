@@ -65,6 +65,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
 
     @Override
     protected void onPause() {
+        Timber.d("ON STOP");
         disposable.clear();
         super.onPause();
     }
@@ -100,11 +101,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     private void updateToken() {
         disposable.add(RxBus.getInstance().getUpdates()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    Timber.d("check result: " + result);
-                    Timber.d("LALAL: " + this.getClass().getSimpleName());
-                    refreshTokens(result);
-                }));
+                .subscribe(this::refreshTokens));
     }
 
     /**
@@ -116,7 +113,6 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
                 .filter(TwoPermissions::allValuesIsTrue)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    Timber.d("two permissions subject completed: send data");
                     RxBus.getInstance().passUpdatedToken(TwoPermissions.getInstance().getUpdatedString());
 
                     TwoPermissions.getInstance().resetValues();
@@ -126,9 +122,10 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     /**
      * Base method for refresh tokens from global bus listener in here. First of all - refresh
      * dynamics 365 after - refresh SharePoint
+     *
+     * @param result - string which define where we send observer data for update request to server
      */
     private void refreshTokens(String result) {
-        Timber.d("CHECK RESULT: " + result);
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
 
         TwoPermissions.getInstance().resetValues();
@@ -138,7 +135,6 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
             authContext.acquireToken(BaseGodActivity.this, Constants.DYNAMICS_365, Constants.CLIENT,
                     Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
         } else {
-            Timber.d("CALLED SYLENT");
             authContext.acquireTokenSilentAsync(dynamicsCurrentHttp, Constants.CLIENT, d365UserCache, d365Callback);
         }
     }

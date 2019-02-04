@@ -15,4 +15,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ImageView
+        android:id="@+id/iv_empty_tasks"
+        android:layout_width="150dp"
+        android:layout_height="130dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_picture_empty_tasks"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_empty_tasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_empty_tasks"
+        android:layout_centerInParent="true"
+        android:text="На сегодня задачи выполнены"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
 </RelativeLayout>

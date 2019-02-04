@@ -6,21 +6,25 @@ public abstract class BaseFragment extends MvpAppCompatFragment implements Prese
     protected BasePresenter basePresenter;
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         initialBasePresenter();
-
         if (basePresenter != null) {
             basePresenter.setListenerUpdatedToken();
         }
     }
 
     @Override
-    public void onStop() {
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
         if (basePresenter != null) {
             basePresenter.clearListenerIfScreenNotVisible();
         }
-        super.onStop();
+        super.onPause();
     }
 
     @Override

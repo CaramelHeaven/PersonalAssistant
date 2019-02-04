@@ -52,4 +52,10 @@ public class Constants {
     //other
     public static final String ADD_MORE_NOMENCLATURES = "ADD_MORE_NOMENCLATURES";
     public static final String USUAL = "USUAL";
+
+    //refreshing key-word for each screen
+    public static final String WORKER_TODAY_NEW_PRESENTER = "WORKER_TODAY_NEW_PRESENTER";
+    public static final String WORKER_GPA_PRESENTER = "WORKER_GPA_PRESENTER";
+    public static final String WORKER_RESULT_PRESENTER = "WORKER_RESULT_PRESENTER";
+    public static final String WORKER_NOMENCLATURE_PRESENTER = "WORKER_NOMENCLATURE_PRESENTER";
 }

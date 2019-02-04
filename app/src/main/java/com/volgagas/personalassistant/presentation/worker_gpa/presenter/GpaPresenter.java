@@ -51,7 +51,7 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
         disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
                 .subscribeOn(Schedulers.io())
-                .filter(result -> result.equals("UPDATE_TOKEN_PRESENTER"))
+                .filter(result -> result.equals(Constants.WORKER_GPA_PRESENTER))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     Timber.d("IM HERE FUCK YOU");
@@ -135,14 +135,14 @@ public class GpaPresenter extends BasePresenter<GpaView> {
             switch (error) {
                 case "401":
                     Timber.d("EACH ONE");
-                    RxBus.getInstance().passActionForUpdateToken("UPDATE_TOKEN_PRESENTER");
+                    RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_GPA_PRESENTER);
                     break;
                 case "400":
                     getViewState().showError("Ошибка на стороне сервера");
                     break;
-                    default:
-                        getViewState().completed();
-                        break;
+                default:
+                    getViewState().completed();
+                    break;
             }
         } else {
             getViewState().completed();

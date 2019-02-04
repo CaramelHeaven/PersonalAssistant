@@ -60,15 +60,9 @@ public class ResultPresenter extends BasePresenter<ResultView> {
 
         disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
                 .subscribeOn(Schedulers.io())
-                .filter(result -> result.equals("UPDATE_TOKEN_PRESENTER"))
+                .filter(result -> result.equals(Constants.WORKER_RESULT_PRESENTER))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    if (isStoppingTasks()) {
-                        sendDataWithStoppingSubTasks();
-                    } else {
-                        sendDataWithoutStoppingSubTasks();
-                    }
-                }));
+                .subscribe(result -> sendToServer()));
     }
 
     /**
@@ -76,7 +70,7 @@ public class ResultPresenter extends BasePresenter<ResultView> {
      */
     public void sendData() {
         getViewState().showSendStatus();
-        RxBus.getInstance().passActionForUpdateToken("UPDATE_TOKEN_PRESENTER");
+        RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_RESULT_PRESENTER);
     }
 
     /**
@@ -107,7 +101,7 @@ public class ResultPresenter extends BasePresenter<ResultView> {
         return object;
     }
 
-    private void sendDataWithoutStoppingSubTasks() {
+    private void sendToServer() {
         JsonObject completedJson = new JsonObject();
         JsonObject canceledJson = new JsonObject();
 
@@ -130,18 +124,20 @@ public class ResultPresenter extends BasePresenter<ResultView> {
                         repository.sendImageToDynamics(mapImage(subTask))
                                 .subscribeOn(Schedulers.computation()))
                 .toList()
-                .observeOn(Schedulers.io())
-                .flatMap((Function<List<Response<Void>>, SingleSource<List<SubTask>>>) objects ->
-                        Single.just(nonSelectedSubTasks))
-                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
-                .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
-                        repository.sendCanceledSubTasks(canceledJson, subTask.getIdActivity()))
-                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResult, throwable -> {
-                    if (throwable.getMessage().equals("timeout")) {
-                        getViewState().timeout();
-                    }
+                .subscribe(result -> {
+                    //cancel or stop nonselected tasks
+//                    Single.just(nonSelectedSubTasks))
+//                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
+//                            .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
+//                                    repository.sendCanceledSubTasks(canceledJson, subTask.getIdActivity()))
+//                            .toList()
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .subscribe(this::successfulResult, throwable -> {
+//                                if (throwable.getMessage().equals("timeout")) {
+//                                    getViewState().timeout();
+//                                }
+//                            })
                 }));
     }
 

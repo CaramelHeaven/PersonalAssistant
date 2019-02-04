@@ -31,7 +31,7 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
 
         disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
                 .subscribeOn(Schedulers.io())
-                .filter(result -> result.equals("UPDATE_TOKEN_PRESENTER"))
+                .filter(result -> result.equals(Constants.WORKER_TODAY_NEW_PRESENTER))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> loadData()));
     }
@@ -64,7 +64,7 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
         Timber.d("thowable: " + throwable.getMessage());
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
-            RxBus.getInstance().passActionForUpdateToken("UPDATE_TOKEN_PRESENTER");
+            RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_TODAY_NEW_PRESENTER);
         } else {
             Timber.d("THROWABLE: " + throwable.getMessage());
         }

@@ -35,8 +35,8 @@ public interface BaseApiService {
     @GET(Constants.MY_HOST + "database/findUser")
     Single<UserResponse> getCardInfo(@Query("userNumbers") String numbers);
 
-    @GET(Constants.MY_HOST + "database/findNomenclature")
-    Single<NomenclatureHostResponse> findNomenclatureCardInfo(@Query("nomenclatureNumbers") String numbers);
+    @GET(Constants.MY_HOST + "database/nomenclature")
+    Single<NomenclatureHostResponse> findNomenclatureCardInfo(@Query("numbers") String numbers);
 
     @GET(Constants.MY_HOST + "database/getAllUsers")
     Single<List<UserResponse>> getSearchedUsers();

@@ -14,14 +14,12 @@ public class NomenclatureHostRespToNomenclatureHost extends Mapper<NomenclatureH
 
     @Override
     public Nomenclature map(NomenclatureHostResponse value) {
-        Nomenclature nomenclatureHost = new Nomenclature("a", 0, "");
-        fillData(nomenclatureHost, value);
-
-        return nomenclatureHost;
+        //fillData(nomenclatureHost, value);
+        return new Nomenclature(value.getName(), 0, "");
     }
 
     @Override
     protected void fillData(Nomenclature nomenclatureHost, NomenclatureHostResponse response) {
-        Timber.d("fill datq");
+        //nothing
     }
 }

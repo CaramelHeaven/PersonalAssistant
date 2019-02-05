@@ -15,7 +15,9 @@ import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import timber.log.Timber;
 
@@ -85,6 +87,14 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         nomenclatureList.addAll(values);
         notifyDataSetChanged();
         //notifyItemRangeInserted(0, nomenclatureList.size() - 1);
+    }
+
+    public void addItem(Nomenclature data) {
+        if (!nomenclatureList.contains(data)) {
+            nomenclatureList.add(data);
+        }
+
+        notifyItemChanged(nomenclatureList.size() - 2);
     }
 
     public List<Nomenclature> getNomenclatureList() {

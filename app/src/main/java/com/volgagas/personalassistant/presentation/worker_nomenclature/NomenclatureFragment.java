@@ -157,7 +157,12 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
 
     @Override
     public void addNomenclatureToBaseList(Nomenclature value) {
+        adapter.addItem(value);
+    }
 
+    @Override
+    public void errorNomenclature() {
+        Toast.makeText(getActivity(), "Номенклатура не найдена", Toast.LENGTH_SHORT).show();
     }
 
     public void showErrorCard() {

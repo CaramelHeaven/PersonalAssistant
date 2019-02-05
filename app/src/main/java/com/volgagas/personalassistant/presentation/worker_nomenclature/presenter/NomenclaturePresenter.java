@@ -74,7 +74,16 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
     }
 
     private void addDataFromNfc(String data) {
-        Timber.d("SCANNED AND ADD: " + data);
+        disposable.add(repository.findNomenclatureByCardInfo(data)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result.getName().equals("")) {
+                        getViewState().errorNomenclature();
+                    } else {
+                        getViewState().addNomenclatureToBaseList(result);
+                    }
+                }));
     }
 
     @SuppressLint("CheckResult")

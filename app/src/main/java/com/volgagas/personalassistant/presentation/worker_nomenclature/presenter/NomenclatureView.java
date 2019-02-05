@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature.presenter;
 
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
@@ -17,4 +18,7 @@ public interface NomenclatureView extends BaseView {
 
     @StateStrategyType(value = SingleStateStrategy.class)
     void addNomenclatureToBaseList(Nomenclature value);
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void errorNomenclature();
 }

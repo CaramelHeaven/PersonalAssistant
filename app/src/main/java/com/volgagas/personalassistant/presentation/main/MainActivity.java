@@ -242,8 +242,4 @@ public class MainActivity extends BaseActivity implements MainView {
         tvCategory.setText(CacheUser.getUser().getPosition());
     }
 
-    @Override
-    public void initialBasePresenter() {
-        //nothing
-    }
 }

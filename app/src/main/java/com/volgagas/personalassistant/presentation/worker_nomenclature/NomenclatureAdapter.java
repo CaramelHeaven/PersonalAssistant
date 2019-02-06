@@ -136,6 +136,7 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     etCount.setText(String.valueOf(0));
                 }
 
+                etCount.setSelection(etCount.getText().length());
                 onButtonPlusMinusClickListener.onHandleCount(getAdapterPosition(), 0, count);
             });
 
@@ -150,6 +151,7 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
 
                 etCount.setText(String.valueOf(count));
+                etCount.setSelection(etCount.getText().length());
                 onButtonPlusMinusClickListener.onHandleCount(getAdapterPosition(), 1, count);
             });
         }

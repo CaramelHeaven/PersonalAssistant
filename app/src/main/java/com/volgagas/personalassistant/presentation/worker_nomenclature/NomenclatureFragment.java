@@ -25,6 +25,7 @@ import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseAc
 import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclaturePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclatureView;
+import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.NomenclatureBarcodeActivity;
 import com.volgagas.personalassistant.presentation.worker_result.ResultActivity;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
@@ -39,7 +40,7 @@ import es.dmoral.toasty.Toasty;
  */
 public class NomenclatureFragment extends BaseFragment implements NomenclatureView {
 
-    private Button btnConfirm;
+    private Button btnConfirm, btnToQRCode;
     private RecyclerView recyclerView;
     private Toolbar toolbar;
     private ProgressBar progressBar;
@@ -72,6 +73,7 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         progressBar = view.findViewById(R.id.progressBar);
         toolbar = view.findViewById(R.id.toolbar);
         btnConfirm = view.findViewById(R.id.btn_confirm);
+        btnToQRCode = view.findViewById(R.id.btn_to_qr_code);
 
         if (getActivity() != null) {
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -106,6 +108,9 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
                 }
             }
         });
+
+        btnToQRCode.setOnClickListener(v ->
+                startActivity(new Intent(getActivity(), NomenclatureBarcodeActivity.class)));
 
         provideRecyclerAndAdapter();
 

@@ -19,11 +19,9 @@ import timber.log.Timber;
 public class WorkerHistoryPresenter extends BasePresenter<WorkerHistoryView<TaskHistory>> {
 
     private MainRepository repository;
-    private CompositeDisposable disposable;
 
     public WorkerHistoryPresenter() {
         repository = MainRemoteRepository.getInstance();
-        disposable = new CompositeDisposable();
     }
 
     @Override
@@ -48,10 +46,10 @@ public class WorkerHistoryPresenter extends BasePresenter<WorkerHistoryView<Task
     }
 
     protected void loadData() {
-        disposable.add(repository.getHistoryTasks()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResult, this::unsuccessfulResult));
+//        disposable.add(repository.getHistoryTasks()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(this::successfulResult, this::unsuccessfulResult));
     }
 
     private void successfulResult(List<TaskHistory> tasks) {

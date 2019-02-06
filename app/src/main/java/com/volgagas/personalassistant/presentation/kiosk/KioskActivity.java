@@ -225,8 +225,4 @@ public class KioskActivity extends BaseActivity implements KioskView {
         }
     }
 
-    @Override
-    public void initialBasePresenter() {
-        //nothing
-    }
 }

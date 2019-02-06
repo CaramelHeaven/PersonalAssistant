@@ -260,8 +260,4 @@ public class ResultActivity extends BaseActivity implements ResultView {
         }
     }
 
-    @Override
-    public void initialBasePresenter() {
-        setBasePresenter(presenter);
-    }
 }

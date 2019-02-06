@@ -97,9 +97,4 @@ public class GpaActivity extends BaseActivity implements GpaView {
     public void onBackPressed() {
         super.onBackPressed();
     }
-
-    @Override
-    public void initialBasePresenter() {
-        setBasePresenter(presenter);
-    }
 }

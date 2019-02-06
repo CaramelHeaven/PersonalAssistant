@@ -3,6 +3,7 @@ package com.volgagas.personalassistant.presentation.worker_nomenclature.presente
 import android.annotation.SuppressLint;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Task;
@@ -41,11 +42,18 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::addDataFromNfc, this::handlerErrorsFromBadRequests));
 
-        disposable.add(RxBus.getInstance().getCommonChannel()
+        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
                 .subscribeOn(Schedulers.io())
-                .filter(result -> result.equals("PERMISSION_TO_LOAD_NOMENCLATURES"))
+                .filter(result -> result.equals(Constants.WORKER_NOMENCLATURE_PRESENTER))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> loadData()));
+                .subscribe(result -> {
+                    Timber.d("IM HERE FUCK YOU");
+                    loadData();
+                }));
+
+        PersonalAssistant.provideDynamics365Auth("addasdas", "");
+
+        loadData();
     }
 
     @Override
@@ -57,7 +65,8 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
-            Timber.d("IM HERE");
+            Timber.d("401 pass");
+            RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_NOMENCLATURE_PRESENTER);
         } else {
             Timber.d("THROWABLE: " + throwable.getMessage());
         }

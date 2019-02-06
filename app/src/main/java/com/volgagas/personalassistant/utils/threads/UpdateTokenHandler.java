@@ -42,7 +42,7 @@ public class UpdateTokenHandler extends HandlerThread {
         public void run() {
             Timber.d("called periodic work");
 
-            RxBus.getInstance().passActionForUpdateToken("UPDATE_TOKEN_HANDLER");
+           // RxBus.getInstance().passActionForUpdateToken("UPDATE_TOKEN_HANDLER");
             handler.postDelayed(runnable, time);
         }
     };

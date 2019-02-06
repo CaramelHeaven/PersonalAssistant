@@ -36,6 +36,7 @@ public class RxBus {
     }
 
     public void passActionForUpdateToken(String action) {
+        Timber.d("send 1 raz: " + action);
         updateTokenSubject.onNext(action);
     }
 

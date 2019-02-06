@@ -20,6 +20,7 @@ import com.volgagas.personalassistant.utils.channels.check_auth.TwoPermissions;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -65,12 +66,20 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
 
     @Override
     protected void onPause() {
-        Timber.d("ON STOP");
+        Timber.d("onPause");
         super.onPause();
     }
 
     @Override
+    protected void onStop() {
+        disposable.clear();
+        Timber.d("onStop: "+BaseGodActivity.this.getClass().getSimpleName());
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
+        Timber.d("onDestroy");
         disposable.clear();
         try {
             if (authContext != null) {
@@ -100,6 +109,10 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     private void updateToken() {
         Timber.d("UPDATED TOKEN INITIAL: " + this.getClass().getSimpleName());
         disposable.add(RxBus.getInstance().getUpdates()
+                .doOnNext(s -> {
+                    Timber.d("and: " + BaseGodActivity.this.getClass().getSimpleName());
+                    Timber.d("CALL: " + s);
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::refreshTokens));
     }
@@ -113,6 +126,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
                 .filter(TwoPermissions::allValuesIsTrue)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
+                    Timber.d("LISTENER TOKENS. ALL SUCCESSFUL - PASS");
                     RxBus.getInstance().passUpdatedToken(TwoPermissions.getInstance().getUpdatedString());
 
                     TwoPermissions.getInstance().resetValues();
@@ -126,6 +140,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      * @param result - string which define where we send observer data for update request to server
      */
     private void refreshTokens(String result) {
+        Timber.d("refreshing start: " + BaseGodActivity.this.getClass().getSimpleName());
         Timber.d("REFRESH PRESENTER: " + result);
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
 

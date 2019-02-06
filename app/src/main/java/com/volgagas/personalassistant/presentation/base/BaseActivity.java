@@ -18,7 +18,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public abstract class BaseActivity extends BaseGodActivity implements Presentable {
+public abstract class BaseActivity extends BaseGodActivity {
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
     private IntentFilter[] intentFiltersArray;
     private String[][] techListArray;
@@ -26,8 +26,6 @@ public abstract class BaseActivity extends BaseGodActivity implements Presentabl
     private PendingIntent pendingIntent;
     private StringBuilder secretNumbers = null;
     private boolean permissionToEnableNfc = false;
-
-    private BasePresenter basePresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +74,6 @@ public abstract class BaseActivity extends BaseGodActivity implements Presentabl
 
     @Override
     protected void onDestroy() {
-        basePresenter = null;
         super.onDestroy();
     }
 
@@ -190,9 +187,5 @@ public abstract class BaseActivity extends BaseGodActivity implements Presentabl
      */
     public void handlerNFC() {
         onResume();
-    }
-
-    public void setBasePresenter(BasePresenter basePresenter) {
-        this.basePresenter = basePresenter;
     }
 }

@@ -27,6 +27,12 @@ public class NomenclatureDFPresenter extends BasePresenter<NomenclatureDFView<Ba
     }
 
     @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        loadData();
+    }
+
+    @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
 
     }
@@ -39,11 +45,15 @@ public class NomenclatureDFPresenter extends BasePresenter<NomenclatureDFView<Ba
     @Override
     protected void loadData() {
         getViewState().showProgress();
-        Timber.d("LOAD");
+        Timber.d("LOAD: " + barcodeResult);
     }
 
     private void successfulResult(Barcode barcode) {
         getViewState().hideProgress();
         getViewState().showBarcodeResult(barcode);
+    }
+
+    public String getBarcodeResult() {
+        return barcodeResult;
     }
 }

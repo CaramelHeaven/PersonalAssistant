@@ -52,6 +52,9 @@ public class Constants {
     //other
     public static final String ADD_MORE_NOMENCLATURES = "ADD_MORE_NOMENCLATURES";
     public static final String USUAL = "USUAL";
+    public static final String VIEW_IS_COLLAPSED = "VIEW_IS_COLLAPSED";
+    public static final String EXPANDED = "EXPANDED";
+    public static final String COLLAPSED = "COLLAPSED";
 
     //refreshing key-word for each screen
     public static final String WORKER_TODAY_NEW_PRESENTER = "WORKER_TODAY_NEW_PRESENTER";

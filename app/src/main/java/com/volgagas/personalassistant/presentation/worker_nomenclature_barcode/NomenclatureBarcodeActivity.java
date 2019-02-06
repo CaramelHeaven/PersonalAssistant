@@ -1,9 +1,12 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature_barcode;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -15,26 +18,35 @@ import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.presenter.NomenclatureBarcodePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.presenter.NomenclatureBarcodeView;
+import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode_list.BarcodeListFragment;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_dialog.NomenclatureDialogFragment;
+import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.animation.UtilsAnimationView;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import timber.log.Timber;
 
-public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements NomenclatureBarcodeView {
+public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements NomenclatureBarcodeView, Barcodable {
+
     private DecoratedBarcodeView barcodeView;
-    private RecyclerView recyclerView;
-    private Button btnCompleted;
+    private Button btnCompleted, btnBack;
+    private ImageButton ibShowItems;
+    private FrameLayout flContainerItems;
+    private DisplayMetrics displayMetrics;
+
 
     private BeepManager beepManager;
-    private BarcodeAdapter adapter;
     private String lastText; //prevent duplicate scan barcode
+    private boolean isShowItems = false;
+    private int height;
 
     @InjectPresenter
     NomenclatureBarcodePresenter presenter;
@@ -43,17 +55,67 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nomenclature_barcode);
-        recyclerView = findViewById(R.id.recyclerView);
+        ibShowItems = findViewById(R.id.ib_show_items);
         barcodeView = findViewById(R.id.barcode_scanner);
+        btnBack = findViewById(R.id.btn_back);
+        btnCompleted = findViewById(R.id.btn_completed);
+        flContainerItems = findViewById(R.id.frameLayout);
+
+        barcodeView.getStatusView().setGravity(Gravity.CENTER);
 
         initBarcode();
-        initListWithAdapter();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frameLayout, BarcodeListFragment.newInstance())
+                .commit();
+
+        ibShowItems.setOnClickListener(v -> {
+            Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+            isShowItems = !isShowItems;
+
+            if (isShowItems) {
+                ibShowItems.animate()
+                        .rotation(-180)
+                        .setDuration(300)
+                        .start();
+
+                if (UtilsAnimationView.getValueAnimator() != null && UtilsAnimationView.getValueAnimator()
+                        .isStarted()) {
+                    UtilsAnimationView.getValueAnimator().cancel();
+                }
+
+                barcodeView.pauseAndWait();
+                UtilsAnimationView.getInstance()
+                        .expandFromInitialPosToHalfOfPartScreen(height, flContainerItems, getApplicationContext());
+            } else {
+                ibShowItems.animate()
+                        .rotation(0)
+                        .setDuration(300)
+                        .start();
+
+                RxBus.getInstance().passDataToCommonChannel(Constants.COLLAPSED);
+
+                if (UtilsAnimationView.getValueAnimator() != null && UtilsAnimationView.getValueAnimator()
+                        .isStarted()) {
+                    UtilsAnimationView.getValueAnimator().cancel();
+                }
+
+                UtilsAnimationView.getInstance()
+                        .collapseFromHalfOfPartToInitialPos(50, flContainerItems, getApplicationContext());
+            }
+        });
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        height = displayMetrics.heightPixels;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        barcodeView.resume();
+        resumeBarcode();
     }
 
     @Override
@@ -73,14 +135,6 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
         beepManager = new BeepManager(this);
     }
 
-    private void initListWithAdapter() {
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
-        adapter = new BarcodeAdapter(new ArrayList<>());
-        recyclerView.setAdapter(adapter);
-    }
-
     private BarcodeCallback barcodeCallback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
@@ -98,9 +152,10 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
             NomenclatureDialogFragment fragment = NomenclatureDialogFragment
                     .newInstance(lastText);
             fragment.show(getSupportFragmentManager(), null);
-            //added image
-//            ImageView imageView = findViewById(R.id.barcodePreview);
-//            imageView.setImageBitmap(result.getBitmapWithResultPoints(Color.YELLOW));
+
+            CachePot.getInstance().putCacheBitmap(lastText, result.getBitmap());
+
+            barcodeView.pause();
         }
 
         @Override
@@ -110,8 +165,15 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
     };
 
     @Override
-    public void updateBarcodeFromNetwork(Barcode barcode) {
-        //UPDATED
-        adapter.addValue(barcode, adapter.getBarcodeList().size() - 1);
+    public void passBarcode(Barcode barcode) {
+        resumeBarcode();
+        Timber.d("barcode pass: " + barcode.toString());
+
+    }
+
+    @Override
+    public void resumeBarcode() {
+        Toast.makeText(this, "resume", Toast.LENGTH_SHORT).show();
+        barcodeView.resume();
     }
 }

@@ -20,8 +20,6 @@ public class RxBus {
     private PublishSubject<String> scanData = PublishSubject.create();
     //subscribe to updated token in each presenter for refreshing loadData
     private PublishSubject<String> subscribeToUpdateToken = PublishSubject.create();
-    //scan barcode result
-    private PublishSubject<Barcode> barcodeBus = PublishSubject.create();
     //result callback where we ask user: Want you to stop current activities or not, not refactor
     private PublishSubject<Boolean> resultCallback = PublishSubject.create();
 
@@ -36,7 +34,6 @@ public class RxBus {
     }
 
     public void passActionForUpdateToken(String action) {
-        Timber.d("send 1 raz: " + action);
         updateTokenSubject.onNext(action);
     }
 
@@ -58,10 +55,6 @@ public class RxBus {
 
     public PublishSubject<String> getSubscribeToUpdateToken() {
         return subscribeToUpdateToken;
-    }
-
-    public PublishSubject<Barcode> getBarcodeBus() {
-        return barcodeBus;
     }
 
     public PublishSubject<Boolean> getResultCallback() {

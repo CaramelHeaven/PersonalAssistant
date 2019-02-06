@@ -47,11 +47,6 @@ public class WorkerHistoryPresenter extends BasePresenter<WorkerHistoryView<Task
 
     }
 
-    @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
     protected void loadData() {
         disposable.add(repository.getHistoryTasks()
                 .subscribeOn(Schedulers.io())

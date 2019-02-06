@@ -38,11 +38,6 @@ public class QueryFullPresenter extends BasePresenter<QueryFullView> {
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

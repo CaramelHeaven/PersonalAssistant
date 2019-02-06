@@ -46,11 +46,6 @@ public class ChooseActivityPresenter extends BasePresenter<ChooseActivityView> {
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

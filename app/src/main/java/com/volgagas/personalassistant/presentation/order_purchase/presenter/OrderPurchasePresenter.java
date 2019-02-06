@@ -63,8 +63,4 @@ public class OrderPurchasePresenter extends BasePresenter<OrderPurchaseView<Orde
 
     }
 
-    @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
 }

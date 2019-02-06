@@ -66,7 +66,6 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     @Override
     protected void onPause() {
         Timber.d("ON STOP");
-        disposable.clear();
         super.onPause();
     }
 
@@ -99,6 +98,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      * Class handler UpdateTokenHandler
      */
     private void updateToken() {
+        Timber.d("UPDATED TOKEN INITIAL: " + this.getClass().getSimpleName());
         disposable.add(RxBus.getInstance().getUpdates()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::refreshTokens));
@@ -126,6 +126,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      * @param result - string which define where we send observer data for update request to server
      */
     private void refreshTokens(String result) {
+        Timber.d("REFRESH PRESENTER: " + result);
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
 
         TwoPermissions.getInstance().resetValues();

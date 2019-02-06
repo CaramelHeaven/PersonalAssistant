@@ -71,11 +71,6 @@ public class TaskPresenter extends BasePresenter<TaskView<SubTaskViewer>> {
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
         Timber.d("CALLED LOAD DATA AGAIN");
         getViewState().showProgress();

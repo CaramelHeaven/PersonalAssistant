@@ -44,20 +44,5 @@ public abstract class BasePresenter<S extends BaseView> extends MvpPresenter<S> 
         Timber.d("HANDLER REPEAT");
     }
 
-    protected abstract void tokenUpdatedCallLoadDataAgain();
-
     protected abstract void loadData();
-
-    /**
-     * If token updated, all listeners comes here and we repeat request which failed cause 401
-     * exception
-     */
-    public void setListenerUpdatedToken() {
-
-    }
-
-    public void clearListenerIfScreenNotVisible() {
-        Timber.d("listener removed!");
-        disposable.clear();
-    }
 }

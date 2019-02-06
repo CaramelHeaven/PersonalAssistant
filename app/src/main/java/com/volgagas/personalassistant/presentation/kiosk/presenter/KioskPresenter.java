@@ -88,11 +88,6 @@ public class KioskPresenter extends BasePresenter<KioskView> {
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

@@ -207,8 +207,4 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
         }
     }
 
-    @Override
-    public void initialBasePresenter() {
-        //nothing
-    }
 }

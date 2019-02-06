@@ -44,11 +44,6 @@ public class ChooseActionPresenter extends BasePresenter<ChooseView> {
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

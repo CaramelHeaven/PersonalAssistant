@@ -105,8 +105,4 @@ public class OrderNewAdditionallyFragment extends BaseFragment implements OrderN
         adapter.updateAdapter(orders);
     }
 
-    @Override
-    public void initialBasePresenter() {
-
-    }
 }

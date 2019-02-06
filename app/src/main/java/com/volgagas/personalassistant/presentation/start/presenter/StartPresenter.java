@@ -101,11 +101,6 @@ public class StartPresenter extends BasePresenter<StartView> {
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

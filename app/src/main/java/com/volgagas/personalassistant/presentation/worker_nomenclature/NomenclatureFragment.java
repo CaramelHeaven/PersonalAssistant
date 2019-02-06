@@ -169,8 +169,4 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         Toasty.error(getActivity(), "Приложена не ваша карта").show();
     }
 
-    @Override
-    public void initialBasePresenter() {
-        setBasePresenter(presenter);
-    }
 }

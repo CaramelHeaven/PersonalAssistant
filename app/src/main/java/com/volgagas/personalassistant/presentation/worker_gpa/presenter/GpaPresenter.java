@@ -57,6 +57,8 @@ public class GpaPresenter extends BasePresenter<GpaView> {
                     Timber.d("IM HERE FUCK YOU");
                     loadData();
                 }));
+
+        PersonalAssistant.provideDynamics365Auth("asf", "");
     }
 
     @Override
@@ -115,7 +117,8 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-
+        Timber.d("thrwoable: " + throwable.getCause());
+        Timber.d("thrwoable: " + throwable.getMessage());
     }
 
     @Override
@@ -147,11 +150,6 @@ public class GpaPresenter extends BasePresenter<GpaView> {
         } else {
             getViewState().completed();
         }
-    }
-
-    @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
     }
 
     @Override

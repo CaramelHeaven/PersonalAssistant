@@ -57,11 +57,6 @@ public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRe
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
         disposable.add(repository.getUniformRequestsFromUser()
                 .subscribeOn(Schedulers.io())

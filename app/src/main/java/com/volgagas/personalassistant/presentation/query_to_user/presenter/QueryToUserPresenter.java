@@ -62,11 +62,6 @@ public class QueryToUserPresenter extends BasePresenter<QueryToUserView<QueryToU
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

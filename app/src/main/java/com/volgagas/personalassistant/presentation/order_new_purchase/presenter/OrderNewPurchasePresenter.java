@@ -47,11 +47,6 @@ public class OrderNewPurchasePresenter extends BasePresenter<OrderNewPurchaseVie
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

@@ -34,6 +34,8 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
                 .filter(result -> result.equals(Constants.WORKER_TODAY_NEW_PRESENTER))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> loadData()));
+
+        PersonalAssistant.provideDynamics365Auth("dasd", "");
     }
 
     @Override
@@ -62,7 +64,6 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-        Timber.d("thowable: " + throwable.getMessage());
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
             RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_TODAY_NEW_PRESENTER);
         } else {
@@ -82,8 +83,4 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
         }
     }
 
-    @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
 }

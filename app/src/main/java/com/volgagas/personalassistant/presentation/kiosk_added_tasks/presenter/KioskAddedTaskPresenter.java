@@ -46,11 +46,6 @@ public class KioskAddedTaskPresenter extends BasePresenter<KioskAddedTaskView<Ta
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

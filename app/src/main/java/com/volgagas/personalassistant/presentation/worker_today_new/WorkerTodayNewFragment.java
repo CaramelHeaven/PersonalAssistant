@@ -141,11 +141,6 @@ public class WorkerTodayNewFragment extends BaseFragment implements WorkerTodayN
             }
         });
     }
-
-    @Override
-    public void initialBasePresenter() {
-        setBasePresenter(presenter);
-    }
 }
 
 

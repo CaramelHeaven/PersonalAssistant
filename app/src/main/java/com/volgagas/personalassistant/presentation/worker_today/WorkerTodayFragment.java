@@ -191,8 +191,4 @@ public class WorkerTodayFragment extends BaseFragment implements WorkerTodayView
         });
     }
 
-    @Override
-    public void initialBasePresenter() {
-        setBasePresenter(presenter);
-    }
 }

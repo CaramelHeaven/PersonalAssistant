@@ -92,8 +92,4 @@ public class ChooseActionFragment extends BaseFragment {
         super.onDestroyView();
     }
 
-    @Override
-    public void initialBasePresenter() {
-        //nothing
-    }
 }

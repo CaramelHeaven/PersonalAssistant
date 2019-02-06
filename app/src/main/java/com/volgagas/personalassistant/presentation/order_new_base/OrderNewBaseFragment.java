@@ -106,10 +106,6 @@ public class OrderNewBaseFragment extends BaseFragment implements OrderNewBaseVi
         adapter.updateAdapter(orders);
     }
 
-    @Override
-    public void initialBasePresenter() {
-        setBasePresenter(presenter);
-    }
 
     @Override
     public void showProgress() {

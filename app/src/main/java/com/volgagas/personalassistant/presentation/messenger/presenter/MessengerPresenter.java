@@ -47,11 +47,6 @@ public class MessengerPresenter extends BasePresenter<MessengerView> {
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

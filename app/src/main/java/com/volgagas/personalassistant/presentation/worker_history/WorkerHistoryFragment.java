@@ -99,8 +99,4 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
         }
     }
 
-    @Override
-    public void initialBasePresenter() {
-        setBasePresenter(presenter);
-    }
 }

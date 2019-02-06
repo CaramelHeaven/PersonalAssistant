@@ -152,8 +152,6 @@ public class StartActivity extends BaseActivity implements StartView {
         Timber.d("PERMISSION");
         setPermissionToEnableNfc(true);
         handlerNFC();
-
-        sendDataToServer();
     }
 
     @Override

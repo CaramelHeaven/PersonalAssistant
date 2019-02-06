@@ -40,11 +40,6 @@ public class InfoPresenter extends BasePresenter<InfoView> {
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

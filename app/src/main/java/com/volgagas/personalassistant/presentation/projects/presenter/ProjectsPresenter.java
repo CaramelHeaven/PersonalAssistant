@@ -47,10 +47,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
     }
 
-    @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
 
     @Override
     protected void loadData() {

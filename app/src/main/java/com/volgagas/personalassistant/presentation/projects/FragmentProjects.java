@@ -71,8 +71,4 @@ public class FragmentProjects extends BaseFragment implements ProjectsView {
 
     }
 
-    @Override
-    public void initialBasePresenter() {
-        setBasePresenter(presenter);
-    }
 }

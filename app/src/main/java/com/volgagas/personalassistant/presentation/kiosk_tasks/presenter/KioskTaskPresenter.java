@@ -62,8 +62,4 @@ public class KioskTaskPresenter extends BasePresenter<KioskTaskView<TaskTemplate
 
     }
 
-    @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
 }

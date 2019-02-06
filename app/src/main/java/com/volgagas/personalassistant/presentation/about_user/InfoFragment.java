@@ -54,8 +54,4 @@ public class InfoFragment extends BaseFragment implements InfoView {
 
     }
 
-    @Override
-    public void initialBasePresenter() {
-        //nothing
-    }
 }

@@ -92,8 +92,4 @@ public class QueryToUserFragment extends BaseFragment implements QueryToUserView
         }
     }
 
-    @Override
-    public void initialBasePresenter() {
-        setBasePresenter(presenter);
-    }
 }

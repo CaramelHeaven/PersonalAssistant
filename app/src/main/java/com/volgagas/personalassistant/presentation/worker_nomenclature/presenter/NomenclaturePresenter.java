@@ -68,11 +68,6 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     }
 
-    @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
     private void addDataFromNfc(String data) {
         disposable.add(repository.findNomenclatureByCardInfo(data)
                 .subscribeOn(Schedulers.io())

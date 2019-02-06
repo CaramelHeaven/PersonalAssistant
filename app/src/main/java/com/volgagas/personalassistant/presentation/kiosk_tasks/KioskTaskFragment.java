@@ -163,8 +163,4 @@ public class KioskTaskFragment extends BaseFragment implements KioskTaskView<Tas
         }
     }
 
-    @Override
-    public void initialBasePresenter() {
-        setBasePresenter(presenter);
-    }
 }

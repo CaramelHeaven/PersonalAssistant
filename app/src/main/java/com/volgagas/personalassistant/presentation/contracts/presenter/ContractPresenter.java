@@ -44,11 +44,6 @@ public class ContractPresenter extends BasePresenter<ContractView> {
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

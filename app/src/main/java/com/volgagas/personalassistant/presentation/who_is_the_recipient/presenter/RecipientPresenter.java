@@ -124,11 +124,6 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

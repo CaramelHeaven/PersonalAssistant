@@ -60,11 +60,6 @@ public class CategoryPresenter extends BasePresenter<CategoryView<QueryTemplate>
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

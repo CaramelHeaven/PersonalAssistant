@@ -44,11 +44,6 @@ public class WorkerPresenter extends BasePresenter<WorkerView> {
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
 
     }

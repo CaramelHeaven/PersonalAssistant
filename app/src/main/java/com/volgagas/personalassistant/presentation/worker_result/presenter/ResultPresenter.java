@@ -175,11 +175,6 @@ public class ResultPresenter extends BasePresenter<ResultView> {
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-        //nothing
-    }
-
-    @Override
     protected void loadData() {
         sendData();
     }

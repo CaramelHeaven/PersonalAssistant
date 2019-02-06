@@ -137,8 +137,4 @@ public class HomeFragment extends BaseFragment implements HomeView {
         homeModelList.add(homeModel3);
     }
 
-    @Override
-    public void initialBasePresenter() {
-        //nothing
-    }
 }

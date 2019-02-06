@@ -37,11 +37,6 @@ public class NomenclatureDFPresenter extends BasePresenter<NomenclatureDFView<Ba
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
         getViewState().showProgress();
         Timber.d("LOAD");

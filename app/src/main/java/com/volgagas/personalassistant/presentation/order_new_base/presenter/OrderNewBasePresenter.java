@@ -50,11 +50,6 @@ public class OrderNewBasePresenter extends BasePresenter<OrderNewBaseView> {
     }
 
     @Override
-    protected void tokenUpdatedCallLoadDataAgain() {
-
-    }
-
-    @Override
     protected void loadData() {
         disposable.add(repository.getOrderNewBase()
                 .subscribeOn(Schedulers.io())

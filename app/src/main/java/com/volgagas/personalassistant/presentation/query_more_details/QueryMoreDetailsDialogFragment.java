@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ import com.volgagas.personalassistant.models.model.queries.QueryToUser;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.presentation.messenger.MessengerActivity;
 import com.volgagas.personalassistant.utils.Constants;
+
+import java.util.regex.Pattern;
 
 /**
  * Created by CaramelHeaven on 13:56, 29/12/2018.

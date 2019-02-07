@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.presentation.worker_nomenclature_barcode_
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 
@@ -29,7 +30,7 @@ public class BarcodeListPresenter extends MvpPresenter<BarcodeListView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         disposable.add(RxBus.getInstance().getCommonChannel()
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .filter(result -> result.equals(Constants.EXPANDED) || result.equals(Constants.COLLAPSED))
                 .flatMap((Function<String, ObservableSource<Boolean>>) s -> {
                     if (s.equals(Constants.EXPANDED)) {
@@ -39,6 +40,16 @@ public class BarcodeListPresenter extends MvpPresenter<BarcodeListView> {
                     }
                 })
                 .subscribe(result -> getViewState().stateOfLayout(result)));
+
+        disposable.add(RxBus.getInstance().getCommonChannel()
+                .filter(result -> result.equals(Constants.REQUEST_DATA_FROM_BARCODE_LIST))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> getViewState().grabData()));
+
+        disposable.add(RxBus.getInstance().getCommonChannel()
+                .filter(result -> result.equals(Constants.UPDATE_DATA_BARCODE))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> getViewState().updateItem(CachePot.getInstance().getBarcode())));
     }
 
     @Override

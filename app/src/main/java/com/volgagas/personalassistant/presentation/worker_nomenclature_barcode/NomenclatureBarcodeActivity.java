@@ -3,6 +3,7 @@ package com.volgagas.personalassistant.presentation.worker_nomenclature_barcode;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -20,6 +21,7 @@ import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
+import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.helpers.Barcodable;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.presenter.NomenclatureBarcodePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.presenter.NomenclatureBarcodeView;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode_list.BarcodeListFragment;
@@ -41,7 +43,6 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
     private ImageButton ibShowItems;
     private FrameLayout flContainerItems;
     private DisplayMetrics displayMetrics;
-
 
     private BeepManager beepManager;
     private String lastText; //prevent duplicate scan barcode
@@ -110,6 +111,11 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         height = displayMetrics.heightPixels;
+
+        btnCompleted.setOnClickListener(v ->
+                RxBus.getInstance().passDataToCommonChannel(Constants.REQUEST_DATA_FROM_BARCODE_LIST));
+
+        btnBack.setOnClickListener(v -> finish());
     }
 
     @Override
@@ -144,7 +150,7 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
             }
 
             lastText = result.getText();
-            Timber.d("KEK: " + result.getBarcodeFormat());
+
             barcodeView.setStatusText("Отсканирован товар с номером " + result.getText());
 
             beepManager.playBeepSoundAndVibrate();
@@ -167,13 +173,23 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
     @Override
     public void passBarcode(Barcode barcode) {
         resumeBarcode();
-        Timber.d("barcode pass: " + barcode.toString());
-
+        CachePot.getInstance().putBarcodeCache(barcode);
+        RxBus.getInstance().passDataToCommonChannel(Constants.UPDATE_DATA_BARCODE);
     }
 
     @Override
     public void resumeBarcode() {
         Toast.makeText(this, "resume", Toast.LENGTH_SHORT).show();
         barcodeView.resume();
+    }
+
+    @Override
+    public void getDataAndComlpeted() {
+        if (CachePot.getInstance().getCacheBarcodeList().size() > 0) {
+            RxBus.getInstance().passDataToCommonChannel(Constants.CLOSED_NOMENCLATURE_BARCODE_ACTIVITY);
+            finish();
+        } else {
+            Toast.makeText(this, "Вы ничего не добавили", Toast.LENGTH_SHORT).show();
+        }
     }
 }

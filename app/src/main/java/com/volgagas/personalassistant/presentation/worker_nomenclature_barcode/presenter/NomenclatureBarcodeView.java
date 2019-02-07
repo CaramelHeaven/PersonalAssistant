@@ -8,7 +8,9 @@ import com.volgagas.personalassistant.models.model.worker.Barcode;
 /**
  * Created by CaramelHeaven on 12:10, 31/01/2019.
  */
+@StateStrategyType(value = OneExecutionStateStrategy.class)
 public interface NomenclatureBarcodeView extends MvpView {
-    @StateStrategyType(value = OneExecutionStateStrategy.class)
     void resumeBarcode();
+
+    void getDataAndComlpeted();
 }

@@ -15,13 +15,15 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode_list.presenter.BarcodeListPresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode_list.presenter.BarcodeListView;
+import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import timber.log.Timber;
 
@@ -62,27 +64,17 @@ public class BarcodeListFragment extends BaseFragment implements BarcodeListView
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        Barcode barcode = new Barcode();
-        Barcode barcode1 = new Barcode();
-        Barcode barcode2 = new Barcode();
-        Barcode barcode3 = new Barcode();
-
-        barcode.setBarcodeName("DFDDD");
-        barcode.setBarcodeName("DFDDD1");
-        barcode.setBarcodeName("DFDDD2");
-        barcode.setBarcodeName("DFDDD3");
-
-        List<Barcode> array = new ArrayList<>();
-        array.add(barcode);
-        array.add(barcode1);
-        array.add(barcode2);
-        array.add(barcode3);
-
-        adapter = new BarcodeAdapter(array);
-
+        adapter = new BarcodeAdapter(new ArrayList<>());
 
         recyclerView.setAdapter(adapter);
         recyclerView.setVisibility(View.GONE);
+
+        adapter.setMyOnItemClickListener(position -> adapter.removeValueByPos(position));
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     private void runLayoutAnimation(final RecyclerView recyclerView) {
@@ -114,7 +106,17 @@ public class BarcodeListFragment extends BaseFragment implements BarcodeListView
     }
 
     @Override
-    public void updateItems(Barcode barcode) {
+    public void updateItem(Barcode barcode) {
         adapter.addValue(barcode, adapter.getItemCount() - 1);
+
+        Timber.d("ALL: " + barcode.toString());
+
+        tvCount.setText("Добавлено: " + String.valueOf(adapter.getItemCount()));
+    }
+
+    @Override
+    public void grabData() {
+        CachePot.getInstance().putBarcodeCacheList(adapter.getBarcodeList());
+        RxBus.getInstance().passDataToCommonChannel(Constants.PASS_DATA_BARCODE);
     }
 }

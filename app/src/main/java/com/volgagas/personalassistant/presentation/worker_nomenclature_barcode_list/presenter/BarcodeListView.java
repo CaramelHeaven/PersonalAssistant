@@ -13,6 +13,7 @@ import com.volgagas.personalassistant.models.model.worker.Barcode;
 public interface BarcodeListView extends MvpView {
     void stateOfLayout(Boolean bool);
 
-    @StateStrategyType(value = AddToEndSingleStrategy.class)
-    void updateItems(Barcode barcode);
+    void updateItem(Barcode barcode);
+
+    void grabData();
 }

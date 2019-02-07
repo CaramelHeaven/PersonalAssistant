@@ -1,7 +1,7 @@
 package com.volgagas.personalassistant.presentation.query_from_user.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
+import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
@@ -10,7 +10,6 @@ import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import timber.log.Timber;
@@ -21,12 +20,12 @@ import timber.log.Timber;
 @InjectViewState
 public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRequest>> {
 
-    private CompositeDisposable disposable;
     private MainRepository repository;
 
     public UniformsPresenter() {
         repository = MainRemoteRepository.getInstance();
-        disposable = new CompositeDisposable();
+
+        PersonalAssistant.provideDynamics365Auth("asf", "");
     }
 
     @Override
@@ -38,7 +37,6 @@ public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRe
 
     @Override
     public void onDestroy() {
-        disposable.clear();
         super.onDestroy();
     }
 
@@ -48,7 +46,8 @@ public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRe
     }
 
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-
+        Timber.d("throwable: " + throwable.getCause());
+        Timber.d("throwable: " + throwable.getMessage());
     }
 
     @Override

@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 17:25, 15/01/2019.
@@ -168,6 +169,12 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     @Override
     public void errorNomenclature() {
         Toast.makeText(getActivity(), "Номенклатура не найдена", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void addedBarcodeNomenclaturesToBaseList(List<Nomenclature> values) {
+        Timber.d("VALUES: " + values.toString());
+        adapter.addItems(values);
     }
 
     public void showErrorCard() {

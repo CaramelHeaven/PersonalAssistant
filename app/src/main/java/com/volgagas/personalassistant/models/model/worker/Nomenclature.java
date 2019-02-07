@@ -1,5 +1,7 @@
 package com.volgagas.personalassistant.models.model.worker;
 
+import java.util.Objects;
+
 /**
  * Created by CaramelHeaven on 12:15, 16/01/2019.
  */
@@ -28,5 +30,30 @@ public class Nomenclature {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    @Override
+    public String toString() {
+        return "Nomenclature{" +
+                "name='" + name + '\'' +
+                ", count=" + count +
+                ", unit='" + unit + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Nomenclature that = (Nomenclature) o;
+        return count == that.count &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(unit, that.unit);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(name, count, unit);
     }
 }

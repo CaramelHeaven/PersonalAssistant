@@ -22,7 +22,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
-import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.Barcodable;
+import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.helpers.Barcodable;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.NomenclatureBarcodeActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_dialog.presenter.NomenclatureDFPresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_dialog.presenter.NomenclatureDFView;
@@ -92,7 +92,7 @@ public class NomenclatureDialogFragment extends MvpAppCompatDialogFragment imple
             Barcode barcode = new Barcode();
 
             barcode.setBarcode(presenter.getBarcodeResult());
-            barcode.setBarcodeName("My Name");
+            barcode.setBarcodeName("MY BARCODE NAME: " + presenter.getBarcodeResult());
             barcode.setCount(10);
 
             barcodable.passBarcode(barcode);
@@ -136,4 +136,6 @@ public class NomenclatureDialogFragment extends MvpAppCompatDialogFragment imple
     public void showBarcodeResult(Barcode barcode) {
         Timber.d("SHOW RESULT");
     }
+
+
 }

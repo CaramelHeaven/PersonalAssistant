@@ -25,6 +25,8 @@ public class RxBus {
 
     private PublishSubject<String> commonChannel = PublishSubject.create();
 
+    private PublishSubject<Object> objectChannel = PublishSubject.create();
+
     public static RxBus getInstance() {
         if (instance == null) {
             instance = new RxBus();

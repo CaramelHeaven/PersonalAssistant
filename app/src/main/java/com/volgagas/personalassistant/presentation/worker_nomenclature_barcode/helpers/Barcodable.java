@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.presentation.worker_nomenclature_barcode;
+package com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.helpers;
 
 import com.volgagas.personalassistant.models.model.worker.Barcode;
 

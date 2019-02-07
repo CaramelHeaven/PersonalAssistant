@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.query_to_user.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.queries.QueryToUser;
@@ -21,11 +22,11 @@ import timber.log.Timber;
 public class QueryToUserPresenter extends BasePresenter<QueryToUserView<QueryToUser>> {
 
     private MainRepository repository;
-    private CompositeDisposable disposable;
 
     public QueryToUserPresenter() {
         repository = MainRemoteRepository.getInstance();
-        disposable = new CompositeDisposable();
+
+        PersonalAssistant.provideDynamics365Auth("afsf", "");
     }
 
     @Override
@@ -39,12 +40,6 @@ public class QueryToUserPresenter extends BasePresenter<QueryToUserView<QueryToU
                 .subscribe(this::interactionResult, this::handlerErrorsFromBadRequests));
     }
 
-    @Override
-    public void onDestroy() {
-        disposable.clear();
-        super.onDestroy();
-    }
-
     private void interactionResult(List<QueryToUser> result) {
         Timber.d("checkign result : " + result.toString());
         getViewState().hideProgress();
@@ -53,7 +48,8 @@ public class QueryToUserPresenter extends BasePresenter<QueryToUserView<QueryToU
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-
+        Timber.d("thorwable: " + throwable.getCause());
+        Timber.d("thorwable: " + throwable.getMessage());
     }
 
     @Override

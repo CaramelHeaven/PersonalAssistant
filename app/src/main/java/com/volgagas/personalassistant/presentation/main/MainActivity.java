@@ -1,9 +1,7 @@
 package com.volgagas.personalassistant.presentation.main;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -18,7 +16,6 @@ import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,9 +32,8 @@ import com.volgagas.personalassistant.presentation.main.presenter.MainView;
 import com.volgagas.personalassistant.presentation.projects.FragmentProjects;
 import com.volgagas.personalassistant.presentation.settings.SettingsActivity;
 import com.volgagas.personalassistant.presentation.start.StartActivity;
-import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
-import com.volgagas.personalassistant.utils.threads.UpdateTokenHandler;
+import com.volgagas.personalassistant.utils.shared_preferenses.UtilsSharedPresefenses;
 
 import java.nio.charset.StandardCharsets;
 
@@ -52,12 +48,10 @@ public class MainActivity extends BaseActivity implements MainView {
     private Toolbar toolbar;
     private CircleImageView ivUserImage;
     private ConstraintLayout constraintLayout;
-    private TextView tvName, tvCategory, tvTitleProblem;
+    private TextView tvName, tvCategory;
     private ImageView ivSettings, ivLogout;
 
     private ConstraintSet homeSet, projectsSet, infoSet;
-    private UpdateTokenHandler updateTokenHandler;
-    private SharedPreferences sharedPreferences;
 
     @ProvidePresenter
     MainPresenter provideMainPresenter() {
@@ -80,6 +74,8 @@ public class MainActivity extends BaseActivity implements MainView {
         ivLogout = findViewById(R.id.iv_logout);
         toolbar = findViewById(R.id.toolbar);
         constraintLayout = findViewById(R.id.constraintLayout);
+
+        setPermissionToEnableNfc(false);
 
         setSupportActionBar(toolbar);
 
@@ -164,7 +160,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
                     break;
                 case R.id.action_project:
-                    if (!getPermissionCap()) {
+                    if (!UtilsSharedPresefenses.getInstance().getPermissionCap(getApplicationContext())) {
                         Toast.makeText(this, "В разработке", Toast.LENGTH_SHORT).show();
                     } else {
                         Fragment fragment2 = getSupportFragmentManager().findFragmentByTag("PROJECTS");
@@ -189,7 +185,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
                     break;
                 case R.id.action_info:
-                    if (!getPermissionCap()) {
+                    if (!UtilsSharedPresefenses.getInstance().getPermissionCap(getApplicationContext())) {
                         Toast.makeText(this, "В разработке", Toast.LENGTH_SHORT).show();
                     } else {
                         Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("INFO");
@@ -218,13 +214,6 @@ public class MainActivity extends BaseActivity implements MainView {
         });
     }
 
-    private boolean getPermissionCap() {
-        sharedPreferences = getApplicationContext()
-                .getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
-
-        return sharedPreferences.getBoolean(Constants.SP_ENABLE_FUNCTIONS, false);
-    }
-
     private void provideBackgroundUIData() {
         if (CacheUser.getUser().getUserImage() != null) {
             Timber.d("cache != null");
@@ -234,8 +223,6 @@ public class MainActivity extends BaseActivity implements MainView {
                 Bitmap croppedBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - 240);
                 ivUserImage.setImageBitmap(croppedBmp);
             }
-        } else {
-            Timber.d("cache == null");
         }
 
         tvName.setText(CacheUser.getUser().getName());

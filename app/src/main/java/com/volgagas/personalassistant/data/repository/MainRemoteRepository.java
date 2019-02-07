@@ -28,6 +28,7 @@ import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
+import com.volgagas.personalassistant.models.model.info.Info;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.models.model.order_purchase.Order;
@@ -339,5 +340,23 @@ public class MainRemoteRepository implements MainRepository {
     public Single<Barcode> getBarcodeByScannedString(String barcodeResult) {
         return PersonalAssistant.getBaseApiService().getBarcodeByString(barcodeResult)
                 .map(taskMapper::map);
+    }
+
+    @Override
+    public Single<List<Object>> getInfoAboutUserFromDynamics() {
+        List<Object> objects = new ArrayList<>();
+        objects.add(fillInfo());
+
+        return Single.just(objects);
+    }
+
+
+    private Info fillInfo() {
+        Info info = new Info();
+
+        info.getSalary().setSalaryUser("4000");
+        info.getVacation().setFreeDays("30");
+
+        return info;
     }
 }

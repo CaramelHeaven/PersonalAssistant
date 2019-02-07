@@ -8,7 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
@@ -31,6 +33,8 @@ public class QueryToUserFragment extends BaseFragment implements QueryToUserView
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private ImageView ivImageEmpty;
+    private TextView tvEmptyQueries;
 
     private QueryToUserAdapter adapter;
 
@@ -56,6 +60,8 @@ public class QueryToUserFragment extends BaseFragment implements QueryToUserView
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
+        tvEmptyQueries = view.findViewById(R.id.tv_empty_tasks);
+        ivImageEmpty = view.findViewById(R.id.iv_empty_tasks);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -77,6 +83,8 @@ public class QueryToUserFragment extends BaseFragment implements QueryToUserView
 
     @Override
     public void showProgress() {
+        ivImageEmpty.setVisibility(View.GONE);
+        tvEmptyQueries.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
@@ -89,6 +97,9 @@ public class QueryToUserFragment extends BaseFragment implements QueryToUserView
     public void showItems(List items) {
         if (items.size() > 0) {
             adapter.updateAdapter(items);
+        } else {
+            ivImageEmpty.setVisibility(View.VISIBLE);
+            tvEmptyQueries.setVisibility(View.VISIBLE);
         }
     }
 

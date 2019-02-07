@@ -1,12 +1,9 @@
 package com.volgagas.personalassistant.presentation.home;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,14 +22,10 @@ import com.volgagas.personalassistant.presentation.kiosk.KioskActivity;
 import com.volgagas.personalassistant.presentation.order_purchase.OrderPurchaseActivity;
 import com.volgagas.personalassistant.presentation.query_create.QueryCreateActivity;
 import com.volgagas.personalassistant.presentation.worker.WorkerActivity;
-import com.volgagas.personalassistant.utils.Constants;
-import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
+import com.volgagas.personalassistant.utils.shared_preferenses.UtilsSharedPresefenses;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import es.dmoral.toasty.Toasty;
-import timber.log.Timber;
 
 public class HomeFragment extends BaseFragment implements HomeView {
 
@@ -83,7 +76,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     startActivity(new Intent(getActivity(), KioskActivity.class));
                     break;
                 case 1:
-                    if (!getPermissionCap()) {
+                    if (!UtilsSharedPresefenses.getInstance().getPermissionCap(getActivity().getApplicationContext())) {
                         Toast.makeText(getActivity(), "В разработке", Toast.LENGTH_SHORT).show();
                     } else {
                         startActivity(new Intent(getActivity(), QueryCreateActivity.class));
@@ -93,7 +86,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     startActivity(new Intent(getActivity(), WorkerActivity.class));
                     break;
                 case 3:
-                    if (!getPermissionCap()) {
+                    if (!UtilsSharedPresefenses.getInstance().getPermissionCap(getActivity().getApplicationContext())) {
                         Toast.makeText(getActivity(), "В разработке", Toast.LENGTH_SHORT).show();
                     } else {
                         startActivity(new Intent(getActivity(), OrderPurchaseActivity.class));
@@ -101,13 +94,6 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     break;
             }
         });
-    }
-
-    private boolean getPermissionCap() {
-        SharedPreferences sharedPreferences = getActivity()
-                .getSharedPreferences(Constants.SP_USER_PREFERENCE, Context.MODE_PRIVATE);
-
-        return sharedPreferences.getBoolean(Constants.SP_ENABLE_FUNCTIONS, false);
     }
 
     @Override

@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import timber.log.Timber;
-
 /**
  * Created by CaramelHeaven on 12:39, 06/02/2019.
  * Small data save-container

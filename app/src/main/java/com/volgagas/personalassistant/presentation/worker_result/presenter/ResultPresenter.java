@@ -124,20 +124,22 @@ public class ResultPresenter extends BasePresenter<ResultView> {
                         repository.sendImageToDynamics(mapImage(subTask))
                                 .subscribeOn(Schedulers.computation()))
                 .toList()
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    //cancel or stop nonselected tasks
-//                    Single.just(nonSelectedSubTasks))
-//                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
-//                            .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
-//                                    repository.sendCanceledSubTasks(canceledJson, subTask.getIdActivity()))
-//                            .toList()
-//                            .observeOn(AndroidSchedulers.mainThread())
-//                            .subscribe(this::successfulResult, throwable -> {
-//                                if (throwable.getMessage().equals("timeout")) {
-//                                    getViewState().timeout();
-//                                }
-//                            })
+                    if (stoppingTasks) {
+                        //TODO make stop current tasks
+                    } else {
+                        Single.just(nonSelectedSubTasks)
+                                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
+                                .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
+                                        repository.sendCanceledSubTasks(canceledJson, subTask.getIdActivity()))
+                                .toList()
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(this::successfulResult, throwable -> {
+                                    if (throwable.getMessage().equals("timeout")) {
+                                        getViewState().timeout();
+                                    }
+                                });
+                    }
                 }));
     }
 
@@ -148,10 +150,6 @@ public class ResultPresenter extends BasePresenter<ResultView> {
         } else {
             getViewState().completed();
         }
-    }
-
-    private void sendDataWithStoppingSubTasks() {
-
     }
 
     @Override
@@ -220,10 +218,6 @@ public class ResultPresenter extends BasePresenter<ResultView> {
 
     public List<SubTask> getNonSelectedSubTasks() {
         return nonSelectedSubTasks;
-    }
-
-    public boolean isStoppingTasks() {
-        return stoppingTasks;
     }
 
     public void setStoppingTasks(boolean stoppingTasks) {

@@ -5,6 +5,7 @@ import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
+import com.volgagas.personalassistant.models.model.info.Info;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.models.model.order_purchase.Order;
@@ -158,4 +159,9 @@ public interface MainRepository {
      * @param barcodeResult - scanned string data from NomenclatureBarcodeActivity
      */
     Single<Barcode> getBarcodeByScannedString(String barcodeResult);
+
+    /**
+     * Get all information about user from D365. Salary, vacation, etc.
+     */
+    Single<List<Object>> getInfoAboutUserFromDynamics();
 }

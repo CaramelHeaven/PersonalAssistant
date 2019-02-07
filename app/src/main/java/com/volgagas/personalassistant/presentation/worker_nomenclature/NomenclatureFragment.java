@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
@@ -99,7 +100,8 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
                 Toast.makeText(getActivity(), "Список элементов пуст", Toast.LENGTH_SHORT).show();
             } else {
                 if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
-                    //TODO SAVE DATA
+                    //saved data and finish
+                    CachePot.getInstance().putBarcodeCacheList(new ArrayList<>(adapter.getNomenclatureList()));
 
                     getActivity().finish();
                 } else if (action.equals(Constants.USUAL)) {
@@ -180,5 +182,4 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     public void showErrorCard() {
         Toasty.error(getActivity(), "Приложена не ваша карта").show();
     }
-
 }

@@ -21,11 +21,9 @@ import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
-import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.helpers.Barcodable;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.presenter.NomenclatureBarcodePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.presenter.NomenclatureBarcodeView;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode_list.BarcodeListFragment;
-import com.volgagas.personalassistant.presentation.worker_nomenclature_dialog.NomenclatureDialogFragment;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.animation.UtilsAnimationView;
 import com.volgagas.personalassistant.utils.bus.RxBus;
@@ -36,7 +34,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements NomenclatureBarcodeView, Barcodable {
+public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements NomenclatureBarcodeView {
 
     private DecoratedBarcodeView barcodeView;
     private Button btnCompleted, btnBack;
@@ -72,7 +70,6 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
                 .commit();
 
         ibShowItems.setOnClickListener(v -> {
-            Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
             isShowItems = !isShowItems;
 
             if (isShowItems) {
@@ -155,13 +152,16 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
 
             beepManager.playBeepSoundAndVibrate();
 
-            NomenclatureDialogFragment fragment = NomenclatureDialogFragment
-                    .newInstance(lastText);
-            fragment.show(getSupportFragmentManager(), null);
+            //TODO make get data from network
+            Barcode barcode = new Barcode();
+            barcode.setBarcode(lastText);
+            barcode.setCount(5);
+            barcode.setBarcodeName("Трилон Б");
 
-            CachePot.getInstance().putCacheBitmap(lastText, result.getBitmap());
+            Toast.makeText(NomenclatureBarcodeActivity.this, "Отсканировано", Toast.LENGTH_SHORT).show();
 
-            barcodeView.pause();
+            CachePot.getInstance().putBarcodeCache(barcode);
+            RxBus.getInstance().passDataToCommonChannel(Constants.UPDATE_DATA_BARCODE);
         }
 
         @Override
@@ -171,15 +171,9 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
     };
 
     @Override
-    public void passBarcode(Barcode barcode) {
-        resumeBarcode();
-        CachePot.getInstance().putBarcodeCache(barcode);
-        RxBus.getInstance().passDataToCommonChannel(Constants.UPDATE_DATA_BARCODE);
-    }
-
-    @Override
     public void resumeBarcode() {
-        Toast.makeText(this, "resume", Toast.LENGTH_SHORT).show();
+        lastText = "";
+        Timber.d("RESUME");
         barcodeView.resume();
     }
 

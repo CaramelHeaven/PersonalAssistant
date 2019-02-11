@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.contracts;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,15 +41,29 @@ public class ContractAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return contractList.size();
     }
 
-    class ContractVH extends RecyclerView.ViewHolder {
+    public void updateAdapter(List<Contract> values) {
+        contractList = values;
+        notifyDataSetChanged();
+    }
+
+    class ContractVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvMoney, tvState, tvTitle, tvDateEnd;
+        private CardView cvContainer;
 
         public ContractVH(@NonNull View itemView) {
             super(itemView);
             tvMoney = itemView.findViewById(R.id.tv_moneys);
             tvState = itemView.findViewById(R.id.tv_state);
             tvTitle = itemView.findViewById(R.id.tv_title);
+            cvContainer = itemView.findViewById(R.id.cardView);
             tvDateEnd = itemView.findViewById(R.id.tv_date_end);
+
+            cvContainer.setOnClickListener(this::onClick);
+        }
+
+        @Override
+        public void onClick(View v) {
+            myOnItemClickListener.onItemClick(getAdapterPosition());
         }
     }
 

@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.presentation.worker_nomenclature_barcode_
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.style.TtsSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by CaramelHeaven on 10:52, 31/01/2019.
@@ -40,7 +42,7 @@ public class BarcodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         BarcodeVH barcodeVH = (BarcodeVH) viewHolder;
 
-        barcodeVH.tvTitle.setText(barcodeList.get(i).getBarcodeName());
+        barcodeVH.tvTitle.setText(barcodeList.get(i).getBarcodeName() + String.valueOf(barcodeList.get(i).getCount()));
     }
 
     @Override
@@ -49,7 +51,13 @@ public class BarcodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public void addValue(Barcode barcode, int position) {
-        barcodeList.add(barcode);
+        if (barcodeList.contains(barcode)) {
+            System.out.println("get count: " + barcodeList.get(position).getCount());
+            //Timber.d(
+            barcodeList.get(position).setCount(barcodeList.get(position).getCount() + barcode.getCount());
+        } else {
+            barcodeList.add(barcode);
+        }
 
         notifyItemChanged(position);
     }

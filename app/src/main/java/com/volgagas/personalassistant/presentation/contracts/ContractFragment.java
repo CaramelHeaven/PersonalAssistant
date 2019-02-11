@@ -8,23 +8,29 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.models.model.Contract;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.contracts.presenter.ContractPresenter;
 import com.volgagas.personalassistant.presentation.contracts.presenter.ContractView;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import timber.log.Timber;
 
-public class ContractFragment extends BaseFragment implements ContractView {
+public class ContractFragment extends BaseFragment implements ContractView<Contract> {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private TextView tvEmptyContracts;
+    private ImageView ivEmptyContracts;
 
     private ContractAdapter adapter;
 
@@ -49,12 +55,18 @@ public class ContractFragment extends BaseFragment implements ContractView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerView);
+        tvEmptyContracts = view.findViewById(R.id.tv_empty_tasks);
+        ivEmptyContracts = view.findViewById(R.id.iv_empty_tasks);
 
         provideRecyclerAndAdapter();
     }
 
     @Override
     public void onDestroyView() {
+        ivEmptyContracts = null;
+        tvEmptyContracts = null;
+        progressBar = null;
+        recyclerView = null;
         super.onDestroyView();
     }
 
@@ -73,6 +85,8 @@ public class ContractFragment extends BaseFragment implements ContractView {
 
     @Override
     public void showProgress() {
+        ivEmptyContracts.setVisibility(View.GONE);
+        tvEmptyContracts.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
@@ -81,4 +95,13 @@ public class ContractFragment extends BaseFragment implements ContractView {
         progressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void showContracts(List<Contract> values) {
+        if (values.size() > 0) {
+            adapter.updateAdapter(values);
+        } else {
+            ivEmptyContracts.setVisibility(View.VISIBLE);
+            ivEmptyContracts.setVisibility(View.VISIBLE);
+        }
+    }
 }

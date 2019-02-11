@@ -109,8 +109,6 @@ public class BarcodeListFragment extends BaseFragment implements BarcodeListView
     public void updateItem(Barcode barcode) {
         adapter.addValue(barcode, adapter.getItemCount() - 1);
 
-        Timber.d("ALL: " + barcode.toString());
-
         tvCount.setText("Добавлено: " + String.valueOf(adapter.getItemCount()));
     }
 

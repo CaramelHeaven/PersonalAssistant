@@ -15,7 +15,7 @@ public class NomenclatureHostRespToNomenclatureHost extends Mapper<NomenclatureH
     @Override
     public Nomenclature map(NomenclatureHostResponse value) {
         //fillData(nomenclatureHost, value);
-        return new Nomenclature(value.getName(), 0, "");
+        return new Nomenclature(value.getName(), 0, "кило");
     }
 
     @Override

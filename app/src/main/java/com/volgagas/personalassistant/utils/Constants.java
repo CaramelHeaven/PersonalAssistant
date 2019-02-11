@@ -59,6 +59,7 @@ public class Constants {
     public static final String PASS_DATA_BARCODE = "PASS_DATA_BARCODE";
     public static final String UPDATE_DATA_BARCODE = "UPDATE_DATA_BARCODE";
     public static final String CLOSED_NOMENCLATURE_BARCODE_ACTIVITY = "CLOSED_NOMENCLATURE_BARCODE_ACTIVITY";
+    public static final String NOMENCLATURE_DF_CLOSE = "NOMENCLATURE_DF_CLOSE";
 
     //refreshing key-word for each screen
     public static final String WORKER_TODAY_NEW_PRESENTER = "WORKER_TODAY_NEW_PRESENTER";

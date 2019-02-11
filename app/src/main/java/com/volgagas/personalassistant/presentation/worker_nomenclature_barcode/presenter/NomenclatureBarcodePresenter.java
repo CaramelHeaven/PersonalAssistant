@@ -26,7 +26,8 @@ public class NomenclatureBarcodePresenter extends MvpPresenter<NomenclatureBarco
         super.onFirstViewAttach();
 
         disposable.add(RxBus.getInstance().getCommonChannel()
-                .filter(result -> result.equals(Constants.VIEW_IS_COLLAPSED))
+                .filter(result -> result.equals(Constants.VIEW_IS_COLLAPSED) ||
+                        result.equals(Constants.NOMENCLATURE_DF_CLOSE))
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> getViewState().resumeBarcode()));
 

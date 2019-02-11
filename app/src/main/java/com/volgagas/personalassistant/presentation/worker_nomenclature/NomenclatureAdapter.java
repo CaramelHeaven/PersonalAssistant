@@ -90,11 +90,9 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void addItem(Nomenclature data) {
-        if (!nomenclatureList.contains(data)) {
-            nomenclatureList.add(data);
-        }
+        nomenclatureList.add(data);
 
-        notifyItemChanged(nomenclatureList.size() - 2);
+        notifyItemChanged(nomenclatureList.size() - 1);
     }
 
     public void addItems(List<Nomenclature> values) {

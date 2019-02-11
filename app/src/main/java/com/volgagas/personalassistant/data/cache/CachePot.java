@@ -16,8 +16,6 @@ import java.util.Map;
 public class CachePot {
     private static volatile CachePot cachePot;
 
-    //CacheBitmap used for pass picture from barcode activity to barcode fragment
-    private Map<String, Object> cacheBitmap;
     //cache barcode list for pass from activity to nomenclature base list
     private List<Object> cacheBarcodeList;
 
@@ -34,14 +32,6 @@ public class CachePot {
         }
 
         return cachePot;
-    }
-
-    public void putCacheBitmap(String outResult, Bitmap bitmap) {
-        if (cacheBitmap == null) {
-            cacheBitmap = new HashMap<>();
-        }
-
-        cacheBitmap.put(outResult, bitmap);
     }
 
     public void putBarcodeCacheList(List<Object> objects) {
@@ -70,15 +60,7 @@ public class CachePot {
         return barcode;
     }
 
-    public Bitmap getCacheBitmapByScannedString(String outResult) {
-        return (Bitmap) cacheBitmap.get(outResult);
-    }
-
     public List<Object> getCacheBarcodeList() {
         return cacheBarcodeList;
-    }
-
-    public void clearPictureCache() {
-        cacheBitmap.clear();
     }
 }

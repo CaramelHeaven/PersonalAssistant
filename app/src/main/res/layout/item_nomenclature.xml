@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:gravity="center"
-        android:text="Пунжер fkldkf"
+        android:text="Пунжер ALSDKLDKLDKDLKLsdkl"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_16sp" />
 
@@ -19,6 +19,7 @@
         android:layout_below="@id/tv_title">
 
         <RelativeLayout
+            android:id="@+id/rl_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
@@ -46,17 +47,17 @@
                     android:textColorHint="@color/colorPrimary"
                     android:textSize="20sp" />
             </android.support.design.widget.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tv_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/text_input_count"
-                android:text="шт"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_18sp" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/rl_container"
+            android:text="шт"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_18sp" />
 
         <Button
             android:id="@+id/btn_minus"

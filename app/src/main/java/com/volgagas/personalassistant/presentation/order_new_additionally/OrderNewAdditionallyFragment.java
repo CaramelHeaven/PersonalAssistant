@@ -19,6 +19,7 @@ import com.volgagas.personalassistant.presentation.order_new_additionally.presen
 import com.volgagas.personalassistant.presentation.order_new_purchase.OrderCommonAdapter;
 import com.volgagas.personalassistant.utils.bus.GlobalBus;
 import com.volgagas.personalassistant.utils.bus.models.NewOrderModified;
+import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -65,12 +66,20 @@ public class OrderNewAdditionallyFragment extends BaseFragment implements OrderN
         adapter = new OrderCommonAdapter<>(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnButtonPlusMinusClickListener((position, status, count) -> {
-            NewOrder order = adapter.getItemByPosition(position);
-            order.setStatus(status);
-            order.setSizeInSheet(count);
+        adapter.setOnButtonPlusMinusClickListener(new OnButtonPlusMinusClickListener() {
+            @Override
+            public void onHandleCount(int position, int status, int count) {
+                NewOrder order = adapter.getItemByPosition(position);
+                order.setStatus(status);
+                order.setSizeInSheet(count);
 
-            GlobalBus.getEventBus().post(order);
+                GlobalBus.getEventBus().post(order);
+            }
+
+            @Override
+            public void onHandleEditText(int pos, int count) {
+                //nothing
+            }
         });
     }
 

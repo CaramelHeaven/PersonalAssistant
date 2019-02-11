@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 10:52, 31/01/2019.
  */
@@ -50,16 +52,21 @@ public class BarcodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return barcodeList.size();
     }
 
-    public void addValue(Barcode barcode, int position) {
+    public void addValue(Barcode barcode) {
+//        if (barcodeList.contains(barcode)) {
+//            int index = barcodeList.indexOf(barcode);
+//
+//            barcodeList.get(index).setCount(barcodeList.get(index).getCount() + barcode.getCount());
+//        } else {
         if (barcodeList.contains(barcode)) {
-            System.out.println("get count: " + barcodeList.get(position).getCount());
-            //Timber.d(
-            barcodeList.get(position).setCount(barcodeList.get(position).getCount() + barcode.getCount());
+            int index = barcodeList.indexOf(barcode);
+
+            barcode.setCount(barcode.getCount() + barcodeList.get(index).getCount());
+            barcodeList.set(index, barcode);
         } else {
             barcodeList.add(barcode);
         }
-
-        notifyItemChanged(position);
+        notifyDataSetChanged();
     }
 
     public void removeValueByPos(int position) {

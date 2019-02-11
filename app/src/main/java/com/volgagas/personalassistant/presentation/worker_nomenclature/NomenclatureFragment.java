@@ -30,6 +30,7 @@ import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.N
 import com.volgagas.personalassistant.presentation.worker_result.ResultActivity;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
+import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,8 +137,17 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         adapter = new NomenclatureAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnButtonPlusMinusClickListener((position, status, count) ->
-                adapter.getItemByPosition(position).setCount(count));
+        adapter.setOnButtonPlusMinusClickListener(new OnButtonPlusMinusClickListener() {
+            @Override
+            public void onHandleCount(int position, int status, int count) {
+                adapter.getItemByPosition(position).setCount(count);
+            }
+
+            @Override
+            public void onHandleEditText(int pos, int count) {
+                adapter.getItemByPosition(pos).setCount(count);
+            }
+        });
     }
 
     @Override

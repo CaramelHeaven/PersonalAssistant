@@ -46,14 +46,13 @@ public class Nomenclature {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Nomenclature that = (Nomenclature) o;
-        return count == that.count &&
-                Objects.equals(name, that.name) &&
+        return Objects.equals(name, that.name) &&
                 Objects.equals(unit, that.unit);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(name, count, unit);
+        return Objects.hash(name, unit);
     }
 }

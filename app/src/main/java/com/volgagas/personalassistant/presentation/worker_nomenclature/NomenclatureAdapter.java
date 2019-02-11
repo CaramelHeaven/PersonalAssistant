@@ -3,6 +3,8 @@ package com.volgagas.personalassistant.presentation.worker_nomenclature;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +92,13 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void addItem(Nomenclature data) {
-        nomenclatureList.add(data);
+        if (nomenclatureList.contains(data)) {
+            int index = nomenclatureList.indexOf(data);
+
+            nomenclatureList.get(index).setCount(nomenclatureList.get(index).getCount() + data.getCount());
+        } else {
+            nomenclatureList.add(data);
+        }
 
         notifyItemChanged(nomenclatureList.size() - 1);
     }
@@ -125,6 +133,31 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvUnit = itemView.findViewById(R.id.tv_unit);
 
+            provideEditTextListener();
+            provideButtonsClick();
+        }
+
+        private void provideEditTextListener() {
+            etCount.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    onButtonPlusMinusClickListener.onHandleEditText(getAdapterPosition(),
+                            Integer.parseInt(s.toString()));
+                }
+            });
+        }
+
+        private void provideButtonsClick() {
             btnMinus.setOnClickListener(v -> {
                 int count = 0;
 

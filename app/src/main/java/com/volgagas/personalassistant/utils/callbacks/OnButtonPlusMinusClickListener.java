@@ -6,4 +6,6 @@ package com.volgagas.personalassistant.utils.callbacks;
  */
 public interface OnButtonPlusMinusClickListener {
     void onHandleCount(int position, int status, int count);
+
+    void onHandleEditText(int pos, int count);
 }

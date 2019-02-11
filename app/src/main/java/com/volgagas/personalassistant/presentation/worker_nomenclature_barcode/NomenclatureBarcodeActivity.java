@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature_barcode;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
@@ -40,7 +41,6 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
     private Button btnCompleted, btnBack;
     private ImageButton ibShowItems;
     private FrameLayout flContainerItems;
-    private DisplayMetrics displayMetrics;
 
     private BeepManager beepManager;
     private String lastText; //prevent duplicate scan barcode
@@ -162,6 +162,10 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
 
             CachePot.getInstance().putBarcodeCache(barcode);
             RxBus.getInstance().passDataToCommonChannel(Constants.UPDATE_DATA_BARCODE);
+
+            new Handler().postDelayed(() -> {
+                lastText = "";
+            }, 1300);
         }
 
         @Override

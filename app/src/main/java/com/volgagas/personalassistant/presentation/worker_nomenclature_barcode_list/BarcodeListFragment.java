@@ -69,7 +69,10 @@ public class BarcodeListFragment extends BaseFragment implements BarcodeListView
         recyclerView.setAdapter(adapter);
         recyclerView.setVisibility(View.GONE);
 
-        adapter.setMyOnItemClickListener(position -> adapter.removeValueByPos(position));
+        adapter.setMyOnItemClickListener(position -> {
+            adapter.removeValueByPos(position);
+            tvCount.setText("Добавлено: " + String.valueOf(adapter.getItemCount()));
+        });
     }
 
     @Override
@@ -107,7 +110,7 @@ public class BarcodeListFragment extends BaseFragment implements BarcodeListView
 
     @Override
     public void updateItem(Barcode barcode) {
-        adapter.addValue(barcode, adapter.getItemCount() - 1);
+        adapter.addValue(barcode);
 
         tvCount.setText("Добавлено: " + String.valueOf(adapter.getItemCount()));
     }

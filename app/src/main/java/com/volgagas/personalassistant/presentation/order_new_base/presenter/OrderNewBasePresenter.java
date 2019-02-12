@@ -15,6 +15,7 @@ import retrofit2.Response;
 
 /**
  * Created by CaramelHeaven on 13:19, 25/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 @InjectViewState
 public class OrderNewBasePresenter extends BasePresenter<OrderNewBaseView> {

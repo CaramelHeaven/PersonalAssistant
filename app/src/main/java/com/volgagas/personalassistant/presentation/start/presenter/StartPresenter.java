@@ -26,6 +26,9 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 @InjectViewState
 public class StartPresenter extends BasePresenter<StartView> {
 

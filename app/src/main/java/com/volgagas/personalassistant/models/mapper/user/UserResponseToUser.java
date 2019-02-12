@@ -6,6 +6,9 @@ import com.volgagas.personalassistant.models.network.UserResponse;
 
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class UserResponseToUser extends Mapper<UserResponse, User> {
     @Override
     public User map(UserResponse value) {

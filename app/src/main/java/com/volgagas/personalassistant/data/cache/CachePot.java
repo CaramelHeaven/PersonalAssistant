@@ -1,16 +1,14 @@
 package com.volgagas.personalassistant.data.cache;
 
-import android.graphics.Bitmap;
-
 import com.volgagas.personalassistant.models.model.worker.Barcode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by CaramelHeaven on 12:39, 06/02/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
  * Small data save-container
  */
 public class CachePot {

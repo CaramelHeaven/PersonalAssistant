@@ -16,6 +16,7 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 12:40, 25/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 @InjectViewState
 public class OrderNewPurchasePresenter extends BasePresenter<OrderNewPurchaseView<Order>> {

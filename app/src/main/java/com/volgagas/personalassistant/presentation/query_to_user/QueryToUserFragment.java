@@ -28,6 +28,7 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 10:25, 24/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class QueryToUserFragment extends BaseFragment implements QueryToUserView<QueryToUser> {
 

@@ -3,18 +3,10 @@ package com.volgagas.personalassistant.presentation.worker_history;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
-import com.volgagas.personalassistant.models.model.Task;
-import com.volgagas.personalassistant.models.model.common.GlobalTask;
-import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
-import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.presentation.worker.WorkerAdapter;
 
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
-
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 08:41, 04/12/2018.
@@ -23,11 +15,9 @@ import timber.log.Timber;
 public class HistoryAdapter extends WorkerAdapter<TaskHistory> {
 
     private List<TaskHistory> taskList;
-    private Set<TaskHistory> uniqueTasks;
 
     public HistoryAdapter(List<TaskHistory> taskList) {
         this.taskList = taskList;
-        uniqueTasks = new LinkedHashSet<>();
     }
 
     @Override

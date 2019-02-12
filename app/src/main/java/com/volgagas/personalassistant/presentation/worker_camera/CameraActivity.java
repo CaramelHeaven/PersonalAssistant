@@ -47,6 +47,9 @@ import static io.fotoapparat.selector.ResolutionSelectorsKt.highestResolution;
 import static io.fotoapparat.selector.SelectorsKt.firstAvailable;
 import static io.fotoapparat.selector.SensorSensitivitySelectorsKt.highestSensorSensitivity;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class CameraActivity extends AppCompatActivity {
 
     private Fotoapparat fotoapparat;

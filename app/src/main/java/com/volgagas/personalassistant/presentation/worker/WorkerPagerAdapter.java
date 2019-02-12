@@ -9,6 +9,9 @@ import com.volgagas.personalassistant.presentation.worker_history.WorkerHistoryF
 import com.volgagas.personalassistant.presentation.worker_today.WorkerTodayFragment;
 import com.volgagas.personalassistant.presentation.worker_today_new.WorkerTodayNewFragment;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class WorkerPagerAdapter extends FragmentPagerAdapter {
 
     public WorkerPagerAdapter(FragmentManager fm) {

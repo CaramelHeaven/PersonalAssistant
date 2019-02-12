@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Created by CaramelHeaven on 11:31, 17/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class QueriesTemplateResponseToQueryTemplate extends Mapper<QueriesTemplateResponse, List<QueryTemplate>> {
 

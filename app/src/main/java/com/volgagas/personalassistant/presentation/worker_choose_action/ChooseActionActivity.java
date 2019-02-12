@@ -1,30 +1,20 @@
 package com.volgagas.personalassistant.presentation.worker_choose_action;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.microsoft.aad.adal.AuthenticationCallback;
-import com.microsoft.aad.adal.AuthenticationContext;
-import com.microsoft.aad.adal.AuthenticationResult;
-import com.microsoft.aad.adal.PromptBehavior;
-import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
-import com.volgagas.personalassistant.presentation.base.BaseGodActivity;
 import com.volgagas.personalassistant.presentation.worker_choose_action.presenter_activity.ChooseActivityPresenter;
 import com.volgagas.personalassistant.presentation.worker_choose_action.presenter_activity.ChooseActivityView;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.NomenclatureFragment;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
-import com.volgagas.personalassistant.utils.channels.CommonChannel;
-import com.volgagas.personalassistant.utils.channels.check_auth.TwoPermissions;
 
-import timber.log.Timber;
-
+/**
+ * Created by CaramelHeaven on 12:40, 16/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class ChooseActionActivity extends BaseActivity implements ChooseActivityView {
 
     private String action;
@@ -40,6 +30,8 @@ public class ChooseActionActivity extends BaseActivity implements ChooseActivity
 
         action = getIntent().getStringExtra("ACTION");
 
+        //We can enter in this activity from two ways; ResultActivity or from WorkerTodayDF
+        //ADD_MORE_NOMENCLATURES - from ResultActivity, another part - from DF
         switch (action) {
             case "ADD_MORE_NOMENCLATURES":
                 getSupportFragmentManager()

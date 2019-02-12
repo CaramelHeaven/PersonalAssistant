@@ -8,6 +8,7 @@ import com.volgagas.personalassistant.models.model.worker.Barcode;
 
 /**
  * Created by CaramelHeaven on 15:40, 06/02/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 @StateStrategyType(value = OneExecutionStateStrategy.class)
 public interface BarcodeListView extends MvpView {

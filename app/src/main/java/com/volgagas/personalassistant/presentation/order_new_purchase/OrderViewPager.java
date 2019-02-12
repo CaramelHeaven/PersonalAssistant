@@ -10,6 +10,7 @@ import com.volgagas.personalassistant.presentation.order_new_base.OrderNewBaseFr
 
 /**
  * Created by CaramelHeaven on 12:41, 25/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class OrderViewPager extends FragmentPagerAdapter {
 

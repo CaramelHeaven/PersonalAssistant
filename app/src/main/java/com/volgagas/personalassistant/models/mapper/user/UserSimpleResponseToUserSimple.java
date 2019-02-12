@@ -6,6 +6,7 @@ import com.volgagas.personalassistant.models.network.UserSimpleResponse;
 
 /**
  * Created by CaramelHeaven on 17:15, 09/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class UserSimpleResponseToUserSimple extends Mapper<UserSimpleResponse, UserSimple> {
     @Override

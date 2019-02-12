@@ -21,7 +21,8 @@ import java.util.List;
 import timber.log.Timber;
 
 /**
- * Created by CaramelHeaven on 17:53, 15/01/2019.
+ * Created by CaramelHeaven on 12:40, 16/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -86,8 +87,8 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void updateAdapter(List<Nomenclature> values) {
         nomenclatureList.clear();
         nomenclatureList.addAll(values);
+
         notifyDataSetChanged();
-        //notifyItemRangeInserted(0, nomenclatureList.size() - 1);
     }
 
     public void addItem(Nomenclature data) {
@@ -110,6 +111,19 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public List<Nomenclature> getNomenclatureList() {
         return nomenclatureList;
+    }
+
+    /**
+     * @return boolean value. If each nomenclature equals 0 count - return true, else - false
+     */
+    public boolean isNomenclaturesCountEqualsNull() {
+        Timber.d("check not: " + nomenclatureList.toString());
+        for (Nomenclature item : nomenclatureList) {
+            if (item.getCount() != 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     class NomenclatureScanVH extends RecyclerView.ViewHolder {
@@ -152,6 +166,8 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    //Handler output text which user can be enter to edit text. Removes 0 or other
+                    // situation. Don't touch it.
                     if (s.toString().length() > 1) {
                         if (s.toString().equals("0") || s.toString().equals("00") || s.toString().equals("000")) {
                             etCount.setText("0");
@@ -169,11 +185,11 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             if (tempCount > 0) {
                                 etCount.setText(afterText.substring(tempCount, afterText.length()));
                                 etCount.setSelection(etCount.getText().length());
-
-
                             }
                         }
+                    }
 
+                    if (!s.toString().equals("")) {
                         onButtonPlusMinusClickListener.onHandleEditText(getAdapterPosition(),
                                 Integer.parseInt(etCount.getText().toString()));
                     }

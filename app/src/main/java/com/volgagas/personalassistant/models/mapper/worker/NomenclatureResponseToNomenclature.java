@@ -12,6 +12,7 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 12:17, 16/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class NomenclatureResponseToNomenclature extends Mapper<NomenclatureResponse, List<Nomenclature>> {
     @Override

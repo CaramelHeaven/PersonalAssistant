@@ -6,6 +6,9 @@ import com.volgagas.personalassistant.presentation.base.BaseView;
 
 import java.util.List;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public interface InfoView extends BaseView {
     @StateStrategyType(value = AddToEndSingleStrategy.class)
     void showData(List<Object> objects);

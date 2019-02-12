@@ -35,6 +35,9 @@ import es.dmoral.toasty.Toasty;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class StartActivity extends BaseActivity implements StartView {
 
     private ProgressBar progressBar;

@@ -21,6 +21,7 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 10:52, 31/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class BarcodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

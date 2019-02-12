@@ -30,6 +30,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
 /**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  * Preferences abstract
  */
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity {

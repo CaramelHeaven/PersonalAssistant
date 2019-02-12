@@ -19,6 +19,7 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 12:41, 23/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 @InjectViewState
 public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Task>> {

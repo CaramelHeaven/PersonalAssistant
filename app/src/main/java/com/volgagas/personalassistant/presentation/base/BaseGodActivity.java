@@ -26,6 +26,9 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 11:04, 22/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
+ * GodActivity for handler token if it dead
  */
 public abstract class BaseGodActivity extends MvpAppCompatActivity {
 
@@ -73,7 +76,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     @Override
     protected void onStop() {
         disposable.clear();
-        Timber.d("onStop: "+BaseGodActivity.this.getClass().getSimpleName());
+        Timber.d("onStop: " + BaseGodActivity.this.getClass().getSimpleName());
         super.onStop();
     }
 

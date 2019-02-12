@@ -7,20 +7,16 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
-import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
-import com.volgagas.personalassistant.presentation.start_splash.StartSplashFragment;
 import com.volgagas.personalassistant.presentation.worker.WorkerActivity;
 import com.volgagas.personalassistant.presentation.worker_camera.CameraActivity;
 import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseActionActivity;
@@ -37,6 +33,9 @@ import java.util.List;
 import es.dmoral.toasty.Toasty;
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class ResultActivity extends BaseActivity implements ResultView {
 
     private RecyclerView recyclerView;
@@ -63,8 +62,6 @@ public class ResultActivity extends BaseActivity implements ResultView {
         provideRecyclerAndAdapter(TaskContentManager.getInstance().getSubTasks());
 
         btnStartCompleted.setOnClickListener(v -> {
-            Timber.d("CHECK: " + presenter.getChosenSubTasks().size());
-            Timber.d("prenseter: " + presenter.getAllSubTasks().size());
             if (presenter.getChosenSubTasks().size() == 0) {
                 Toasty.error(ResultActivity.this, "Задачи не добавлены").show();
             } else if (presenter.getChosenSubTasks().size() == presenter.getAllSubTasks().size()) {
@@ -72,7 +69,7 @@ public class ResultActivity extends BaseActivity implements ResultView {
                 showAlScanCard(presenter.getChosenSubTasks().size());
             } else if (presenter.getChosenSubTasks().size() != 0) {
                 presenter.findNonSelectedSubTasks();
-                Timber.d("chosen subtassk: " + presenter.getNonSelectedSubTasks().size());
+
                 ResultDialogFragment fragment = ResultDialogFragment
                         .newInstance(new ArrayList<>(presenter.getNonSelectedSubTasks()));
                 fragment.show(getSupportFragmentManager(), null);

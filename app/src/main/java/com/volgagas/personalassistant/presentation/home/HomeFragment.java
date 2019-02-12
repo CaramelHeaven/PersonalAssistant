@@ -27,6 +27,9 @@ import com.volgagas.personalassistant.utils.shared_preferenses.UtilsSharedPresef
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class HomeFragment extends BaseFragment implements HomeView {
 
     private RecyclerView recyclerView;

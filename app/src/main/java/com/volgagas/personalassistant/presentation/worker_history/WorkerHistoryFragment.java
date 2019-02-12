@@ -25,6 +25,10 @@ import java.util.List;
 
 import timber.log.Timber;
 
+/**
+ * Created by CaramelHeaven on 12:40, 16/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class WorkerHistoryFragment extends BaseFragment implements WorkerHistoryView<TaskHistory> {
 
     private RecyclerView recyclerView;
@@ -62,6 +66,9 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
 
     @Override
     public void onDestroyView() {
+        recyclerView = null;
+        progressBar = null;
+        tvEmptyTasks = null;
         super.onDestroyView();
     }
 

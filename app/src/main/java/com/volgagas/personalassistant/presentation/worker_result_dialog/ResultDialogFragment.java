@@ -24,6 +24,9 @@ import java.util.Set;
 
 /**
  * Created by CaramelHeaven on 12:50, 31/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ *
+ * ResultDialogFragment for user to set - cancel current tasks or stop timing it
  */
 public class ResultDialogFragment extends MvpAppCompatDialogFragment {
 

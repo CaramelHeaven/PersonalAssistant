@@ -16,6 +16,7 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 17:38, 27/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class TaskResponseToTaskHistory extends Mapper<TaskResponse, List<TaskHistory>> {
     @Override

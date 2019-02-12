@@ -1,7 +1,5 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature.presenter;
 
-import android.annotation.SuppressLint;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.cache.CachePot;
@@ -27,7 +25,8 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 /**
- * Created by CaramelHeaven on 17:28, 15/01/2019.
+ * Created by CaramelHeaven on 12:40, 16/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 @InjectViewState
 public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
@@ -74,6 +73,9 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
         super.onDestroy();
     }
 
+    /**
+     * Map comes barcodeList from Scanned Barcode Activity and mapping it to nomenclatures
+     */
     private Observable<List<Nomenclature>> mappingBarcodesToNomenclatures() {
         List<Barcode> barcodeList = (List<Barcode>) (Object)
                 CachePot.getInstance().getCacheBarcodeList();
@@ -103,6 +105,11 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     }
 
+    /**
+     * Request to get nomenclatures from own server
+     *
+     * @param data - codekey for spesial nomenclature
+     */
     private void addDataFromNfc(String data) {
         disposable.add(repository.findNomenclatureByCardInfo(data)
                 .subscribeOn(Schedulers.io())
@@ -116,14 +123,16 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 }));
     }
 
-    @SuppressLint("CheckResult")
+    /**
+     * Load base nomenclatures from ServiceOrder Id
+     */
     protected void loadData() {
-        Timber.d("LOAD DATA");
         getViewState().showProgress();
         disposable.add(repository.getNomenclaturesBySO(task.getIdTask())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
+                    //test data
                     Timber.d("COMPLETED");
                     Nomenclature nomenclature = new Nomenclature("kek", 0, "шт");
                     result.add(nomenclature);

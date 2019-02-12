@@ -18,6 +18,7 @@ import java.util.List;
 
 /**
  * Created by CaramelHeaven on 13:24, 24/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class QueryFromUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

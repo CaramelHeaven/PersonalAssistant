@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by CaramelHeaven on 11:44, 24/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 @StateStrategyType(value = AddToEndSingleStrategy.class)
 public interface QueryFromUserView<T> extends BaseView {

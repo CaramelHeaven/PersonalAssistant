@@ -6,7 +6,8 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
 
 /**
- * Created by CaramelHeaven on 12:10, 31/01/2019.
+ * Created by CaramelHeaven on 12:40, 16/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 @StateStrategyType(value = OneExecutionStateStrategy.class)
 public interface NomenclatureBarcodeView extends MvpView {

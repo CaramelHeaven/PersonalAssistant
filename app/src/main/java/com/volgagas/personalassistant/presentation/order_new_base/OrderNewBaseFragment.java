@@ -30,6 +30,7 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 13:18, 25/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class OrderNewBaseFragment extends BaseFragment implements OrderNewBaseView {
 

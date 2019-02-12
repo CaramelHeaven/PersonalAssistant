@@ -15,6 +15,10 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import timber.log.Timber;
 
+/**
+ * Created by CaramelHeaven on 12:40, 16/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 @InjectViewState
 public class WorkerHistoryPresenter extends BasePresenter<WorkerHistoryView<TaskHistory>> {
 

@@ -55,6 +55,9 @@ import io.reactivex.functions.Function;
 import retrofit2.Response;
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class MainRemoteRepository implements MainRepository {
 
     private static volatile MainRemoteRepository INSTANCE;

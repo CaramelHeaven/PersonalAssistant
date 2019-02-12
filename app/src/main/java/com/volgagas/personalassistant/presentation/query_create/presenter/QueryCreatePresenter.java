@@ -11,6 +11,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 @InjectViewState
 public class QueryCreatePresenter extends MvpPresenter<QueryCreateView> {
 

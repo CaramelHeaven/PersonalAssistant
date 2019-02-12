@@ -30,6 +30,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class OrderNewPurchaseActivity extends MvpAppCompatActivity implements OrderNewPurchaseView<Order> {
 
     private ViewPager vpContainer;

@@ -15,6 +15,7 @@ import com.volgagas.personalassistant.R;
 
 /**
  * Created by CaramelHeaven on 11:55, 01/02/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class StartSplashFragment extends Fragment {
 

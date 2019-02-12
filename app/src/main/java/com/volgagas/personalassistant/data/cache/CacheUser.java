@@ -4,6 +4,11 @@ import com.volgagas.personalassistant.models.model.User;
 
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
+ * Cache our current user
+ */
 public class CacheUser {
 
     private static volatile CacheUser INSTANCE;

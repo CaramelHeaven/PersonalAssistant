@@ -17,6 +17,7 @@ import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by CaramelHeaven on 11:56, 01/02/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class StartLoginCardFragment extends Fragment {
 

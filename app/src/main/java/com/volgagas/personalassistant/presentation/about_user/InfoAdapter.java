@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Created by CaramelHeaven on 14:24, 07/02/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

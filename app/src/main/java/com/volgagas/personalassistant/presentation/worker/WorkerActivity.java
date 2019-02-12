@@ -11,6 +11,9 @@ import com.volgagas.personalassistant.presentation.base.BaseGodActivity;
 import com.volgagas.personalassistant.presentation.worker.presenter.WorkerPresenter;
 import com.volgagas.personalassistant.presentation.worker.presenter.WorkerView;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class WorkerActivity extends BaseGodActivity implements WorkerView {
 
     private ViewPager viewPager;

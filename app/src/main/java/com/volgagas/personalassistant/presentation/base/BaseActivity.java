@@ -18,6 +18,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
+ * Base Mifare card Reader
+ */
 public abstract class BaseActivity extends BaseGodActivity {
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
     private IntentFilter[] intentFiltersArray;

@@ -34,6 +34,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Created by CaramelHeaven on 15:40, 06/02/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements NomenclatureBarcodeView {
 
     private DecoratedBarcodeView barcodeView;

@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.common.GlobalTask;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
@@ -20,6 +19,8 @@ import java.util.List;
 /**
  * Created by CaramelHeaven on 07:51, 04/12/2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
+ * Abstract class which extends both Worker workspace.
  */
 public abstract class WorkerAdapter<T extends GlobalTask> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

@@ -12,7 +12,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.Response;
 
 /**
- * Created by CaramelHeaven on 12:03, 22/01/2019.
+ * Created by CaramelHeaven on 12:40, 16/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 @InjectViewState
 public class ChooseActivityPresenter extends BasePresenter<ChooseActivityView> {

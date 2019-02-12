@@ -16,6 +16,7 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 14:23, 24/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 @InjectViewState
 public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRequest>> {

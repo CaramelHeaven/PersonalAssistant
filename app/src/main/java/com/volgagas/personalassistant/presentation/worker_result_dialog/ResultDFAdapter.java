@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Created by CaramelHeaven on 12:55, 31/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class ResultDFAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

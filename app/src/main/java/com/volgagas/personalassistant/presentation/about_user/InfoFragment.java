@@ -23,6 +23,9 @@ import java.util.List;
 
 import androidx.work.impl.model.SystemIdInfoDao;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class InfoFragment extends BaseFragment implements InfoView {
 
     private ProgressBar progressBar;

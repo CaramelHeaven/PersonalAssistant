@@ -28,6 +28,9 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class MessengerActivity extends BaseActivity implements MessengerView {
 
     private RecyclerView recyclerView;

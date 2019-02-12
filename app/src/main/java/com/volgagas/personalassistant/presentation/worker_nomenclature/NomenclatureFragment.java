@@ -27,19 +27,17 @@ import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclaturePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclatureView;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.NomenclatureBarcodeActivity;
-import com.volgagas.personalassistant.presentation.worker_result.ResultActivity;
 import com.volgagas.personalassistant.utils.Constants;
-import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
-import timber.log.Timber;
 
 /**
- * Created by CaramelHeaven on 17:25, 15/01/2019.
+ * Created by CaramelHeaven on 12:40, 16/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class NomenclatureFragment extends BaseFragment implements NomenclatureView {
 
@@ -100,15 +98,19 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
             } else if (adapter.getNomenclatureList().size() == 0) {
                 Toast.makeText(getActivity(), "Список элементов пуст", Toast.LENGTH_SHORT).show();
             } else {
-                if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
-                    //saved data and finish
-                    CachePot.getInstance().putBarcodeCacheList(new ArrayList<>(adapter.getNomenclatureList()));
+                if (adapter.isNomenclaturesCountEqualsNull()) {
+                    Toast.makeText(getActivity(), "Нельзя", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
+                        //saved data and finish
+                        CachePot.getInstance().putBarcodeCacheList(new ArrayList<>(adapter.getNomenclatureList()));
 
-                    getActivity().finish();
-                } else if (action.equals(Constants.USUAL)) {
-                    Intent intent = new Intent(getActivity(), GpaActivity.class);
+                        getActivity().finish();
+                    } else if (action.equals(Constants.USUAL)) {
+                        Intent intent = new Intent(getActivity(), GpaActivity.class);
 
-                    startActivity(intent);
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -152,6 +154,10 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
 
     @Override
     public void onDestroyView() {
+        btnConfirm = null;
+        btnToQRCode = null;
+        toolbar = null;
+        progressBar = null;
         recyclerView = null;
         super.onDestroyView();
     }
@@ -185,7 +191,6 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
 
     @Override
     public void addedBarcodeNomenclaturesToBaseList(List<Nomenclature> values) {
-        Timber.d("VALUES: " + values.toString());
         adapter.addItems(values);
     }
 

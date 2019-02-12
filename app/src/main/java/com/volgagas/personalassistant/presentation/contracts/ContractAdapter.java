@@ -14,6 +14,9 @@ import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.List;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class ContractAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Contract> contractList;

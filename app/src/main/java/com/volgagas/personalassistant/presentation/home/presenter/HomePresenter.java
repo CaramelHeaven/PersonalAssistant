@@ -8,6 +8,9 @@ import com.volgagas.personalassistant.models.model.common.HomeModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 @InjectViewState
 public class HomePresenter extends MvpPresenter<HomeView> {
 

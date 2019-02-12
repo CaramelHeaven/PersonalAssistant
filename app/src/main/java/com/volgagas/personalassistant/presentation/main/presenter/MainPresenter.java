@@ -4,6 +4,9 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.volgagas.personalassistant.utils.threads.UpdateTokenHandler;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
 

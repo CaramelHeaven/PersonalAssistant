@@ -11,6 +11,9 @@ import com.volgagas.personalassistant.models.network.user_id.UserId;
 
 import java.util.List;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class UserMapper {
     private final UserResponseToUser userResponseToUser;
     private final UserResponseListToUserList userResponseListToUserList;

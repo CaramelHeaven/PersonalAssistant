@@ -13,6 +13,7 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 16:20, 11/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class SubTaskResponseToSubTask extends Mapper<SubTaskResponse, List<SubTaskViewer>> {
     @Override

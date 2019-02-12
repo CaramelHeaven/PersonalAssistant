@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by CaramelHeaven on 12:41, 23/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public interface WorkerTodayNewView<T> extends BaseView {
     @StateStrategyType(value = AddToEndSingleStrategy.class)

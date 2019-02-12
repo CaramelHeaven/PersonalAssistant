@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * Created by CaramelHeaven on 18:00, 27/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class TaskKioskResponseToTaskTemplate extends Mapper<TaskKioskResponse, List<TaskTemplate>> {
 

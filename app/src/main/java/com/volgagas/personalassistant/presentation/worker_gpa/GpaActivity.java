@@ -6,21 +6,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.worker_gpa.presenter.GpaPresenter;
 import com.volgagas.personalassistant.presentation.worker_gpa.presenter.GpaView;
 import com.volgagas.personalassistant.presentation.worker_result.ResultActivity;
 
-import java.util.ArrayList;
-
 import es.dmoral.toasty.Toasty;
 
+/**
+ * Created by CaramelHeaven on 12:40, 16/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class GpaActivity extends BaseActivity implements GpaView {
 
     private ProgressBar progressBar;

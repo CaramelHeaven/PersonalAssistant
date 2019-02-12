@@ -24,6 +24,9 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Response;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public interface MainRepository {
 
     /**

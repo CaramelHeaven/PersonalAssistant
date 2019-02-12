@@ -9,6 +9,9 @@ import com.volgagas.personalassistant.presentation.contracts.ContractFragment;
 import com.volgagas.personalassistant.presentation.query_from_user.QueryFromUserFragment;
 import com.volgagas.personalassistant.presentation.query_to_user.QueryToUserFragment;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class PagerProjectsAdapter extends FragmentPagerAdapter {
 
     private int count = 3;

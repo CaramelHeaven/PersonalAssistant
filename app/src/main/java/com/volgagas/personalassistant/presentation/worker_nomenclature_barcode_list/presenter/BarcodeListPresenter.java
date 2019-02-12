@@ -16,7 +16,9 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 15:40, 06/02/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
+
 @InjectViewState
 public class BarcodeListPresenter extends MvpPresenter<BarcodeListView> {
 

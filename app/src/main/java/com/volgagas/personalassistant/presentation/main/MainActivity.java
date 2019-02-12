@@ -42,6 +42,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class MainActivity extends BaseActivity implements MainView {
 
     private BottomNavigationView bnvNavigation;

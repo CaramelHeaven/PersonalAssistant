@@ -17,6 +17,7 @@ import java.util.TimeZone;
 
 /**
  * Created by CaramelHeaven on 15:31, 17/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class QueryToUserResponseToQueryToUser extends Mapper<QueryToUserResponse, List<QueryToUser>> {
 

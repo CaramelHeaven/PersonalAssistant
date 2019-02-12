@@ -19,6 +19,8 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 15:35, 25/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
  * Common adapter for OrderNewAdditionallyFargment and OrderNewBaseFragment
  */
 public class OrderCommonAdapter<T extends NewOrder> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

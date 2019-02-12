@@ -20,6 +20,9 @@ import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public interface SPApiService {
 
     @GET

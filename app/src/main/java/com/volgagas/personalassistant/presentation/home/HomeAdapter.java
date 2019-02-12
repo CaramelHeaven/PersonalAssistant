@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * Created by CaramelHeaven on 09:41, 18/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

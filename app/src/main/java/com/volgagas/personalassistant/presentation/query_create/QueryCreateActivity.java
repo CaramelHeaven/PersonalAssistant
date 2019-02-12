@@ -14,6 +14,9 @@ import com.volgagas.personalassistant.utils.views.ControlledSwipeViewPager;
 
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class QueryCreateActivity extends MvpAppCompatActivity implements QueryCreateView {
 
     private ControlledSwipeViewPager vpContainer;

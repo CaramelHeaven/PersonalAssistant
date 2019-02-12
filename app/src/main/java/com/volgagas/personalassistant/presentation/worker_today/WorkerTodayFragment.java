@@ -22,7 +22,6 @@ import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_task.TaskDialogFragment;
 import com.volgagas.personalassistant.presentation.worker_today.presenter.WorkerTodayPresenter;
 import com.volgagas.personalassistant.presentation.worker_today.presenter.WorkerTodayView;
-import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -32,8 +31,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import timber.log.Timber;
-
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * Still here
+ */
 public class WorkerTodayFragment extends BaseFragment implements WorkerTodayView<Task> {
 
     private RecyclerView recyclerView;

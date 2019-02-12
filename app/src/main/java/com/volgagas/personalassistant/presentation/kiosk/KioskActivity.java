@@ -32,6 +32,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import es.dmoral.toasty.Toasty;
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class KioskActivity extends BaseActivity implements KioskView {
 
     private Toolbar toolbar;

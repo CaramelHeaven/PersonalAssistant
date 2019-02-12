@@ -25,6 +25,9 @@ import java.util.List;
 
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class ContractFragment extends BaseFragment implements ContractView<Contract> {
 
     private RecyclerView recyclerView;

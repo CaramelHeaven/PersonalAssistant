@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by CaramelHeaven on 13:56, 29/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class QueryMoreDetailsDialogFragment extends MvpAppCompatDialogFragment {
 

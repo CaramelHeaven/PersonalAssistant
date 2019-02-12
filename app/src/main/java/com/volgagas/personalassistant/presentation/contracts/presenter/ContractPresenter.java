@@ -11,6 +11,9 @@ import java.util.List;
 
 import retrofit2.Response;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 @InjectViewState
 public class ContractPresenter extends BasePresenter<ContractView<Contract>> {
 

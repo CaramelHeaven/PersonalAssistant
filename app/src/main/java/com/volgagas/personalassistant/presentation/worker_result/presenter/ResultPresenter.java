@@ -31,6 +31,9 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 @InjectViewState
 public class ResultPresenter extends BasePresenter<ResultView> {
 
@@ -144,7 +147,6 @@ public class ResultPresenter extends BasePresenter<ResultView> {
     }
 
     private void successfulResult(List<Response<Void>> responses) {
-        Timber.d("responses: " + responses.toString());
         if (responses.size() > 0) {
             handlerErrorInSuccessfulResult(responses);
         } else {

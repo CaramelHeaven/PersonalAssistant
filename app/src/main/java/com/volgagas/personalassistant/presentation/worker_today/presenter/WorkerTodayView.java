@@ -7,6 +7,9 @@ import com.volgagas.personalassistant.presentation.base.BaseView;
 
 import java.util.List;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public interface WorkerTodayView<T extends Task> extends BaseView {
 
     @StateStrategyType(value = AddToEndSingleStrategy.class)

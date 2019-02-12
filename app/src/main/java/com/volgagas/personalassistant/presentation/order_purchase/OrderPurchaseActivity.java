@@ -22,6 +22,9 @@ import java.util.List;
 
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class OrderPurchaseActivity extends MvpAppCompatActivity implements OrderPurchaseView<Order> {
 
     private Button btnAddNewOrder;

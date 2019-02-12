@@ -17,6 +17,7 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 11:44, 24/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 @InjectViewState
 public class QueryToUserPresenter extends BasePresenter<QueryToUserView<QueryToUser>> {

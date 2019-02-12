@@ -11,6 +11,9 @@ import com.arellomobile.mvp.MvpAppCompatDialogFragment;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.presentation.addressee.presenter.AddresseeView;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class AddresseeDialogFragment extends MvpAppCompatDialogFragment implements AddresseeView {
 
     public static AddresseeDialogFragment newInstance() {

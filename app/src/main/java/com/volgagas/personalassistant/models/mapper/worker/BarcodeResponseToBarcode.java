@@ -6,6 +6,7 @@ import com.volgagas.personalassistant.models.network.BarcodeResponse;
 
 /**
  * Created by CaramelHeaven on 11:47, 31/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class BarcodeResponseToBarcode extends Mapper<BarcodeResponse, Barcode> {
     @Override

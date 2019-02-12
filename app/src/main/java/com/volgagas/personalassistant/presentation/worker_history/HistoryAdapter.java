@@ -42,6 +42,7 @@ public class HistoryAdapter extends WorkerAdapter<TaskHistory> {
     @Override
     protected void updateItems(List<TaskHistory> items) {
         taskList = items;
+
         notifyDataSetChanged();
     }
 

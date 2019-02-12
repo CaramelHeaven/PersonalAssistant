@@ -8,20 +8,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/tv_empty_tasks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="История пуста"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/text_16sp"
-        android:visibility="gone" />
-
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/iv_empty_tasks"
+        android:layout_width="150dp"
+        android:layout_height="130dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_picture_empty_tasks"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_empty_tasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_empty_tasks"
+        android:layout_centerInParent="true"
+        android:text="История работ пуста"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:visibility="gone" />
 </RelativeLayout>

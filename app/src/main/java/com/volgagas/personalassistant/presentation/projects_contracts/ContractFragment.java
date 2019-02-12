@@ -103,7 +103,7 @@ public class ContractFragment extends BaseFragment implements ContractView<Contr
             adapter.updateAdapter(values);
         } else {
             ivEmptyContracts.setVisibility(View.VISIBLE);
-            ivEmptyContracts.setVisibility(View.VISIBLE);
+            tvEmptyContracts.setVisibility(View.VISIBLE);
         }
     }
 }

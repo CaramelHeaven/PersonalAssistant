@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView tvEmptyTasks;
+    private ImageView ivEmptyTasks;
 
     private HistoryAdapter adapter;
 
@@ -59,6 +61,7 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
+        ivEmptyTasks = view.findViewById(R.id.iv_empty_tasks);
         tvEmptyTasks = view.findViewById(R.id.tv_empty_tasks);
 
         provideRecyclerAndAdapter();
@@ -69,12 +72,14 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
         recyclerView = null;
         progressBar = null;
         tvEmptyTasks = null;
+        ivEmptyTasks = null;
         super.onDestroyView();
     }
 
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
+        ivEmptyTasks.setVisibility(View.GONE);
         tvEmptyTasks.setVisibility(View.GONE);
     }
 
@@ -99,9 +104,11 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
 
     @Override
     public void showItems(List<TaskHistory> models) {
+        Timber.d("SHOW ITEMS: " + models.size());
         if (models.size() != 0) {
             adapter.updateItems(models);
         } else {
+            ivEmptyTasks.setVisibility(View.VISIBLE);
             tvEmptyTasks.setVisibility(View.VISIBLE);
         }
     }

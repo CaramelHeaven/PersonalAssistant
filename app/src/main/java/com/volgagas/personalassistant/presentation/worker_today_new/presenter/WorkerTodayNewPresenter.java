@@ -36,7 +36,7 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> loadData()));
 
-        PersonalAssistant.provideDynamics365Auth("dasd", "");
+        // PersonalAssistant.provideDynamics365Auth("dasd", "");
     }
 
     @Override

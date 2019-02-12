@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.worker_history.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Task;
@@ -26,17 +27,14 @@ public class WorkerHistoryPresenter extends BasePresenter<WorkerHistoryView<Task
 
     public WorkerHistoryPresenter() {
         repository = MainRemoteRepository.getInstance();
+
+        //PersonalAssistant.provideDynamics365Auth("dasd", "");
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         loadData();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -50,6 +48,7 @@ public class WorkerHistoryPresenter extends BasePresenter<WorkerHistoryView<Task
     }
 
     protected void loadData() {
+        getViewState().showProgress();
         disposable.add(repository.getHistoryTasks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -57,12 +56,13 @@ public class WorkerHistoryPresenter extends BasePresenter<WorkerHistoryView<Task
     }
 
     private void successfulResult(List<TaskHistory> tasks) {
-        Timber.d("history size: " + tasks.size());
         getViewState().hideProgress();
         getViewState().showItems(tasks);
     }
 
     private void unsuccessfulResult(Throwable throwable) {
+        Timber.d("THORWABLE: " + throwable.getCause());
+        Timber.d("THORWABLE: " + throwable.getMessage());
         Timber.d("unsuccessful: " + throwable.getMessage());
     }
 }

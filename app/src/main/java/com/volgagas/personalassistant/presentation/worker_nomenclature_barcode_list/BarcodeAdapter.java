@@ -53,19 +53,15 @@ public class BarcodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public void addValue(Barcode barcode) {
-//        if (barcodeList.contains(barcode)) {
-//            int index = barcodeList.indexOf(barcode);
-//
-//            barcodeList.get(index).setCount(barcodeList.get(index).getCount() + barcode.getCount());
-//        } else {
         if (barcodeList.contains(barcode)) {
             int index = barcodeList.indexOf(barcode);
 
-            barcode.setCount(barcode.getCount() + barcodeList.get(index).getCount());
-            barcodeList.set(index, barcode);
+            barcodeList.get(index).setCount(barcode.getCount() + barcodeList.get(index).getCount());
         } else {
+            Timber.d("I;m HERE SUSK");
             barcodeList.add(barcode);
         }
+
         notifyDataSetChanged();
     }
 

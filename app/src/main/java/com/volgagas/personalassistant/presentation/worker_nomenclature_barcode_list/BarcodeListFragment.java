@@ -111,6 +111,7 @@ public class BarcodeListFragment extends BaseFragment implements BarcodeListView
     @Override
     public void updateItem(Barcode barcode) {
         adapter.addValue(barcode);
+        CachePot.getInstance().clearBarcode(); // clear barcode instance
 
         tvCount.setText("Добавлено: " + String.valueOf(adapter.getItemCount()));
     }

@@ -81,7 +81,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
         for (Barcode barcode : barcodeList) {
             Nomenclature nomenclature = new
-                    Nomenclature(barcode.getBarcodeName(), 5, "шт");
+                    Nomenclature(barcode.getBarcodeName(), barcode.getCount(), "шт");
             nomenclatureList.add(nomenclature);
         }
 

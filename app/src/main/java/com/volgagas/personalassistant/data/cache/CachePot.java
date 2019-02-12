@@ -35,21 +35,13 @@ public class CachePot {
     }
 
     public void putBarcodeCacheList(List<Object> objects) {
-        if (cacheBarcodeList == null) {
-            cacheBarcodeList = new ArrayList<>();
-        }
-
-        if (cacheBarcodeList.size() > 0) {
-            cacheBarcodeList.clear();
-        }
+        cacheBarcodeList = new ArrayList<>();
 
         cacheBarcodeList.addAll(objects);
     }
 
     public void putBarcodeCache(Barcode data) {
-        if (barcode == null) {
-            barcode = new Barcode();
-        }
+        barcode = new Barcode();
 
         barcode.setBarcodeName(data.getBarcodeName());
         barcode.setBarcode(data.getBarcode());
@@ -58,6 +50,14 @@ public class CachePot {
 
     public Barcode getBarcode() {
         return barcode;
+    }
+
+    public void clearBarcode() {
+        barcode = null;
+    }
+
+    public void clearCacheBarcodeList() {
+        cacheBarcodeList = null;
     }
 
     public List<Object> getCacheBarcodeList() {

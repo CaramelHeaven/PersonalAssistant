@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.presentation.worker_nomenclature_barcode;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
+import com.volgagas.personalassistant.presentation.worker_camera.PermissionsDelegate;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.presenter.NomenclatureBarcodePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.presenter.NomenclatureBarcodeView;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode_list.BarcodeListFragment;
@@ -41,6 +43,9 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
     private Button btnCompleted, btnBack;
     private ImageButton ibShowItems;
     private FrameLayout flContainerItems;
+
+    private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
+    private boolean hasCameraPermission;
 
     private BeepManager beepManager;
     private String lastText; //prevent duplicate scan barcode
@@ -62,7 +67,13 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
 
         barcodeView.getStatusView().setGravity(Gravity.CENTER);
 
-        initBarcode();
+        hasCameraPermission = permissionsDelegate.hasCameraPermission();
+
+        if (hasCameraPermission) {
+            initBarcode();
+        } else {
+            permissionsDelegate.requestCameraPermission();
+        }
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -127,6 +138,17 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
         super.onPause();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (permissionsDelegate.resultGranted(requestCode, permissions, grantResults)) {
+            hasCameraPermission = true;
+
+            initBarcode();
+        }
+    }
+
+
     private void initBarcode() {
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39,
                 BarcodeFormat.CODE_93, BarcodeFormat.CODE_128, BarcodeFormat.UPC_E);
@@ -177,7 +199,7 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
     @Override
     public void resumeBarcode() {
         lastText = "";
-        Timber.d("RESUME");
+
         barcodeView.resume();
     }
 

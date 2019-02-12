@@ -13,16 +13,16 @@ import com.volgagas.personalassistant.R;
  * Created by CaramelHeaven on 10:04, 04/12/2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
-class PermissionsDelegate {
+public class PermissionsDelegate {
 
     private static final int REQUEST_CODE = 10;
     private final Activity activity;
 
-    PermissionsDelegate(Activity activity) {
+    public PermissionsDelegate(Activity activity) {
         this.activity = activity;
     }
 
-    boolean hasCameraPermission() {
+    public boolean hasCameraPermission() {
         int permissionCheckResult = ContextCompat.checkSelfPermission(
                 activity,
                 Manifest.permission.CAMERA
@@ -30,7 +30,7 @@ class PermissionsDelegate {
         return permissionCheckResult == PackageManager.PERMISSION_GRANTED;
     }
 
-    void requestCameraPermission() {
+    public void requestCameraPermission() {
         ActivityCompat.requestPermissions(
                 activity,
                 new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -38,9 +38,9 @@ class PermissionsDelegate {
         );
     }
 
-    boolean resultGranted(int requestCode,
-                          String[] permissions,
-                          int[] grantResults) {
+    public boolean resultGranted(int requestCode,
+                                 String[] permissions,
+                                 int[] grantResults) {
 
         if (requestCode != REQUEST_CODE) {
             return false;
@@ -56,12 +56,18 @@ class PermissionsDelegate {
         View noPermissionView = activity.findViewById(R.id.no_permission);
 
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            noPermissionView.setVisibility(View.GONE);
+            if (noPermissionView != null) {
+                noPermissionView.setVisibility(View.GONE);
+            }
             return true;
         }
 
         requestCameraPermission();
-        noPermissionView.setVisibility(View.VISIBLE);
+
+        if (noPermissionView != null) {
+            noPermissionView.setVisibility(View.VISIBLE);
+        }
+
         return false;
     }
 }

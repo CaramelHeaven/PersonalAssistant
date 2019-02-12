@@ -159,7 +159,7 @@ public class MainRemoteRepository implements MainRepository {
 
         data.put("$select", "Title,Comment,Priority,DueDate,AssignedTo/Title,CategoryLookup0/Title");
         data.put("$expand", "AssignedTo/Id,CategoryLookup0/Title");
-        data.put("$filter", "Status eq 'Открыт' and AssignedTo/Title eq '" + "Татьяна Нехорошкова" + "'");
+        data.put("$filter", "Status eq 'Открыт' and AssignedTo/Title eq '" + CacheUser.getUser().getModifiedNormalName()  + "'");
 
         return PersonalAssistant.getSpApiService().getOpenUniformRequestsToUser(url, data)
                 .map(uniformRequestMapper::map);

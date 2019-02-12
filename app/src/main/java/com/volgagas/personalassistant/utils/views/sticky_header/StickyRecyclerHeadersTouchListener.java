@@ -6,6 +6,9 @@ import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class StickyRecyclerHeadersTouchListener implements RecyclerView.OnItemTouchListener {
     private final GestureDetector mTapDetector;
     private final RecyclerView mRecyclerView;

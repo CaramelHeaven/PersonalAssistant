@@ -7,6 +7,7 @@ import com.volgagas.personalassistant.utils.Constants;
 
 /**
  * Created by CaramelHeaven on 12:38, 07/02/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class UtilsSharedPresefenses {
     private static volatile UtilsSharedPresefenses INSTANCE;

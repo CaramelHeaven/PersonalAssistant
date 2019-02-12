@@ -1,10 +1,6 @@
 package com.volgagas.personalassistant.utils.views.sticky_header;
 
 /**
- * Created by CaramelHeaven on 11:38, 23/01/2019.
- */
-
-/**
  * ItemVisibilityAdapter provides a way for StickyRecyclerHeadersDecoration
  * to know if a row is visible or not.  This comes into play if the
  * recyclerview's layout manager  is set up to provide extra layout space (by

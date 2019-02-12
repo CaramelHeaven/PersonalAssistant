@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 /**
  * Created by CaramelHeaven on 11:38, 23/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public interface StickyRecyclerHeadersAdapter<VH extends RecyclerView.ViewHolder> {
     /**

@@ -1,13 +1,11 @@
 package com.volgagas.personalassistant.utils.views.sticky_header.util;
 
-/**
- * Created by CaramelHeaven on 11:43, 23/01/2019.
- */
-
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 /**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
  * OrientationProvider for ReyclerViews who use a LinearLayoutManager
  */
 public class LinearLayoutOrientationProvider implements OrientationProvider {
@@ -26,7 +24,7 @@ public class LinearLayoutOrientationProvider implements OrientationProvider {
         return ((LinearLayoutManager) layoutManager).getReverseLayout();
     }
 
-    private void throwIfNotLinearLayoutManager(RecyclerView.LayoutManager layoutManager){
+    private void throwIfNotLinearLayoutManager(RecyclerView.LayoutManager layoutManager) {
         if (!(layoutManager instanceof LinearLayoutManager)) {
             throw new IllegalStateException("StickyListHeadersDecoration can only be used with a " +
                     "LinearLayoutManager.");

@@ -13,6 +13,8 @@ import androidx.work.WorkManager;
 
 /**
  * Created by CaramelHeaven on 14:20, 16/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
  * task manager for control SendTaskStartedWorker service class
  */
 public class TaskStartedManager {

@@ -14,6 +14,7 @@ import com.volgagas.personalassistant.utils.bus.RxBus;
 
 /**
  * Created by CaramelHeaven on 13:46, 06/02/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class UtilsAnimationView implements Expandable, Collapsible {
     private static volatile UtilsAnimationView INSTANCE;

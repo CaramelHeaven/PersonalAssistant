@@ -4,6 +4,8 @@ import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 
 /**
  * Created by CaramelHeaven on 14:06, 27/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
  * New order for callback from bottom sheet to new order view pager for set count = 0
  */
 public class NewOrderModified {

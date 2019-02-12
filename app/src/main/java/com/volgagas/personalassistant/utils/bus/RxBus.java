@@ -1,14 +1,12 @@
 package com.volgagas.personalassistant.utils.bus;
 
-import com.volgagas.personalassistant.models.model.worker.Barcode;
-import com.volgagas.personalassistant.utils.Constants;
-
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 11:08, 22/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
  * RxBus, this is modern version from GlobalBus
  */
 public class RxBus {
@@ -24,8 +22,6 @@ public class RxBus {
     private PublishSubject<Boolean> resultCallback = PublishSubject.create();
 
     private PublishSubject<String> commonChannel = PublishSubject.create();
-
-    private PublishSubject<Object> objectChannel = PublishSubject.create();
 
     public static RxBus getInstance() {
         if (instance == null) {

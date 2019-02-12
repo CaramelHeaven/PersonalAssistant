@@ -12,6 +12,7 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 14:26, 09/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class ReplyWorker extends Worker {
 

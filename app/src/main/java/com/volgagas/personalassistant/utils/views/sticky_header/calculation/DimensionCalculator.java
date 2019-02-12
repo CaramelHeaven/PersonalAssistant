@@ -8,15 +8,15 @@ import static android.view.ViewGroup.MarginLayoutParams;
 
 /**
  * Created by CaramelHeaven on 11:41, 23/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class DimensionCalculator {
 
     /**
      * Populates {@link Rect} with margins for any view.
      *
-     *
      * @param margins rect to populate
-     * @param view for which to get margins
+     * @param view    for which to get margins
      */
     public void initMargins(Rect margins, View view) {
         LayoutParams layoutParams = view.getLayoutParams();
@@ -32,8 +32,8 @@ public class DimensionCalculator {
     /**
      * Converts {@link MarginLayoutParams} into a representative {@link Rect}.
      *
-     * @param marginRect Rect to be initialized with margins coordinates, where
-     * {@link MarginLayoutParams#leftMargin} is equivalent to {@link Rect#left}, etc.
+     * @param marginRect         Rect to be initialized with margins coordinates, where
+     *                           {@link MarginLayoutParams#leftMargin} is equivalent to {@link Rect#left}, etc.
      * @param marginLayoutParams margins to populate the Rect with
      */
     private void initMarginRect(Rect marginRect, MarginLayoutParams marginLayoutParams) {
@@ -44,7 +44,6 @@ public class DimensionCalculator {
                 marginLayoutParams.bottomMargin
         );
     }
-
 
 
 }

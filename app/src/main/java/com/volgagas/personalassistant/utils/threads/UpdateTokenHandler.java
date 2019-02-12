@@ -9,6 +9,8 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 10:28, 22/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
  * Simple foreground thread for update token each 10 minutes
  */
 public class UpdateTokenHandler extends HandlerThread {
@@ -42,7 +44,7 @@ public class UpdateTokenHandler extends HandlerThread {
         public void run() {
             Timber.d("called periodic work");
 
-           // RxBus.getInstance().passActionForUpdateToken("UPDATE_TOKEN_HANDLER");
+            // RxBus.getInstance().passActionForUpdateToken("UPDATE_TOKEN_HANDLER");
             handler.postDelayed(runnable, time);
         }
     };

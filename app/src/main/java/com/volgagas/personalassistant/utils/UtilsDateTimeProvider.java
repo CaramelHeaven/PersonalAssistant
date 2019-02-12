@@ -10,6 +10,7 @@ import java.util.TimeZone;
 
 /**
  * Created by CaramelHeaven on 17:22, 27/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class UtilsDateTimeProvider {
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'", Locale.getDefault());

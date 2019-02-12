@@ -8,8 +8,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
-import com.volgagas.personalassistant.utils.bus.GlobalBus;
-import com.volgagas.personalassistant.utils.bus.models.SendStartedTasks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +22,7 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 14:04, 16/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class SendTaskStartedWorker extends RxWorker {
     private MainRepository repository;

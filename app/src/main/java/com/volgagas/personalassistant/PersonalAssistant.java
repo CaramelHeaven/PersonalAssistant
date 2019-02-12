@@ -24,6 +24,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class PersonalAssistant extends Application {
 
     private PersonalAssistant application;

@@ -5,6 +5,7 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * Created by CaramelHeaven on 17:05, 22.11.2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
  * This is LEGASY :)
  */
 public class GlobalBus {

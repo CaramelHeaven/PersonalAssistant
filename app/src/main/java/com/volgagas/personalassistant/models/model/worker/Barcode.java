@@ -14,13 +14,14 @@ public class Barcode {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Barcode barcode = (Barcode) o;
-        return Objects.equals(barcodeName, barcode.barcodeName);
+        Barcode barcode1 = (Barcode) o;
+        return Objects.equals(barcodeName, barcode1.barcodeName) &&
+                Objects.equals(barcode, barcode1.barcode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(barcodeName);
+        return Objects.hash(barcodeName, barcode);
     }
 
     @Override

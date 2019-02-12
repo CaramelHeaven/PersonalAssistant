@@ -5,6 +5,7 @@ import android.view.View;
 
 /**
  * Created by CaramelHeaven on 11:41, 23/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public interface HeaderProvider {
 

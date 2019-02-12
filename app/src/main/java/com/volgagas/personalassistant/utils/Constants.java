@@ -1,5 +1,8 @@
 package com.volgagas.personalassistant.utils;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class Constants {
 
     public static final String CLIENT = "68008789-f431-42b1-b4b9-0cdd559674f5";

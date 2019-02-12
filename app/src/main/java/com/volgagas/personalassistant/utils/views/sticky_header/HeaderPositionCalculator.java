@@ -12,6 +12,8 @@ import com.volgagas.personalassistant.utils.views.sticky_header.calculation.Dime
 import com.volgagas.personalassistant.utils.views.sticky_header.util.OrientationProvider;
 
 /**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
  * Calculates the position and location of header views
  */
 public class HeaderPositionCalculator {

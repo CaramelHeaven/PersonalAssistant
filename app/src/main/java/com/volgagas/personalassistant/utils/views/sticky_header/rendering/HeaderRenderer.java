@@ -10,6 +10,8 @@ import com.volgagas.personalassistant.utils.views.sticky_header.calculation.Dime
 import com.volgagas.personalassistant.utils.views.sticky_header.util.OrientationProvider;
 
 /**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
  * Responsible for drawing headers to the canvas provided by the item decoration
  */
 public class HeaderRenderer {
@@ -63,7 +65,7 @@ public class HeaderRenderer {
      * orientation are clipped so they look accurate, but the headers are not being drawn at the
      * correctly smaller width and height respectively.
      *
-     * @param clipRect {@link Rect} for clipping a provided header to the padding of a recycler view
+     * @param clipRect     {@link Rect} for clipping a provided header to the padding of a recycler view
      * @param recyclerView for which to provide a header
      * @param header       for clipping
      */

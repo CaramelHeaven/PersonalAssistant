@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Created by CaramelHeaven on 12:18, 18/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
  * TaskContentManager it's observer for manipulate the current task [and] sub-tasks anywhere
  */
 public class TaskContentManager {

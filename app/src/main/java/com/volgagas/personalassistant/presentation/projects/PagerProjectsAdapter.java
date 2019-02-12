@@ -5,9 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.volgagas.personalassistant.presentation.contracts.ContractFragment;
-import com.volgagas.personalassistant.presentation.query_from_user.QueryFromUserFragment;
-import com.volgagas.personalassistant.presentation.query_to_user.QueryToUserFragment;
+import com.volgagas.personalassistant.presentation.projects_contracts.ContractFragment;
+import com.volgagas.personalassistant.presentation.projects_query_from_user.QueryFromUserFragment;
+import com.volgagas.personalassistant.presentation.projects_query_to_user.QueryToUserFragment;
 
 /**
  * Copyright (c) 2018 VolgaGas. All rights reserved.

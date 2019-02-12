@@ -1,12 +1,10 @@
 package com.volgagas.personalassistant.utils.views.sticky_header.util;
 
-/**
- * Created by CaramelHeaven on 11:44, 23/01/2019.
- */
-
 import android.support.v7.widget.RecyclerView;
 
 /**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * <p>
  * Interface for getting the orientation of a RecyclerView from its LayoutManager
  */
 public interface OrientationProvider {

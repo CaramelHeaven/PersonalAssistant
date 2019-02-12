@@ -16,6 +16,7 @@ import com.volgagas.personalassistant.utils.views.sticky_header.util.Orientation
 
 /**
  * Created by CaramelHeaven on 11:39, 23/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class StickyRecyclerHeadersDecoration extends RecyclerView.ItemDecoration {
 

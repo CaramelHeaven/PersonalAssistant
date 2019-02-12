@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.volgagas.personalassistant.presentation.fill_request.FillRequestFragment;
-import com.volgagas.personalassistant.presentation.who_is_the_recipient.RecipientFragment;
+import com.volgagas.personalassistant.presentation.query_create_fill_base_request.FillRequestFragment;
+import com.volgagas.personalassistant.presentation.query_create_who_is_the_recipient.RecipientFragment;
 
 /**
  * Created by CaramelHeaven on 15:48, 08.11.2018.

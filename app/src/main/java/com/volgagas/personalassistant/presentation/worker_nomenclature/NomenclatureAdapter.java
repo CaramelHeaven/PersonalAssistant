@@ -37,7 +37,6 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        Timber.d("onCreateViewHolder: " + i);
         if (i == NOMENCLATURE_SCAN) {
             View view = LayoutInflater.from(viewGroup.getContext())
                     .inflate(R.layout.item_nomenclature_scan, viewGroup, false);

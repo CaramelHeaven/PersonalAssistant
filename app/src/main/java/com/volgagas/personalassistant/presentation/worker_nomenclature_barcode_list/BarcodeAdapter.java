@@ -44,7 +44,8 @@ public class BarcodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         BarcodeVH barcodeVH = (BarcodeVH) viewHolder;
 
-        barcodeVH.tvTitle.setText(barcodeList.get(i).getBarcodeName() + String.valueOf(barcodeList.get(i).getCount()));
+        barcodeVH.tvTitle.setText(barcodeList.get(i).getBarcodeName());
+        barcodeVH.tvAmount.setText(String.valueOf(barcodeList.get(i).getCount()) + " kg");
     }
 
     @Override
@@ -58,7 +59,6 @@ public class BarcodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             barcodeList.get(index).setCount(barcode.getCount() + barcodeList.get(index).getCount());
         } else {
-            Timber.d("I;m HERE SUSK");
             barcodeList.add(barcode);
         }
 
@@ -76,12 +76,13 @@ public class BarcodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     class BarcodeVH extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvCount;
+        TextView tvTitle, tvAmount;
         ImageButton ibRemove;
 
         public BarcodeVH(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_name);
+            tvAmount = itemView.findViewById(R.id.tv_amount);
             ibRemove = itemView.findViewById(R.id.ib_remove);
 
             ibRemove.setOnClickListener(v -> myOnItemClickListener.onItemClick(getAdapterPosition()));

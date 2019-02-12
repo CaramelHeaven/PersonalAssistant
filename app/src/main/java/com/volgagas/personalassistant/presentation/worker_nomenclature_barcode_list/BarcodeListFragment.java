@@ -71,7 +71,7 @@ public class BarcodeListFragment extends BaseFragment implements BarcodeListView
 
         adapter.setMyOnItemClickListener(position -> {
             adapter.removeValueByPos(position);
-            tvCount.setText("Добавлено: " + String.valueOf(adapter.getItemCount()));
+            tvCount.setText("Добавлено номенклатур: " + String.valueOf(adapter.getItemCount()));
         });
     }
 
@@ -113,7 +113,7 @@ public class BarcodeListFragment extends BaseFragment implements BarcodeListView
         adapter.addValue(barcode);
         CachePot.getInstance().clearBarcode(); // clear barcode instance
 
-        tvCount.setText("Добавлено: " + String.valueOf(adapter.getItemCount()));
+        tvCount.setText("Добавлено номенклатур: " + String.valueOf(adapter.getItemCount()));
     }
 
     @Override

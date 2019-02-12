@@ -4,50 +4,75 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp">
 
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="11dp"
+        android:src="@drawable/ic_brightness" />
+
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="2dp"
-        android:layout_toEndOf="@id/iv_square"
+        android:layout_toEndOf="@id/iv_image"
         android:ellipsize="end"
-        android:maxLines="2"
+        android:maxLines="1"
         android:text="Trilon b"
         android:textColor="@android:color/black"
         android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_description"
+    <RelativeLayout
+        android:id="@+id/rl_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_name"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="4dp"
-        android:layout_toEndOf="@id/iv_square"
-        android:text="@string/text_errorWorkType"
-        android:textColor="@android:color/black" />
+        android:layout_marginBottom="4dp">
+
+        <ImageView
+            android:id="@+id/iv_boxes"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_barcode_boxes" />
+
+        <TextView
+            android:id="@+id/tv_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/iv_boxes"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:text="24 kg"
+            android:textColor="@android:color/black" />
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/ib_remove"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/ic_clear"
-        android:foreground="?attr/selectableItemBackground" />
+        android:background="?selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_clear" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/tv_description"
+        android:layout_below="@id/rl_container"
         android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
+        android:layout_marginEnd="16dp"
         android:layout_toEndOf="@id/iv_square"
         android:background="@color/colorTextGrayLight" />
 </RelativeLayout>

@@ -108,7 +108,7 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
                 }
 
                 UtilsAnimationView.getInstance()
-                        .collapseFromHalfOfPartToInitialPos(50, flContainerItems, getApplicationContext());
+                        .collapseFromHalfOfPartToInitialPos(42, flContainerItems, getApplicationContext());
             }
         });
 

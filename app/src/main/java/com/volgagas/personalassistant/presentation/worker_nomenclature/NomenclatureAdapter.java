@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,9 +16,7 @@ import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
 
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import timber.log.Timber;
 
@@ -61,7 +58,10 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             NomenclatureVH nomenclatureVH = (NomenclatureVH) viewHolder;
 
             nomenclatureVH.tvTitle.setText(nomenclatureList.get(i).getName());
+
             nomenclatureVH.etCount.setText(String.valueOf(nomenclatureList.get(i).getCount()));
+            nomenclatureVH.etCount.setSelection(nomenclatureVH.etCount.getText().length());
+
             nomenclatureVH.tvUnit.setText(nomenclatureList.get(i).getUnit());
         }
     }
@@ -137,6 +137,8 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             provideButtonsClick();
         }
 
+        String afterText = "";
+
         private void provideEditTextListener() {
             etCount.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -146,13 +148,36 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                    afterText = s.toString();
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    onButtonPlusMinusClickListener.onHandleEditText(getAdapterPosition(),
-                            Integer.parseInt(s.toString()));
+                    if (s.toString().length() > 1) {
+                        if (s.toString().equals("0") || s.toString().equals("00") || s.toString().equals("000")) {
+                            etCount.setText("0");
+                            etCount.setSelection(etCount.getText().length());
+                        } else {
+                            //remove 0 if we can get text like this 09
+                            int tempCount = 0;
+                            for (int i = 0; i < s.toString().length(); i++) {
+                                if (s.charAt(i) == '0') {
+                                    tempCount++;
+                                } else {
+                                    break;
+                                }
+                            }
+                            if (tempCount > 0) {
+                                etCount.setText(afterText.substring(tempCount, afterText.length()));
+                                etCount.setSelection(etCount.getText().length());
+
+
+                            }
+                        }
+
+                        onButtonPlusMinusClickListener.onHandleEditText(getAdapterPosition(),
+                                Integer.parseInt(etCount.getText().toString()));
+                    }
                 }
             });
         }

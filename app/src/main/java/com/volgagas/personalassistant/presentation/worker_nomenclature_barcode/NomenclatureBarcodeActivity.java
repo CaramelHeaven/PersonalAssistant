@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -34,8 +33,6 @@ import com.volgagas.personalassistant.utils.bus.RxBus;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import timber.log.Timber;
 
 public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements NomenclatureBarcodeView {
 

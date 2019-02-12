@@ -145,7 +145,9 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
 
             @Override
             public void onHandleEditText(int pos, int count) {
+                Timber.d("COUNT: " + count);
                 adapter.getItemByPosition(pos).setCount(count);
+                Timber.d("AFTER COUNTER: " + adapter.getItemByPosition(pos).getCount());
             }
         });
     }

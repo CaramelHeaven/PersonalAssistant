@@ -21,7 +21,10 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:theme">
-        <activity android:name=".presentation.main.MainActivity">
+
+        <activity
+            android:name=".presentation.main.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
@@ -125,6 +128,7 @@
         <activity
             android:name=".presentation.settings.SettingsActivity"
             android:label="Настройки"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <activity

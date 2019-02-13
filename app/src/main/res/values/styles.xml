@@ -16,6 +16,11 @@
         <item name="android:windowBackground">@color/colorSecondaryLight</item>
     </style>
 
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter</item>
+        <item name="android:windowExitAnimation">@anim/exit_to_left</item>
+    </style>
+
     <style name="ToolbarStyle" parent="AppTheme">
         <item name="colorControlNormal">@color/colorSecondaryLight</item>
         <item name="android:textColorSecondary">@color/colorSecondaryLight</item>
@@ -39,7 +44,6 @@
         <item name="colorControlNormal">@android:color/black</item>
         <item name="colorControlActivated">@android:color/black</item>
     </style>
-
 
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
         <item name="android:colorButtonNormal">@color/colorPrimary</item>

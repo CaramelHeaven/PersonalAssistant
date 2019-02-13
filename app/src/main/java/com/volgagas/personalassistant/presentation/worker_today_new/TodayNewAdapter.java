@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.SubTask;
+import com.volgagas.personalassistant.utils.callbacks.OnTaskItemClickListener;
 import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 import com.volgagas.personalassistant.utils.views.sticky_header.StickyRecyclerHeadersAdapter;
 
@@ -25,7 +26,7 @@ public class TodayNewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
 
     private List<Task> items;
-    private myOnItemClickListener myOnItemClickListener;
+    private OnTaskItemClickListener onTaskItemClickListener;
 
     public TodayNewAdapter(List<Task> items) {
         this.items = items;
@@ -118,7 +119,7 @@ public class TodayNewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @Override
         public void onClick(View v) {
-            myOnItemClickListener.onItemClick(getAdapterPosition());
+            onTaskItemClickListener.onClick(getAdapterPosition());
         }
     }
 
@@ -147,7 +148,7 @@ public class TodayNewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return builder.toString();
     }
 
-    public void setMyOnItemClickListener(com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener myOnItemClickListener) {
-        this.myOnItemClickListener = myOnItemClickListener;
+    public void setOnTaskItemClickListener(OnTaskItemClickListener onTaskItemClickListener) {
+        this.onTaskItemClickListener = onTaskItemClickListener;
     }
 }

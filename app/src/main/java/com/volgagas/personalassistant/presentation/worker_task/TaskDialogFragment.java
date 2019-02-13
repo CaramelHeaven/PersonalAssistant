@@ -120,6 +120,14 @@ public class TaskDialogFragment extends MvpAppCompatDialogFragment implements Ta
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        getDialog().getWindow()
+                .getAttributes().windowAnimations = R.style.DialogAnimation;
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
 

@@ -4,16 +4,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.projects.presenter.ProjectsPresenter;
 import com.volgagas.personalassistant.presentation.projects.presenter.ProjectsView;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 11:34, 16.11.2018.
@@ -69,6 +73,11 @@ public class FragmentProjects extends BaseFragment implements ProjectsView {
     @Override
     public void hideProgress() {
 
+    }
+
+    @Override
+    public void catastrophicError(Throwable throwable) {
+        Toast.makeText(getActivity(), "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
 }

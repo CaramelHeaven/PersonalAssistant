@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -91,6 +92,11 @@ public class QueryCreateActivity extends MvpAppCompatActivity implements QueryCr
     @Override
     public void hideProgress() {
 
+    }
+
+    @Override
+    public void catastrophicError(Throwable throwable) {
+        Toast.makeText(this, "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
 }

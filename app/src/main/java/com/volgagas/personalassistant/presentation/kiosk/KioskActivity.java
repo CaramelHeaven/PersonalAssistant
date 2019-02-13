@@ -135,6 +135,11 @@ public class KioskActivity extends BaseActivity implements KioskView {
 
     }
 
+    @Override
+    public void catastrophicError(Throwable throwable) {
+        Toast.makeText(this, "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
     private void provideTabLayoutAndViewPager() {
         pagerAdapter = new KioskPagerAdapter(getSupportFragmentManager());
         vpContainer.setAdapter(pagerAdapter);

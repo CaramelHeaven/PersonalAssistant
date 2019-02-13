@@ -148,6 +148,11 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
         progressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void catastrophicError(Throwable throwable) {
+        Toast.makeText(getActivity(), "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
     private void provideEditText() {
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override

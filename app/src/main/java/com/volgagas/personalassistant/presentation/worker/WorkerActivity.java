@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
@@ -62,6 +63,11 @@ public class WorkerActivity extends BaseGodActivity implements WorkerView {
     @Override
     public void hideProgress() {
 
+    }
+
+    @Override
+    public void catastrophicError(Throwable throwable) {
+        Toast.makeText(this, "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
 }

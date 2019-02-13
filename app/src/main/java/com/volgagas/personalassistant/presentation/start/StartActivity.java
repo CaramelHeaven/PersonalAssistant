@@ -133,6 +133,11 @@ public class StartActivity extends BaseActivity implements StartView {
     }
 
     @Override
+    public void catastrophicError(Throwable throwable) {
+        Toast.makeText(this, "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void goToMainMenu() {
         Fabric.with(this, new Crashlytics());
 

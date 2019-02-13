@@ -1,11 +1,11 @@
 package com.volgagas.personalassistant.presentation.projects.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 
 import java.util.List;
 
-import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.Response;
 
 /**
@@ -16,6 +16,7 @@ import retrofit2.Response;
 public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
     private boolean isOpen = true;
+    private MainRepository repository;
 
     public ProjectsPresenter() {
         super();
@@ -24,17 +25,11 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        provideListenerActions();
-    }
-
-    private void provideListenerActions() {
-
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        disposable.clear();
     }
 
     @Override

@@ -114,6 +114,11 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     }
 
+    @Override
+    public void catastrophicError(Throwable throwable) {
+        Toast.makeText(getActivity(), "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
     private void provideBaseNavigation() {
         HomeModel homeModel = new HomeModel("Создать работу", getContext().getDrawable(R.drawable.ic_writing));
         HomeModel homeModel1 = new HomeModel("Создать заявку", getContext().getDrawable(R.drawable.ic_pen));

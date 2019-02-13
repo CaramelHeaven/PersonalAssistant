@@ -38,8 +38,6 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
         super();
         repository = MainRemoteRepository.getInstance();
         task = TaskContentManager.getInstance().getTask();
-
-        PersonalAssistant.provideDynamics365Auth("addasdas", "");
     }
 
     @Override

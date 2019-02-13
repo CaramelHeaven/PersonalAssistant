@@ -88,6 +88,11 @@ public class WorkerHistoryFragment extends BaseFragment implements WorkerHistory
         progressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void catastrophicError(Throwable throwable) {
+        Toast.makeText(getActivity(), "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
     private void provideRecyclerAndAdapter() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));

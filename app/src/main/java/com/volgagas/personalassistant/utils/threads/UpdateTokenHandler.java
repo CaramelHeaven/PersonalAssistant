@@ -3,6 +3,7 @@ package com.volgagas.personalassistant.utils.threads;
 import android.os.Handler;
 import android.os.HandlerThread;
 
+import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import timber.log.Timber;
@@ -42,9 +43,7 @@ public class UpdateTokenHandler extends HandlerThread {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            Timber.d("called periodic work");
-
-            // RxBus.getInstance().passActionForUpdateToken("UPDATE_TOKEN_HANDLER");
+            RxBus.getInstance().passActionForUpdateToken(Constants.UPDATE_TOKEN_SILENT);
             handler.postDelayed(runnable, time);
         }
     };

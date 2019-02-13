@@ -1,9 +1,12 @@
 package com.volgagas.personalassistant.data.cache;
 
 import com.volgagas.personalassistant.models.model.worker.Barcode;
+import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 12:39, 06/02/2019.
@@ -20,6 +23,10 @@ public class CachePot {
     //barcode for pass from dialog fragment to list above QR code reader - ActivityBarcode
     private Barcode barcode;
 
+    //saver container for reflect histories data in WorkerHistoryFragment. We get it from worker
+    // today and need to save it here
+    private List<TaskHistory> taskHistories;
+
     public static CachePot getInstance() {
         if (cachePot == null) {
             synchronized (CachePot.class) {
@@ -30,6 +37,11 @@ public class CachePot {
         }
 
         return cachePot;
+    }
+
+    public void putTaskHistories(List<TaskHistory> histories) {
+        Timber.d("HISTORY DATA CHECL: " + histories.toString());
+        taskHistories = new ArrayList<>(histories);
     }
 
     public void putBarcodeCacheList(List<Object> objects) {
@@ -50,6 +62,14 @@ public class CachePot {
         return barcode;
     }
 
+    public List<TaskHistory> getTaskHistories() {
+        return taskHistories;
+    }
+
+    public List<Object> getCacheBarcodeList() {
+        return cacheBarcodeList;
+    }
+
     public void clearBarcode() {
         barcode = null;
     }
@@ -58,7 +78,7 @@ public class CachePot {
         cacheBarcodeList = null;
     }
 
-    public List<Object> getCacheBarcodeList() {
-        return cacheBarcodeList;
+    public void clearTaskHistories() {
+        taskHistories = null;
     }
 }

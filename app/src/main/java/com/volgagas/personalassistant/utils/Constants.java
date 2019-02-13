@@ -69,4 +69,9 @@ public class Constants {
     public static final String WORKER_GPA_PRESENTER = "WORKER_GPA_PRESENTER";
     public static final String WORKER_RESULT_PRESENTER = "WORKER_RESULT_PRESENTER";
     public static final String WORKER_NOMENCLATURE_PRESENTER = "WORKER_NOMENCLATURE_PRESENTER";
+    public static final String WORKER_HISTORY_PRESENTER = "WORKER_HISTORY_PRESENTER";
+    public static final String PROJECTS_UNIFORM_PRESENTER = "PROJECTS_UNIFORM_PRESENTER";
+    public static final String PROJECTS_QUERY_TO_USER_PRESENTER = "PROJECTS_QUERY_TO_USER_PRESENTER";
+    public static final String WORKER_HISTORY_COMES_DATA = "WORKER_HISTORY_COMES_DATA";
+    public static final String UPDATE_TOKEN_SILENT = "UPDATE_TOKEN_SILENT";
 }

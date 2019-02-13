@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.utils.bus;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 11:08, 22/01/2019.
@@ -64,6 +65,7 @@ public class RxBus {
     }
 
     public void passDataToCommonChannel(String data) {
+        Timber.d("pass data: " + data);
         commonChannel.onNext(data);
     }
 

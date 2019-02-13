@@ -61,8 +61,6 @@ public class GpaPresenter extends BasePresenter<GpaView> {
                     Timber.d("IM HERE FUCK YOU");
                     loadData();
                 }));
-
-        PersonalAssistant.provideDynamics365Auth("asf", "");
     }
 
     @Override

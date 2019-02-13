@@ -2,11 +2,14 @@ package com.volgagas.personalassistant.presentation.worker_history.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.PersonalAssistant;
+import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import java.util.List;
 
@@ -28,13 +31,21 @@ public class WorkerHistoryPresenter extends BasePresenter<WorkerHistoryView<Task
     public WorkerHistoryPresenter() {
         repository = MainRemoteRepository.getInstance();
 
-        //PersonalAssistant.provideDynamics365Auth("dasd", "");
+        //Listener for get data from WorkerTaskToday. We use Single.zip for it.
+        disposable.add(RxBus.getInstance().getCommonChannel()
+                .subscribeOn(Schedulers.io())
+                .filter(result -> result.equals(Constants.WORKER_HISTORY_COMES_DATA))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    getViewState().hideProgress();
+                    getViewState().showItems(CachePot.getInstance().getTaskHistories());
+                }));
     }
 
     @Override
-    protected void onFirstViewAttach() {
-        super.onFirstViewAttach();
-        loadData();
+    public void onDestroy() {
+        super.onDestroy();
+        CachePot.getInstance().clearTaskHistories();
     }
 
     @Override
@@ -47,6 +58,9 @@ public class WorkerHistoryPresenter extends BasePresenter<WorkerHistoryView<Task
 
     }
 
+    /**
+     * We remain it here for something if the future
+     */
     protected void loadData() {
         getViewState().showProgress();
         disposable.add(repository.getHistoryTasks()
@@ -61,8 +75,11 @@ public class WorkerHistoryPresenter extends BasePresenter<WorkerHistoryView<Task
     }
 
     private void unsuccessfulResult(Throwable throwable) {
-        Timber.d("THORWABLE: " + throwable.getCause());
-        Timber.d("THORWABLE: " + throwable.getMessage());
-        Timber.d("unsuccessful: " + throwable.getMessage());
+        if (throwable.getMessage().contains(Constants.HTTP_401)) {
+            RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_HISTORY_PRESENTER);
+        } else {
+            Timber.d("THORWABLE: " + throwable.getCause());
+            Timber.d("THORWABLE: " + throwable.getMessage());
+        }
     }
 }

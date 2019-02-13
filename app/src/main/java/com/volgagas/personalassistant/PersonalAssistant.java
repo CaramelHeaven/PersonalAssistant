@@ -29,8 +29,8 @@ import timber.log.Timber;
  */
 public class PersonalAssistant extends Application {
 
-    private PersonalAssistant application;
     private static String lastTokenDynamics365 = "";
+    private static String lastTokenSharePoint = "";
 
     private static BaseApiService baseApiService;
     private static SPApiService spApiService;
@@ -50,14 +50,8 @@ public class PersonalAssistant extends Application {
 
         Timber.plant(new Timber.DebugTree());
 
-        application = this;
-
         TaskStartedManager.getInstance();
         TaskContentManager.getInstance();
-    }
-
-    public PersonalAssistant getApplication() {
-        return application;
     }
 
     public static BaseApiService getBaseApiService() {
@@ -97,7 +91,9 @@ public class PersonalAssistant extends Application {
     }
 
     public static void provideSharePointAuth(String token) {
-        OkHttpClient.Builder builderWithAuth = initBuilderAuth(token, "SP");
+        lastTokenSharePoint = token;
+
+        OkHttpClient.Builder builderWithAuth = initBuilderAuth(lastTokenSharePoint, "SP");
         OkHttpClient client = builderWithAuth.build();
 
         Retrofit retrofit = new Retrofit.Builder()

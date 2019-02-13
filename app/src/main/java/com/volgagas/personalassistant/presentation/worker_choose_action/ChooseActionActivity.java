@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.worker_choose_action;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
@@ -75,6 +76,11 @@ public class ChooseActionActivity extends BaseActivity implements ChooseActivity
     @Override
     public void hideProgress() {
 
+    }
+
+    @Override
+    public void catastrophicError(Throwable throwable) {
+        Toast.makeText(this, "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

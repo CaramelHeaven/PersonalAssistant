@@ -153,6 +153,11 @@ public class OrderNewPurchaseActivity extends MvpAppCompatActivity implements Or
 
     }
 
+    @Override
+    public void catastrophicError(Throwable throwable) {
+        Toast.makeText(this, "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
     private void provideTabLayoutViewPager() {
         pagerAdapter = new OrderViewPager(getSupportFragmentManager());
         vpContainer.setAdapter(pagerAdapter);

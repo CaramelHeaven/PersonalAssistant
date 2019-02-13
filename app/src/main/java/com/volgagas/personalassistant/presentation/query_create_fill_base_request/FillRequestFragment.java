@@ -182,6 +182,11 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
 
     }
 
+    @Override
+    public void catastrophicError(Throwable throwable) {
+        Toast.makeText(getActivity(), "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
     private void animationShareViews() {
         final Animation animationShake = AnimationUtils.loadAnimation(getActivity(), R.anim.item_animation_shake);
 

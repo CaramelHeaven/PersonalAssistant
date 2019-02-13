@@ -110,12 +110,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      * Class handler UpdateTokenHandler
      */
     private void updateToken() {
-        Timber.d("UPDATED TOKEN INITIAL: " + this.getClass().getSimpleName());
         disposable.add(RxBus.getInstance().getUpdates()
-                .doOnNext(s -> {
-                    Timber.d("and: " + BaseGodActivity.this.getClass().getSimpleName());
-                    Timber.d("CALL: " + s);
-                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::refreshTokens));
     }
@@ -129,8 +124,11 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
                 .filter(TwoPermissions::allValuesIsTrue)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    Timber.d("LISTENER TOKENS. ALL SUCCESSFUL - PASS");
-                    RxBus.getInstance().passUpdatedToken(TwoPermissions.getInstance().getUpdatedString());
+                    //if handler update token delivered in here, we check it. We won't to send
+                    // this constant to channel [passUpdatedToken]
+                    if (!(TwoPermissions.getInstance().getUpdatedString().equals(Constants.UPDATE_TOKEN_SILENT))) {
+                        RxBus.getInstance().passUpdatedToken(TwoPermissions.getInstance().getUpdatedString());
+                    }
 
                     TwoPermissions.getInstance().resetValues();
                 }));
@@ -143,8 +141,6 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      * @param result - string which define where we send observer data for update request to server
      */
     private void refreshTokens(String result) {
-        Timber.d("refreshing start: " + BaseGodActivity.this.getClass().getSimpleName());
-        Timber.d("REFRESH PRESENTER: " + result);
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
 
         TwoPermissions.getInstance().resetValues();

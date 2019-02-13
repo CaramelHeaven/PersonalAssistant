@@ -6,6 +6,8 @@ import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import java.util.List;
 
@@ -26,7 +28,11 @@ public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRe
     public UniformsPresenter() {
         repository = MainRemoteRepository.getInstance();
 
-        PersonalAssistant.provideDynamics365Auth("asf", "");
+        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
+                .subscribeOn(Schedulers.io())
+                .filter(result -> result.equals(Constants.PROJECTS_UNIFORM_PRESENTER))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> loadData()));
     }
 
     @Override
@@ -47,8 +53,11 @@ public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRe
     }
 
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-        Timber.d("throwable: " + throwable.getCause());
-        Timber.d("throwable: " + throwable.getMessage());
+        if (throwable.getMessage().contains(Constants.HTTP_401)) {
+            RxBus.getInstance().passActionForUpdateToken(Constants.PROJECTS_UNIFORM_PRESENTER);
+        } else {
+            getViewState().catastrophicError(throwable);
+        }
     }
 
     @Override

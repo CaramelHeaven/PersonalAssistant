@@ -173,6 +173,11 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     }
 
     @Override
+    public void catastrophicError(Throwable throwable) {
+        Toast.makeText(getActivity(), "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void showBaseList(List<Nomenclature> values) {
         if (values.size() > 0) {
             adapter.updateAdapter(values);

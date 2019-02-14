@@ -72,15 +72,12 @@ public class KioskActivity extends BaseActivity implements KioskView {
             if (presenter.getSenderTasks().size() > 0) {
                 buildAlertDialog();
                 setPermissionToEnableNfc(true);
-                handlerNFC();
 
-                Timber.d("check permission: " + isPermissionToEnableNfc());
+                handlerNFC();
             } else {
                 Toast.makeText(KioskActivity.this, "Задачи не выбраны", Toast.LENGTH_SHORT).show();
             }
         });
-
-        Timber.d("I'm IN KEK: " + CacheUser.getUser().toString());
     }
 
     @Override
@@ -102,7 +99,6 @@ public class KioskActivity extends BaseActivity implements KioskView {
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void addedTaskToPresenter(AddedTask data) {
-        Timber.d("ADDED TASK: " + data.toString());
         presenter.addTask(data.getTask());
     }
 
@@ -170,7 +166,6 @@ public class KioskActivity extends BaseActivity implements KioskView {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //send entered letters to KioskTaskFragment
-                Timber.d("char sequence: " + s);
                 GlobalBus.getEventBus().post(s.toString());
             }
 

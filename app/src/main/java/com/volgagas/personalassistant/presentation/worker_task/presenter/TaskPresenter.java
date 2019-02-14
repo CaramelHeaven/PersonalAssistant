@@ -54,13 +54,10 @@ public class TaskPresenter extends BasePresenter<TaskView<SubTaskViewer>> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-        Timber.d("thowable: " + throwable.getMessage());
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
-            Timber.d("REPEAT");
             handlerAuthenticationRepeat();
         } else {
             getViewState().hideProgress();
-            Timber.d("THROWABLE: " + throwable.getMessage());
             getViewState().showError();
         }
     }
@@ -72,7 +69,6 @@ public class TaskPresenter extends BasePresenter<TaskView<SubTaskViewer>> {
 
     @Override
     protected void loadData() {
-        Timber.d("CALLED LOAD DATA AGAIN");
         getViewState().showProgress();
         if (status.equals("TODAY") && task instanceof Task) {
             disposable.add(repository.getSubTasksToday(((Task) task).getIdTask())
@@ -80,7 +76,6 @@ public class TaskPresenter extends BasePresenter<TaskView<SubTaskViewer>> {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(result -> {
                         getViewState().hideProgress();
-                        Timber.d("CHECK RESULT: " + result);
                         getViewState().showItems(result);
                     }, this::handlerErrorsFromBadRequests));
         } else if (status.equals("HISTORY") && task instanceof TaskHistory) {

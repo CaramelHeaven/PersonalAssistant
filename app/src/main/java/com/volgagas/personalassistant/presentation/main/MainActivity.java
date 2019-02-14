@@ -16,6 +16,7 @@ import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,7 +53,7 @@ public class MainActivity extends BaseActivity implements MainView {
     private CircleImageView ivUserImage;
     private ConstraintLayout constraintLayout;
     private TextView tvName, tvCategory;
-    private ImageView ivSettings, ivLogout;
+    private ImageButton ibSettings, ibLogout;
 
     private ConstraintSet homeSet, projectsSet, infoSet;
 
@@ -73,8 +74,8 @@ public class MainActivity extends BaseActivity implements MainView {
         bnvNavigation = findViewById(R.id.bnv_navigation);
         tvName = findViewById(R.id.tv_name);
         tvCategory = findViewById(R.id.tv_category);
-        ivSettings = findViewById(R.id.iv_settings);
-        ivLogout = findViewById(R.id.iv_logout);
+        ibSettings = findViewById(R.id.iv_settings);
+        ibLogout = findViewById(R.id.iv_logout);
         toolbar = findViewById(R.id.toolbar);
         constraintLayout = findViewById(R.id.constraintLayout);
 
@@ -111,10 +112,10 @@ public class MainActivity extends BaseActivity implements MainView {
                     Timber.d("tho: " + throwable.getMessage());
                 });
 
-        ivSettings.setOnClickListener(v ->
+        ibSettings.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class)));
 
-        ivLogout.setOnClickListener(v -> {
+        ibLogout.setOnClickListener(v -> {
             CacheUser.clear();
             startActivity(new Intent(MainActivity.this, StartActivity.class));
             finish();

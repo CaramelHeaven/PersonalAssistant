@@ -162,6 +162,7 @@ public class ResultPresenter extends BasePresenter<ResultView> {
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+        Timber.d("th: " + result.toString());
         boolean ifError = false;
         for (Response<Void> response : result) {
             if (response.code() != Constants.HTTP_204) {

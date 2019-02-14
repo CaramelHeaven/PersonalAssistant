@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.presentation.base.BaseGodActivity;
 import com.volgagas.personalassistant.presentation.query_create.presenter.QueryCreatePresenter;
 import com.volgagas.personalassistant.presentation.query_create.presenter.QueryCreateView;
 import com.volgagas.personalassistant.utils.views.ControlledSwipeViewPager;
@@ -18,7 +19,7 @@ import timber.log.Timber;
 /**
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
-public class QueryCreateActivity extends MvpAppCompatActivity implements QueryCreateView {
+public class QueryCreateActivity extends BaseGodActivity implements QueryCreateView {
 
     private ControlledSwipeViewPager vpContainer;
     private Toolbar toolbar;
@@ -64,6 +65,26 @@ public class QueryCreateActivity extends MvpAppCompatActivity implements QueryCr
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

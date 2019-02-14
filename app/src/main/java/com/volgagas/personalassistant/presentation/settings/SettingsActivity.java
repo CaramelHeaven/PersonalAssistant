@@ -9,11 +9,16 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
+import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
+
+import timber.log.Timber;
 
 /**
  * Copyright (c) 2018 VolgaGas. All rights reserved.
@@ -21,6 +26,7 @@ import com.volgagas.personalassistant.utils.bus.RxBus;
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
     private static SharedPreferences sharedPreferences;
+    private static boolean allowToTestApplication = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +34,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        for (String secondName : Constants.ALLOW_PEOPLE_TESTING) {
+            if (CacheUser.getUser().getName().contains(secondName)) {
+                allowToTestApplication = true;
+                break;
+            }
         }
 
         // load settings fragment
@@ -72,6 +85,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     private static void bindPreferenceSummaryToValue(Preference preference) {
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+        preference.setEnabled(allowToTestApplication);
 
         sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
                 PreferenceManager
@@ -81,6 +95,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     private static void bindPreferenceSwitch(Preference preference) {
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+        preference.setEnabled(allowToTestApplication);
 
         //Enable if user set it true
         if (sharedPreferences.getBoolean(Constants.SP_ENABLE_FUNCTIONS, false)) {
@@ -116,7 +131,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             String value = array[Integer.parseInt(stringValue)];
 
             String referenceHttp = "";
-            if (value.contains("tst")) {
+            if (value.contains("test")) {
                 referenceHttp = Constants.DYNAMICS_TEST;
             } else if (value.contains("prod")) {
                 referenceHttp = Constants.DYNAMICS_PROD;

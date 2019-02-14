@@ -5,6 +5,8 @@ import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import java.util.List;
 
@@ -22,7 +24,6 @@ import timber.log.Timber;
 public class CategoryPresenter extends BasePresenter<CategoryView<QueryTemplate>> {
 
     private MainRepository repository;
-    private CompositeDisposable disposable;
 
     public CategoryPresenter() {
         repository = MainRemoteRepository.getInstance();
@@ -33,25 +34,26 @@ public class CategoryPresenter extends BasePresenter<CategoryView<QueryTemplate>
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         getViewState().showProgress();
+        loadData();
 
-        disposable.add(repository.getTemplatesQueries()
-                .subscribeOn(Schedulers.io())
+        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
+                .filter(result -> result.equals(Constants.QUERY_CREATE_CHOOSE_CATEGORY))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    getViewState().hideProgress();
-                    getViewState().showItems(result);
-                }, this::handlerErrorsFromBadRequests));
+                .subscribe(result -> loadData()));
     }
 
     @Override
     public void onDestroy() {
-        disposable.clear();
         super.onDestroy();
     }
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-        Timber.d("error: " + throwable.getCause());
+        if (throwable.getMessage().contains(Constants.HTTP_401)) {
+            RxBus.getInstance().passActionForUpdateToken(Constants.QUERY_CREATE_CHOOSE_CATEGORY);
+        } else {
+            getViewState().catastrophicError(throwable);
+        }
     }
 
     @Override
@@ -61,6 +63,12 @@ public class CategoryPresenter extends BasePresenter<CategoryView<QueryTemplate>
 
     @Override
     protected void loadData() {
-
+        disposable.add(repository.getTemplatesQueries()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    getViewState().hideProgress();
+                    getViewState().showItems(result);
+                }, this::handlerErrorsFromBadRequests));
     }
 }

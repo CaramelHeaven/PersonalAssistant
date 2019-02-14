@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.query_create_who_is_the_recipient;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
@@ -41,8 +43,8 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
 
     private RecyclerView rvAllWorkers;
     private EditText etSearch;
-    private ProgressBar progressBar;
     private Button btnSend;
+    private ProgressDialog progressDialog;
 
     @InjectPresenter
     RecipientPresenter presenter;
@@ -66,7 +68,6 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         rvAllWorkers = view.findViewById(R.id.recyclerView);
         etSearch = view.findViewById(R.id.et_search);
-        progressBar = view.findViewById(R.id.progress_bar);
         btnSend = view.findViewById(R.id.btn_send);
 
         rvAllWorkers.setHasFixedSize(true);
@@ -78,7 +79,6 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
         rvAllWorkers.setAdapter(adapter);
 
         adapter.setMyOnItemClickListener(position -> {
-            Timber.d("all");
             adapter.updateAddedUsers(adapter.getItemByPosition(position));
         });
 
@@ -96,17 +96,18 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
     @Override
     public void onStart() {
         super.onStart();
-        Timber.d("START");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Timber.d("RESUME");
     }
 
     @Override
     public void onDestroyView() {
+        rvAllWorkers = null;
+        etSearch = null;
+        btnSend = null;
         super.onDestroyView();
     }
 
@@ -128,8 +129,6 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
         this.data.setEndDate(data.getEndDate());
         this.data.setCategory(data.getCategory());
         this.data.setImportant(data.isImportant());
-
-        Timber.d("check data: " + data.toString());
     }
 
     @Override
@@ -140,12 +139,13 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        buildProgressDialog();
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.GONE);
+        progressDialog.cancel();
+        progressDialog = null;
     }
 
     @Override
@@ -181,5 +181,14 @@ public class RecipientFragment extends BaseFragment implements RecipientView {
                 //nothing
             }
         });
+    }
+
+    private void buildProgressDialog() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Отправляем заявку");
+
+        progressDialog.setCanceledOnTouchOutside(false);
+
+        progressDialog.show();
     }
 }

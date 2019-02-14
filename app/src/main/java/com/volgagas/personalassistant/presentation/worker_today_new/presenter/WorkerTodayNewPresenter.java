@@ -91,10 +91,8 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
-            Timber.d("send refresh");
             RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_TODAY_NEW_PRESENTER);
         } else {
-            Timber.d("THROWABLE: " + throwable.getMessage());
             getViewState().catastrophicError(throwable);
         }
     }

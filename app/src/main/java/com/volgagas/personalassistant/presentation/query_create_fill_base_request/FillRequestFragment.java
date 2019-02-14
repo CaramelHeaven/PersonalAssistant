@@ -152,9 +152,7 @@ public class FillRequestFragment extends BaseFragment implements DatePickerDialo
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Timber.d("i'm check: " + Calendar.getInstance().getTime().toString());
-        Timber.d("i'm choose: " + dayOfMonth + " m: " + month + " y: " + year + " and cal: " +
-                Calendar.getInstance().get(Calendar.YEAR));
+        Calendar.getInstance().get(Calendar.YEAR);
         Calendar calendar = Calendar.getInstance();
 
         //successful click

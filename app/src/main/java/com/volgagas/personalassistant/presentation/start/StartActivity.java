@@ -73,16 +73,23 @@ public class StartActivity extends BaseActivity implements StartView {
         sharePointCache = sharedPreferences.getString(Constants.SP_SHARE_POINT_USER_CACHE, "");
         dynamicsCurrentHttp = sharedPreferences.getString(Constants.SP_CURRENT_HTTP, "");
 
-        if (dynamicsCurrentHttp.equals("")) {
+        //set DEV branch
+        if (dynamicsCurrentHttp != null && dynamicsCurrentHttp.equals("")) {
             dynamicsCurrentHttp = Constants.DYNAMICS_365;
+
+            SharedPreferences.Editor edit = sharedPreferences.edit();
+            edit.putString(Constants.SP_CURRENT_HTTP, dynamicsCurrentHttp);
+
+            edit.apply();
+        } else {
+            Constants.DYNAMICS_365 = dynamicsCurrentHttp;
         }
 
         if (d365Cache.equals("")) {
-            Timber.d("SIMPLE");
             authContext.acquireToken(StartActivity.this, dynamicsCurrentHttp, Constants.CLIENT,
                     Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
         } else {
-            Timber.d("ASYNS");
+            Timber.d("REQUEST");
             authContext.acquireTokenSilentAsync(dynamicsCurrentHttp, Constants.CLIENT, d365Cache, d365Callback);
         }
     }
@@ -111,11 +118,6 @@ public class StartActivity extends BaseActivity implements StartView {
 
         if (data != null && data.length() == 18) {
             presenter.getUserData(data);
-            //repeat auth
-//            if (ThreePermissions.getInstance().anyValueIsTrue()) {
-//                ThreePermissions.getInstance().resetValues();
-//            }
-//            CacheUser.getUser().clear();
         } else {
             Toast.makeText(this, "Приложите карту еще раз", Toast.LENGTH_SHORT).show();
         }
@@ -157,7 +159,6 @@ public class StartActivity extends BaseActivity implements StartView {
 
     @Override
     public void enableNFC() {
-        Timber.d("PERMISSION");
         setPermissionToEnableNfc(true);
         handlerNFC();
     }
@@ -218,11 +219,7 @@ public class StartActivity extends BaseActivity implements StartView {
 
                 editor.putString(Constants.SP_SHARE_POINT_USER_CACHE, sharePointCache);
                 editor.apply();
-
-                Timber.d("FUCK U: " + sharedPreferences.getString(Constants.SP_SHARE_POINT_USER_CACHE, ""));
             }
-
-            Timber.d("SHARE POINT");
 
             //init network share point api
             if (PersonalAssistant.getSpApiService() == null) {
@@ -265,5 +262,4 @@ public class StartActivity extends BaseActivity implements StartView {
 
         Toasty.info(this, "Приложите карту еще раз").show();
     }
-
 }

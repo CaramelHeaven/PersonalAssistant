@@ -50,10 +50,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
         disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
                 .filter(result -> result.equals(Constants.WORKER_NOMENCLATURE_PRESENTER))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    Timber.d("IM HERE FUCK YOU");
-                    loadData();
-                }));
+                .subscribe(result -> loadData()));
 
         disposable.add(RxBus.getInstance().getCommonChannel()
                 .filter(result -> result.equals(Constants.CLOSED_NOMENCLATURE_BARCODE_ACTIVITY))

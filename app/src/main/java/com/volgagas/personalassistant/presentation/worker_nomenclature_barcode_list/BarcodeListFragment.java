@@ -102,7 +102,6 @@ public class BarcodeListFragment extends BaseFragment implements BarcodeListView
     public void stateOfLayout(Boolean bool) {
         if (bool) {
             recyclerView.setVisibility(View.VISIBLE);
-            Timber.d("BOOL CHECKED");
             runLayoutAnimation(recyclerView);
         } else {
             recyclerView.setVisibility(View.GONE);

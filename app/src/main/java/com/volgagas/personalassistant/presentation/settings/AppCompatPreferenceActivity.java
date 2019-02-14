@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -46,10 +47,10 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         disposable = new CompositeDisposable();
+
         disposable.add(RxBus.getInstance().getUpdates()
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    Timber.d("RX RESULT");
                     if (result.contains(Constants.DYNAMICS_PROD) || result.contains(Constants.DYNAMICS_TEST)) {
                         refreshTokens(result);
                     }
@@ -57,7 +58,6 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
     }
 
     private void refreshTokens(String resultIrl) {
-        Timber.d("REFRESH TOKENS");
         authenticationContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
 
         authenticationContext.acquireToken(AppCompatPreferenceActivity.this, resultIrl, Constants.CLIENT,
@@ -102,6 +102,15 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
 
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
         getDelegate().setSupportActionBar(toolbar);
+
+        setSupportActionBar(toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

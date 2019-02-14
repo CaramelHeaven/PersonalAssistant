@@ -23,7 +23,6 @@ public class User implements Parcelable {
     private String sharePointToken;
 
     public void setBaseFields(User user) {
-        Timber.d("setBase felds" + user.toString());
         this.name = user.getName();
         this.position = user.getPosition();
         this.codekeyList = user.getCodekeyList();

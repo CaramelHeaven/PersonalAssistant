@@ -39,7 +39,6 @@ import timber.log.Timber;
 public class ResultActivity extends BaseActivity implements ResultView {
 
     private RecyclerView recyclerView;
-    ;
     private AlertDialog alCardScan;
     private ProgressDialog progressDialog;
     private Button btnStartCompleted, btnToNomenclatures;

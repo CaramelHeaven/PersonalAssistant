@@ -1,5 +1,9 @@
 package com.volgagas.personalassistant.utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
@@ -16,7 +20,9 @@ public class Constants {
     public static final String UNIFORM_REQUESTS_TO_USER_URL = "(guid'59C1EE57-5726-4B27-B9DD-B39775E170D5')";
 
     //MAIN reference. It works on many place. Don't ignore this
-    public static String DYNAMICS_365 = "https://volgagas-testdevaos.sandbox.ax.dynamics.com";
+    public static String DYNAMICS_365 = "https://volgagas-prod81363c7256ed48a071bdevaos.cloudax.dynamics.com";
+
+    //MAIN OTHER REFERENCES
     public static final String GRAPH = "https://volagas.sharepoint.com";
     public static final String SHARE_POINT_DOC_API_WEB = "https://volagas.sharepoint.com/doc/_api/web";
     public static final String SHARE_POINT_API_WEB = "https://volagas.sharepoint.com/_api/web";
@@ -74,4 +80,8 @@ public class Constants {
     public static final String PROJECTS_QUERY_TO_USER_PRESENTER = "PROJECTS_QUERY_TO_USER_PRESENTER";
     public static final String WORKER_HISTORY_COMES_DATA = "WORKER_HISTORY_COMES_DATA";
     public static final String UPDATE_TOKEN_SILENT = "UPDATE_TOKEN_SILENT";
+    public static final String QUERY_CREATE_CHOOSE_CATEGORY = "QUERY_CREATE_CHOOSE_CATEGORY";
+    public static final String QUERY_CREATE_WHO_IS_THE_RECIPIENT = "QUERY_CREATE_WHO_IS_RECIPIENT";
+
+    public static final List<String> ALLOW_PEOPLE_TESTING = new ArrayList<>(Arrays.asList("Бунькин", "Тарновский", "Иванов"));
 }

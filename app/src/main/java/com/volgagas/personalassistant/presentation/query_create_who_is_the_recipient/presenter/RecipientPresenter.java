@@ -11,6 +11,8 @@ import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
 import com.volgagas.personalassistant.utils.channels.pass_data.RequestData;
 
@@ -22,7 +24,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 15:25, 02.11.2018.
@@ -33,6 +34,9 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
 
     private MainRepository repository;
     private PassDataChannel passDataChannel;
+
+    private RequestData requestData;
+    private List<User> userList;
 
     public RecipientPresenter() {
         super();
@@ -51,22 +55,30 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> getViewState().sendUserData(result)));
+
+        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
+                .subscribeOn(Schedulers.io())
+                .filter(result -> result.equals(Constants.QUERY_CREATE_WHO_IS_THE_RECIPIENT))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> loadData()));
     }
 
     private void successfulResult(List<User> users) {
-        getViewState().hideProgress();
         getViewState().showUsers(users);
     }
 
     @SuppressLint("CheckResult")
     public void sendToServer(RequestData data, List<User> userList) {
-        Timber.d("SEND");
+        this.requestData = data;
+        this.userList = userList;
+
         getViewState().showProgress();
-        Single.just(userList)
+        disposable.add(Single.just(userList)
                 .subscribeOn(Schedulers.io())
                 .flattenAsObservable((Function<List<User>, Iterable<User>>) users -> userList)
                 .flatMap(user -> repository.getUserIdByUserName(user.getModifiedNormalName()))
                 .toList()
+                .observeOn(Schedulers.computation())
                 .flatMap((Function<List<UserId>, SingleSource<JsonObject>>) userIds -> {
                     JsonObject dataToServer = new JsonObject();
                     JsonObject metadataListItem = new JsonObject();
@@ -103,18 +115,18 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
                 .flatMap(jsonObject -> repository.createUniformQueryItem(jsonObject))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    getViewState().showProgress();
+                    getViewState().hideProgress();
                     getViewState().finish();
-                    Timber.d("get result: " + result.toString());
-                }, t -> {
-                    Timber.d("throwable: " + t.getMessage());
-                    Timber.d("throwable: " + t.getCause());
-                });
+                }, this::handlerErrorsFromBadRequests));
     }
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-
+        if (throwable.getMessage().contains(Constants.HTTP_401)) {
+            RxBus.getInstance().passActionForUpdateToken(Constants.QUERY_CREATE_WHO_IS_THE_RECIPIENT);
+        } else {
+            getViewState().catastrophicError(throwable);
+        }
     }
 
     @Override
@@ -124,6 +136,6 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
 
     @Override
     protected void loadData() {
-
+        sendToServer(requestData, userList);
     }
 }

@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -34,6 +35,7 @@ public class ChooseActionFragment extends BaseFragment {
     private Button btnToGpa, btnToNomenclatureList;
     private Toolbar toolbar;
     private RelativeLayout rlSketch;
+    private Animation animation;
 
     public static ChooseActionFragment newInstance(Task task) {
         Bundle args = new Bundle();
@@ -62,7 +64,8 @@ public class ChooseActionFragment extends BaseFragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //animation
-        rlSketch.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.item_animation_up_down));
+        animation = AnimationUtils.loadAnimation(getActivity(), R.anim.item_animation_fall_down);
+        rlSketch.startAnimation(animation);
 
         btnToGpa.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), GpaActivity.class);
@@ -84,6 +87,20 @@ public class ChooseActionFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!animation.hasStarted()) {
+            animation.start();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        animation.cancel();
+        super.onPause();
     }
 
     @Override

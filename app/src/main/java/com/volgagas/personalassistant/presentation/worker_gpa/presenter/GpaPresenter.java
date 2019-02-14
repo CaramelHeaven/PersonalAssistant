@@ -57,10 +57,7 @@ public class GpaPresenter extends BasePresenter<GpaView> {
                 .subscribeOn(Schedulers.io())
                 .filter(result -> result.equals(Constants.WORKER_GPA_PRESENTER))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    Timber.d("IM HERE FUCK YOU");
-                    loadData();
-                }));
+                .subscribe(result -> loadData()));
     }
 
     @Override
@@ -108,7 +105,6 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
     private void successfulResult(List<Response<Void>> responses) {
         getViewState().hideProgress();
-        Timber.d("ff: " + responses.toString());
         if (responses.size() > 0) {
             handlerErrorInSuccessfulResult(responses);
         } else {
@@ -139,7 +135,6 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
             switch (error) {
                 case "401":
-                    Timber.d("EACH ONE");
                     RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_GPA_PRESENTER);
                     break;
                 case "400":

@@ -62,10 +62,6 @@ public class PersonalAssistant extends Application {
         return spApiService;
     }
 
-    public static void changeHttpUrlDynamics365(String newUrl) {
-        provideDynamics365Auth(lastTokenDynamics365, newUrl);
-    }
-
     public static void provideDynamics365Auth(String token, String url) {
         lastTokenDynamics365 = token;
 

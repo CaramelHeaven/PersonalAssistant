@@ -52,6 +52,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -159,7 +160,7 @@ public class MainRemoteRepository implements MainRepository {
 
         data.put("$select", "Title,Comment,Priority,DueDate,AssignedTo/Title,CategoryLookup0/Title");
         data.put("$expand", "AssignedTo/Id,CategoryLookup0/Title");
-        data.put("$filter", "Status eq 'Открыт' and AssignedTo/Title eq '" + CacheUser.getUser().getModifiedNormalName()  + "'");
+        data.put("$filter", "Status eq 'Открыт' and AssignedTo/Title eq '" + CacheUser.getUser().getModifiedNormalName() + "'");
 
         return PersonalAssistant.getSpApiService().getOpenUniformRequestsToUser(url, data)
                 .map(uniformRequestMapper::map);
@@ -283,6 +284,15 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
+    public Single<List<Nomenclature>> getNomenclaturesBySO(String soId) {
+        String filter = "TransactionSubType eq Microsoft.Dynamics.DataEntities." +
+                "SMATransactionSubType'Consumption' and ServiceOrderId eq '" + soId + "'";
+
+        return PersonalAssistant.getBaseApiService().getNomenclatures(filter)
+                .map(taskMapper::map);
+    }
+
+    @Override
     public Single<List<NewOrder>> getOrderNewBase() {
         List<NewOrder> stringList = new ArrayList<>();
 
@@ -331,26 +341,32 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public Single<List<Nomenclature>> getNomenclaturesBySO(String soId) {
-        String filter = "TransactionSubType eq Microsoft.Dynamics.DataEntities." +
-                "SMATransactionSubType'Consumption' and ServiceOrderId eq '" + soId + "'";
-
-        return PersonalAssistant.getBaseApiService().getNomenclatures(filter)
-                .map(taskMapper::map);
-    }
-
-    @Override
-    public Single<Barcode> getBarcodeByScannedString(String barcodeResult) {
-        return PersonalAssistant.getBaseApiService().getBarcodeByString(barcodeResult)
-                .map(taskMapper::map);
-    }
-
-    @Override
     public Single<List<Object>> getInfoAboutUserFromDynamics() {
         List<Object> objects = new ArrayList<>();
         objects.add(fillInfo());
 
         return Single.just(objects);
+    }
+
+    @Override
+    public Single<Barcode> getBarcodeInfoFromServer(String barcodeNumbers) {
+        String url = Constants.DYNAMICS_365 + "/data/ItemsBarcode(dataAreaId='gns',itemBarCode='" +
+                barcodeNumbers + "')";
+
+        return PersonalAssistant.getBaseApiService().getBarcodeByString(url)
+                .map(taskMapper::map);
+    }
+
+    @Override
+    public Observable<Response<Void>> createNomenclatureInServiceOrder(JsonObject data) {
+        return PersonalAssistant.getBaseApiService().createNomenclatureToSO(data);
+    }
+
+    @Override
+    public Single<ResponseBody> downloadNewestApk(String apkName) {
+        String url = "https://volagas.sharepoint.com/sites/msteams_33574c/_api/Web/GetFileByServerRelativePath" +
+                "(decodedurl='/sites/msteams_33574c/Shared Documents/Мобильное приложение/ПО/pa-0.1.3.apk')/$value";
+        return PersonalAssistant.getSpApiService().downloadNewestApk(url);
     }
 
 

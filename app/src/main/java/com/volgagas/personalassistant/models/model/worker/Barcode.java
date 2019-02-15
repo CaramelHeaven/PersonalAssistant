@@ -9,6 +9,7 @@ public class Barcode {
     private String barcodeName;
     private String barcode;
     private int count;
+    private String unit;
 
     @Override
     public boolean equals(Object o) {
@@ -30,6 +31,7 @@ public class Barcode {
                 "barcodeName='" + barcodeName + '\'' +
                 ", barcode='" + barcode + '\'' +
                 ", count=" + count +
+                ", unit='" + unit + '\'' +
                 '}';
     }
 
@@ -55,5 +57,13 @@ public class Barcode {
 
     public void setBarcode(String barcode) {
         this.barcode = barcode;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }

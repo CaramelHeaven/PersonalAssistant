@@ -20,7 +20,7 @@ public class Constants {
     public static final String UNIFORM_REQUESTS_TO_USER_URL = "(guid'59C1EE57-5726-4B27-B9DD-B39775E170D5')";
 
     //MAIN reference. It works on many place. Don't ignore this
-    public static String DYNAMICS_365 = "https://volgagas-prod81363c7256ed48a071bdevaos.cloudax.dynamics.com";
+    public static String DYNAMICS_365 = "https://volgagas-testdevaos.sandbox.ax.dynamics.com";
 
     //MAIN OTHER REFERENCES
     public static final String GRAPH = "https://volagas.sharepoint.com";

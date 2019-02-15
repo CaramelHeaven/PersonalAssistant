@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by CaramelHeaven on 10:55, 17/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class QueriesTemplateResponse {
     @SerializedName("value")

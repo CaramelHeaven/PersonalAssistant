@@ -11,6 +11,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -43,4 +44,7 @@ public interface SPApiService {
 
     @GET
     Single<QueriesTemplateResponse> getTemplateQueries(@Url String url);
+
+    @GET
+    Single<ResponseBody> downloadNewestApk(@Url String url);
 }

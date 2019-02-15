@@ -9,6 +9,7 @@ public class Nomenclature {
     private String name;
     private int count;
     private String unit;
+    private String projectCategoryId; // field for patch or post nomenclature to server
 
     public Nomenclature(String name, int count, String unit) {
         this.name = name;
@@ -32,12 +33,21 @@ public class Nomenclature {
         this.count = count;
     }
 
+    public String getProjectCategoryId() {
+        return projectCategoryId;
+    }
+
+    public void setProjectCategoryId(String projectCategoryId) {
+        this.projectCategoryId = projectCategoryId;
+    }
+
     @Override
     public String toString() {
         return "Nomenclature{" +
                 "name='" + name + '\'' +
                 ", count=" + count +
                 ", unit='" + unit + '\'' +
+                ", projectCategoryId='" + projectCategoryId + '\'' +
                 '}';
     }
 
@@ -46,13 +56,11 @@ public class Nomenclature {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Nomenclature that = (Nomenclature) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(unit, that.unit);
+        return Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(name, unit);
+        return Objects.hash(name);
     }
 }

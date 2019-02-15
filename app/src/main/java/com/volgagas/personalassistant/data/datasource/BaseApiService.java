@@ -106,5 +106,9 @@ public interface BaseApiService {
     @PATCH
     Observable<Response<Void>> sendCanceledSubTasks(@Url String url, @Body JsonObject object);
 
-    Single<BarcodeResponse> getBarcodeByString(String barcodeResult);
+    @GET()
+    Single<BarcodeResponse> getBarcodeByString(@Url String url);
+
+    @GET("/data/SOLinesEntity/")
+    Observable<Response<Void>> createNomenclatureToSO(JsonObject object);
 }

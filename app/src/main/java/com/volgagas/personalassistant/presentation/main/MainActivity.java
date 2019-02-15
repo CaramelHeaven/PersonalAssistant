@@ -4,7 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -14,15 +17,16 @@ import android.support.transition.Transition;
 import android.support.transition.TransitionListenerAdapter;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.volgagas.personalassistant.BuildConfig;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.presentation.about_user.InfoFragment;
@@ -36,11 +40,17 @@ import com.volgagas.personalassistant.presentation.start.StartActivity;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
 import com.volgagas.personalassistant.utils.shared_preferenses.UtilsSharedPresefenses;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import timber.log.Timber;
 
 /**
@@ -54,6 +64,7 @@ public class MainActivity extends BaseActivity implements MainView {
     private ConstraintLayout constraintLayout;
     private TextView tvName, tvCategory;
     private ImageButton ibSettings, ibLogout;
+    private File fileApk;
 
     private ConstraintSet homeSet, projectsSet, infoSet;
 
@@ -79,9 +90,18 @@ public class MainActivity extends BaseActivity implements MainView {
         toolbar = findViewById(R.id.toolbar);
         constraintLayout = findViewById(R.id.constraintLayout);
 
+        fileApk = new File(getFilesDir(), "apkApp.apk");
+        //fileApk = new File(kek, );
+
+        Timber.d("FILE APK: " + fileApk.getPath() + " and absolute: " + fileApk.getAbsolutePath());
         setPermissionToEnableNfc(false);
 
         setSupportActionBar(toolbar);
+
+        //test
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
 
         homeSet = new ConstraintSet();
         projectsSet = new ConstraintSet();
@@ -189,6 +209,37 @@ public class MainActivity extends BaseActivity implements MainView {
 
                     break;
                 case R.id.action_info:
+                    Toast.makeText(this, "RUN", Toast.LENGTH_SHORT).show();
+                    File toInstall = new File(getFilesDir(), "apkApp.apk");
+                    //File newFile = new File(toInstall, );
+
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+
+                        Uri contentUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", toInstall);
+                        Timber.d("KEKUS: " + contentUri.getPath());
+                        Timber.d("KEKUS: " + contentUri.toString());
+
+                        Timber.d("KEKUS: " + toInstall.getAbsolutePath());
+                        Timber.d("KEKUS: " + contentUri.toString());
+
+                        final Intent intent = new Intent(Intent.ACTION_VIEW)
+                                .setData(contentUri)
+                                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                        intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+
+                        startActivityForResult(intent, 0);
+                    } else {
+                        Uri apkUri = Uri.fromFile(toInstall);
+                        Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+                        intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        startActivity(intent);
+                    }
+
                     if (!UtilsSharedPresefenses.getInstance().getPermissionCap(getApplicationContext())) {
                         Toast.makeText(this, "В разработке", Toast.LENGTH_SHORT).show();
                     } else {
@@ -211,7 +262,6 @@ public class MainActivity extends BaseActivity implements MainView {
                         TransitionManager.beginDelayedTransition(constraintLayout, autoTransition1);
                         infoSet.applyTo(constraintLayout);
                     }
-
                     break;
             }
             return true;
@@ -233,4 +283,62 @@ public class MainActivity extends BaseActivity implements MainView {
         tvCategory.setText(CacheUser.getUser().getPosition());
     }
 
+    @Override
+    public void saveFileFromServer(ResponseBody body) {
+        // todo change the file location/name according to your needs
+
+        Timber.d("HERE IM");
+        if (fileApk.exists()) {
+            boolean delete = fileApk.delete();
+            Timber.d("DELETE OR NOT? " + delete);
+        }
+
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+
+        try {
+            byte[] fileReader = new byte[4096];
+
+            long fileSize = body.contentLength();
+            long fileSizeDownloaded = 0;
+
+            inputStream = body.byteStream();
+
+            outputStream = new FileOutputStream(fileApk);
+
+            while (true) {
+                int read = inputStream.read(fileReader);
+                if (read == -1) {
+                    break;
+                }
+                outputStream.write(fileReader, 0, read);
+                fileSizeDownloaded += read;
+
+                Timber.d("file download: " + fileSizeDownloaded + " of " + fileSize);
+            }
+
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        Timber.d("COMPLETED");
+        Toast.makeText(this, "COMPLETED", Toast.LENGTH_SHORT).show();
+    }
 }

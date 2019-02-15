@@ -14,4 +14,10 @@ public interface NomenclatureBarcodeView extends MvpView {
     void resumeBarcode();
 
     void getDataAndComlpeted();
+
+    void successfulGetBarcodeFromServer(Barcode barcode);
+
+    void showProgressDialog();
+
+    void hideProgressDialog();
 }

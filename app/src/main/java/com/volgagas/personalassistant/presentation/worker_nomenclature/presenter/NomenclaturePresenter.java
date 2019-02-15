@@ -15,10 +15,12 @@ import com.volgagas.personalassistant.utils.manager.TaskContentManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -33,11 +35,17 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     private MainRepository repository;
     private Task task;
+    private List<Nomenclature> notChangedNomenclature; // used for compare original list with changed our
+    // list and if each nomenclature have difference count - we post it
+    private List<Nomenclature> updatedListNomenclature; // helper list for update UI and handler data
+    // from scanned barcodes
 
     public NomenclaturePresenter() {
         super();
         repository = MainRemoteRepository.getInstance();
         task = TaskContentManager.getInstance().getTask();
+        notChangedNomenclature = new ArrayList<>();
+        updatedListNomenclature = new ArrayList<>();
     }
 
     @Override
@@ -54,6 +62,12 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
         disposable.add(RxBus.getInstance().getCommonChannel()
                 .filter(result -> result.equals(Constants.CLOSED_NOMENCLATURE_BARCODE_ACTIVITY))
+                .doOnNext(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        Timber.d("CHECKING CALLED ECCH TIME: " + s);
+                    }
+                })
                 .flatMap((Function<String, ObservableSource<List<Nomenclature>>>) s ->
                         mappingBarcodesToNomenclatures())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -76,19 +90,29 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 CachePot.getInstance().getCacheBarcodeList();
         List<Nomenclature> nomenclatureList = new ArrayList<>();
 
+        //mapping barcode to nomenclature
         for (Barcode barcode : barcodeList) {
             Nomenclature nomenclature = new
                     Nomenclature(barcode.getBarcodeName(), barcode.getCount(), "шт");
             nomenclatureList.add(nomenclature);
         }
 
-        return Observable.just(nomenclatureList);
+        //add nomenclature to common updated list or increase count if it exist
+        for (Nomenclature data : nomenclatureList) {
+            if (updatedListNomenclature.contains(data)) {
+                Nomenclature nom = updatedListNomenclature.get(updatedListNomenclature.indexOf(data));
+                nom.setCount(data.getCount() + nom.getCount());
+            } else {
+                updatedListNomenclature.add(data);
+            }
+        }
+
+        return Observable.just(updatedListNomenclature);
     }
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
-            Timber.d("401 pass");
             RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_NOMENCLATURE_PRESENTER);
         } else {
             Timber.d("THROWABLE: " + throwable.getMessage());
@@ -127,12 +151,36 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    //test data
-                    Timber.d("COMPLETED");
-                    Nomenclature nomenclature = new Nomenclature("kek", 0, "шт");
-                    result.add(nomenclature);
+                    notChangedNomenclature.addAll(result);
+                    updatedListNomenclature.addAll(notChangedNomenclature);
+
                     getViewState().hideProgress();
                     getViewState().showBaseList(result);
                 }, this::handlerErrorsFromBadRequests));
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void clearNotChangedList() {
+        notChangedNomenclature.clear();
+    }
+
+    public void clearUpdatedList() {
+        updatedListNomenclature.clear();
+    }
+
+    /**
+     * @param ourList - list from adapter. Compare it with origin list
+     */
+    public void compareNomenclatures(List<Nomenclature> ourList) {
+        Timber.d("non: " + notChangedNomenclature.toString());
+        Timber.d("our lIST: " + ourList.toString());
+        List<Nomenclature> result = new ArrayList<>();
+
+
+
+        Timber.d("out list after: " + ourList.toString());
     }
 }

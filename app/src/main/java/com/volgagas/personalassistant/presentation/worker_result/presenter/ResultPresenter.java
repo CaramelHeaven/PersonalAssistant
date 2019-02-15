@@ -107,11 +107,13 @@ public class ResultPresenter extends BasePresenter<ResultView> {
     private void sendToServer() {
         JsonObject completedJson = new JsonObject();
         JsonObject canceledJson = new JsonObject();
+        JsonObject stoppedJson = new JsonObject();
 
         completedJson.add("ActivityState", new JsonPrimitive("Completed"));
         completedJson.add("PhaseId", new JsonPrimitive("Завершено"));
         canceledJson.add("ActivityState", new JsonPrimitive("Completed"));
         canceledJson.add("PhaseId", new JsonPrimitive("Отменено"));
+        stoppedJson.add("PhaseId", new JsonPrimitive("ВРаботе"));
 
         disposable.add(Single.just(chosenSubTasks)
                 .subscribeOn(Schedulers.io())
@@ -129,9 +131,19 @@ public class ResultPresenter extends BasePresenter<ResultView> {
                 .toList()
                 .subscribe(result -> {
                     if (stoppingTasks) {
-                        //TODO make stop current tasks
+                        disposable.add(Single.just(nonSelectedSubTasks)
+                                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
+                                .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
+                                        repository.sendCanceledSubTasks(stoppedJson, subTask.getIdActivity()))
+                                .toList()
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(this::successfulResult, throwable -> {
+                                    if (throwable.getMessage().equals("timeout")) {
+                                        getViewState().timeout();
+                                    }
+                                }));
                     } else {
-                        Single.just(nonSelectedSubTasks)
+                        disposable.add(Single.just(nonSelectedSubTasks)
                                 .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
                                 .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
                                         repository.sendCanceledSubTasks(canceledJson, subTask.getIdActivity()))
@@ -141,7 +153,7 @@ public class ResultPresenter extends BasePresenter<ResultView> {
                                     if (throwable.getMessage().equals("timeout")) {
                                         getViewState().timeout();
                                     }
-                                });
+                                }));
                     }
                 }));
     }

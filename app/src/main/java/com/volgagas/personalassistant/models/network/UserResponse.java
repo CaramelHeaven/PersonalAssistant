@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class UserResponse {
     @SerializedName("name")
     @Expose

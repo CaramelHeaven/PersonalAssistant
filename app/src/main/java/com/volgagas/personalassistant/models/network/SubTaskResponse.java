@@ -6,6 +6,9 @@ import com.volgagas.personalassistant.models.network.sub_task.SubTaskNetwork;
 
 import java.util.List;
 
+/**
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
+ */
 public class SubTaskResponse {
     @SerializedName("value")
     @Expose

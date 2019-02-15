@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Created by CaramelHeaven on 15:22, 17/12/2018.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class QueryToUserResponse {
 

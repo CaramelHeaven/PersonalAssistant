@@ -33,7 +33,8 @@ public class PermissionsDelegate {
     public void requestCameraPermission() {
         ActivityCompat.requestPermissions(
                 activity,
-                new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.REQUEST_INSTALL_PACKAGES, Manifest.permission.REQUEST_DELETE_PACKAGES},
                 REQUEST_CODE
         );
     }

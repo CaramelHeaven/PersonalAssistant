@@ -28,6 +28,7 @@ public class NomenclatureResponseToNomenclature extends Mapper<NomenclatureRespo
         for (NomenclatureNetwork network : nomenclatureResponse.getValue()) {
             Nomenclature data = new Nomenclature(network.getItemId(), network.getQty(),
                     network.getUnit());
+            data.setProjectCategoryId(network.getProjCategoryId());
 
             nomenclatures.add(data);
         }

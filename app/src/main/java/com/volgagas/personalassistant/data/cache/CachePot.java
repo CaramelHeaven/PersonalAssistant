@@ -17,7 +17,8 @@ import timber.log.Timber;
 public class CachePot {
     private static volatile CachePot cachePot;
 
-    //cache barcode list for pass from activity to nomenclature base list
+    //cache barcode list for pass from activity to nomenclature base list. After it we send data to
+    // server and update our nomenclatures, after successful result we clear this cache
     private List<Object> cacheBarcodeList;
 
     //barcode for pass from dialog fragment to list above QR code reader - ActivityBarcode
@@ -40,7 +41,6 @@ public class CachePot {
     }
 
     public void putTaskHistories(List<TaskHistory> histories) {
-        Timber.d("HISTORY DATA CHECL: " + histories.toString());
         taskHistories = new ArrayList<>(histories);
     }
 

@@ -29,11 +29,18 @@ import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.NomenclatureBarcodeActivity;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
+import com.volgagas.personalassistant.utils.services.SendNomenclaturesToServerWorker;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 import es.dmoral.toasty.Toasty;
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 12:40, 16/01/2019.
@@ -101,16 +108,36 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
                 if (adapter.isNomenclaturesCountEqualsNull()) {
                     Toast.makeText(getActivity(), "Нельзя", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
-                        //saved data and finish
-                        CachePot.getInstance().putBarcodeCacheList(new ArrayList<>(adapter.getNomenclatureList()));
-
-                        getActivity().finish();
-                    } else if (action.equals(Constants.USUAL)) {
-                        Intent intent = new Intent(getActivity(), GpaActivity.class);
-
-                        startActivity(intent);
-                    }
+                    presenter.compareNomenclatures(adapter.getNomenclatureList());
+//                    if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
+//                        //save data to cache before to send it to server
+//                        CachePot.getInstance().putBarcodeCacheList(new ArrayList<>(adapter.getNomenclatureList()));
+//
+//                        OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(SendNomenclaturesToServerWorker.class)
+//                                .build();
+//
+//                        WorkManager.getInstance().enqueue(work);
+//
+//                        Toast.makeText(getActivity(), "SENDING", Toast.LENGTH_SHORT).show();
+//                        //getActivity().finish();
+//                    } else if (action.equals(Constants.USUAL)) {
+//                        Intent intent = new Intent(getActivity(), GpaActivity.class);
+//                        CachePot.getInstance().putBarcodeCacheList(new ArrayList<>(adapter.getNomenclatureList()));
+//
+//                        OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(SendNomenclaturesToServerWorker.class)
+//                                .setConstraints(new Constraints.Builder()
+//                                        .setRequiredNetworkType(NetworkType.CONNECTED)
+//                                        .build())
+//                                .setInputData(new Data.Builder()
+//                                        .putString("SERVICE_ORDER_ID", presenter.getTask().getIdTask())
+//                                        .build())
+//                                .build();
+//
+//                        WorkManager.getInstance().enqueue(work);
+//
+//                        Toast.makeText(getActivity(), "SENDING", Toast.LENGTH_SHORT).show();
+//                        //startActivity(intent);
+//                    }
                 }
             }
         });
@@ -196,6 +223,7 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
 
     @Override
     public void addedBarcodeNomenclaturesToBaseList(List<Nomenclature> values) {
+        adapter.clear();
         adapter.addItems(values);
     }
 

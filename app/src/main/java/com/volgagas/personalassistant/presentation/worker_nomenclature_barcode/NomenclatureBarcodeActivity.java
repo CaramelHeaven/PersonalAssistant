@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature_barcode;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -44,6 +45,7 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
     private Button btnCompleted, btnBack;
     private ImageButton ibShowItems;
     private FrameLayout flContainerItems;
+    private ProgressDialog progressDialog;
 
     private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
     private boolean hasCameraPermission;
@@ -176,15 +178,14 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
             beepManager.playBeepSoundAndVibrate();
 
             //TODO make get data from network
-            Barcode barcode = new Barcode();
-            barcode.setBarcode(lastText);
-            barcode.setCount(5);
-            barcode.setBarcodeName("Трилон Б");
+            presenter.loadBarcodeData(lastText);
+//            Barcode barcode = new Barcode();
+//            barcode.setBarcode(lastText);
+//            barcode.setCount(5);
+//            barcode.setBarcodeName("Трилон Б");
 
             Toast.makeText(NomenclatureBarcodeActivity.this, "Отсканировано", Toast.LENGTH_SHORT).show();
 
-            CachePot.getInstance().putBarcodeCache(barcode);
-            RxBus.getInstance().passDataToCommonChannel(Constants.UPDATE_DATA_BARCODE);
 
             new Handler().postDelayed(() -> {
                 lastText = "";
@@ -212,5 +213,28 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
         } else {
             Toast.makeText(this, "Вы ничего не добавили", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void successfulGetBarcodeFromServer(Barcode barcode) {
+        CachePot.getInstance().putBarcodeCache(barcode);
+        RxBus.getInstance().passDataToCommonChannel(Constants.UPDATE_DATA_BARCODE);
+    }
+
+    @Override
+    public void showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+        }
+
+        progressDialog.setMessage("Получаем номенклатуру");
+        progressDialog.setCanceledOnTouchOutside(false);
+
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        progressDialog.cancel();
     }
 }

@@ -84,6 +84,8 @@ public class StartActivity extends BaseActivity implements StartView {
         } else {
             Constants.DYNAMICS_365 = dynamicsCurrentHttp;
         }
+        Constants.DYNAMICS_365 = "https://volgagas-testdevaos.sandbox.ax.dynamics.com";
+        Timber.d("LOG: " + Constants.DYNAMICS_365);
 
         if (d365Cache.equals("")) {
             authContext.acquireToken(StartActivity.this, dynamicsCurrentHttp, Constants.CLIENT,

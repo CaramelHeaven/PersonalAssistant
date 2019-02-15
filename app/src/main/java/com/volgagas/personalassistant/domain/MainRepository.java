@@ -22,6 +22,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 /**
@@ -157,14 +158,19 @@ public interface MainRepository {
     Single<List<Nomenclature>> getNomenclaturesBySO(String soId);
 
     /**
-     * Get barcode data from D365
-     *
-     * @param barcodeResult - scanned string data from NomenclatureBarcodeActivity
-     */
-    Single<Barcode> getBarcodeByScannedString(String barcodeResult);
-
-    /**
      * Get all information about user from D365. Salary, vacation, etc.
      */
     Single<List<Object>> getInfoAboutUserFromDynamics();
+
+    /**
+     * @param barcodeNumbers - scanned string data from NomenclatureBarcodeActivity
+     */
+    Single<Barcode> getBarcodeInfoFromServer(String barcodeNumbers);
+
+    /**
+     * @param data - contains ServiceOrderId, Qty, ProjCategoryId, ItemId, DataRangeTo/From, dataAreaId
+     */
+    Observable<Response<Void>> createNomenclatureInServiceOrder(JsonObject data);
+
+    Single<ResponseBody> downloadNewestApk(String apkName);
 }

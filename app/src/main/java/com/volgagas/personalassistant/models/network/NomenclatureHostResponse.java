@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by CaramelHeaven on 09:59, 28/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class NomenclatureHostResponse {
     @SerializedName("id")

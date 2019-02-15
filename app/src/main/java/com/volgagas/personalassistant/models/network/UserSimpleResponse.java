@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by CaramelHeaven on 17:14, 09/01/2019.
+ * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public class UserSimpleResponse {
     @SerializedName("id")

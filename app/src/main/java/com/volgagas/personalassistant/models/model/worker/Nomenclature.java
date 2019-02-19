@@ -10,6 +10,8 @@ public class Nomenclature {
     private int count;
     private String unit;
     private String projectCategoryId; // field for patch or post nomenclature to server
+    private String itemBarCode;
+    private int serviceOrderLineNum; // for detect nomenclature id in service
 
     public Nomenclature(String name, int count, String unit) {
         this.name = name;
@@ -41,6 +43,22 @@ public class Nomenclature {
         this.projectCategoryId = projectCategoryId;
     }
 
+    public String getItemBarCode() {
+        return itemBarCode;
+    }
+
+    public void setItemBarCode(String itemBarCode) {
+        this.itemBarCode = itemBarCode;
+    }
+
+    public int getServiceOrderLineNum() {
+        return serviceOrderLineNum;
+    }
+
+    public void setServiceOrderLineNum(int serviceOrderLineNum) {
+        this.serviceOrderLineNum = serviceOrderLineNum;
+    }
+
     @Override
     public String toString() {
         return "Nomenclature{" +
@@ -48,6 +66,7 @@ public class Nomenclature {
                 ", count=" + count +
                 ", unit='" + unit + '\'' +
                 ", projectCategoryId='" + projectCategoryId + '\'' +
+                ", itemBarCode='" + itemBarCode + '\'' +
                 '}';
     }
 

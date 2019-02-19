@@ -42,12 +42,14 @@ public class SendNomenclaturesToServerWorker extends RxWorker {
     @Override
     public Single<Result> createWork() {
         List<Nomenclature> nomenclatureList = (List<Nomenclature>) (Object) CachePot.getInstance().getCacheBarcodeList();
+        CachePot.getInstance().clearCacheBarcodeList();
+
         String serviceOrderId = getInputData().getString("SERVICE_ORDER_ID");
 
         return Single.just(nomenclatureList)
                 .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
                 .flatMap((Function<Nomenclature, ObservableSource<Response<Void>>>) data -> repository
-                        .createNomenclatureInServiceOrder(mappingToJson(data, serviceOrderId)))
+                        .attachNomenclatureToServiceOrder(mappingToJson(data, serviceOrderId)))
                 .toList()
                 .map(responses -> Result.success())
                 .doOnError(throwable -> {
@@ -60,7 +62,7 @@ public class SendNomenclaturesToServerWorker extends RxWorker {
         JsonObject object = new JsonObject();
 
         object.add("ServiceOrderId", new JsonPrimitive(serviceOrderId));
-        object.add("ProjectCategoryId", new JsonPrimitive(nomenclature.getProjectCategoryId()));
+        object.add("ProjectCategoryId", new JsonPrimitive("Электрики_ТМЦ"));
         object.add("Qty", new JsonPrimitive(nomenclature.getCount()));
         object.add("dataAreaId", new JsonPrimitive("gns"));
         object.add("ItemId", new JsonPrimitive(nomenclature.getName()));

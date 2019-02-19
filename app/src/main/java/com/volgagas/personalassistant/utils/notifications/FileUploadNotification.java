@@ -41,7 +41,7 @@ public class FileUploadNotification {
 
         builder = new NotificationCompat.Builder(context, "ChannelId33")
                 .setSmallIcon(android.R.drawable.stat_sys_upload)
-                .setContentTitle("Uploading")
+                .setContentTitle("")
                 .setSubText(subText)
                 .setProgress(baseSize, 0, false)
                 .setAutoCancel(false);
@@ -67,8 +67,8 @@ public class FileUploadNotification {
     }
 
     public void updateNotification(String percent) {
-        builder.setContentText("Uploading")
-                .setContentTitle("FileName")
+        builder.setContentText("Скачивание файла")
+                .setContentTitle("")
                 .setOngoing(true)
                 .setContentInfo(percent + "%")
                 .setProgress(baseSize, Integer.parseInt(percent), false);

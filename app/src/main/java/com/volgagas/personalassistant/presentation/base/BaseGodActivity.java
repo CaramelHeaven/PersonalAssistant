@@ -332,7 +332,9 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      * Open downloaded file
      */
     private void openFile() {
-        File toInstall = new File(getFilesDir(), "apkApp.apk");
+        File toInstall = new File(getFilesDir(), Constants.APK_FILE_NAME);
+
+        Timber.d("OPEN FILE");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Uri contentUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", toInstall);

@@ -1,6 +1,8 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
@@ -12,13 +14,22 @@ import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.manager.TaskContentManager;
+import com.volgagas.personalassistant.utils.services.SaveApkWorker;
+import com.volgagas.personalassistant.utils.services.SendNomenclaturesToServerWorker;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.ListenableWorker;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -35,10 +46,10 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     private MainRepository repository;
     private Task task;
-    private List<Nomenclature> notChangedNomenclature; // used for compare original list with changed our
-    // list and if each nomenclature have difference count - we post it
-    private List<Nomenclature> updatedListNomenclature; // helper list for update UI and handler data
-    // from scanned barcodes
+    // used for compare original list with changed our list and if each nomenclature have difference count - we post it
+    private List<Nomenclature> notChangedNomenclature;
+    // helper list for update UI and handler data from scanned barcodes
+    private List<Nomenclature> updatedListNomenclature;
 
     public NomenclaturePresenter() {
         super();
@@ -62,12 +73,6 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
         disposable.add(RxBus.getInstance().getCommonChannel()
                 .filter(result -> result.equals(Constants.CLOSED_NOMENCLATURE_BARCODE_ACTIVITY))
-                .doOnNext(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        Timber.d("CHECKING CALLED ECCH TIME: " + s);
-                    }
-                })
                 .flatMap((Function<String, ObservableSource<List<Nomenclature>>>) s ->
                         mappingBarcodesToNomenclatures())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -92,8 +97,10 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
         //mapping barcode to nomenclature
         for (Barcode barcode : barcodeList) {
+            Timber.d("barcode: " + barcode.toString());
             Nomenclature nomenclature = new
                     Nomenclature(barcode.getBarcodeName(), barcode.getCount(), "шт");
+
             nomenclatureList.add(nomenclature);
         }
 
@@ -171,16 +178,53 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
         updatedListNomenclature.clear();
     }
 
-    /**
-     * @param ourList - list from adapter. Compare it with origin list
-     */
-    public void compareNomenclatures(List<Nomenclature> ourList) {
+    public void createNomenclatures(List<Nomenclature> ourList) {
         Timber.d("non: " + notChangedNomenclature.toString());
         Timber.d("our lIST: " + ourList.toString());
-        List<Nomenclature> result = new ArrayList<>();
 
+        CachePot.getInstance().putBarcodeCacheList(new ArrayList<>(ourList));
 
+        Single.just(ourList)
+                .subscribeOn(Schedulers.io())
+                .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
+                .flatMap((Function<Nomenclature, ObservableSource<Response<Void>>>) data -> repository
+                        .attachNomenclatureToServiceOrder(mappingToJson(data, task.getIdTask())))
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    Timber.d("result: " + result);
+                }, throwable -> {
+                    Timber.d("ALALAL: " + throwable.getMessage());
+                    Timber.d("ALALAL: " + throwable.getCause());
+                });
 
-        Timber.d("out list after: " + ourList.toString());
+//        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(SendNomenclaturesToServerWorker.class)
+//                .setConstraints(new Constraints.Builder()
+//                        .setRequiredNetworkType(NetworkType.CONNECTED)
+//                        .build())
+//                .setInputData(new Data.Builder()
+//                        .putString("SERVICE_ORDER_ID", getTask().getIdTask())
+//                        .build())
+//                .build();
+//
+//        WorkManager.getInstance()
+//                .enqueue(oneTimeWorkRequest);
+
+    }
+
+    private JsonObject mappingToJson(Nomenclature nomenclature, String serviceOrderId) {
+        JsonObject object = new JsonObject();
+
+        object.add("ServiceOrderId", new JsonPrimitive(serviceOrderId));
+        object.add("ProjCategoryId", new JsonPrimitive("Электрики_ТМЦ"));
+        object.add("Qty", new JsonPrimitive(nomenclature.getCount()));
+        object.add("dataAreaId", new JsonPrimitive("gns"));
+        object.add("ItemId", new JsonPrimitive(nomenclature.getName()));
+        object.add("DateRangeTo", new JsonPrimitive("2018-01-01T00:00:00Z"));
+        object.add("DateRangeFrom", new JsonPrimitive("2018-02-17T04:03:00Z"));
+
+        Timber.d("CHECK JSON: " + object.toString());
+
+        return object;
     }
 }

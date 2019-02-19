@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -16,8 +14,6 @@ import android.support.transition.Transition;
 import android.support.transition.TransitionListenerAdapter;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.widget.ImageButton;
@@ -26,8 +22,6 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.squareup.haha.trove.THash;
-import com.volgagas.personalassistant.BuildConfig;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.presentation.about_user.InfoFragment;
@@ -38,6 +32,7 @@ import com.volgagas.personalassistant.presentation.main.presenter.MainView;
 import com.volgagas.personalassistant.presentation.projects.FragmentProjects;
 import com.volgagas.personalassistant.presentation.settings.SettingsActivity;
 import com.volgagas.personalassistant.presentation.start.StartActivity;
+import com.volgagas.personalassistant.presentation.worker_camera.PermissionsDelegate;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.channels.pass_data.PassDataChannel;
 import com.volgagas.personalassistant.utils.notifications.FileUploadNotification;
@@ -64,6 +59,8 @@ public class MainActivity extends BaseActivity implements MainView {
     private ImageButton ibSettings, ibLogout;
 
     private File fileApk;
+    private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
+    private boolean hasPermissions;
 
     private ConstraintSet homeSet, projectsSet, infoSet;
 
@@ -88,6 +85,8 @@ public class MainActivity extends BaseActivity implements MainView {
         ibLogout = findViewById(R.id.iv_logout);
         toolbar = findViewById(R.id.toolbar);
         constraintLayout = findViewById(R.id.constraintLayout);
+
+        Toast.makeText(this, "Версия: " + Constants.APP_CURRENT_VERSION, Toast.LENGTH_SHORT).show();
 
         fileApk = new File(getFilesDir(), Constants.APK_FILE_NAME);
 
@@ -115,6 +114,16 @@ public class MainActivity extends BaseActivity implements MainView {
                 .replace(R.id.fragment_container, HomeFragment.newInstance(), "HOME")
                 .commit();
 
+
+        hasPermissions = permissionsDelegate.hasCameraPermission();
+
+        if (hasPermissions) {
+            presenter.acceptToCheckListOfApkes();
+        } else {
+            permissionsDelegate.requestPermissions();
+        }
+
+
         PassDataChannel passDataChannel = PassDataChannel.getInstance();
 
         passDataChannel.getSubject()
@@ -133,6 +142,16 @@ public class MainActivity extends BaseActivity implements MainView {
             startActivity(new Intent(MainActivity.this, StartActivity.class));
             finish();
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (permissionsDelegate.resultGranted(requestCode, permissions, grantResults)) {
+            hasPermissions = true;
+
+            presenter.acceptToCheckListOfApkes();
+        }
     }
 
     @Override

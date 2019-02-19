@@ -9,6 +9,8 @@ import android.widget.Toast;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 15:06, 18/02/2019.
  * <p>
@@ -19,6 +21,7 @@ public class BroadcastManager extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction() != null) {
+            Timber.d("INTENT GET ACTION: " + intent.getAction());
             NotificationManager notificationManager = (NotificationManager)
                     context.getSystemService(Context.NOTIFICATION_SERVICE);
             if (intent.getAction().equals(Constants.ACTION_NOT_UPDATE_APK)) {

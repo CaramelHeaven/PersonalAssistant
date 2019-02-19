@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.data.repository;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
@@ -42,7 +43,6 @@ import com.volgagas.personalassistant.models.model.user.UserSimple;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
-import com.volgagas.personalassistant.models.network.NomenclatureResponse;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.UtilsDateTimeProvider;
@@ -54,7 +54,6 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.functions.Function;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import timber.log.Timber;
@@ -364,11 +363,6 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public Observable<Response<Void>> createNomenclatureInServiceOrder(JsonObject data) {
-        return PersonalAssistant.getBaseApiService().createNomenclatureToSO(data);
-    }
-
-    @Override
     public Single<ResponseBody> downloadNewestApk(String apkName) {
         String url = "https://volagas.sharepoint.com/sites/msteams_33574c/_api/Web/GetFileByServerRelativePath" +
                 "(decodedurl='/sites/msteams_33574c/Shared Documents/Мобильное приложение/ПО/" + apkName + "')/$value";
@@ -383,6 +377,22 @@ public class MainRemoteRepository implements MainRepository {
 
         return PersonalAssistant.getSpApiService().getListOfApkes(url)
                 .map(commonMapper::map);
+    }
+
+    @Override
+    public Observable<Response<Void>> attachNomenclatureToServiceOrder(JsonObject object) {
+        Timber.d("check json object: " + object);
+        String url = "https://volgagas-testdevaos.sandbox.ax.dynamics.com/data/SOLinesEntity/";
+
+        return PersonalAssistant.getBaseApiService().createNomenclatureInServiceOrder(url, object);
+    }
+
+    @Override
+    public Observable<Response<Void>> updateNomenclatureInServer(JsonObject object) {
+        String url = "https://volgagas-testdevaos.sandbox.ax.dynamics.com/data/SOLinesEntity(dataAreaId='gns', " +
+                "ServiceOrderId = '%D0%97%D0%9D%D0%A1%D0%9E029691', ServiceOrderLineNum = 5)";
+
+        return PersonalAssistant.getBaseApiService().updateNomenclatureInServer(url, object);
     }
 
     private Info fillInfo() {

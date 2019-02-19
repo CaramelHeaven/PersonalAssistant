@@ -30,11 +30,10 @@ public class PermissionsDelegate {
         return permissionCheckResult == PackageManager.PERMISSION_GRANTED;
     }
 
-    public void requestCameraPermission() {
+    public void requestPermissions() {
         ActivityCompat.requestPermissions(
                 activity,
-                new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.REQUEST_INSTALL_PACKAGES, Manifest.permission.REQUEST_DELETE_PACKAGES},
+                new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,},
                 REQUEST_CODE
         );
     }
@@ -63,7 +62,7 @@ public class PermissionsDelegate {
             return true;
         }
 
-        requestCameraPermission();
+        requestPermissions();
 
         if (noPermissionView != null) {
             noPermissionView.setVisibility(View.VISIBLE);

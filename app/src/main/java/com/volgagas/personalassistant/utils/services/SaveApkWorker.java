@@ -20,6 +20,8 @@ import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 10:43, 19/02/2019.
+ * <p>
+ * Save app-apk when we downloaded it
  */
 public class SaveApkWorker extends Worker {
     public SaveApkWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {

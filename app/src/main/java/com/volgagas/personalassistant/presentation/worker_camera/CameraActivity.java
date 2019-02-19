@@ -31,7 +31,6 @@ import io.fotoapparat.view.CameraView;
 import io.fotoapparat.view.FocusView;
 import timber.log.Timber;
 
-import static io.fotoapparat.result.transformer.ResolutionTransformersKt.scaled;
 import static io.fotoapparat.selector.AspectRatioSelectorsKt.standardRatio;
 import static io.fotoapparat.selector.FlashSelectorsKt.autoFlash;
 import static io.fotoapparat.selector.FlashSelectorsKt.autoRedEye;
@@ -87,7 +86,7 @@ public class CameraActivity extends AppCompatActivity {
         if (hasCameraPermission) {
             cameraView.setVisibility(View.VISIBLE);
         } else {
-            permissionsDelegate.requestCameraPermission();
+            permissionsDelegate.requestPermissions();
         }
 
         fotoapparat = createFotoapparat();

@@ -75,7 +75,7 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
         if (hasCameraPermission) {
             initBarcode();
         } else {
-            permissionsDelegate.requestCameraPermission();
+            permissionsDelegate.requestPermissions();
         }
 
         getSupportFragmentManager()

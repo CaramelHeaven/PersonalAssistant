@@ -98,7 +98,7 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
                 if (adapter.isNomenclaturesCountEqualsNull()) {
                     Toast.makeText(getActivity(), "Нельзя", Toast.LENGTH_SHORT).show();
                 } else {
-                    presenter.compareNomenclatures(adapter.getNomenclatureList());
+                    presenter.createNomenclatures(adapter.getNomenclatureList());
 //                    if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
 //                        //save data to cache before to send it to server
 //                        CachePot.getInstance().putBarcodeCacheList(new ArrayList<>(adapter.getNomenclatureList()));
@@ -167,6 +167,14 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
                 adapter.getItemByPosition(pos).setCount(count);
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        //Clear up our helper lists
+        presenter.clearNotChangedList();
+        presenter.clearUpdatedList();
+        super.onStop();
     }
 
     @Override

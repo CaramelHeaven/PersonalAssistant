@@ -168,11 +168,6 @@ public interface MainRepository {
     Single<Barcode> getBarcodeInfoFromServer(String barcodeNumbers);
 
     /**
-     * @param data - contains ServiceOrderId, Qty, ProjCategoryId, ItemId, DataRangeTo/From, dataAreaId
-     */
-    Observable<Response<Void>> createNomenclatureInServiceOrder(JsonObject data);
-
-    /**
      * Download apk file
      *
      * @param apkName - apk name file, newest
@@ -184,4 +179,11 @@ public interface MainRepository {
      * get current list apks from url
      */
     Single<List<Apk>> getCurrentListApkes();
+
+    /**
+     * Create new nomenclature
+     */
+    Observable<Response<Void>> attachNomenclatureToServiceOrder(JsonObject object);
+
+    Observable<Response<Void>> updateNomenclatureInServer(JsonObject object);
 }

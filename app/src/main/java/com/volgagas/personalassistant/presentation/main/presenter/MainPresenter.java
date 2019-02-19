@@ -53,6 +53,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
     private UpdateTokenHandler updateTokenHandler;
     private CompositeDisposable disposable;
     private MainRepository repository;
+    private boolean permissionToDownloadFile = false;
 
     public MainPresenter() {
         disposable = new CompositeDisposable();
@@ -66,22 +67,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
         updateTokenHandler = new UpdateTokenHandler("UpdateTokenHandler");
         updateTokenHandler.start();
-
-        //kekus
-
-        repository.getCurrentListApkes()
-                .subscribeOn(Schedulers.io())
-                .map(this::filterApkListForCurrentAppName)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    Timber.d("all result: " + result);
-                    Apk apk = findNewestVersion(result);
-                    if (apk != null) {
-                        Timber.d("NEWEST APK: " + apk.toString());
-                        CachePot.getInstance().saveApk(apk); // save apk for the future use
-                        RxBus.getInstance().passDataToCommonChannel(Constants.UPDATE_APK);
-                    }
-                }, throwable -> getViewState().showError(throwable));
 
         disposable.add(RxBus.getInstance().getCommonChannel()
                 .filter(result -> result.equals(Constants.ACTION_FOR_DOWNLOAD_APK))
@@ -101,7 +86,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
     //method for download newest apk from server
     private void downloadOrNotNewestVersion() {
         String apkName = CachePot.getInstance().getApk().getName();
-        Timber.d("APK NAME: " + apkName);
         getViewState().createProgressNotification(); //need for pass context inside FileUploadNotification
 
         FileUploadNotification.shared().createNotification(100, "Скачивание файла");
@@ -173,16 +157,35 @@ public class MainPresenter extends MvpPresenter<MainView> {
      * Filtering our list of apks from folder
      *
      * @param baseApk - base list from folder
-     * @return apkList - filtered apks which contains "pa" name
+     * @return apkList - filtered apks which contains "pa" name and don't contains test apkes
      */
     private List<Apk> filterApkListForCurrentAppName(List<Apk> baseApk) {
         List<Apk> apkList = new ArrayList<>();
         for (Apk apk : baseApk) {
-            if (apk.getName().toLowerCase().contains("pa")) {
+            if (apk.getName().toLowerCase().contains("pa") && (!apk.getName().toLowerCase().contains("test"))) {
                 apkList.add(apk);
             }
         }
 
         return apkList;
+    }
+
+    /**
+     * If permissions accepted we can check list of our current apkes
+     */
+    public void acceptToCheckListOfApkes() {
+        disposable.add(repository.getCurrentListApkes()
+                .subscribeOn(Schedulers.io())
+                .map(this::filterApkListForCurrentAppName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    Timber.d("all result: " + result);
+                    Apk apk = findNewestVersion(result);
+                    if (apk != null) {
+                        Timber.d("NEWEST APK: " + apk.toString());
+                        CachePot.getInstance().saveApk(apk); // save apk for the future use
+                        RxBus.getInstance().passDataToCommonChannel(Constants.UPDATE_APK);
+                    }
+                }, throwable -> getViewState().showError(throwable)));
     }
 }

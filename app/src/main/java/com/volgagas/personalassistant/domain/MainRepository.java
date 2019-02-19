@@ -5,7 +5,7 @@ import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
-import com.volgagas.personalassistant.models.model.info.Info;
+import com.volgagas.personalassistant.models.model.common.Apk;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.models.model.order_purchase.Order;
@@ -172,5 +172,16 @@ public interface MainRepository {
      */
     Observable<Response<Void>> createNomenclatureInServiceOrder(JsonObject data);
 
+    /**
+     * Download apk file
+     *
+     * @param apkName - apk name file, newest
+     */
     Single<ResponseBody> downloadNewestApk(String apkName);
+
+
+    /**
+     * get current list apks from url
+     */
+    Single<List<Apk>> getCurrentListApkes();
 }

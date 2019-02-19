@@ -1,24 +1,47 @@
 package com.volgagas.personalassistant.presentation.main.presenter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
+import com.volgagas.personalassistant.models.model.common.Apk;
+import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
+import com.volgagas.personalassistant.utils.notifications.FileUploadNotification;
+import com.volgagas.personalassistant.utils.services.SaveApkWorker;
 import com.volgagas.personalassistant.utils.threads.UpdateTokenHandler;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import androidx.work.Constraints;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiConsumer;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import timber.log.Timber;
 
 /**
@@ -45,13 +68,24 @@ public class MainPresenter extends MvpPresenter<MainView> {
         updateTokenHandler.start();
 
         //kekus
-        repository.downloadNewestApk("asd")
+
+        repository.getCurrentListApkes()
                 .subscribeOn(Schedulers.io())
+                .map(this::filterApkListForCurrentAppName)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> getViewState().saveFileFromServer(result), throwable -> {
-                    Timber.d("throwable: " + throwable.getMessage());
-                    Timber.d("throwable: " + throwable.getCause());
-                });
+                .subscribe(result -> {
+                    Timber.d("all result: " + result);
+                    Apk apk = findNewestVersion(result);
+                    if (apk != null) {
+                        Timber.d("NEWEST APK: " + apk.toString());
+                        CachePot.getInstance().saveApk(apk); // save apk for the future use
+                        RxBus.getInstance().passDataToCommonChannel(Constants.UPDATE_APK);
+                    }
+                }, throwable -> getViewState().showError(throwable));
+
+        disposable.add(RxBus.getInstance().getCommonChannel()
+                .filter(result -> result.equals(Constants.ACTION_FOR_DOWNLOAD_APK))
+                .subscribe(result -> downloadOrNotNewestVersion()));
     }
 
     @Override
@@ -64,53 +98,91 @@ public class MainPresenter extends MvpPresenter<MainView> {
         super.onDestroy();
     }
 
-    private boolean writeResponseBodyToDisk(ResponseBody body) {
-        try {
-            // todo change the file location/name according to your needs
-            File futureStudioIconFile = new File("asd" + File.separator + "Future Studio Icon.apk");
+    //method for download newest apk from server
+    private void downloadOrNotNewestVersion() {
+        String apkName = CachePot.getInstance().getApk().getName();
+        Timber.d("APK NAME: " + apkName);
+        getViewState().createProgressNotification(); //need for pass context inside FileUploadNotification
 
-            InputStream inputStream = null;
-            OutputStream outputStream = null;
+        FileUploadNotification.shared().createNotification(100, "Скачивание файла");
 
-            try {
-                byte[] fileReader = new byte[4096];
+        disposable.add(repository.downloadNewestApk(apkName)
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(disposable ->
+                        FileUploadNotification.shared().updateNotification("15"))
+                .doOnSuccess(body ->
+                        FileUploadNotification.shared().updateNotification("30"))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    Timber.d("COMPLETED");
+                    CachePot.getInstance().clearApk();
+                    CachePot.getInstance().setBodyApk(result);
 
-                long fileSize = body.contentLength();
-                long fileSizeDownloaded = 0;
+                    // Service for save apk
+                    OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(SaveApkWorker.class)
+                            .build();
 
-                inputStream = body.byteStream();
-                outputStream = new FileOutputStream(futureStudioIconFile);
+                    WorkManager.getInstance()
+                            .enqueue(oneTimeWorkRequest);
+                }, throwable -> {
+                    Timber.d("throwable: " + throwable.getMessage());
+                    Timber.d("throwable: " + throwable.getCause());
+                }));
+    }
 
-                while (true) {
-                    int read = inputStream.read(fileReader);
+    /**
+     * Match all available versions
+     *
+     * @param apkList - current apk list after filtered baseApkList
+     * @return - null or newest Apk
+     */
+    private Apk findNewestVersion(List<Apk> apkList) {
+        Map<Apk, Integer> apkMap = new HashMap<>();
+        List<Integer> versions = new ArrayList<>();
+        Apk newestApk = new Apk();
 
-                    if (read == -1) {
-                        break;
-                    }
+        for (Apk apk : apkList) {
+            int intVersion = Integer.parseInt(apk.getName()
+                    .replaceAll("[^0-9]", ""));
 
-                    outputStream.write(fileReader, 0, read);
+            apkMap.put(apk, intVersion);
+            versions.add(intVersion);
+        }
 
-                    fileSizeDownloaded += read;
+        int maxVersionFromNetwork = Collections.max(versions);
+        int versionFromApp = Integer.parseInt(Constants.APP_CURRENT_VERSION.replaceAll("[^0-9]", ""));
 
-                    Timber.d("file download: " + fileSizeDownloaded + " of " + fileSize);
-                }
+        int currentMax = Math.max(maxVersionFromNetwork, versionFromApp);
 
-                outputStream.flush();
+        // if current max higher - get apk class by version and return it
+        if (currentMax != versionFromApp) {
+            for (Map.Entry<Apk, Integer> entry : apkMap.entrySet()) {
+                if (entry.getValue() == currentMax) {
+                    newestApk.setName(entry.getKey().getName());
+                    newestApk.setUrlReference(entry.getKey().getUrlReference());
 
-                return true;
-            } catch (IOException e) {
-                return false;
-            } finally {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-
-                if (outputStream != null) {
-                    outputStream.close();
+                    return newestApk;
                 }
             }
-        } catch (IOException e) {
-            return false;
         }
+
+        return null;
+    }
+
+    /**
+     * Filtering our list of apks from folder
+     *
+     * @param baseApk - base list from folder
+     * @return apkList - filtered apks which contains "pa" name
+     */
+    private List<Apk> filterApkListForCurrentAppName(List<Apk> baseApk) {
+        List<Apk> apkList = new ArrayList<>();
+        for (Apk apk : baseApk) {
+            if (apk.getName().toLowerCase().contains("pa")) {
+                apkList.add(apk);
+            }
+        }
+
+        return apkList;
     }
 }

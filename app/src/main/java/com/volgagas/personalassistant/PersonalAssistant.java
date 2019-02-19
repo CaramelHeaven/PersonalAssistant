@@ -3,12 +3,10 @@ package com.volgagas.personalassistant;
 import android.app.Application;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.squareup.leakcanary.LeakCanary;
 import com.volgagas.personalassistant.data.datasource.BaseApiService;
 import com.volgagas.personalassistant.data.datasource.SPApiService;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.manager.TaskContentManager;
-import com.volgagas.personalassistant.utils.manager.TaskStartedManager;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,7 +48,6 @@ public class PersonalAssistant extends Application {
 
         Timber.plant(new Timber.DebugTree());
 
-        TaskStartedManager.getInstance();
         TaskContentManager.getInstance();
     }
 

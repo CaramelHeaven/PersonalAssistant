@@ -30,7 +30,6 @@ import com.volgagas.personalassistant.presentation.worker_task.presenter.TaskPre
 import com.volgagas.personalassistant.presentation.worker_task.presenter.TaskView;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.manager.TaskContentManager;
-import com.volgagas.personalassistant.utils.manager.TaskStartedManager;
 
 import java.util.List;
 

@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -56,6 +54,9 @@ public class StartActivity extends BaseActivity implements StartView {
         progressBar = findViewById(R.id.progressBar);
 
         setPermissionToEnableNfc(false);
+
+        //unit current app version
+        Constants.APP_CURRENT_VERSION = getResources().getString(R.string.currentVersionApp);
 
         //clear permissions
         ThreePermissions permissions = ThreePermissions.getInstance();

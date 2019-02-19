@@ -1,7 +1,6 @@
 package com.volgagas.personalassistant.presentation.worker_task.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
@@ -10,17 +9,12 @@ import com.volgagas.personalassistant.models.model.common.GlobalTask;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
-import com.volgagas.personalassistant.utils.services.SendTaskStartedWorker;
 
 import java.util.List;
 
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 08:53, 04/12/2018.
@@ -87,14 +81,6 @@ public class TaskPresenter extends BasePresenter<TaskView<SubTaskViewer>> {
                         getViewState().showItems(result);
                     }, this::handlerErrorsFromBadRequests));
         }
-    }
-
-
-    private void startedBackgroundService() {
-        OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(SendTaskStartedWorker.class)
-                .build();
-
-        WorkManager.getInstance().enqueue(work);
     }
 
     public GlobalTask getGlobalTask() {

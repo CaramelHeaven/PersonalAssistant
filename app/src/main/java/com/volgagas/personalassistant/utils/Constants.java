@@ -9,17 +9,19 @@ import java.util.List;
  */
 public class Constants {
 
+    //client used for connection to MS Azure
     public static final String CLIENT = "68008789-f431-42b1-b4b9-0cdd559674f5";
+    //this is used inside SDK from microsoft. Library for connection to MS and get token when app started
+    public static final String AUTH_URL = "https://login.microsoftonline.com/common/oauth2/authorize";
 
-    //Site
-    public static final String SITE_ERP = "volagas.sharepoint.com,9a51e995-62f9-4b40-81c2-d167c4c79182,8603ccc9-1f11-4573-8fa2-140ef4204a1d";
-
+    //own mini-server
     public static final String MY_HOST = "http://192.168.1.147:8080/volgagas-0.4/";
+
     //Lists of this site
     public static final String UNIFORM_REQUESTS_URL = "(guid'895e45dd-17ac-41bd-9a41-3d72bd0cbfc7')";
     public static final String UNIFORM_REQUESTS_TO_USER_URL = "(guid'59C1EE57-5726-4B27-B9DD-B39775E170D5')";
 
-    //MAIN reference. It works on many place. Don't ignore this
+    //MAIN reference. It works on many place and we can change it. Don't ignore this
     public static String DYNAMICS_365 = "https://volgagas-testdevaos.sandbox.ax.dynamics.com";
 
     //MAIN OTHER REFERENCES
@@ -31,8 +33,6 @@ public class Constants {
     public static final String DYNAMICS_TEST = "https://volgagas-testdevaos.sandbox.ax.dynamics.com";
     public static final String DYNAMICS_PROD = "https://volgagas-prod81363c7256ed48a071bdevaos.cloudax.dynamics.com";
     public static final String DYNAMICS_FAKE_URL = "https://volgagas-tstlalala.sandbox.ax.dynamics.com";
-
-    public static final String AUTH_URL = "https://login.microsoftonline.com/common/oauth2/authorize";
 
     //other
     public static final String REDIRECT_URL = "http://localhost123";
@@ -58,7 +58,7 @@ public class Constants {
     public static final String SP_D365_USER_CACHE = "D365_USER_CACHE";
     public static final String SP_SHARE_POINT_USER_CACHE = "SP_SHARE_POINT_USER_CACHE";
 
-    //other
+    //keyword for RxBus common channel
     public static final String ADD_MORE_NOMENCLATURES = "ADD_MORE_NOMENCLATURES";
     public static final String USUAL = "USUAL";
     public static final String VIEW_IS_COLLAPSED = "VIEW_IS_COLLAPSED";
@@ -69,6 +69,8 @@ public class Constants {
     public static final String UPDATE_DATA_BARCODE = "UPDATE_DATA_BARCODE";
     public static final String CLOSED_NOMENCLATURE_BARCODE_ACTIVITY = "CLOSED_NOMENCLATURE_BARCODE_ACTIVITY";
     public static final String NOMENCLATURE_DF_CLOSE = "NOMENCLATURE_DF_CLOSE";
+    public static final String UPDATE_APK = "UPDATE_APK";
+    public static final String ACTION_FOR_DOWNLOAD_APK = "ACTION_FOR_DOWNLOAD_APK";
 
     //refreshing key-word for each screen
     public static final String WORKER_TODAY_NEW_PRESENTER = "WORKER_TODAY_NEW_PRESENTER";
@@ -83,5 +85,20 @@ public class Constants {
     public static final String QUERY_CREATE_CHOOSE_CATEGORY = "QUERY_CREATE_CHOOSE_CATEGORY";
     public static final String QUERY_CREATE_WHO_IS_THE_RECIPIENT = "QUERY_CREATE_WHO_IS_RECIPIENT";
 
+    //People which can test our application
     public static final List<String> ALLOW_PEOPLE_TESTING = new ArrayList<>(Arrays.asList("Бунькин", "Тарновский", "Иванов"));
+    //current app version, we init it inside StartActivity
+    public static String APP_CURRENT_VERSION = "";
+    public static final String APP_NOFITICATION = "CHANNEL_ID_103"; // for create notification
+    public static final int APP_NOTIFICATION_UPDATE_APP = 103;
+    public static final String APK_PROGRESS_80 = "APK_PROGRESS_80";
+    public static final String APK_PROGRESS_100 = "APK_PROGRESS_100";
+    public static final String APK_PROGRESS_50 = "APK_PROGRESS_50";
+    public static final String APK_PROGRESS_FAILED = "APK_PROGRESS_FAILED";
+
+    public static final String APK_FILE_NAME = "apkPersonalAssistant.apk"; //apk name for file
+
+    //action for broadcast receiver
+    public static final String ACTION_UPDATE_APK = "ACTION_UPDATE_APK";
+    public static final String ACTION_NOT_UPDATE_APK = "ACTION_NOT_UPDATE_APK";
 }

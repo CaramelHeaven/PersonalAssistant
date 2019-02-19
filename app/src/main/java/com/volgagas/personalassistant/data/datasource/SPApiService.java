@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.data.datasource;
 
 import com.google.gson.JsonObject;
+import com.volgagas.personalassistant.models.network.ApkResponse;
 import com.volgagas.personalassistant.models.network.QueriesTemplateResponse;
 import com.volgagas.personalassistant.models.network.QueryResponse;
 import com.volgagas.personalassistant.models.network.QueryToUserResponse;
@@ -47,4 +48,7 @@ public interface SPApiService {
 
     @GET
     Single<ResponseBody> downloadNewestApk(@Url String url);
+
+    @GET
+    Single<ApkResponse> getListOfApkes(@Url String url);
 }

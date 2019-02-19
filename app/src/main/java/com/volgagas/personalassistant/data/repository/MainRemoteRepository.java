@@ -5,6 +5,8 @@ import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.domain.MainRepository;
+import com.volgagas.personalassistant.models.mapper.common.ApkResponseToApk;
+import com.volgagas.personalassistant.models.mapper.common.CommonMapper;
 import com.volgagas.personalassistant.models.mapper.kiosk.TaskKioskResponseToTaskTemplate;
 import com.volgagas.personalassistant.models.mapper.query_template.QueriesTemplateResponseToQueryTemplate;
 import com.volgagas.personalassistant.models.mapper.query_template.QueryTemplateMapper;
@@ -28,6 +30,7 @@ import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
+import com.volgagas.personalassistant.models.model.common.Apk;
 import com.volgagas.personalassistant.models.model.info.Info;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
@@ -67,6 +70,7 @@ public class MainRemoteRepository implements MainRepository {
     private static TaskMapper taskMapper;
     private static QueryTemplateMapper queryMapper;
     private static UniformRequestMapper uniformRequestMapper;
+    private static CommonMapper commonMapper;
 
     private MainRemoteRepository() {
         if (INSTANCE != null) {
@@ -101,6 +105,7 @@ public class MainRemoteRepository implements MainRepository {
                     NomenclatureHostRespToNomenclatureHost nomenclatureHostRespToNomenclatureHost =
                             new NomenclatureHostRespToNomenclatureHost();
                     BarcodeResponseToBarcode barcodeResponseToBarcode = new BarcodeResponseToBarcode();
+                    ApkResponseToApk apkResponseToApk = new ApkResponseToApk();
 
                     //Initial mappers
                     taskMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
@@ -113,6 +118,7 @@ public class MainRemoteRepository implements MainRepository {
                     uniformRequestMapper =
                             new UniformRequestMapper(queryResponseToUniformRequest, queryToUserResponseToQueryToUser);
                     queryMapper = new QueryTemplateMapper(queriesTemplateResponseToQueryTemplate);
+                    commonMapper = new CommonMapper(apkResponseToApk);
 
                     INSTANCE = new MainRemoteRepository();
                 }
@@ -365,10 +371,19 @@ public class MainRemoteRepository implements MainRepository {
     @Override
     public Single<ResponseBody> downloadNewestApk(String apkName) {
         String url = "https://volagas.sharepoint.com/sites/msteams_33574c/_api/Web/GetFileByServerRelativePath" +
-                "(decodedurl='/sites/msteams_33574c/Shared Documents/Мобильное приложение/ПО/pa-0.1.3.apk')/$value";
+                "(decodedurl='/sites/msteams_33574c/Shared Documents/Мобильное приложение/ПО/" + apkName + "')/$value";
+
         return PersonalAssistant.getSpApiService().downloadNewestApk(url);
     }
 
+    @Override
+    public Single<List<Apk>> getCurrentListApkes() {
+        String url = "https://volagas.sharepoint.com/sites/msteams_33574c/_api/Web/GetFolderByServerRelativeUrl" +
+                "('/sites/msteams_33574c/Shared Documents/Мобильное приложение/ПО')/Files";
+
+        return PersonalAssistant.getSpApiService().getListOfApkes(url)
+                .map(commonMapper::map);
+    }
 
     private Info fillInfo() {
         Info info = new Info();

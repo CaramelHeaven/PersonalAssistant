@@ -23,7 +23,7 @@
             android:summary="@string/volgagas_description" />
 
         <Preference
-            android:summary="0.1.3.1"
+            android:summary="@string/currentVersionApp"
             android:title="Версия" />
     </PreferenceCategory>
 </PreferenceScreen>

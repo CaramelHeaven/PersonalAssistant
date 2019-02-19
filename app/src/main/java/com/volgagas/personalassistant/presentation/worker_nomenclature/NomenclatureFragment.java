@@ -18,29 +18,19 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseActionActivity;
-import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclaturePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclatureView;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.NomenclatureBarcodeActivity;
-import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
-import com.volgagas.personalassistant.utils.services.SendNomenclaturesToServerWorker;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 import es.dmoral.toasty.Toasty;
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 12:40, 16/01/2019.
@@ -225,6 +215,13 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     public void addedBarcodeNomenclaturesToBaseList(List<Nomenclature> values) {
         adapter.clear();
         adapter.addItems(values);
+    }
+
+    private void startedBackgroundService() {
+//        OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(SendTaskStartedWorker.class)
+//                .build();
+
+        //WorkManager.getInstance().enqueue(work);
     }
 
     public void showErrorCard() {

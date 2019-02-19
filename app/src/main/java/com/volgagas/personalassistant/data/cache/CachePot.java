@@ -1,11 +1,13 @@
 package com.volgagas.personalassistant.data.cache;
 
+import com.volgagas.personalassistant.models.model.common.Apk;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import timber.log.Timber;
 
 /**
@@ -27,6 +29,11 @@ public class CachePot {
     //saver container for reflect histories data in WorkerHistoryFragment. We get it from worker
     // today and need to save it here
     private List<TaskHistory> taskHistories;
+
+    //We save apk in 'cache' for get in the future one of fields from it
+    private Apk apk;
+
+    private ResponseBody bodyApk; // apk data for save into SaveApkWorker
 
     public static CachePot getInstance() {
         if (cachePot == null) {
@@ -80,5 +87,33 @@ public class CachePot {
 
     public void clearTaskHistories() {
         taskHistories = null;
+    }
+
+    public void saveApk(Apk data) {
+        apk = new Apk(data.getName(), data.getUrlReference());
+    }
+
+    public void clearApk() {
+        apk = null;
+    }
+
+    public void clearBodyApk() {
+        bodyApk = null;
+    }
+
+    public ResponseBody getBodyApk() {
+        return bodyApk;
+    }
+
+    public void setBodyApk(ResponseBody bodyApk) {
+        this.bodyApk = bodyApk;
+    }
+
+    public Apk getApk() {
+        return apk;
+    }
+
+    public void setApk(Apk apk) {
+        this.apk = apk;
     }
 }

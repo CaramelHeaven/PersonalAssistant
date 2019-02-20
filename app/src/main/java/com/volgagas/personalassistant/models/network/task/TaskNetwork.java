@@ -50,6 +50,9 @@ public class TaskNetwork {
     @SerializedName("AC_Closed")
     @Expose
     private String acClosed;
+    @SerializedName("SO_Category")
+    @Expose
+    private String projCategoryId;
 
     @Override
     public String toString() {
@@ -68,6 +71,7 @@ public class TaskNetwork {
                 ", activityId='" + activityId + '\'' +
                 ", gpa='" + gpa + '\'' +
                 ", acClosed='" + acClosed + '\'' +
+                ", projCategoryId='" + projCategoryId + '\'' +
                 '}';
     }
 
@@ -125,5 +129,9 @@ public class TaskNetwork {
 
     public String getAcClosed() {
         return acClosed;
+    }
+
+    public String getProjCategoryId() {
+        return projCategoryId;
     }
 }

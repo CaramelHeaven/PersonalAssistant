@@ -3,7 +3,6 @@ package com.volgagas.personalassistant.presentation.worker_nomenclature.presente
 import com.arellomobile.mvp.InjectViewState;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
@@ -14,24 +13,14 @@ import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.manager.TaskContentManager;
-import com.volgagas.personalassistant.utils.services.SaveApkWorker;
-import com.volgagas.personalassistant.utils.services.SendNomenclaturesToServerWorker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.ListenableWorker;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -47,13 +36,15 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
     private MainRepository repository;
     private Task task;
     // used for compare original list with changed our list and if each nomenclature have difference count - we update it
-    private List<Nomenclature> notChangedNomenclature;
+    private List<Nomenclature> helperNomenclatureList;
+    private List<Nomenclature> originalList;
 
     public NomenclaturePresenter() {
         super();
         repository = MainRemoteRepository.getInstance();
         task = TaskContentManager.getInstance().getTask();
-        notChangedNomenclature = new ArrayList<>();
+        Timber.d("CHECKING TASK: " + task.toString());
+        helperNomenclatureList = new ArrayList<>();
     }
 
     @Override
@@ -93,7 +84,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 CachePot.getInstance().getCacheBarcodeList();
         List<Nomenclature> nomenclatureList = new ArrayList<>();
 
-        Timber.d("NON CHECK: " + notChangedNomenclature.toString());
+        Timber.d("NON CHECK: " + helperNomenclatureList.toString());
         //mapping barcode to nomenclature
         for (Barcode barcode : barcodeList) {
             Timber.d("barcode TEST: " + barcode.toString());
@@ -108,11 +99,11 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
         //add nomenclature to common updated list or increase count if it exist
         for (Nomenclature data : nomenclatureList) {
-            if (notChangedNomenclature.contains(data)) {
-                Nomenclature nom = notChangedNomenclature.get(notChangedNomenclature.indexOf(data));
+            if (helperNomenclatureList.contains(data)) {
+                Nomenclature nom = helperNomenclatureList.get(helperNomenclatureList.indexOf(data));
                 nom.setCount(data.getCount() + nom.getCount());
             } else {
-                notChangedNomenclature.add(data);
+                helperNomenclatureList.add(data);
             }
         }
 //        Timber.d("updateListNomenclature: " + updatedListNomenclature);
@@ -125,9 +116,9 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 //            }
 //        }
 
-        Timber.d("AFTER UPDATE LIST: " + notChangedNomenclature);
+        Timber.d("AFTER UPDATE LIST: " + helperNomenclatureList);
 
-        return Observable.just(notChangedNomenclature);
+        return Observable.just(helperNomenclatureList);
     }
 
     @Override
@@ -171,11 +162,12 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    if (notChangedNomenclature.size() > 0) {
-                        notChangedNomenclature.clear();
+                    if (helperNomenclatureList.size() > 0) {
+                        helperNomenclatureList.clear();
                     }
 
-                    notChangedNomenclature.addAll(result);
+                    helperNomenclatureList.addAll(result);
+                    toOriginalList(result);
 
                     getViewState().hideProgress();
                     getViewState().showBaseList(result);
@@ -186,25 +178,46 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
         return task;
     }
 
-    public void clearNotChangedList() {
-        notChangedNomenclature.clear();
+    public void clearHelperList() {
+        helperNomenclatureList.clear();
+    }
+
+    public void clearOriginalList() {
+        originalList.clear();
     }
 
     public void createNomenclatures(List<Nomenclature> ourList) {
-        Timber.d("non: " + notChangedNomenclature.toString());
         Timber.d("our lIST: " + ourList.toString());
+        Timber.d("original list: " + originalList);
+        List<Nomenclature> createResult = new ArrayList<>();
+        List<Nomenclature> updateResult = new ArrayList<>();
 
+        for (Nomenclature ourData : ourList) {
+            //not bad, yey!
+            for (Nomenclature kek : originalList) {
+                if (ourData.getName().equals(kek.getName()) && ourData.getCount() != kek.getCount()) {
+                    updateResult.add(ourData);
+                }
+            }
+
+            if (!originalList.contains(ourData)) {
+                createResult.add(ourData);
+            }
+        }
+
+        Timber.d("create result: " + createResult);
+        Timber.d("update result: " + updateResult);
         CachePot.getInstance().putBarcodeCacheList(new ArrayList<>(ourList));
 
-        Single.just(ourList)
+        Single.just(createResult)
                 .subscribeOn(Schedulers.io())
                 .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
                 .flatMap((Function<Nomenclature, ObservableSource<Response<Void>>>) data -> repository
                         .attachNomenclatureToServiceOrder(mappingToJson(data, task.getIdTask())))
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    Timber.d("result: " + result);
+                .subscribe(kek -> {
+                    Timber.d("result: " + kek);
                 }, throwable -> {
                     Timber.d("ALALAL: " + throwable.getMessage());
                     Timber.d("ALALAL: " + throwable.getCause());
@@ -227,24 +240,51 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
     private JsonObject mappingToJson(Nomenclature nomenclature, String serviceOrderId) {
         JsonObject object = new JsonObject();
 
+        Timber.d("serviceOrderId: " + serviceOrderId);
+        Timber.d("getProjCategory: " + task.getProjCategoryId());
         object.add("ServiceOrderId", new JsonPrimitive(serviceOrderId));
         object.add("ProjCategoryId", new JsonPrimitive("Электрики_ТМЦ"));
         object.add("Qty", new JsonPrimitive(nomenclature.getCount()));
         object.add("dataAreaId", new JsonPrimitive("gns"));
         object.add("Unit", new JsonPrimitive(nomenclature.getUnit()));
         object.add("ItemId", new JsonPrimitive(nomenclature.getName()));
-        object.add("DateRangeTo", new JsonPrimitive("2018-02-19T00:00:00Z"));
-        object.add("DateRangeFrom", new JsonPrimitive("2018-02-19T04:03:00Z"));
+        object.add("DateRangeTo", new JsonPrimitive("2019-03-03T00:00:00Z"));
+        object.add("DateRangeFrom", new JsonPrimitive("2019-03-03T00:00:00Z"));
         object.add("ProjLinePropertyId", new JsonPrimitive("Расход"));
-        object.add("TransactionType", new JsonPrimitive("Item"));
-        object.add("TransactionSubType", new JsonPrimitive("Consumption"));
+        object.add("TransactionType", new JsonPrimitive(2));
+        object.add("TransactionSubType", new JsonPrimitive(2));
+//        {
+//            "ServiceOrderId": "ЗНСО029691",
+//                "ProjCategoryId": "Электрики_ТМЦ",
+//                "Qty": 3,
+//                "dataAreaId": "gns",
+//                "ProjLinePropertyId": "Расход",
+//                "TransactionSubType": "Consumption",
+//                "DateRangeTo": "2019-03-03T00:00:00Z",
+//                "TransactionType": "Item",
+//                "Unit": "кг",
+//                "DateRangeFrom": "2019-03-03T00:00:00Z",
+//                "ItemId": "Трилон Б"
+//        }
 
         return object;
     }
 
-    public void setNotChangedNomenclature(List<Nomenclature> notChangedNomenclature) {
-        this.notChangedNomenclature.clear();
-        this.notChangedNomenclature.addAll(notChangedNomenclature);
-        Timber.d("AFTER SET: " + notChangedNomenclature);
+    public void setHelperNomenclatureList(List<Nomenclature> helperNomenclatureList) {
+        this.helperNomenclatureList.clear();
+        this.helperNomenclatureList.addAll(helperNomenclatureList);
+        Timber.d("AFTER SET: " + helperNomenclatureList);
+    }
+
+    private void toOriginalList(List<Nomenclature> result) {
+        originalList = new ArrayList<>();
+
+        for (Nomenclature data : result) {
+            Nomenclature nomenclature = new
+                    Nomenclature(data.getName(), data.getCount(), data.getUnit());
+            nomenclature.setItemBarCode(data.getItemBarCode());
+
+            originalList.add(nomenclature);
+        }
     }
 }

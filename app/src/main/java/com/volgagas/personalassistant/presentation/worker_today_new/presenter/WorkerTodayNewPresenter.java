@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.worker_today_new.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.crashlytics.android.Crashlytics;
 import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
@@ -41,6 +42,8 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
                 .filter(result -> result.equals(Constants.WORKER_TODAY_NEW_PRESENTER))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> commonLoadTasksTodayAndHistory()));
+
+        PersonalAssistant.provideDynamics365Auth("asd","");
     }
 
     @Override
@@ -91,7 +94,9 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
-            RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_TODAY_NEW_PRESENTER);
+            Crashlytics.logException(throwable);
+
+            //RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_TODAY_NEW_PRESENTER);
         } else {
             getViewState().catastrophicError(throwable);
         }

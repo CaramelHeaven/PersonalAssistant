@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.crashlytics.android.Crashlytics;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.presentation.about_user.InfoFragment;
@@ -253,8 +254,13 @@ public class MainActivity extends BaseActivity implements MainView {
             byte[] data = Base64.decode(CacheUser.getUser().getUserImage().getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
             if (bitmap != null) {
-                Bitmap croppedBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - 240);
-                ivUserImage.setImageBitmap(croppedBmp);
+                if (bitmap.getHeight() - 240 > 0) {
+                    Bitmap croppedBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight() - 240);
+                    ivUserImage.setImageBitmap(croppedBmp);
+                } else {
+                    Bitmap croppedBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight());
+                    ivUserImage.setImageBitmap(croppedBmp);
+                }
             }
         }
 

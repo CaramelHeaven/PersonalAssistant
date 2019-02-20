@@ -34,7 +34,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
         fillData(tasks, value);
 
         Collections.sort(tasks);
-
+        Timber.d("after completed: " + tasks);
 
         return tasks;
     }
@@ -59,6 +59,8 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
             task.setGpa(test.get(i).getGpa());
             task.setPreferredTime(test.get(i).getPreferredTime());
             task.setStatus(test.get(i).getStatus());
+            task.setProjCategoryId(test.get(i).getProjCategoryId());
+            Timber.d("task get ProjCategory: " + task.getProjCategoryId());
 
             if (!map.containsKey(task))
                 map.put(task, new ArrayList<>());
@@ -74,6 +76,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
             task.setGpa(test.get(i).getGpa());
             task.setPreferredTime(test.get(i).getPreferredTime());
             task.setStatus(test.get(i).getStatus());
+            task.setProjCategoryId(test.get(i).getProjCategoryId());
 
             if (map.containsKey(task)) {
                 List<SubTask> subTasks = map.get(task);

@@ -7,6 +7,8 @@ import com.volgagas.personalassistant.models.model.worker.SubTask;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 12:18, 18/01/2019.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
@@ -32,6 +34,7 @@ public class TaskContentManager {
 
     public void setCurrentTask(Task task) {
         this.task = task;
+        Timber.d("TASK KEK: " + task.getProjCategoryId());
     }
 
     public Task getTask() {

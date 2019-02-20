@@ -28,6 +28,8 @@ import com.volgagas.personalassistant.utils.views.sticky_header.StickyRecyclerHe
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 11:48, 23/01/2019.
  * Copyright (c) 2018 VolgaGas. All rights reserved.

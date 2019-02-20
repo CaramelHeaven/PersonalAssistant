@@ -22,6 +22,7 @@ public class Task implements Parcelable, GlobalTask, Comparable<Task> {
     private String status;
     private List<SubTask> subTasks;
     private String gpa;
+    private String projCategoryId;
 
     //date and time for reflect this data on card view
     private String startDate;
@@ -46,7 +47,9 @@ public class Task implements Parcelable, GlobalTask, Comparable<Task> {
                 ", preferredTime='" + preferredTime + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
+                ", subTasks=" + subTasks +
                 ", gpa='" + gpa + '\'' +
+                ", projCategoryId='" + projCategoryId + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", startTime='" + startTime + '\'' +
                 ", serverDateTime=" + serverDateTime +
@@ -156,6 +159,15 @@ public class Task implements Parcelable, GlobalTask, Comparable<Task> {
         this.startTime = startTime;
     }
 
+    public String getProjCategoryId() {
+        return projCategoryId;
+    }
+
+    public void setProjCategoryId(String projCategoryId) {
+        this.projCategoryId = projCategoryId;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -169,8 +181,12 @@ public class Task implements Parcelable, GlobalTask, Comparable<Task> {
         dest.writeString(this.status);
         dest.writeTypedList(this.subTasks);
         dest.writeString(this.gpa);
+        dest.writeString(this.projCategoryId);
         dest.writeString(this.startDate);
         dest.writeString(this.startTime);
+        dest.writeLong(this.serverDateTime != null ? this.serverDateTime.getTime() : -1);
+        dest.writeString(this.dayOfMonth);
+        dest.writeString(this.dayOfWeek);
     }
 
     public Task() {
@@ -183,8 +199,13 @@ public class Task implements Parcelable, GlobalTask, Comparable<Task> {
         this.status = in.readString();
         this.subTasks = in.createTypedArrayList(SubTask.CREATOR);
         this.gpa = in.readString();
+        this.projCategoryId = in.readString();
         this.startDate = in.readString();
         this.startTime = in.readString();
+        long tmpServerDateTime = in.readLong();
+        this.serverDateTime = tmpServerDateTime == -1 ? null : new Date(tmpServerDateTime);
+        this.dayOfMonth = in.readString();
+        this.dayOfWeek = in.readString();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {

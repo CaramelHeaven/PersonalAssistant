@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.crashlytics.android.Crashlytics;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
@@ -98,8 +99,8 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
                 if (adapter.isNomenclaturesCountEqualsNull()) {
                     Toast.makeText(getActivity(), "Нельзя", Toast.LENGTH_SHORT).show();
                 } else {
-                    presenter.clearNotChangedList(); // clear helper list, because we exit from this screen
                     presenter.createNomenclatures(adapter.getNomenclatureList());
+                    presenter.clearOriginalList(); // clear helper list, because we exit from this screen
 //                    if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
 //                        //save data to cache before to send it to server
 //                        CachePot.getInstance().putBarcodeCacheList(new ArrayList<>(adapter.getNomenclatureList()));
@@ -134,8 +135,8 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         });
 
         btnToQRCode.setOnClickListener(v -> {
-            presenter.clearNotChangedList();
-            presenter.setNotChangedNomenclature(adapter.getNomenclatureList());
+            presenter.clearHelperList();
+            presenter.setHelperNomenclatureList(adapter.getNomenclatureList());
             startActivity(new Intent(getActivity(), NomenclatureBarcodeActivity.class));
         });
 

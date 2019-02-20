@@ -28,7 +28,7 @@ public class NomenclatureResponseToNomenclature extends Mapper<NomenclatureRespo
         for (NomenclatureNetwork network : nomenclatureResponse.getValue()) {
             Nomenclature data = new Nomenclature(network.getItemId(), network.getQty(),
                     network.getUnit());
-            Timber.d("checking network: " + network.toString());
+
             data.setProjectCategoryId(network.getProjCategoryId());
             data.setServiceOrderLineNum(network.getServiceOrderLineNum());
 

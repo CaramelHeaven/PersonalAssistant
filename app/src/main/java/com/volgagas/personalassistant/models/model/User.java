@@ -16,7 +16,7 @@ public class User implements Parcelable {
     private String category;
     private String userImage;
 
-    private String personalDynamics365Number;
+    private String personalDynamics365Number; // used for get information from D365
 
     private String userCliendId;
     private String dynamics365Token;

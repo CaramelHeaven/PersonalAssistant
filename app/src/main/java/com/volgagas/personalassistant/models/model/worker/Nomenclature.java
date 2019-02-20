@@ -11,7 +11,7 @@ public class Nomenclature {
     private String unit;
     private String projectCategoryId; // field for patch or post nomenclature to server
     private String itemBarCode;
-    private int serviceOrderLineNum; // for detect nomenclature id in service
+    private int serviceOrderLineNum; // for detect nomenclatureId in service
 
     public Nomenclature(String name, int count, String unit) {
         this.name = name;

@@ -177,12 +177,8 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
 
             beepManager.playBeepSoundAndVibrate();
 
-            //TODO make get data from network
+            //make request to get barcode data
             presenter.loadBarcodeData(lastText);
-//            Barcode barcode = new Barcode();
-//            barcode.setBarcode(lastText);
-//            barcode.setCount(5);
-//            barcode.setBarcodeName("Трилон Б");
 
             Toast.makeText(NomenclatureBarcodeActivity.this, "Отсканировано", Toast.LENGTH_SHORT).show();
 

@@ -73,6 +73,7 @@ public class StartPresenter extends BasePresenter<StartView> {
     }
 
     private void successfulResponse(UserDynamics userDynamics) {
+        Timber.d("user dynamics: " + userDynamics.toString());
         ThreePermissions permissions = ThreePermissions.getInstance();
         if (userDynamics.getPersonalNumber() == null || userDynamics.getPersonalNumber().equals("")) {
             permissions.setServer(false);

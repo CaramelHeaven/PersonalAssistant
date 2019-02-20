@@ -60,6 +60,7 @@ public class NomenclatureBarcodePresenter extends MvpPresenter<NomenclatureBarco
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(result -> {
+                                Timber.d("checking unit: " + result.toString());
                                 getViewState().hideProgressDialog();
                                 getViewState().successfulGetBarcodeFromServer(result);
                             },

@@ -63,6 +63,8 @@ public class CachePot {
         barcode.setBarcodeName(data.getBarcodeName());
         barcode.setBarcode(data.getBarcode());
         barcode.setCount(data.getCount());
+        barcode.setUnit(data.getUnit());
+        barcode.setItemBarCode(data.getItemBarCode());
     }
 
     public Barcode getBarcode() {

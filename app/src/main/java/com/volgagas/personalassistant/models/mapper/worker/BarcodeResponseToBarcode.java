@@ -21,9 +21,12 @@ public class BarcodeResponseToBarcode extends Mapper<BarcodeResponse, Barcode> {
 
     @Override
     protected void fillData(Barcode barcode, BarcodeResponse barcodeResponse) {
+        Timber.d("response: " + barcodeResponse);
+
         barcode.setBarcodeName(barcodeResponse.getItemId());
         barcode.setBarcode(barcodeResponse.getItemBarCode());
         barcode.setUnit(barcodeResponse.getUnitID());
         barcode.setCount(barcodeResponse.getQty());
+        barcode.setItemBarCode(barcodeResponse.getItemBarCode());
     }
 }

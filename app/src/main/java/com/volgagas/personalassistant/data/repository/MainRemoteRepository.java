@@ -1,7 +1,6 @@
 package com.volgagas.personalassistant.data.repository;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
@@ -351,6 +350,11 @@ public class MainRemoteRepository implements MainRepository {
         objects.add(fillInfo());
 
         return Single.just(objects);
+    }
+
+    @Override
+    public Single<List<Object>> getUserSkillsFromDynamics() {
+        return null;
     }
 
     @Override

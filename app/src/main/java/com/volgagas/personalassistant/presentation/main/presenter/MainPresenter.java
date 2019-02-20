@@ -179,12 +179,14 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 .map(this::filterApkListForCurrentAppName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    Timber.d("all result: " + result);
-                    Apk apk = findNewestVersion(result);
-                    if (apk != null) {
-                        Timber.d("NEWEST APK: " + apk.toString());
-                        CachePot.getInstance().saveApk(apk); // save apk for the future use
-                        RxBus.getInstance().passDataToCommonChannel(Constants.UPDATE_APK);
+                    if (result.size() != 0) {
+                        Timber.d("all result: " + result);
+                        Apk apk = findNewestVersion(result);
+                        if (apk != null) {
+                            Timber.d("NEWEST APK: " + apk.toString());
+                            CachePot.getInstance().saveApk(apk); // save apk for the future use
+                            RxBus.getInstance().passDataToCommonChannel(Constants.UPDATE_APK);
+                        }
                     }
                 }, throwable -> getViewState().showError(throwable)));
     }

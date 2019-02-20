@@ -21,6 +21,7 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Object> objectList;
 
     private final int TYPE_INFO = -1;
+    private final int TYPE_CAKE = -2;
     private final int TYPE_USUALLY = 0;
 
     public InfoAdapter(List<Object> objectList) {

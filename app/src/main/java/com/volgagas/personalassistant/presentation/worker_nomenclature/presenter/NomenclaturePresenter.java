@@ -46,17 +46,14 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     private MainRepository repository;
     private Task task;
-    // used for compare original list with changed our list and if each nomenclature have difference count - we post it
+    // used for compare original list with changed our list and if each nomenclature have difference count - we update it
     private List<Nomenclature> notChangedNomenclature;
-    // helper list for update UI and handler data from scanned barcodes
-    private List<Nomenclature> updatedListNomenclature;
 
     public NomenclaturePresenter() {
         super();
         repository = MainRemoteRepository.getInstance();
         task = TaskContentManager.getInstance().getTask();
         notChangedNomenclature = new ArrayList<>();
-        updatedListNomenclature = new ArrayList<>();
     }
 
     @Override
@@ -71,6 +68,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> loadData()));
 
+        //Action from close ActivityBarcode and showData to adapter
         disposable.add(RxBus.getInstance().getCommonChannel()
                 .filter(result -> result.equals(Constants.CLOSED_NOMENCLATURE_BARCODE_ACTIVITY))
                 .flatMap((Function<String, ObservableSource<List<Nomenclature>>>) s ->
@@ -95,26 +93,41 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 CachePot.getInstance().getCacheBarcodeList();
         List<Nomenclature> nomenclatureList = new ArrayList<>();
 
+        Timber.d("NON CHECK: " + notChangedNomenclature.toString());
         //mapping barcode to nomenclature
         for (Barcode barcode : barcodeList) {
-            Timber.d("barcode: " + barcode.toString());
+            Timber.d("barcode TEST: " + barcode.toString());
             Nomenclature nomenclature = new
-                    Nomenclature(barcode.getBarcodeName(), barcode.getCount(), "шт");
+                    Nomenclature(barcode.getBarcodeName(), barcode.getCount(), barcode.getUnit());
+            nomenclature.setItemBarCode(barcode.getItemBarCode());
 
             nomenclatureList.add(nomenclature);
         }
 
+        Timber.d("nomenclatures: " + nomenclatureList);
+
         //add nomenclature to common updated list or increase count if it exist
         for (Nomenclature data : nomenclatureList) {
-            if (updatedListNomenclature.contains(data)) {
-                Nomenclature nom = updatedListNomenclature.get(updatedListNomenclature.indexOf(data));
+            if (notChangedNomenclature.contains(data)) {
+                Nomenclature nom = notChangedNomenclature.get(notChangedNomenclature.indexOf(data));
                 nom.setCount(data.getCount() + nom.getCount());
             } else {
-                updatedListNomenclature.add(data);
+                notChangedNomenclature.add(data);
             }
         }
+//        Timber.d("updateListNomenclature: " + updatedListNomenclature);
+//        for (Nomenclature data : nomenclatureList) {
+//            if (updatedListNomenclature.contains(data)) {
 
-        return Observable.just(updatedListNomenclature);
+//                Timber.d("AFTER KEK: " + nom.toString());
+//            } else {
+//                updatedListNomenclature.add(data);
+//            }
+//        }
+
+        Timber.d("AFTER UPDATE LIST: " + notChangedNomenclature);
+
+        return Observable.just(notChangedNomenclature);
     }
 
     @Override
@@ -158,8 +171,11 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
+                    if (notChangedNomenclature.size() > 0) {
+                        notChangedNomenclature.clear();
+                    }
+
                     notChangedNomenclature.addAll(result);
-                    updatedListNomenclature.addAll(notChangedNomenclature);
 
                     getViewState().hideProgress();
                     getViewState().showBaseList(result);
@@ -172,10 +188,6 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     public void clearNotChangedList() {
         notChangedNomenclature.clear();
-    }
-
-    public void clearUpdatedList() {
-        updatedListNomenclature.clear();
     }
 
     public void createNomenclatures(List<Nomenclature> ourList) {
@@ -219,12 +231,20 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
         object.add("ProjCategoryId", new JsonPrimitive("Электрики_ТМЦ"));
         object.add("Qty", new JsonPrimitive(nomenclature.getCount()));
         object.add("dataAreaId", new JsonPrimitive("gns"));
+        object.add("Unit", new JsonPrimitive(nomenclature.getUnit()));
         object.add("ItemId", new JsonPrimitive(nomenclature.getName()));
-        object.add("DateRangeTo", new JsonPrimitive("2018-01-01T00:00:00Z"));
-        object.add("DateRangeFrom", new JsonPrimitive("2018-02-17T04:03:00Z"));
-
-        Timber.d("CHECK JSON: " + object.toString());
+        object.add("DateRangeTo", new JsonPrimitive("2018-02-19T00:00:00Z"));
+        object.add("DateRangeFrom", new JsonPrimitive("2018-02-19T04:03:00Z"));
+        object.add("ProjLinePropertyId", new JsonPrimitive("Расход"));
+        object.add("TransactionType", new JsonPrimitive("Item"));
+        object.add("TransactionSubType", new JsonPrimitive("Consumption"));
 
         return object;
+    }
+
+    public void setNotChangedNomenclature(List<Nomenclature> notChangedNomenclature) {
+        this.notChangedNomenclature.clear();
+        this.notChangedNomenclature.addAll(notChangedNomenclature);
+        Timber.d("AFTER SET: " + notChangedNomenclature);
     }
 }

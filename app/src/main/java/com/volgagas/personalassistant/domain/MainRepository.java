@@ -163,6 +163,11 @@ public interface MainRepository {
     Single<List<Object>> getInfoAboutUserFromDynamics();
 
     /**
+     * Get user skills
+     */
+    Single<List<Object>> getUserSkillsFromDynamics();
+
+    /**
      * @param barcodeNumbers - scanned string data from NomenclatureBarcodeActivity
      */
     Single<Barcode> getBarcodeInfoFromServer(String barcodeNumbers);

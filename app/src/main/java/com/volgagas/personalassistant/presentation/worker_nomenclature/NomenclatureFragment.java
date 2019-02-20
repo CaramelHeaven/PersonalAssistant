@@ -98,6 +98,7 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
                 if (adapter.isNomenclaturesCountEqualsNull()) {
                     Toast.makeText(getActivity(), "Нельзя", Toast.LENGTH_SHORT).show();
                 } else {
+                    presenter.clearNotChangedList(); // clear helper list, because we exit from this screen
                     presenter.createNomenclatures(adapter.getNomenclatureList());
 //                    if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
 //                        //save data to cache before to send it to server
@@ -132,8 +133,11 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
             }
         });
 
-        btnToQRCode.setOnClickListener(v ->
-                startActivity(new Intent(getActivity(), NomenclatureBarcodeActivity.class)));
+        btnToQRCode.setOnClickListener(v -> {
+            presenter.clearNotChangedList();
+            presenter.setNotChangedNomenclature(adapter.getNomenclatureList());
+            startActivity(new Intent(getActivity(), NomenclatureBarcodeActivity.class));
+        });
 
         provideRecyclerAndAdapter();
 
@@ -171,9 +175,6 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
 
     @Override
     public void onStop() {
-        //Clear up our helper lists
-        presenter.clearNotChangedList();
-        presenter.clearUpdatedList();
         super.onStop();
     }
 

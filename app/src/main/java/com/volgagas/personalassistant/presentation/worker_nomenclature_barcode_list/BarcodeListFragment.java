@@ -118,6 +118,7 @@ public class BarcodeListFragment extends BaseFragment implements BarcodeListView
 
     @Override
     public void grabData() {
+        Timber.d("GRAB DATA: " + adapter.getBarcodeList());
         CachePot.getInstance().putBarcodeCacheList(adapter.getBarcodeList());
         RxBus.getInstance().passDataToCommonChannel(Constants.PASS_DATA_BARCODE);
     }

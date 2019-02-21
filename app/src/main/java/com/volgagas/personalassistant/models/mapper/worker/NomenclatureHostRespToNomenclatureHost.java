@@ -15,8 +15,8 @@ public class NomenclatureHostRespToNomenclatureHost extends Mapper<NomenclatureH
 
     @Override
     public Nomenclature map(NomenclatureHostResponse value) {
-        //fillData(nomenclatureHost, value);
-        return new Nomenclature(value.getName(), 5, "кило");
+        //make sure that get quantity is a number
+        return new Nomenclature(value.getName(), Integer.parseInt(value.getQuantity()), value.getUnit());
     }
 
     @Override

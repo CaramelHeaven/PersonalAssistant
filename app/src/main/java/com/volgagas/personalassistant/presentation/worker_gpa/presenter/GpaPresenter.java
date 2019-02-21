@@ -82,6 +82,7 @@ public class GpaPresenter extends BasePresenter<GpaView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result.getCategory().equals("Оборудование")) {
+                        //todo MAKE this code to check GPA NAME for current card name
 //                        if (result.getName().equals(task.getGpa())) {
                         disposable.add(Single.just(selectedTasks)
                                 .subscribeOn(Schedulers.io())
@@ -115,6 +116,7 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
+        sendCrashlytics(throwable);
         Timber.d("thrwoable: " + throwable.getCause());
         Timber.d("thrwoable: " + throwable.getMessage());
     }

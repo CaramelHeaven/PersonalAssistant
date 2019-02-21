@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.data.cache;
 
 import com.volgagas.personalassistant.models.model.common.Apk;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
+import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 
 import java.util.ArrayList;
@@ -35,6 +36,9 @@ public class CachePot {
 
     private ResponseBody bodyApk; // apk data for save into SaveApkWorker
 
+    private List<Nomenclature> createList; // create new nomenclatures
+    private List<Nomenclature> updateList; // update nomenclatures
+
     public static CachePot getInstance() {
         if (cachePot == null) {
             synchronized (CachePot.class) {
@@ -55,6 +59,22 @@ public class CachePot {
         cacheBarcodeList = new ArrayList<>();
 
         cacheBarcodeList.addAll(objects);
+    }
+
+    public void putCreateNomenclatures(List<Nomenclature> data) {
+        createList = new ArrayList<>(data);
+    }
+
+    public void putUpdateNomenclatures(List<Nomenclature> data) {
+        updateList = new ArrayList<>(data);
+    }
+
+    public List<Nomenclature> getCreateList() {
+        return createList;
+    }
+
+    public List<Nomenclature> getUpdateList() {
+        return updateList;
     }
 
     public void putBarcodeCache(Barcode data) {

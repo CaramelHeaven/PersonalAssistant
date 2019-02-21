@@ -57,7 +57,7 @@ public class KioskPresenter extends BasePresenter<KioskView> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-
+        sendCrashlytics(throwable);
     }
 
     @Override

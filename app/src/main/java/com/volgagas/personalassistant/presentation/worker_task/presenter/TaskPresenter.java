@@ -42,15 +42,15 @@ public class TaskPresenter extends BasePresenter<TaskView<SubTaskViewer>> {
 
     @Override
     public void onDestroy() {
-        disposable.clear();
         super.onDestroy();
     }
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
-            handlerAuthenticationRepeat();
+            //todo make repeat token
         } else {
+            sendCrashlytics(throwable);
             getViewState().hideProgress();
             getViewState().showError();
         }

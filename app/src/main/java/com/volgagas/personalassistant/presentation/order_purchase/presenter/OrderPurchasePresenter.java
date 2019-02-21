@@ -55,7 +55,7 @@ public class OrderPurchasePresenter extends BasePresenter<OrderPurchaseView<Orde
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-
+        sendCrashlytics(throwable);
     }
 
     @Override

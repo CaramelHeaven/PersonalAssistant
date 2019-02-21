@@ -140,6 +140,8 @@ public class ResultPresenter extends BasePresenter<ResultView> {
                                 .subscribe(this::successfulResult, throwable -> {
                                     if (throwable.getMessage().equals("timeout")) {
                                         getViewState().timeout();
+                                    } else {
+                                        handlerErrorsFromBadRequests(throwable);
                                     }
                                 }));
                     } else {
@@ -152,10 +154,12 @@ public class ResultPresenter extends BasePresenter<ResultView> {
                                 .subscribe(this::successfulResult, throwable -> {
                                     if (throwable.getMessage().equals("timeout")) {
                                         getViewState().timeout();
+                                    } else {
+                                        handlerErrorsFromBadRequests(throwable);
                                     }
                                 }));
                     }
-                }));
+                }, this::handlerErrorsFromBadRequests));
     }
 
     private void successfulResult(List<Response<Void>> responses) {
@@ -168,8 +172,7 @@ public class ResultPresenter extends BasePresenter<ResultView> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-        Timber.d("checking: " + throwable.getMessage());
-        Timber.d("checking: " + throwable.getCause());
+        sendCrashlytics(throwable);
     }
 
     @Override

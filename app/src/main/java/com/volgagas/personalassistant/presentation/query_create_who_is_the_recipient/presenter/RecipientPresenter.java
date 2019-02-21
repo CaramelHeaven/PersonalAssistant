@@ -67,7 +67,6 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
         getViewState().showUsers(users);
     }
 
-    @SuppressLint("CheckResult")
     public void sendToServer(RequestData data, List<User> userList) {
         this.requestData = data;
         this.userList = userList;
@@ -125,6 +124,7 @@ public class RecipientPresenter extends BasePresenter<RecipientView> {
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
             RxBus.getInstance().passActionForUpdateToken(Constants.QUERY_CREATE_WHO_IS_THE_RECIPIENT);
         } else {
+            sendCrashlytics(throwable);
             getViewState().catastrophicError(throwable);
         }
     }

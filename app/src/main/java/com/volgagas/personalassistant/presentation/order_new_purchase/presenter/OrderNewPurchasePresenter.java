@@ -39,7 +39,7 @@ public class OrderNewPurchasePresenter extends BasePresenter<OrderNewPurchaseVie
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-
+        sendCrashlytics(throwable);
     }
 
     @Override

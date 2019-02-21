@@ -54,7 +54,7 @@ public class KioskTaskPresenter extends BasePresenter<KioskTaskView<TaskTemplate
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-
+        sendCrashlytics(throwable);
     }
 
     @Override

@@ -13,10 +13,17 @@ import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.manager.TaskContentManager;
+import com.volgagas.personalassistant.utils.services.CreateNomenclaturesWorker;
+import com.volgagas.personalassistant.utils.services.UpdateNomenclaturesWorker;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Single;
@@ -207,7 +214,39 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
         Timber.d("create result: " + createResult);
         Timber.d("update result: " + updateResult);
-        CachePot.getInstance().putBarcodeCacheList(new ArrayList<>(ourList));
+
+//        if (createResult.size() > 0) {
+//            CachePot.getInstance().putCreateNomenclatures(createResult);
+//            //todo run create worker
+//            OneTimeWorkRequest createWorker = new OneTimeWorkRequest.Builder(CreateNomenclaturesWorker.class)
+//                    .setConstraints(new Constraints.Builder()
+//                            .setRequiredNetworkType(NetworkType.CONNECTED)
+//                            .build())
+//                    .setInputData(new Data.Builder()
+//                            .putString("SERVICE_ORDER_ID", task.getIdTask())
+//                            .putString("PROJ_CATEGORY_ID", task.getProjCategoryId())
+//                            .build())
+//                    .build();
+//
+//            WorkManager.getInstance()
+//                    .enqueue(createWorker);
+//        }
+//        if (updateResult.size() > 0) {
+//            CachePot.getInstance().putUpdateNomenclatures(updateResult);
+//            //todo run update worker
+//            OneTimeWorkRequest updateWorker = new OneTimeWorkRequest.Builder(UpdateNomenclaturesWorker.class)
+//                    .setConstraints(new Constraints.Builder()
+//                            .setRequiredNetworkType(NetworkType.CONNECTED)
+//                            .build())
+//                    .setInputData(new Data.Builder()
+//                            .putString("SERVICE_ORDER_ID", task.getIdTask())
+//                            .putString("PROJ_CATEGORY_ID", task.getProjCategoryId())
+//                            .build())
+//                    .build();
+//
+//            WorkManager.getInstance()
+//                    .enqueue(updateWorker);
+//        }
 
         Single.just(createResult)
                 .subscribeOn(Schedulers.io())
@@ -222,19 +261,6 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                     Timber.d("ALALAL: " + throwable.getMessage());
                     Timber.d("ALALAL: " + throwable.getCause());
                 });
-
-//        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(SendNomenclaturesToServerWorker.class)
-//                .setConstraints(new Constraints.Builder()
-//                        .setRequiredNetworkType(NetworkType.CONNECTED)
-//                        .build())
-//                .setInputData(new Data.Builder()
-//                        .putString("SERVICE_ORDER_ID", getTask().getIdTask())
-//                        .build())
-//                .build();
-//
-//        WorkManager.getInstance()
-//                .enqueue(oneTimeWorkRequest);
-
     }
 
     private JsonObject mappingToJson(Nomenclature nomenclature, String serviceOrderId) {

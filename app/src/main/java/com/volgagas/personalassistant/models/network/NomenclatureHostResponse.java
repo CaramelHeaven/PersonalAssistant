@@ -17,6 +17,12 @@ public class NomenclatureHostResponse {
     @SerializedName("category")
     @Expose
     private String category;
+    @SerializedName("unit")
+    @Expose
+    private String unit;
+    @SerializedName("quantity")
+    @Expose
+    private String quantity;
 
     public String getId() {
         return id;
@@ -28,5 +34,13 @@ public class NomenclatureHostResponse {
 
     public String getCategory() {
         return category;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public String getQuantity() {
+        return quantity;
     }
 }

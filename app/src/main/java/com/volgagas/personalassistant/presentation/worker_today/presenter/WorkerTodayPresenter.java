@@ -42,11 +42,6 @@ public class WorkerTodayPresenter extends BasePresenter<WorkerTodayView<Task>> {
 
     }
 
-    @Override
-    protected void handlerAuthenticationRepeat() {
-
-    }
-
     public void loadData() {
         getViewState().showProgress();
         disposable.add(repository.getTasksToday()

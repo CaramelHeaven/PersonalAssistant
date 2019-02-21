@@ -95,6 +95,7 @@ public class StartPresenter extends BasePresenter<StartView> {
         if (throwable instanceof IllegalArgumentException) {
             getViewState().resultMatchedWithEquipment();
         } else {
+            sendCrashlytics(throwable);
             getViewState().commonError();
         }
     }

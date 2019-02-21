@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.base;
 
 import com.arellomobile.mvp.MvpPresenter;
+import com.crashlytics.android.Crashlytics;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import java.util.List;
@@ -40,9 +41,15 @@ public abstract class BasePresenter<S extends BaseView> extends MvpPresenter<S> 
      */
     protected abstract void handlerErrorInSuccessfulResult(List<Response<Void>> result);
 
-    protected void handlerAuthenticationRepeat() {
-        Timber.d("HANDLER REPEAT");
-    }
-
+    /**
+     * Load base data for current screen
+     */
     protected abstract void loadData();
+
+    /**
+     * If we get error from network request - send to crashlytics server for handler it
+     */
+    protected void sendCrashlytics(Throwable throwable) {
+        Crashlytics.logException(throwable);
+    }
 }

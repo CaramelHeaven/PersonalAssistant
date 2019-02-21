@@ -15,7 +15,7 @@ public class Constants {
     public static final String AUTH_URL = "https://login.microsoftonline.com/common/oauth2/authorize";
 
     //own mini-server
-    public static final String MY_HOST = "http://192.168.1.147:8080/volgagas-0.4/";
+    public static final String MY_HOST = "http://192.168.1.147:8080/pa-volgagas-0.5/";
 
     //Lists of this site
     public static final String UNIFORM_REQUESTS_URL = "(guid'895e45dd-17ac-41bd-9a41-3d72bd0cbfc7')";

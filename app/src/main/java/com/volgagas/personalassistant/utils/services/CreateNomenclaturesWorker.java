@@ -26,14 +26,14 @@ import timber.log.Timber;
 /**
  * Created by CaramelHeaven on 10:45, 15/02/2019.
  */
-public class SendNomenclaturesToServerWorker extends RxWorker {
+public class CreateNomenclaturesWorker extends RxWorker {
     private MainRepository repository;
 
     /**
      * @param appContext   The application {@link Context}
      * @param workerParams Parameters to setup the internal state of this worker
      */
-    public SendNomenclaturesToServerWorker(@NonNull Context appContext, @NonNull WorkerParameters workerParams) {
+    public CreateNomenclaturesWorker(@NonNull Context appContext, @NonNull WorkerParameters workerParams) {
         super(appContext, workerParams);
         repository = MainRemoteRepository.getInstance();
     }
@@ -41,10 +41,9 @@ public class SendNomenclaturesToServerWorker extends RxWorker {
     @SuppressLint("CheckResult")
     @Override
     public Single<Result> createWork() {
-        List<Nomenclature> nomenclatureList = (List<Nomenclature>) (Object) CachePot.getInstance().getCacheBarcodeList();
-        CachePot.getInstance().clearCacheBarcodeList();
-
+        List<Nomenclature> nomenclatureList = CachePot.getInstance().getCreateList();
         String serviceOrderId = getInputData().getString("SERVICE_ORDER_ID");
+        String projCategoryId = getInputData().getString("PROJ_CATEGORY_ID");
 
         return Single.just(nomenclatureList)
                 .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)

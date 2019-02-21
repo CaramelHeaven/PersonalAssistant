@@ -52,6 +52,7 @@ public class CategoryPresenter extends BasePresenter<CategoryView<QueryTemplate>
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
             RxBus.getInstance().passActionForUpdateToken(Constants.QUERY_CREATE_CHOOSE_CATEGORY);
         } else {
+            sendCrashlytics(throwable);
             getViewState().catastrophicError(throwable);
         }
     }

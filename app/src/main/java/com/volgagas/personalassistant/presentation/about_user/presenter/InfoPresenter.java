@@ -36,16 +36,11 @@ public class InfoPresenter extends BasePresenter<InfoView> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-
+        sendCrashlytics(throwable);
     }
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
-
-    }
-
-    @Override
-    protected void handlerAuthenticationRepeat() {
 
     }
 

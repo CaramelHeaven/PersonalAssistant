@@ -43,7 +43,7 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> commonLoadTasksTodayAndHistory()));
 
-        PersonalAssistant.provideDynamics365Auth("asd","");
+        PersonalAssistant.provideDynamics365Auth("asd", "");
     }
 
     @Override
@@ -94,10 +94,9 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
-            Crashlytics.logException(throwable);
-
-            //RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_TODAY_NEW_PRESENTER);
+            RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_TODAY_NEW_PRESENTER);
         } else {
+            sendCrashlytics(throwable);
             getViewState().catastrophicError(throwable);
         }
     }

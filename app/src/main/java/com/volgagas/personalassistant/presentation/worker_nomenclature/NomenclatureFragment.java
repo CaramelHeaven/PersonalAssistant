@@ -102,13 +102,6 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
                     presenter.createNomenclatures(adapter.getNomenclatureList());
                     presenter.clearOriginalList(); // clear helper list, because we exit from this screen
 //                    if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
-//                        //save data to cache before to send it to server
-//                        CachePot.getInstance().putBarcodeCacheList(new ArrayList<>(adapter.getNomenclatureList()));
-//
-//                        OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(SendNomenclaturesToServerWorker.class)
-//                                .build();
-//
-//                        WorkManager.getInstance().enqueue(work);
 //
 //                        Toast.makeText(getActivity(), "SENDING", Toast.LENGTH_SHORT).show();
 //                        //getActivity().finish();
@@ -137,6 +130,7 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         btnToQRCode.setOnClickListener(v -> {
             presenter.clearHelperList();
             presenter.setHelperNomenclatureList(adapter.getNomenclatureList());
+
             startActivity(new Intent(getActivity(), NomenclatureBarcodeActivity.class));
         });
 

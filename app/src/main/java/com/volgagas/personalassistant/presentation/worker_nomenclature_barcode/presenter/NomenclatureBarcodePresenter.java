@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.crashlytics.android.Crashlytics;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
@@ -69,8 +70,7 @@ public class NomenclatureBarcodePresenter extends MvpPresenter<NomenclatureBarco
     }
 
     private void handlerWithError(Throwable throwable) {
-        Timber.d("th: " + throwable.getCause());
-        Timber.d("th: " + throwable.getMessage());
+        Crashlytics.logException(throwable);
     }
 
     @Override

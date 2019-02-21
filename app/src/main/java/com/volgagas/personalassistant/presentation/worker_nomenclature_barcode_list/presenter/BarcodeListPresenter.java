@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.presentation.worker_nomenclature_barcode_
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.crashlytics.android.Crashlytics;
 import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;

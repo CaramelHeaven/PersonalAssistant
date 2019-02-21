@@ -56,6 +56,7 @@ public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRe
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
             RxBus.getInstance().passActionForUpdateToken(Constants.PROJECTS_UNIFORM_PRESENTER);
         } else {
+            sendCrashlytics(throwable);
             getViewState().catastrophicError(throwable);
         }
     }

@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.presentation.order_new_additionally.prese
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.crashlytics.android.Crashlytics;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 
@@ -33,7 +34,7 @@ public class OrderNewAdditionallyPresenter extends MvpPresenter<OrderNewAddition
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     getViewState().showItems(result);
-                }));
+                }, Crashlytics::logException));
 
     }
 

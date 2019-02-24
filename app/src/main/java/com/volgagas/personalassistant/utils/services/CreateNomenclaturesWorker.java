@@ -11,6 +11,7 @@ import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
+import com.volgagas.personalassistant.utils.UtilsDateTimeProvider;
 
 import java.util.Arrays;
 import java.util.List;
@@ -68,11 +69,13 @@ public class CreateNomenclaturesWorker extends RxWorker {
         object.add("InventDimId", new JsonPrimitive("GNS-000627"));
         object.add("ProjLinePropertyId", new JsonPrimitive("Расход"));
         object.add("ProjCategoryId", new JsonPrimitive(projCategory + "_ТМЦ"));
-        object.add("DateRangeFrom", new JsonPrimitive("2019-02-22T12:00:00Z"));
+        object.add("DateRangeFrom",
+                new JsonPrimitive(UtilsDateTimeProvider.workerServiceTime() + "T12:00:00Z"));
         object.add("Qty", new JsonPrimitive(nomenclature.getCount()));
         object.add("DefaultDimension", new JsonPrimitive(Long.parseLong("5637144586")));//still here
         object.add("TransactionSubType", new JsonPrimitive("Consumption"));
-        object.add("DateExecution", new JsonPrimitive("2019-02-22T12:00:00Z"));
+        object.add("DateExecution",
+                new JsonPrimitive(UtilsDateTimeProvider.workerServiceTime() + "T12:00:00Z"));
         object.add("ProjCurrencyCode", new JsonPrimitive("RUB"));
         object.add("TransactionType", new JsonPrimitive("Item"));
         object.add("DateRangeTo", new JsonPrimitive("2019-02-22T12:00:00Z"));

@@ -14,6 +14,7 @@ import java.util.TimeZone;
  */
 public class UtilsDateTimeProvider {
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'", Locale.getDefault());
+    private static DateFormat dateFormatForWorker = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private static DateFormat dateHistoryFormat = new SimpleDateFormat("MMM dd, yyyy", new Locale("RU"));
     private static DateFormat timeHistoryFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
@@ -34,9 +35,23 @@ public class UtilsDateTimeProvider {
         return INSTANCE;
     }
 
+    /**
+     * Date for  naming photos
+     *
+     * @return data format photos.png
+     */
     public static String folderNameTimeFormat() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         return dateFormat.format(Calendar.getInstance().getTime());
+    }
+
+    /**
+     * Time format for worker service - create nomenclature
+     *
+     * @return format fime. For example - 2019-02-22
+     */
+    public static String workerServiceTime() {
+        return dateFormatForWorker.format(Calendar.getInstance().getTime());
     }
 
     /**

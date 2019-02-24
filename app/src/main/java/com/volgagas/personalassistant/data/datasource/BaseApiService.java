@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import com.volgagas.personalassistant.models.network.BarcodeResponse;
 import com.volgagas.personalassistant.models.network.NomenclatureHostResponse;
 import com.volgagas.personalassistant.models.network.NomenclatureResponse;
+import com.volgagas.personalassistant.models.network.PersonCertificatesResponse;
+import com.volgagas.personalassistant.models.network.PersonSkillsResponse;
 import com.volgagas.personalassistant.models.network.SubTaskResponse;
 import com.volgagas.personalassistant.models.network.TaskKioskResponse;
 import com.volgagas.personalassistant.models.network.TaskResponse;
@@ -56,41 +58,20 @@ public interface BaseApiService {
     @GET("data/SOLinesEntity?")
     Single<NomenclatureResponse> getNomenclatures(@Query("$filter") String filter);
 
-    /**
-     * Provide history tasks which user has been completed
-     * Take the last 50 tasks.
-     */
     @GET("data/SOWithAC?")
     Single<TaskResponse> getHistory(@Query("$filter") String filter,
                                     @Query("$top") String count,
                                     @Query("$orderby") String orderBy);
 
-    /**
-     * Create template tasks from kiosk for user
-     *
-     * @param url    - url which contains activity order reference
-     * @param object - object where we ...
-     */
     @PATCH
     Observable<Response<Void>> sendTemplateTasks(@Url String url, @Body JsonObject object);
 
-    /**
-     * Send sub tasks for field started when user used mobile NFC from card on the factory
-     *
-     * @param url    - url which contains activity order reference
-     * @param object - object where we put field activity id
-     */
     @PATCH
     Observable<Response<Void>> sendStartedSubTasks(@Url String url, @Body JsonObject object);
 
     @POST
     Observable<Response<Void>> sendImageToDynamics(@Url String url, @Body JsonObject object);
 
-    /**
-     * Get Template tasks from Kiosk.
-     *
-     * @param url - current url where we can get our tasks
-     */
     @GET
     Single<TaskKioskResponse> getTemplateTasks(@Url String url);
 
@@ -108,4 +89,10 @@ public interface BaseApiService {
 
     @PATCH
     Observable<Response<Void>> updateNomenclatureInServer(@Url String url, @Body JsonObject object);
+
+    @GET("data/PersonCertificates")
+    Single<PersonCertificatesResponse> getPersonCetrificates(@Query("$filter") String partyNumber);
+
+    @GET("data/PersonSkills")
+    Single<PersonSkillsResponse> getPersonSkills(@Query("$filter") String partyNumber);
 }

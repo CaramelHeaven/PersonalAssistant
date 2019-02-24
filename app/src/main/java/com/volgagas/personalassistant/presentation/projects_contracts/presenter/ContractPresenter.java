@@ -5,6 +5,8 @@ import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Contract;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,17 @@ public class ContractPresenter extends BasePresenter<ContractView<Contract>> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        loadContracts();
+
+        disposable.add(RxBus.getInstance().getCommonChannel()
+                .filter(result -> result.equals(Constants.PROJECTS_CONTRACTS))
+                .subscribe(result -> {
+
+                }));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -42,9 +54,5 @@ public class ContractPresenter extends BasePresenter<ContractView<Contract>> {
     @Override
     protected void loadData() {
 
-    }
-
-    private void loadContracts() {
-        getViewState().showContracts(new ArrayList<>());
     }
 }

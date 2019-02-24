@@ -78,12 +78,17 @@ public class Constants {
     public static final String WORKER_RESULT_PRESENTER = "WORKER_RESULT_PRESENTER";
     public static final String WORKER_NOMENCLATURE_PRESENTER = "WORKER_NOMENCLATURE_PRESENTER";
     public static final String WORKER_HISTORY_PRESENTER = "WORKER_HISTORY_PRESENTER";
-    public static final String PROJECTS_UNIFORM_PRESENTER = "PROJECTS_UNIFORM_PRESENTER";
-    public static final String PROJECTS_QUERY_TO_USER_PRESENTER = "PROJECTS_QUERY_TO_USER_PRESENTER";
     public static final String WORKER_HISTORY_COMES_DATA = "WORKER_HISTORY_COMES_DATA";
     public static final String UPDATE_TOKEN_SILENT = "UPDATE_TOKEN_SILENT";
     public static final String QUERY_CREATE_CHOOSE_CATEGORY = "QUERY_CREATE_CHOOSE_CATEGORY";
     public static final String QUERY_CREATE_WHO_IS_THE_RECIPIENT = "QUERY_CREATE_WHO_IS_RECIPIENT";
+    public static final String PROJECTS_SCREEN = "PROJECTS_SCREEN";
+    public static final String ABOUT_USER = "ABOUT_USER";
+
+    //keys for grab data to current screen
+    public static final String PROJECTS_UNIFORM_PRESENTER = "PROJECTS_UNIFORM_PRESENTER";
+    public static final String PROJECTS_QUERY_TO_USER_PRESENTER = "PROJECTS_QUERY_TO_USER_PRESENTER";
+    public static final String PROJECTS_CONTRACTS = "PROJECTS_CONTRACTS";
 
     //People which can test our application
     public static final List<String> ALLOW_PEOPLE_TESTING = new ArrayList<>(Arrays.asList("Бунькин", "Тарновский", "Иванов"));

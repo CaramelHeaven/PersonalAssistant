@@ -87,13 +87,7 @@ public class MainActivity extends BaseActivity implements MainView {
         toolbar = findViewById(R.id.toolbar);
         constraintLayout = findViewById(R.id.constraintLayout);
 
-        Toast.makeText(this, "Версия: " + Constants.APP_CURRENT_VERSION, Toast.LENGTH_SHORT).show();
-
-        fileApk = new File(getFilesDir(), Constants.APK_FILE_NAME);
-
-        Timber.d("FILE APK: " + fileApk.getPath() + " and absolute: " + fileApk.getAbsolutePath());
         setPermissionToEnableNfc(false);
-
         setSupportActionBar(toolbar);
 
         homeSet = new ConstraintSet();

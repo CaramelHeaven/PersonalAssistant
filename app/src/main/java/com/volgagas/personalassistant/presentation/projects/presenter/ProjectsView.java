@@ -1,5 +1,7 @@
 package com.volgagas.personalassistant.presentation.projects.presenter;
 
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.volgagas.personalassistant.presentation.base.BaseView;
 
 /**
@@ -7,4 +9,6 @@ import com.volgagas.personalassistant.presentation.base.BaseView;
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
 public interface ProjectsView extends BaseView {
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void showError(Throwable throwable);
 }

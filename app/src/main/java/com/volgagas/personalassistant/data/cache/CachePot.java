@@ -1,6 +1,9 @@
 package com.volgagas.personalassistant.data.cache;
 
+import com.volgagas.personalassistant.models.model.Contract;
 import com.volgagas.personalassistant.models.model.common.Apk;
+import com.volgagas.personalassistant.models.model.queries.QueryToUser;
+import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
@@ -39,6 +42,11 @@ public class CachePot {
     private List<Nomenclature> createList; // create new nomenclatures
     private List<Nomenclature> updateList; // update nomenclatures
 
+    //cache data inside project screen. Get all data from network, put it here and get onto screens
+    private List<QueryToUser> queryToUserList;
+    private List<UniformRequest> queryFromUserList;
+    private List<Contract> contractList;
+
     public static CachePot getInstance() {
         if (cachePot == null) {
             synchronized (CachePot.class) {
@@ -49,6 +57,30 @@ public class CachePot {
         }
 
         return cachePot;
+    }
+
+    public void setQueryToUserList(List<QueryToUser> queryToUserList) {
+        this.queryToUserList = new ArrayList<>(queryToUserList);
+    }
+
+    public void setQueryFromUserList(List<UniformRequest> queryFromUserList) {
+        this.queryFromUserList = new ArrayList<>(queryFromUserList);
+    }
+
+    public void setContractList(List<Contract> contractList) {
+        this.contractList = new ArrayList<>(contractList);
+    }
+
+    public List<QueryToUser> getQueryToUserList() {
+        return queryToUserList;
+    }
+
+    public List<UniformRequest> getQueryFromUserList() {
+        return queryFromUserList;
+    }
+
+    public List<Contract> getContractList() {
+        return contractList;
     }
 
     public void putTaskHistories(List<TaskHistory> histories) {

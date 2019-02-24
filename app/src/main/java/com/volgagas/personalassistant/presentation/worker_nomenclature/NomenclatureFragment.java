@@ -17,21 +17,20 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.crashlytics.android.Crashlytics;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.worker_choose_action.ChooseActionActivity;
+import com.volgagas.personalassistant.presentation.worker_gpa.GpaActivity;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclaturePresenter;
 import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter.NomenclatureView;
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.NomenclatureBarcodeActivity;
+import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import es.dmoral.toasty.Toasty;
 
 /**
  * Created by CaramelHeaven on 12:40, 16/01/2019.
@@ -99,30 +98,19 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
                 if (adapter.isNomenclaturesCountEqualsNull()) {
                     Toast.makeText(getActivity(), "Нельзя", Toast.LENGTH_SHORT).show();
                 } else {
-                    presenter.createNomenclatures(adapter.getNomenclatureList());
-                    presenter.clearOriginalList(); // clear helper list, because we exit from this screen
-//                    if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
-//
-//                        Toast.makeText(getActivity(), "SENDING", Toast.LENGTH_SHORT).show();
-//                        //getActivity().finish();
-//                    } else if (action.equals(Constants.USUAL)) {
-//                        Intent intent = new Intent(getActivity(), GpaActivity.class);
-//                        CachePot.getInstance().putBarcodeCacheList(new ArrayList<>(adapter.getNomenclatureList()));
-//
-//                        OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(SendNomenclaturesToServerWorker.class)
-//                                .setConstraints(new Constraints.Builder()
-//                                        .setRequiredNetworkType(NetworkType.CONNECTED)
-//                                        .build())
-//                                .setInputData(new Data.Builder()
-//                                        .putString("SERVICE_ORDER_ID", presenter.getTask().getIdTask())
-//                                        .build())
-//                                .build();
-//
-//                        WorkManager.getInstance().enqueue(work);
-//
-//                        Toast.makeText(getActivity(), "SENDING", Toast.LENGTH_SHORT).show();
-//                        //startActivity(intent);
-//                    }
+                    if (adapter.getNomenclatureList().size() > 0) {
+                        presenter.createNomenclatures(adapter.getNomenclatureList());
+                        presenter.clearOriginalList(); // clear helper list, because we exit from this screen
+                        if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
+                            Toast.makeText(getActivity(), "Отправили", Toast.LENGTH_SHORT).show();
+                            getActivity().finish();
+                        } else if (action.equals(Constants.USUAL)) {
+                            Intent intent = new Intent(getActivity(), GpaActivity.class);
+
+                            Toast.makeText(getActivity(), "Отправили", Toast.LENGTH_SHORT).show();
+                            startActivity(intent);
+                        }
+                    }
                 }
             }
         });
@@ -219,16 +207,5 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     public void addedBarcodeNomenclaturesToBaseList(List<Nomenclature> values) {
         adapter.clear();
         adapter.addItems(values);
-    }
-
-    private void startedBackgroundService() {
-//        OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(SendTaskStartedWorker.class)
-//                .build();
-
-        //WorkManager.getInstance().enqueue(work);
-    }
-
-    public void showErrorCard() {
-        Toasty.error(getActivity(), "Приложена не ваша карта").show();
     }
 }

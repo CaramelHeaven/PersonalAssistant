@@ -16,6 +16,8 @@ import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.projects.presenter.ProjectsPresenter;
 import com.volgagas.personalassistant.presentation.projects.presenter.ProjectsView;
+import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import timber.log.Timber;
 
@@ -26,6 +28,10 @@ import timber.log.Timber;
 public class FragmentProjects extends BaseFragment implements ProjectsView {
 
     private PagerProjectsAdapter adapter;
+
+    //two flags for control user scroll inside current view pager
+    private boolean stateSecondFragment = false;
+    private boolean stateThirdFragment = false;
 
     private ViewPager vpContainer;
     private TabLayout tabLayout;
@@ -59,6 +65,13 @@ public class FragmentProjects extends BaseFragment implements ProjectsView {
     }
 
     @Override
+    public void onStop() {
+        stateSecondFragment = !stateSecondFragment;
+        stateThirdFragment = !stateThirdFragment;
+        super.onStop();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         vpContainer = null;
@@ -80,4 +93,8 @@ public class FragmentProjects extends BaseFragment implements ProjectsView {
         Toast.makeText(getActivity(), "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void showError(Throwable throwable) {
+        Toast.makeText(getActivity(), "Ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
 }

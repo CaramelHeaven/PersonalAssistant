@@ -113,17 +113,6 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 helperNomenclatureList.add(data);
             }
         }
-//        Timber.d("updateListNomenclature: " + updatedListNomenclature);
-//        for (Nomenclature data : nomenclatureList) {
-//            if (updatedListNomenclature.contains(data)) {
-
-//                Timber.d("AFTER KEK: " + nom.toString());
-//            } else {
-//                updatedListNomenclature.add(data);
-//            }
-//        }
-
-        Timber.d("AFTER UPDATE LIST: " + helperNomenclatureList);
 
         return Observable.just(helperNomenclatureList);
     }
@@ -215,85 +204,66 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
         Timber.d("create result: " + createResult);
         Timber.d("update result: " + updateResult);
 
+        if (createResult.size() > 0) {
+            CachePot.getInstance().putCreateNomenclatures(createResult);
+            OneTimeWorkRequest createWorker = new OneTimeWorkRequest.Builder(CreateNomenclaturesWorker.class)
+                    .setConstraints(new Constraints.Builder()
+                            .setRequiredNetworkType(NetworkType.CONNECTED)
+                            .build())
+                    .setInputData(new Data.Builder()
+                            .putString("SERVICE_ORDER_ID", task.getIdTask())
+                            .putString("PROJ_CATEGORY_ID", task.getProjCategoryId())
+                            .build())
+                    .build();
+
+            WorkManager.getInstance()
+                    .enqueue(createWorker);
+        }
+        if (updateResult.size() > 0) {
+            CachePot.getInstance().putUpdateNomenclatures(updateResult);
+            OneTimeWorkRequest updateWorker = new OneTimeWorkRequest.Builder(UpdateNomenclaturesWorker.class)
+                    .setConstraints(new Constraints.Builder()
+                            .setRequiredNetworkType(NetworkType.CONNECTED)
+                            .build())
+                    .setInputData(new Data.Builder()
+                            .putString("SERVICE_ORDER_ID", task.getIdTask())
+                            .build())
+                    .build();
+
+            WorkManager.getInstance()
+                    .enqueue(updateWorker);
+        }
+
 //        if (createResult.size() > 0) {
-//            CachePot.getInstance().putCreateNomenclatures(createResult);
-//            //todo run create worker
-//            OneTimeWorkRequest createWorker = new OneTimeWorkRequest.Builder(CreateNomenclaturesWorker.class)
-//                    .setConstraints(new Constraints.Builder()
-//                            .setRequiredNetworkType(NetworkType.CONNECTED)
-//                            .build())
-//                    .setInputData(new Data.Builder()
-//                            .putString("SERVICE_ORDER_ID", task.getIdTask())
-//                            .putString("PROJ_CATEGORY_ID", task.getProjCategoryId())
-//                            .build())
-//                    .build();
-//
-//            WorkManager.getInstance()
-//                    .enqueue(createWorker);
+//            Single.just(createResult)
+//                    .subscribeOn(Schedulers.io())
+//                    .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
+//                    .flatMap((Function<Nomenclature, ObservableSource<Response<Void>>>) data -> repository
+//                            .attachNomenclatureToServiceOrder(mappingToJson(data, task.getIdTask())))
+//                    .toList()
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(kek -> {
+//                        Timber.d("result: " + kek);
+//                    }, throwable -> {
+//                        Timber.d("ALALAL: " + throwable.getMessage());
+//                        Timber.d("ALALAL: " + throwable.getCause());
+//                    });
+//        } else if (updateResult.size() > 0) {
+//            Single.just(updateResult)
+//                    .subscribeOn(Schedulers.io())
+//                    .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
+//                    .flatMap((Function<Nomenclature, ObservableSource<?>>) nomenclature ->
+//                            repository.updateNomenclatureInServer(task.getIdTask(), nomenclature.getServiceOrderLineNum(),
+//                                    mappingToJson(nomenclature.getCount())))
+//                    .toList()
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(kek -> {
+//                        Timber.d("result: " + kek);
+//                    }, throwable -> {
+//                        Timber.d("ALALAL: " + throwable.getMessage());
+//                        Timber.d("ALALAL: " + throwable.getCause());
+//                    });
 //        }
-//        if (updateResult.size() > 0) {
-//            CachePot.getInstance().putUpdateNomenclatures(updateResult);
-//            //todo run update worker
-//            OneTimeWorkRequest updateWorker = new OneTimeWorkRequest.Builder(UpdateNomenclaturesWorker.class)
-//                    .setConstraints(new Constraints.Builder()
-//                            .setRequiredNetworkType(NetworkType.CONNECTED)
-//                            .build())
-//                    .setInputData(new Data.Builder()
-//                            .putString("SERVICE_ORDER_ID", task.getIdTask())
-//                            .putString("PROJ_CATEGORY_ID", task.getProjCategoryId())
-//                            .build())
-//                    .build();
-//
-//            WorkManager.getInstance()
-//                    .enqueue(updateWorker);
-//        }
-
-        Single.just(createResult)
-                .subscribeOn(Schedulers.io())
-                .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
-                .flatMap((Function<Nomenclature, ObservableSource<Response<Void>>>) data -> repository
-                        .attachNomenclatureToServiceOrder(mappingToJson(data, task.getIdTask())))
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(kek -> {
-                    Timber.d("result: " + kek);
-                }, throwable -> {
-                    Timber.d("ALALAL: " + throwable.getMessage());
-                    Timber.d("ALALAL: " + throwable.getCause());
-                });
-    }
-
-    private JsonObject mappingToJson(Nomenclature nomenclature, String serviceOrderId) {
-        JsonObject object = new JsonObject();
-
-        Timber.d("serviceOrderId: " + serviceOrderId);
-        Timber.d("getProjCategory: " + task.getProjCategoryId());
-        object.add("ServiceOrderId", new JsonPrimitive(serviceOrderId));
-        object.add("ProjCategoryId", new JsonPrimitive("Электрики_ТМЦ"));
-        object.add("Qty", new JsonPrimitive(nomenclature.getCount()));
-        object.add("dataAreaId", new JsonPrimitive("gns"));
-        object.add("Unit", new JsonPrimitive(nomenclature.getUnit()));
-        object.add("ItemId", new JsonPrimitive(nomenclature.getName()));
-        object.add("DateRangeTo", new JsonPrimitive("2019-03-03T00:00:00Z"));
-        object.add("DateRangeFrom", new JsonPrimitive("2019-03-03T00:00:00Z"));
-        object.add("ProjLinePropertyId", new JsonPrimitive("Расход"));
-        object.add("TransactionType", new JsonPrimitive(2));
-        object.add("TransactionSubType", new JsonPrimitive(2));
-//        {
-//            "ServiceOrderId": "ЗНСО029691",
-//                "ProjCategoryId": "Электрики_ТМЦ",
-//                "Qty": 3,
-//                "dataAreaId": "gns",
-//                "ProjLinePropertyId": "Расход",
-//                "TransactionSubType": "Consumption",
-//                "DateRangeTo": "2019-03-03T00:00:00Z",
-//                "TransactionType": "Item",
-//                "Unit": "кг",
-//                "DateRangeFrom": "2019-03-03T00:00:00Z",
-//                "ItemId": "Трилон Б"
-//        }
-
-        return object;
     }
 
     public void setHelperNomenclatureList(List<Nomenclature> helperNomenclatureList) {

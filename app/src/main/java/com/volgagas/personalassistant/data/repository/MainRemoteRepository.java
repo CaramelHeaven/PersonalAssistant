@@ -7,6 +7,9 @@ import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.mapper.common.ApkResponseToApk;
 import com.volgagas.personalassistant.models.mapper.common.CommonMapper;
+import com.volgagas.personalassistant.models.mapper.info.InfoMapper;
+import com.volgagas.personalassistant.models.mapper.info.PersonCertificatesResponseToPersonCertificates;
+import com.volgagas.personalassistant.models.mapper.info.PersonSkillsResponseToPersonSkills;
 import com.volgagas.personalassistant.models.mapper.kiosk.TaskKioskResponseToTaskTemplate;
 import com.volgagas.personalassistant.models.mapper.query_template.QueriesTemplateResponseToQueryTemplate;
 import com.volgagas.personalassistant.models.mapper.query_template.QueryTemplateMapper;
@@ -26,12 +29,15 @@ import com.volgagas.personalassistant.models.mapper.worker.SubTaskResponseToSubT
 import com.volgagas.personalassistant.models.mapper.worker.TaskMapper;
 import com.volgagas.personalassistant.models.mapper.worker.TaskResponseToTask;
 import com.volgagas.personalassistant.models.mapper.worker.TaskResponseToTaskHistory;
+import com.volgagas.personalassistant.models.model.Contract;
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.models.model.common.Apk;
 import com.volgagas.personalassistant.models.model.info.Info;
+import com.volgagas.personalassistant.models.model.info.PersonCertificates;
+import com.volgagas.personalassistant.models.model.info.PersonSkills;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.models.model.order_purchase.Order;
@@ -69,6 +75,7 @@ public class MainRemoteRepository implements MainRepository {
     private static QueryTemplateMapper queryMapper;
     private static UniformRequestMapper uniformRequestMapper;
     private static CommonMapper commonMapper;
+    private static InfoMapper infoMapper;
 
     private MainRemoteRepository() {
         if (INSTANCE != null) {
@@ -104,6 +111,10 @@ public class MainRemoteRepository implements MainRepository {
                             new NomenclatureHostRespToNomenclatureHost();
                     BarcodeResponseToBarcode barcodeResponseToBarcode = new BarcodeResponseToBarcode();
                     ApkResponseToApk apkResponseToApk = new ApkResponseToApk();
+                    PersonSkillsResponseToPersonSkills personSkillsResponseToPersonSkills =
+                            new PersonSkillsResponseToPersonSkills();
+                    PersonCertificatesResponseToPersonCertificates personCertificatesResponseToPersonCertificates =
+                            new PersonCertificatesResponseToPersonCertificates();
 
                     //Initial mappers
                     taskMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
@@ -117,6 +128,9 @@ public class MainRemoteRepository implements MainRepository {
                             new UniformRequestMapper(queryResponseToUniformRequest, queryToUserResponseToQueryToUser);
                     queryMapper = new QueryTemplateMapper(queriesTemplateResponseToQueryTemplate);
                     commonMapper = new CommonMapper(apkResponseToApk);
+                    infoMapper = new InfoMapper(personCertificatesResponseToPersonCertificates,
+                            personSkillsResponseToPersonSkills
+                    );
 
                     INSTANCE = new MainRemoteRepository();
                 }
@@ -353,11 +367,6 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public Single<List<Object>> getUserSkillsFromDynamics() {
-        return null;
-    }
-
-    @Override
     public Single<Barcode> getBarcodeInfoFromServer(String barcodeNumbers) {
         String url = Constants.DYNAMICS_365 + "/data/ItemsBarcode(dataAreaId='gns',itemBarCode='" +
                 barcodeNumbers + "')";
@@ -392,11 +401,33 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public Observable<Response<Void>> updateNomenclatureInServer(JsonObject object) {
+    public Observable<Response<Void>> updateNomenclatureInServer(String serviceOrderId, int serviceOrderLineNum,
+                                                                 JsonObject object) {
         String url = "https://volgagas-testdevaos.sandbox.ax.dynamics.com/data/SOLinesEntity(dataAreaId='gns', " +
-                "ServiceOrderId = '%D0%97%D0%9D%D0%A1%D0%9E029691', ServiceOrderLineNum = 5)";
+                "ServiceOrderId='" + serviceOrderId + "',ServiceOrderLineNum=" + serviceOrderLineNum + ")";
 
         return PersonalAssistant.getBaseApiService().updateNomenclatureInServer(url, object);
+    }
+
+    @Override
+    public Single<List<Contract>> getContractsForUser() {
+        return Single.just(new ArrayList<>());
+    }
+
+    @Override
+    public Single<List<PersonCertificates>> getPersonCertificates(String personD365Id) {
+        String filter = "PartyNumber eq '" + personD365Id + "'";
+
+        return PersonalAssistant.getBaseApiService().getPersonCetrificates(filter)
+                .map(infoMapper::map);
+    }
+
+    @Override
+    public Single<List<PersonSkills>> getPersonSkills(String personD365Id) {
+        String filter = "PartyNumber eq '" + personD365Id + "'";
+
+        return PersonalAssistant.getBaseApiService().getPersonSkills(filter)
+                .map(infoMapper::map);
     }
 
     private Info fillInfo() {

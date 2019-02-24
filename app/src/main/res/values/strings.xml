@@ -9,5 +9,5 @@
     <string name="key_http_dynamics365">key_http_dynamics365</string>
     <string name="key_enable_all_functions">enable_all_functions</string>
     <string name="volgagas_description">«Волга Газ» - независимая компания по разведке и добыче нефти и газа, работающая в Поволжье России.</string>
-    <string name="currentVersionApp">0.1.3.3</string>
+    <string name="currentVersionApp">0.1.5</string>
 </resources>

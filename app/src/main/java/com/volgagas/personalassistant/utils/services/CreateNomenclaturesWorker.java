@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.volgagas.personalassistant.data.cache.CachePot;
@@ -48,27 +49,36 @@ public class CreateNomenclaturesWorker extends RxWorker {
         return Single.just(nomenclatureList)
                 .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
                 .flatMap((Function<Nomenclature, ObservableSource<Response<Void>>>) data -> repository
-                        .attachNomenclatureToServiceOrder(mappingToJson(data, serviceOrderId)))
+                        .attachNomenclatureToServiceOrder(mappingToJson(data, serviceOrderId, projCategoryId)))
                 .toList()
                 .map(responses -> Result.success())
                 .doOnError(throwable -> {
                     Timber.d("THROWABLE: " + throwable.getMessage());
+                    Crashlytics.logException(throwable);
                     Result.retry();
                 });
     }
 
-    private JsonObject mappingToJson(Nomenclature nomenclature, String serviceOrderId) {
+    private JsonObject mappingToJson(Nomenclature nomenclature, String serviceOrderId, String projCategory) {
         JsonObject object = new JsonObject();
 
-        object.add("ServiceOrderId", new JsonPrimitive(serviceOrderId));
-        object.add("ProjectCategoryId", new JsonPrimitive("Электрики_ТМЦ"));
-        object.add("Qty", new JsonPrimitive(nomenclature.getCount()));
         object.add("dataAreaId", new JsonPrimitive("gns"));
+        object.add("ServiceOrderId", new JsonPrimitive(serviceOrderId));
         object.add("ItemId", new JsonPrimitive(nomenclature.getName()));
-        object.add("DataRangeTo", new JsonPrimitive("2018-01-01T00:00:00Z"));
-        object.add("DataRangeFrom", new JsonPrimitive("2018-01-01T04:03:00Z"));
-
-        Timber.d("CHECK JSON: " + object.toString());
+        object.add("InventDimId", new JsonPrimitive("GNS-000627"));
+        object.add("ProjLinePropertyId", new JsonPrimitive("Расход"));
+        object.add("ProjCategoryId", new JsonPrimitive(projCategory + "_ТМЦ"));
+        object.add("DateRangeFrom", new JsonPrimitive("2019-02-22T12:00:00Z"));
+        object.add("Qty", new JsonPrimitive(nomenclature.getCount()));
+        object.add("DefaultDimension", new JsonPrimitive(Long.parseLong("5637144586")));//still here
+        object.add("TransactionSubType", new JsonPrimitive("Consumption"));
+        object.add("DateExecution", new JsonPrimitive("2019-02-22T12:00:00Z"));
+        object.add("ProjCurrencyCode", new JsonPrimitive("RUB"));
+        object.add("TransactionType", new JsonPrimitive("Item"));
+        object.add("DateRangeTo", new JsonPrimitive("2019-02-22T12:00:00Z"));
+        object.add("ServiceTaskId", new JsonPrimitive("БудОстанов"));
+        object.add("Worker", new JsonPrimitive(Long.parseLong("5637144586")));
+        object.add("Unit", new JsonPrimitive(nomenclature.getUnit()));
 
         return object;
     }

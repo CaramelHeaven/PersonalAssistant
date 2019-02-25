@@ -5,6 +5,7 @@ import com.volgagas.personalassistant.models.network.BarcodeResponse;
 import com.volgagas.personalassistant.models.network.NomenclatureHostResponse;
 import com.volgagas.personalassistant.models.network.NomenclatureResponse;
 import com.volgagas.personalassistant.models.network.PersonCertificatesResponse;
+import com.volgagas.personalassistant.models.network.PersonDataResponse;
 import com.volgagas.personalassistant.models.network.PersonSkillsResponse;
 import com.volgagas.personalassistant.models.network.SubTaskResponse;
 import com.volgagas.personalassistant.models.network.TaskKioskResponse;
@@ -95,4 +96,7 @@ public interface BaseApiService {
 
     @GET("data/PersonSkills")
     Single<PersonSkillsResponse> getPersonSkills(@Query("$filter") String partyNumber);
+
+    @GET("data/Workers")
+    Single<PersonDataResponse> getPersonData(@Query("$filter") String partyNumber);
 }

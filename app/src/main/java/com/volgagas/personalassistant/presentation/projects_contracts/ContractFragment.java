@@ -57,6 +57,7 @@ public class ContractFragment extends BaseFragment implements ContractView<Contr
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        progressBar = view.findViewById(R.id.progressBar);
         recyclerView = view.findViewById(R.id.recyclerView);
         tvEmptyContracts = view.findViewById(R.id.tv_empty_tasks);
         ivEmptyContracts = view.findViewById(R.id.iv_empty_tasks);

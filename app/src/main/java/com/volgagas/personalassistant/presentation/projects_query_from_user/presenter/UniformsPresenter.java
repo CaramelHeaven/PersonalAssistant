@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.presentation.projects_query_from_user.pre
 
 import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.PersonalAssistant;
+import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
@@ -28,8 +29,7 @@ public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRe
     public UniformsPresenter() {
         repository = MainRemoteRepository.getInstance();
 
-        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
-                .subscribeOn(Schedulers.io())
+        disposable.add(RxBus.getInstance().getCommonChannel()
                 .filter(result -> result.equals(Constants.PROJECTS_UNIFORM_PRESENTER))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> loadData()));
@@ -38,8 +38,8 @@ public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRe
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+
         getViewState().showProgress();
-        loadData();
     }
 
     @Override
@@ -48,6 +48,7 @@ public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRe
     }
 
     private void result(List<UniformRequest> requests) {
+        Timber.d("hide progress");
         getViewState().hideProgress();
         getViewState().showItems(requests);
     }
@@ -68,9 +69,9 @@ public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRe
 
     @Override
     protected void loadData() {
-        disposable.add(repository.getUniformRequestsFromUser()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::result, this::handlerErrorsFromBadRequests));
+        Timber.d("LALA: ");
+        if (CachePot.getInstance().getQueryFromUserList() != null) {
+            result(CachePot.getInstance().getQueryFromUserList());
+        }
     }
 }

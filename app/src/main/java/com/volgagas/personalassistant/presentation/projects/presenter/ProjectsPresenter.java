@@ -16,6 +16,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 11:45, 16.11.2018.
@@ -45,13 +46,11 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     }
 
     private void successfulResult(QueriesCommon queriesCommon) {
-        CachePot.getInstance().setContractList(queriesCommon.getContractList());
         CachePot.getInstance().setQueryFromUserList(queriesCommon.getQueryFromUserList());
         CachePot.getInstance().setQueryToUserList(queriesCommon.getQueryToUserList());
 
         RxBus.getInstance().passDataToCommonChannel(Constants.PROJECTS_QUERY_TO_USER_PRESENTER);
         RxBus.getInstance().passDataToCommonChannel(Constants.PROJECTS_UNIFORM_PRESENTER);
-        RxBus.getInstance().passDataToCommonChannel(Constants.PROJECTS_CONTRACTS);
     }
 
     @Override
@@ -78,10 +77,8 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     protected void loadData() {
         disposable.add(Single.zip(repository.getUniformRequestsToUser(),
                 repository.getUniformRequestsFromUser(),
-                repository.getContractsForUser(),
-                (queryToUsers, uniformRequests, contracts) -> {
+                (queryToUsers, uniformRequests) -> {
                     QueriesCommon queriesCommon = new QueriesCommon();
-                    queriesCommon.setContractList(contracts);
                     queriesCommon.setQueryFromUserList(uniformRequests);
                     queriesCommon.setQueryToUserList(queryToUsers);
 

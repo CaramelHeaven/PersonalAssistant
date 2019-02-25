@@ -94,15 +94,12 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
         Timber.d("NON CHECK: " + helperNomenclatureList.toString());
         //mapping barcode to nomenclature
         for (Barcode barcode : barcodeList) {
-            Timber.d("barcode TEST: " + barcode.toString());
             Nomenclature nomenclature = new
                     Nomenclature(barcode.getBarcodeName(), barcode.getCount(), barcode.getUnit());
             nomenclature.setItemBarCode(barcode.getItemBarCode());
 
             nomenclatureList.add(nomenclature);
         }
-
-        Timber.d("nomenclatures: " + nomenclatureList);
 
         //add nomenclature to common updated list or increase count if it exist
         for (Nomenclature data : nomenclatureList) {
@@ -122,7 +119,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
             RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_NOMENCLATURE_PRESENTER);
         } else {
-            Timber.d("THROWABLE: " + throwable.getMessage());
+            sendCrashlytics(throwable);
         }
     }
 
@@ -200,9 +197,6 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 createResult.add(ourData);
             }
         }
-
-        Timber.d("create result: " + createResult);
-        Timber.d("update result: " + updateResult);
 
         if (createResult.size() > 0) {
             CachePot.getInstance().putCreateNomenclatures(createResult);

@@ -12,6 +12,8 @@ import com.volgagas.personalassistant.models.model.worker.SubTask;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 12:55, 31/01/2019.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
@@ -36,6 +38,7 @@ public class ResultDFAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ResultVH resultVH = (ResultVH) viewHolder;
 
         resultVH.tvDescription.setText(subTaskList.get(i).getDescription());
+        resultVH.tvName.setText(subTaskList.get(i).getWorker());
     }
 
     @Override
@@ -44,11 +47,12 @@ public class ResultDFAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     class ResultVH extends RecyclerView.ViewHolder {
-        TextView tvDescription;
+        TextView tvDescription, tvName;
 
         public ResultVH(@NonNull View itemView) {
             super(itemView);
             tvDescription = itemView.findViewById(R.id.tv_description);
+            tvName = itemView.findViewById(R.id.tv_worker_name);
         }
     }
 }

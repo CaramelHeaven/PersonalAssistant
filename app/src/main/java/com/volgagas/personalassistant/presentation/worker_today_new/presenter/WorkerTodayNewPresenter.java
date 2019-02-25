@@ -42,8 +42,6 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
                 .filter(result -> result.equals(Constants.WORKER_TODAY_NEW_PRESENTER))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> commonLoadTasksTodayAndHistory()));
-
-        PersonalAssistant.provideDynamics365Auth("asd", "");
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.volgagas.personalassistant.presentation.main;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -166,6 +168,9 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     protected void onDestroy() {
+        NotificationManager notificationManager = (NotificationManager)
+                this.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(Constants.APP_NOTIFICATION_UPDATE_APP);
         super.onDestroy();
     }
 

@@ -113,6 +113,7 @@ public class ResultPresenter extends BasePresenter<ResultView> {
         completedJson.add("PhaseId", new JsonPrimitive("Завершено"));
         canceledJson.add("ActivityState", new JsonPrimitive("Completed"));
         canceledJson.add("PhaseId", new JsonPrimitive("Отменено"));
+        stoppedJson.add("ActivityState", new JsonPrimitive(""));
         stoppedJson.add("PhaseId", new JsonPrimitive("ВРаботе"));
 
         disposable.add(Single.just(chosenSubTasks)

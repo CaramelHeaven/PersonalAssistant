@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.presentation.projects_query_to_user.prese
 
 import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.PersonalAssistant;
+import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.queries.QueryToUser;
@@ -9,6 +10,7 @@ import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -28,8 +30,7 @@ public class QueryToUserPresenter extends BasePresenter<QueryToUserView<QueryToU
     public QueryToUserPresenter() {
         repository = MainRemoteRepository.getInstance();
 
-        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
-                .subscribeOn(Schedulers.io())
+        disposable.add(RxBus.getInstance().getCommonChannel()
                 .filter(result -> result.equals(Constants.PROJECTS_QUERY_TO_USER_PRESENTER))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> loadData()));
@@ -39,15 +40,10 @@ public class QueryToUserPresenter extends BasePresenter<QueryToUserView<QueryToU
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         getViewState().showProgress();
-
-        disposable.add(repository.getUniformRequestsToUser()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::interactionResult, this::handlerErrorsFromBadRequests));
     }
 
     private void interactionResult(List<QueryToUser> result) {
-        Timber.d("checkign result : " + result.toString());
+        Timber.d("HIDE PROGRESS");
         getViewState().hideProgress();
         getViewState().showItems(result);
     }
@@ -69,6 +65,9 @@ public class QueryToUserPresenter extends BasePresenter<QueryToUserView<QueryToU
 
     @Override
     protected void loadData() {
-
+        Timber.d("LALA: ");
+        if (CachePot.getInstance().getQueryToUserList() != null) {
+            interactionResult(CachePot.getInstance().getQueryToUserList());
+        }
     }
 }

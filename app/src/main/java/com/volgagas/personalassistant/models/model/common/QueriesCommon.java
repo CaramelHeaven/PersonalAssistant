@@ -13,14 +13,12 @@ import java.util.List;
 public class QueriesCommon {
     private List<QueryToUser> queryToUserList;
     private List<UniformRequest> queryFromUserList;
-    private List<Contract> contractList;
 
     @Override
     public String toString() {
         return "QueriesCommon{" +
                 "queryToUserList=" + queryToUserList +
                 ", queryFromUserList=" + queryFromUserList +
-                ", contractList=" + contractList +
                 '}';
     }
 
@@ -38,13 +36,5 @@ public class QueriesCommon {
 
     public void setQueryFromUserList(List<UniformRequest> queryFromUserList) {
         this.queryFromUserList = queryFromUserList;
-    }
-
-    public List<Contract> getContractList() {
-        return contractList;
-    }
-
-    public void setContractList(List<Contract> contractList) {
-        this.contractList = contractList;
     }
 }

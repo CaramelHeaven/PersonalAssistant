@@ -45,7 +45,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:layout_toEndOf="@id/iv_square"
-        android:text="Fominov Sergey Mikhailovich"
+        android:text="Пользователь"
         android:textColor="@android:color/black" />
 
     <View

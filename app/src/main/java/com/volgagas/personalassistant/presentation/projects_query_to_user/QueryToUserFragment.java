@@ -24,6 +24,8 @@ import com.volgagas.personalassistant.presentation.projects_query_to_user.presen
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 10:25, 24/12/2018.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
@@ -99,6 +101,7 @@ public class QueryToUserFragment extends BaseFragment implements QueryToUserView
 
     @Override
     public void showItems(List items) {
+        Timber.d("show items");
         if (items.size() > 0) {
             adapter.updateAdapter(items);
         } else {

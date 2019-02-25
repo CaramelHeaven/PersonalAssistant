@@ -45,7 +45,6 @@ public class CachePot {
     //cache data inside project screen. Get all data from network, put it here and get onto screens
     private List<QueryToUser> queryToUserList;
     private List<UniformRequest> queryFromUserList;
-    private List<Contract> contractList;
 
     public static CachePot getInstance() {
         if (cachePot == null) {
@@ -67,20 +66,12 @@ public class CachePot {
         this.queryFromUserList = new ArrayList<>(queryFromUserList);
     }
 
-    public void setContractList(List<Contract> contractList) {
-        this.contractList = new ArrayList<>(contractList);
-    }
-
     public List<QueryToUser> getQueryToUserList() {
         return queryToUserList;
     }
 
     public List<UniformRequest> getQueryFromUserList() {
         return queryFromUserList;
-    }
-
-    public List<Contract> getContractList() {
-        return contractList;
     }
 
     public void putTaskHistories(List<TaskHistory> histories) {

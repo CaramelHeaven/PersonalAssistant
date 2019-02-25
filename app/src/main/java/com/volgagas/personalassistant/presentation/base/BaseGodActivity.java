@@ -54,7 +54,7 @@ import timber.log.Timber;
  * Created by CaramelHeaven on 11:04, 22/01/2019.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  * <p>
- * GodActivity for handler token if it dead
+ * GodActivity for handler token if it dead. And checking auto-update apk
  */
 public abstract class BaseGodActivity extends MvpAppCompatActivity {
 
@@ -64,6 +64,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     private String dynamicsCurrentHttp;
     private String sharePointCache;
     private BroadcastManager broadcastManager;
+    private IntentFilter filter;
 
     private SharedPreferences sharedPreferences;
 
@@ -83,6 +84,10 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
         }
 
         broadcastManager = new BroadcastManager();
+
+        filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_UPDATE_APK);
+        filter.addAction(Constants.ACTION_NOT_UPDATE_APK);
     }
 
     @Override
@@ -128,10 +133,6 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Constants.ACTION_UPDATE_APK);
-        filter.addAction(Constants.ACTION_NOT_UPDATE_APK);
 
         registerReceiver(broadcastManager, filter);
     }

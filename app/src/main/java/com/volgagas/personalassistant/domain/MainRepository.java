@@ -8,6 +8,7 @@ import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.models.model.common.Apk;
 import com.volgagas.personalassistant.models.model.info.PersonCertificates;
+import com.volgagas.personalassistant.models.model.info.PersonData;
 import com.volgagas.personalassistant.models.model.info.PersonSkills;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
@@ -194,11 +195,12 @@ public interface MainRepository {
     Single<List<Nomenclature>> getNomenclaturesBySO(String soId);
 
     /**
-     * Get all information about user from D365. Salary, vacation, etc.
+     * Get information about user from D365.
      *
+     * @param personD365Id - id d365
      * @return data of user information
      */
-    Single<List<Object>> getInfoAboutUserFromDynamics();
+    Single<PersonData> getInfoAboutUserFromDynamics(String personD365Id);
 
     /**
      * @param barcodeNumbers - scanned string data from NomenclatureBarcodeActivity

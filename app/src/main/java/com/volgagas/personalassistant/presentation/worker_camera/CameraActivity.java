@@ -57,6 +57,7 @@ public class CameraActivity extends AppCompatActivity {
 
     private boolean hasCameraPermission;
     private boolean activeCameraBack = true;
+    private boolean makedPicture = false;
     private PhotoResult photoResult;
     private String filePath;
     private int positionData;
@@ -96,6 +97,7 @@ public class CameraActivity extends AppCompatActivity {
         fotoapparat.switchTo(activeCameraBack ? back() : front(), cameraConfiguration);
 
         capture.setOnClickListener(view -> {
+            makedPicture = true;
             photoResult = fotoapparat.takePicture();
 
             MediaActionSound sound = new MediaActionSound();
@@ -119,6 +121,7 @@ public class CameraActivity extends AppCompatActivity {
         });
 
         btnRemove.setOnClickListener(v -> {
+            Toast.makeText(this, "remove", Toast.LENGTH_SHORT).show();
             if (imageResult.getVisibility() == View.VISIBLE) {
                 Timber.d("remove");
                 imageResult.setVisibility(View.GONE);
@@ -130,16 +133,18 @@ public class CameraActivity extends AppCompatActivity {
         });
 
         btnSave.setOnClickListener(v -> {
-            if (imageResult.getVisibility() == View.VISIBLE) {
+            if (makedPicture) {
+                Toast.makeText(this, "Click save", Toast.LENGTH_SHORT).show();
                 File file = new File(getCacheDir(), UtilsDateTimeProvider.folderNameTimeFormat());
 
                 photoResult.saveToFile(file);
                 filePath = file.getPath();
-                Timber.d("check file path: " + filePath);
 
                 Toast.makeText(this, "Сохранено", Toast.LENGTH_SHORT).show();
 
                 onBackPressed();
+            } else {
+                Toast.makeText(this, "Не снято", Toast.LENGTH_SHORT).show();
             }
         });
     }

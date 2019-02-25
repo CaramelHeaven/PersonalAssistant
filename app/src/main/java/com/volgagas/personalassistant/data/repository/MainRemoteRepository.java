@@ -9,6 +9,7 @@ import com.volgagas.personalassistant.models.mapper.common.ApkResponseToApk;
 import com.volgagas.personalassistant.models.mapper.common.CommonMapper;
 import com.volgagas.personalassistant.models.mapper.info.InfoMapper;
 import com.volgagas.personalassistant.models.mapper.info.PersonCertificatesResponseToPersonCertificates;
+import com.volgagas.personalassistant.models.mapper.info.PersonDataResponseToPersonData;
 import com.volgagas.personalassistant.models.mapper.info.PersonSkillsResponseToPersonSkills;
 import com.volgagas.personalassistant.models.mapper.kiosk.TaskKioskResponseToTaskTemplate;
 import com.volgagas.personalassistant.models.mapper.query_template.QueriesTemplateResponseToQueryTemplate;
@@ -37,6 +38,7 @@ import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.models.model.common.Apk;
 import com.volgagas.personalassistant.models.model.info.Info;
 import com.volgagas.personalassistant.models.model.info.PersonCertificates;
+import com.volgagas.personalassistant.models.model.info.PersonData;
 import com.volgagas.personalassistant.models.model.info.PersonSkills;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
@@ -115,6 +117,8 @@ public class MainRemoteRepository implements MainRepository {
                             new PersonSkillsResponseToPersonSkills();
                     PersonCertificatesResponseToPersonCertificates personCertificatesResponseToPersonCertificates =
                             new PersonCertificatesResponseToPersonCertificates();
+                    PersonDataResponseToPersonData personDataResponseToPersonData =
+                            new PersonDataResponseToPersonData();
 
                     //Initial mappers
                     taskMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
@@ -129,8 +133,7 @@ public class MainRemoteRepository implements MainRepository {
                     queryMapper = new QueryTemplateMapper(queriesTemplateResponseToQueryTemplate);
                     commonMapper = new CommonMapper(apkResponseToApk);
                     infoMapper = new InfoMapper(personCertificatesResponseToPersonCertificates,
-                            personSkillsResponseToPersonSkills
-                    );
+                            personSkillsResponseToPersonSkills, personDataResponseToPersonData);
 
                     INSTANCE = new MainRemoteRepository();
                 }
@@ -359,11 +362,11 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public Single<List<Object>> getInfoAboutUserFromDynamics() {
-        List<Object> objects = new ArrayList<>();
-        objects.add(fillInfo());
+    public Single<PersonData> getInfoAboutUserFromDynamics(String personD365Id) {
+        String filter = "PartyNumber eq '" + personD365Id + "'";
 
-        return Single.just(objects);
+        return PersonalAssistant.getBaseApiService().getPersonData(filter)
+                .map(infoMapper::map);
     }
 
     @Override

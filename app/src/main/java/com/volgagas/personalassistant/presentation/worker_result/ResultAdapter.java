@@ -68,10 +68,9 @@ public class ResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             subTaskVH.fabCamera.setVisibility(View.GONE);
             subTaskVH.btnCancel.setVisibility(View.VISIBLE);
-
         } else {
             Glide.with(subTaskVH.ivImage.getContext())
-                    .clear(subTaskVH.itemView);
+                    .clear(subTaskVH.ivImage);
 
             subTaskVH.fabCamera.setVisibility(View.VISIBLE);
             subTaskVH.btnCancel.setVisibility(View.GONE);
@@ -99,7 +98,9 @@ public class ResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void clearPicture(int position) {
+        Timber.d("checking path file: " + subTaskList.get(position).getFilePath());
         subTaskList.get(position).setFilePath("");
+        Timber.d("file after: " + subTaskList.get(position).getFilePath());
 
         notifyItemChanged(position);
     }

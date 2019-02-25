@@ -1,7 +1,7 @@
 package com.volgagas.personalassistant.presentation.about_user.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
+import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
@@ -53,13 +53,15 @@ public class InfoPresenter extends BasePresenter<InfoView> {
 
     @Override
     protected void loadData() {
-        disposable.add(repository.getInfoAboutUserFromDynamics()
+        disposable.add(repository.getInfoAboutUserFromDynamics(CacheUser.getUser().getPersonalDynamics365Number())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> getViewState().showData(result)));
+                .subscribe(result -> {
+
+                }));
     }
 
     private class InfoCommon {
-        
+
     }
 }

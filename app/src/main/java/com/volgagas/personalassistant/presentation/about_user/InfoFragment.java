@@ -3,7 +3,6 @@ package com.volgagas.personalassistant.presentation.about_user;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,15 +13,12 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.info.Info;
 import com.volgagas.personalassistant.presentation.about_user.presenter.InfoPresenter;
 import com.volgagas.personalassistant.presentation.about_user.presenter.InfoView;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.work.impl.model.SystemIdInfoDao;
 
 /**
  * Copyright (c) 2018 VolgaGas. All rights reserved.

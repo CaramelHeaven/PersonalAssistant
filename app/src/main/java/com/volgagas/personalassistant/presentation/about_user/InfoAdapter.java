@@ -8,9 +8,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
-import com.volgagas.personalassistant.models.model.info.Info;
+import com.volgagas.personalassistant.models.model.info.PersonData;
+import com.volgagas.personalassistant.models.model.info.PersonSalary;
+import com.volgagas.personalassistant.models.model.info.PersonSkills;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 14:24, 07/02/2019.
@@ -21,7 +25,8 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Object> objectList;
 
     private final int TYPE_INFO = -1;
-    private final int TYPE_CAKE = -2;
+    private final int TYPE_DATA = -2;
+    private final int TYPE_SKILLS = -3;
     private final int TYPE_USUALLY = 0;
 
     public InfoAdapter(List<Object> objectList) {
@@ -33,11 +38,17 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         switch (i) {
             case TYPE_INFO:
-                View view = LayoutInflater.from(viewGroup.getContext())
+                View info = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.item_info_salary_and_vacation, viewGroup, false);
-                return new SalaryVacationVH(view);
+                return new SalaryVacationVH(info);
+            case TYPE_DATA:
+                View data = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.item_info_data, viewGroup, false);
+                return new DataVH(data);
             case TYPE_USUALLY:
-
+                View skills = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.item_info_skills, viewGroup, false);
+                return new SkillsVH(skills);
             default:
                 return null;
         }
@@ -48,13 +59,20 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         switch (getItemViewType(position)) {
             case TYPE_INFO:
                 SalaryVacationVH salaryVacationVH = (SalaryVacationVH) viewHolder;
-                if (objectList.get(position) instanceof Info) {
+                if (objectList.get(position) instanceof PersonSalary) {
                     salaryVacationVH.tvSalary
-                            .setText(((Info) objectList.get(position)).getSalary().getSalaryUser());
+                            .setText(((PersonSalary) objectList.get(position)).getSalary());
                     salaryVacationVH.tvVacation
-                            .setText(((Info) objectList.get(position)).getVacation().getFreeDays());
+                            .setText("30");
                 }
-
+                break;
+            case TYPE_DATA:
+                DataVH dataVH = (DataVH) viewHolder;
+                if (objectList.get(position) instanceof PersonData) {
+                    dataVH.tvBirthday.setText(((PersonData) objectList.get(position)).getBirthDate());
+                    dataVH.tvAddress.setText(((PersonData) objectList.get(position)).getAddressStreet());
+                    dataVH.tvPhoneNumbers.setText(((PersonData) objectList.get(position)).getContactPhone());
+                }
                 break;
         }
     }
@@ -65,21 +83,43 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void updateAdapter(List<Object> objects) {
-        if (objectList.size() > 0) {
-            objectList.clear();
-        }
-
-        objectList.addAll(objects);
-
+        this.objectList = objects;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (objectList.get(position) instanceof Info) {
-            return TYPE_INFO;
+        if (objectList.get(position) != null) {
+            if (objectList.get(position) instanceof PersonSalary) {
+                return TYPE_INFO;
+            } else if (objectList.get(position) instanceof PersonData) {
+                return TYPE_DATA;
+            } else if (objectList.get(position) instanceof PersonSkills) {
+                return TYPE_SKILLS;
+            } else {
+                return TYPE_USUALLY;
+            }
         } else {
-            return TYPE_USUALLY;
+            Timber.d("object list null, pos: " + position);
+            return position;
+        }
+    }
+
+    class SkillsVH extends RecyclerView.ViewHolder {
+
+        public SkillsVH(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
+    class DataVH extends RecyclerView.ViewHolder {
+        TextView tvPhoneNumbers, tvBirthday, tvAddress;
+
+        public DataVH(@NonNull View itemView) {
+            super(itemView);
+            tvPhoneNumbers = itemView.findViewById(R.id.tv_phone_numbers);
+            tvBirthday = itemView.findViewById(R.id.tv_birthday);
+            tvAddress = itemView.findViewById(R.id.tv_address);
         }
     }
 

@@ -4,15 +4,25 @@ import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
+import com.volgagas.personalassistant.models.model.info.InfoCommon;
+import com.volgagas.personalassistant.models.model.info.PersonCertificates;
+import com.volgagas.personalassistant.models.model.info.PersonData;
+import com.volgagas.personalassistant.models.model.info.PersonSalary;
+import com.volgagas.personalassistant.models.model.info.PersonSkills;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function3;
+import io.reactivex.functions.Function4;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Copyright (c) 2019 VolgaGas. All rights reserved.
@@ -53,15 +63,34 @@ public class InfoPresenter extends BasePresenter<InfoView> {
 
     @Override
     protected void loadData() {
+        String idD365 = CacheUser.getUser().getPersonalDynamics365Number();
+
+        disposable.add(Single.zip(repository.getInfoAboutUserFromDynamics(idD365),
+                repository.getPersonCertificates(idD365),
+                repository.getPersonSkills(idD365),
+                repository.getPersonSalary(idD365),
+                (personData, personCertificates, personSkills, personSalary) -> {
+                    List<Object> objects = new ArrayList<>();
+                    objects.add(personSalary);
+                    objects.add(personData);
+                    objects.add(personSkills);
+                    objects.add(personCertificates);
+
+                    return objects;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    Timber.d("result: " + result.toString());
+                    getViewState().showData(result);
+                }, this::handlerErrorsFromBadRequests));
+
         disposable.add(repository.getInfoAboutUserFromDynamics(CacheUser.getUser().getPersonalDynamics365Number())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-
+                    Timber.d("print result: " + result.toString());
                 }));
     }
 
-    private class InfoCommon {
-
-    }
 }

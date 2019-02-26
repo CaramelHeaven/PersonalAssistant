@@ -11,6 +11,7 @@ import com.volgagas.personalassistant.models.mapper.info.InfoMapper;
 import com.volgagas.personalassistant.models.mapper.info.PersonCertificatesResponseToPersonCertificates;
 import com.volgagas.personalassistant.models.mapper.info.PersonDataResponseToPersonData;
 import com.volgagas.personalassistant.models.mapper.info.PersonSkillsResponseToPersonSkills;
+import com.volgagas.personalassistant.models.mapper.info.SalaryResponseToPersonSalary;
 import com.volgagas.personalassistant.models.mapper.kiosk.TaskKioskResponseToTaskTemplate;
 import com.volgagas.personalassistant.models.mapper.query_template.QueriesTemplateResponseToQueryTemplate;
 import com.volgagas.personalassistant.models.mapper.query_template.QueryTemplateMapper;
@@ -36,9 +37,9 @@ import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.models.model.common.Apk;
-import com.volgagas.personalassistant.models.model.info.Info;
 import com.volgagas.personalassistant.models.model.info.PersonCertificates;
 import com.volgagas.personalassistant.models.model.info.PersonData;
+import com.volgagas.personalassistant.models.model.info.PersonSalary;
 import com.volgagas.personalassistant.models.model.info.PersonSkills;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
@@ -119,6 +120,8 @@ public class MainRemoteRepository implements MainRepository {
                             new PersonCertificatesResponseToPersonCertificates();
                     PersonDataResponseToPersonData personDataResponseToPersonData =
                             new PersonDataResponseToPersonData();
+                    SalaryResponseToPersonSalary salaryResponseToPersonSalary =
+                            new SalaryResponseToPersonSalary();
 
                     //Initial mappers
                     taskMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
@@ -133,7 +136,8 @@ public class MainRemoteRepository implements MainRepository {
                     queryMapper = new QueryTemplateMapper(queriesTemplateResponseToQueryTemplate);
                     commonMapper = new CommonMapper(apkResponseToApk);
                     infoMapper = new InfoMapper(personCertificatesResponseToPersonCertificates,
-                            personSkillsResponseToPersonSkills, personDataResponseToPersonData);
+                            personSkillsResponseToPersonSkills, personDataResponseToPersonData,
+                            salaryResponseToPersonSalary);
 
                     INSTANCE = new MainRemoteRepository();
                 }
@@ -433,12 +437,11 @@ public class MainRemoteRepository implements MainRepository {
                 .map(infoMapper::map);
     }
 
-    private Info fillInfo() {
-        Info info = new Info();
+    @Override
+    public Single<PersonSalary> getPersonSalary(String personD365Id) {
+        String filter = "PersonnelNumber eq '" + personD365Id + "'";
 
-        info.getSalary().setSalaryUser("4000");
-        info.getVacation().setFreeDays("30");
-
-        return info;
+        return PersonalAssistant.getBaseApiService().getPersonSalary(filter)
+                .map(infoMapper::map);
     }
 }

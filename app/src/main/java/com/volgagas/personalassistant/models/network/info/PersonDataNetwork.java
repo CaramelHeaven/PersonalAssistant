@@ -66,7 +66,7 @@ public class PersonDataNetwork {
     private String primaryContactPhoneExtension;
     @SerializedName("PrimaryAddressLocation")
     @Expose
-    private Integer primaryAddressLocation;
+    private Long primaryAddressLocation;
     @SerializedName("PrimaryContactPhoneIsMobile")
     @Expose
     private String primaryContactPhoneIsMobile;
@@ -329,6 +329,119 @@ public class PersonDataNetwork {
     @Expose
     private String addressValidTo;
 
+    @Override
+    public String toString() {
+        return "PersonDataNetwork{" +
+                "odataEtag='" + odataEtag + '\'' +
+                ", personnelNumber='" + personnelNumber + '\'' +
+                ", primaryContactFacebookIsPrivate='" + primaryContactFacebookIsPrivate + '\'' +
+                ", personBirthCountryRegion='" + personBirthCountryRegion + '\'' +
+                ", primaryContactLinkedInDescription='" + primaryContactLinkedInDescription + '\'' +
+                ", electronicLocationId='" + electronicLocationId + '\'' +
+                ", primaryContactPhonePurpose='" + primaryContactPhonePurpose + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", motherBirthCountryRegion='" + motherBirthCountryRegion + '\'' +
+                ", primaryContactFacebook='" + primaryContactFacebook + '\'' +
+                ", isDisabledVeteran='" + isDisabledVeteran + '\'' +
+                ", primaryContactPhoneIsPrivate='" + primaryContactPhoneIsPrivate + '\'' +
+                ", originalHireDateTime='" + originalHireDateTime + '\'' +
+                ", primaryContactFaxExtension='" + primaryContactFaxExtension + '\'' +
+                ", isExpatriateRulingApplicable='" + isExpatriateRulingApplicable + '\'' +
+                ", summaryValidFrom='" + summaryValidFrom + '\'' +
+                ", citizenshipCountryRegion='" + citizenshipCountryRegion + '\'' +
+                ", workerStatus='" + workerStatus + '\'' +
+                ", primaryContactPhoneExtension='" + primaryContactPhoneExtension + '\'' +
+                ", primaryAddressLocation=" + primaryAddressLocation +
+                ", primaryContactPhoneIsMobile='" + primaryContactPhoneIsMobile + '\'' +
+                ", expatriateRulingValidFrom='" + expatriateRulingValidFrom + '\'' +
+                ", primaryContactFaxPurpose='" + primaryContactFaxPurpose + '\'' +
+                ", addressValidFrom='" + addressValidFrom + '\'' +
+                ", primaryContactFaxIsPrivate='" + primaryContactFaxIsPrivate + '\'' +
+                ", primaryContactPhoneDescription='" + primaryContactPhoneDescription + '\'' +
+                ", nativeLanguageId='" + nativeLanguageId + '\'' +
+                ", officeLocation='" + officeLocation + '\'' +
+                ", nameAlias='" + nameAlias + '\'' +
+                ", lastNamePrefix='" + lastNamePrefix + '\'' +
+                ", addressCountryRegionISOCode='" + addressCountryRegionISOCode + '\'' +
+                ", phoneticMiddleName='" + phoneticMiddleName + '\'' +
+                ", knownAs='" + knownAs + '\'' +
+                ", deceasedDate='" + deceasedDate + '\'' +
+                ", personalTitle='" + personalTitle + '\'' +
+                ", professionalTitle='" + professionalTitle + '\'' +
+                ", primaryContactTwitterPurpose='" + primaryContactTwitterPurpose + '\'' +
+                ", primaryContactEmailDescription='" + primaryContactEmailDescription + '\'' +
+                ", nameSequenceDisplayAs='" + nameSequenceDisplayAs + '\'' +
+                ", nationalityCountryRegion='" + nationalityCountryRegion + '\'' +
+                ", workerType='" + workerType + '\'' +
+                ", addressLocationId='" + addressLocationId + '\'' +
+                ", personalSuffix='" + personalSuffix + '\'' +
+                ", veteranStatusId='" + veteranStatusId + '\'' +
+                ", titleId='" + titleId + '\'' +
+                ", isFulltimeStudent='" + isFulltimeStudent + '\'' +
+                ", personDetailsValidTo='" + personDetailsValidTo + '\'' +
+                ", addressPurpose='" + addressPurpose + '\'' +
+                ", primaryContactEmailPurpose='" + primaryContactEmailPurpose + '\'' +
+                ", primaryContactTwitter='" + primaryContactTwitter + '\'' +
+                ", worksFromHome='" + worksFromHome + '\'' +
+                ", numberOfDependents=" + numberOfDependents +
+                ", gender='" + gender + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", primaryContactFacebookDescription='" + primaryContactFacebookDescription + '\'' +
+                ", disabledVerificationDate='" + disabledVerificationDate + '\'' +
+                ", primaryContactURLIsPrivate='" + primaryContactURLIsPrivate + '\'' +
+                ", personDetailsValidFrom='" + personDetailsValidFrom + '\'' +
+                ", partyNumber='" + partyNumber + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                ", primaryContactPhone='" + primaryContactPhone + '\'' +
+                ", addressState='" + addressState + '\'' +
+                ", partyType='" + partyType + '\'' +
+                ", addressCity='" + addressCity + '\'' +
+                ", militaryServiceEndDate='" + militaryServiceEndDate + '\'' +
+                ", isDisabled='" + isDisabled + '\'' +
+                ", addressBooks='" + addressBooks + '\'' +
+                ", addressZipCode='" + addressZipCode + '\'' +
+                ", fatherBirthCountryRegion='" + fatherBirthCountryRegion + '\'' +
+                ", addressNameDescription='" + addressNameDescription + '\'' +
+                ", primaryContactEmail='" + primaryContactEmail + '\'' +
+                ", seniorityDate='" + seniorityDate + '\'' +
+                ", name='" + name + '\'' +
+                ", ethnicOriginId='" + ethnicOriginId + '\'' +
+                ", primaryContactLinkedIn='" + primaryContactLinkedIn + '\'' +
+                ", primaryContactFacebookPurpose='" + primaryContactFacebookPurpose + '\'' +
+                ", objectId='" + objectId + '\'' +
+                ", anniversaryDateTime='" + anniversaryDateTime + '\'' +
+                ", primaryContactURL='" + primaryContactURL + '\'' +
+                ", primaryContactURLDescription='" + primaryContactURLDescription + '\'' +
+                ", allowRehire='" + allowRehire + '\'' +
+                ", primaryContactEmailIsIM='" + primaryContactEmailIsIM + '\'' +
+                ", phoneticLastName='" + phoneticLastName + '\'' +
+                ", addressStreet='" + addressStreet + '\'' +
+                ", expatriateRulingValidTo='" + expatriateRulingValidTo + '\'' +
+                ", education='" + education + '\'' +
+                ", primaryContactLinkedInIsPrivate='" + primaryContactLinkedInIsPrivate + '\'' +
+                ", primaryContactTwitterIsPrivate='" + primaryContactTwitterIsPrivate + '\'' +
+                ", militaryServiceStartDate='" + militaryServiceStartDate + '\'' +
+                ", phoneticFirstName='" + phoneticFirstName + '\'' +
+                ", primaryContactURLPurpose='" + primaryContactURLPurpose + '\'' +
+                ", addressCountryRegionId='" + addressCountryRegionId + '\'' +
+                ", addressDistrictName='" + addressDistrictName + '\'' +
+                ", professionalSuffix='" + professionalSuffix + '\'' +
+                ", languageId='" + languageId + '\'' +
+                ", officeLocationId='" + officeLocationId + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", primaryContactFax='" + primaryContactFax + '\'' +
+                ", maritalStatus='" + maritalStatus + '\'' +
+                ", personBirthCity='" + personBirthCity + '\'' +
+                ", primaryContactEmailIsPrivate='" + primaryContactEmailIsPrivate + '\'' +
+                ", summaryValidTo='" + summaryValidTo + '\'' +
+                ", primaryContactFaxDescription='" + primaryContactFaxDescription + '\'' +
+                ", primaryContactTwitterDescription='" + primaryContactTwitterDescription + '\'' +
+                ", addressCounty='" + addressCounty + '\'' +
+                ", primaryContactLinkedInPurpose='" + primaryContactLinkedInPurpose + '\'' +
+                ", addressValidTo='" + addressValidTo + '\'' +
+                '}';
+    }
+
     public String getOdataEtag() {
         return odataEtag;
     }
@@ -405,7 +518,7 @@ public class PersonDataNetwork {
         return primaryContactPhoneExtension;
     }
 
-    public Integer getPrimaryAddressLocation() {
+    public Long getPrimaryAddressLocation() {
         return primaryAddressLocation;
     }
 

@@ -3,6 +3,7 @@ package com.volgagas.personalassistant.models.mapper.info;
 import com.volgagas.personalassistant.models.mapper.Mapper;
 import com.volgagas.personalassistant.models.model.info.PersonData;
 import com.volgagas.personalassistant.models.network.PersonDataResponse;
+import com.volgagas.personalassistant.models.network.info.PersonDataNetwork;
 
 /**
  * Created by CaramelHeaven on 12:46, 25/02/2019.
@@ -18,6 +19,9 @@ public class PersonDataResponseToPersonData extends Mapper<PersonDataResponse, P
 
     @Override
     protected void fillData(PersonData personData, PersonDataResponse personDataResponse) {
-
+        PersonDataNetwork data = personDataResponse.getValue().get(0);
+        personData.setAddressStreet(data.getAddressStreet());
+        personData.setBirthDate(data.getBirthDate());
+        personData.setContactPhone(data.getPrimaryContactPhone());
     }
 }

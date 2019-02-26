@@ -9,6 +9,7 @@ import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.models.model.common.Apk;
 import com.volgagas.personalassistant.models.model.info.PersonCertificates;
 import com.volgagas.personalassistant.models.model.info.PersonData;
+import com.volgagas.personalassistant.models.model.info.PersonSalary;
 import com.volgagas.personalassistant.models.model.info.PersonSkills;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
@@ -263,4 +264,12 @@ public interface MainRepository {
      * @return list of skills
      */
     Single<List<PersonSkills>> getPersonSkills(String personD365Id);
+
+    /**
+     * Get person salary
+     *
+     * @param personD365Id - id
+     * @return salary
+     */
+    Single<PersonSalary> getPersonSalary(String personD365Id);
 }

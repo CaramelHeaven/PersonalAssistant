@@ -60,21 +60,30 @@ public abstract class BaseActivity extends BaseGodActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (nfcAdapter != null && nfcAdapter.isEnabled() && permissionToEnableNfc) {
-            nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListArray);
-        } else {
-            if (nfcAdapter != null) {
-                nfcAdapter.disableForegroundDispatch(this);
+        if (nfcAdapter.isNdefPushEnabled())
+            if (nfcAdapter != null && nfcAdapter.isEnabled() && permissionToEnableNfc) {
+                nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListArray);
+            } else {
+                if (nfcAdapter != null) {
+                    nfcAdapter.disableForegroundDispatch(this);
+                }
             }
-        }
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
         if (nfcAdapter != null && nfcAdapter.isEnabled()) {
             nfcAdapter.disableForegroundDispatch(this);
         }
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        if (nfcAdapter != null && nfcAdapter.isEnabled()) {
+            nfcAdapter.disableForegroundDispatch(this);
+        }
+        super.onStop();
     }
 
     @Override

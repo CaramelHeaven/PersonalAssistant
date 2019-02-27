@@ -13,6 +13,9 @@ import com.volgagas.personalassistant.models.mapper.info.PersonDataResponseToPer
 import com.volgagas.personalassistant.models.mapper.info.PersonSkillsResponseToPersonSkills;
 import com.volgagas.personalassistant.models.mapper.info.SalaryResponseToPersonSalary;
 import com.volgagas.personalassistant.models.mapper.kiosk.TaskKioskResponseToTaskTemplate;
+import com.volgagas.personalassistant.models.mapper.order.OrderMapper;
+import com.volgagas.personalassistant.models.mapper.order.PurchReqLinesResponseToUserSubOrder;
+import com.volgagas.personalassistant.models.mapper.order.PurchaseRequestionResponseToUserOrder;
 import com.volgagas.personalassistant.models.mapper.query_template.QueriesTemplateResponseToQueryTemplate;
 import com.volgagas.personalassistant.models.mapper.query_template.QueryTemplateMapper;
 import com.volgagas.personalassistant.models.mapper.uniform_request.QueryResponseToUniformRequest;
@@ -42,6 +45,10 @@ import com.volgagas.personalassistant.models.model.info.PersonData;
 import com.volgagas.personalassistant.models.model.info.PersonSalary;
 import com.volgagas.personalassistant.models.model.info.PersonSkills;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
+import com.volgagas.personalassistant.models.model.order.ServerOrder;
+import com.volgagas.personalassistant.models.model.order.ServerSubOrder;
+import com.volgagas.personalassistant.models.model.order.UserOrder;
+import com.volgagas.personalassistant.models.model.order.UserSubOrder;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.models.model.order_purchase.Order;
 import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
@@ -79,6 +86,7 @@ public class MainRemoteRepository implements MainRepository {
     private static UniformRequestMapper uniformRequestMapper;
     private static CommonMapper commonMapper;
     private static InfoMapper infoMapper;
+    private static OrderMapper orderMapper;
 
     private MainRemoteRepository() {
         if (INSTANCE != null) {
@@ -122,6 +130,10 @@ public class MainRemoteRepository implements MainRepository {
                             new PersonDataResponseToPersonData();
                     SalaryResponseToPersonSalary salaryResponseToPersonSalary =
                             new SalaryResponseToPersonSalary();
+                    PurchReqLinesResponseToUserSubOrder purchReqLinesResponseToUserSubOrder =
+                            new PurchReqLinesResponseToUserSubOrder();
+                    PurchaseRequestionResponseToUserOrder purchaseRequestionResponseToUserOrder =
+                            new PurchaseRequestionResponseToUserOrder();
 
                     //Initial mappers
                     taskMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
@@ -138,6 +150,8 @@ public class MainRemoteRepository implements MainRepository {
                     infoMapper = new InfoMapper(personCertificatesResponseToPersonCertificates,
                             personSkillsResponseToPersonSkills, personDataResponseToPersonData,
                             salaryResponseToPersonSalary);
+                    orderMapper = new OrderMapper(purchReqLinesResponseToUserSubOrder,
+                            purchaseRequestionResponseToUserOrder);
 
                     INSTANCE = new MainRemoteRepository();
                 }
@@ -366,8 +380,8 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public Single<PersonData> getInfoAboutUserFromDynamics(String personD365Id) {
-        String filter = "PartyNumber eq '" + personD365Id + "'";
+    public Single<PersonData> getInfoAboutUserFromDynamics() {
+        String filter = "PartyNumber eq '" + CacheUser.getUser().getPersonalDynamics365Number() + "'";
 
         return PersonalAssistant.getBaseApiService().getPersonData(filter)
                 .map(infoMapper::map);
@@ -422,26 +436,55 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public Single<List<PersonCertificates>> getPersonCertificates(String personD365Id) {
-        String filter = "PartyNumber eq '" + personD365Id + "'";
+    public Single<List<PersonCertificates>> getPersonCertificates() {
+        String filter = "PartyNumber eq '" + CacheUser.getUser().getPersonalDynamics365Number() + "'";
 
         return PersonalAssistant.getBaseApiService().getPersonCetrificates(filter)
                 .map(infoMapper::map);
     }
 
     @Override
-    public Single<List<PersonSkills>> getPersonSkills(String personD365Id) {
-        String filter = "PartyNumber eq '" + personD365Id + "'";
+    public Single<List<PersonSkills>> getPersonSkills() {
+        String filter = "PartyNumber eq '" + CacheUser.getUser().getPersonalDynamics365Number() + "'";
 
         return PersonalAssistant.getBaseApiService().getPersonSkills(filter)
                 .map(infoMapper::map);
     }
 
     @Override
-    public Single<PersonSalary> getPersonSalary(String personD365Id) {
-        String filter = "PersonnelNumber eq '" + personD365Id + "'";
+    public Single<PersonSalary> getPersonSalary() {
+        String filter = "PersonnelNumber eq '" + CacheUser.getUser().getPersonalDynamics365Number() + "'";
 
         return PersonalAssistant.getBaseApiService().getPersonSalary(filter)
                 .map(infoMapper::map);
+    }
+
+    @Override
+    public Single<List<UserOrder>> getPurchasesFromUser() {
+        String filter = "PreparerPersonnelNumber eq 'д000000310'";
+
+        return PersonalAssistant.getBaseApiService().getPurchasesForUser(filter)
+                .map(orderMapper::map);
+    }
+
+    @Override
+    public Single<List<UserSubOrder>> getPurchasesLinesFromUser(String requisitionNumber) {
+        String filter = "RequisitionNumber eq '" + requisitionNumber + "'";
+
+        return PersonalAssistant.getBaseApiService().getPurchaseRequestionMoreForUser(filter,
+                "RequisitionLineNumber asc")
+                .map(orderMapper::map);
+    }
+
+    @Override
+    public Single<List<ServerOrder>> getPurchasesOrder() {
+        String filter = "PreparerPersonnelNumber eq 'д000000310'";
+
+        return null;
+    }
+
+    @Override
+    public Single<List<ServerSubOrder>> getPurchaseSubOrder() {
+        return null;
     }
 }

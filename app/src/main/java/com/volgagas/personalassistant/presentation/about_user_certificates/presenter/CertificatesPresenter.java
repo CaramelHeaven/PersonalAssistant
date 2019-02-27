@@ -1,7 +1,6 @@
 package com.volgagas.personalassistant.presentation.about_user_certificates.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
@@ -60,9 +59,8 @@ public class CertificatesPresenter extends BasePresenter<CertificatesView> {
     @Override
     protected void loadData() {
         getViewState().showProgress();
-        String idD365 = CacheUser.getUser().getPersonalDynamics365Number();
 
-        disposable.add(repository.getPersonCertificates(idD365)
+        disposable.add(repository.getPersonCertificates()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

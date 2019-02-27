@@ -73,9 +73,9 @@ public class FragmentProjects extends BaseFragment implements ProjectsView {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         vpContainer = null;
         tabLayout = null;
+        super.onDestroyView();
     }
 
     @Override

@@ -80,11 +80,11 @@ public class StartActivity extends BaseActivity implements StartView {
 
             SharedPreferences.Editor edit = sharedPreferences.edit();
             edit.putString(Constants.SP_CURRENT_HTTP, dynamicsCurrentHttp);
-
             edit.apply();
         } else {
             Constants.DYNAMICS_365 = dynamicsCurrentHttp;
         }
+
         Timber.d("dynamics SHOW: " + dynamicsCurrentHttp);
 
         if (d365Cache.equals("")) {

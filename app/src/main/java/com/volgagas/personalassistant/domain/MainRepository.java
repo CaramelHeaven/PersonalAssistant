@@ -12,6 +12,10 @@ import com.volgagas.personalassistant.models.model.info.PersonData;
 import com.volgagas.personalassistant.models.model.info.PersonSalary;
 import com.volgagas.personalassistant.models.model.info.PersonSkills;
 import com.volgagas.personalassistant.models.model.kiosk.TaskTemplate;
+import com.volgagas.personalassistant.models.model.order.ServerOrder;
+import com.volgagas.personalassistant.models.model.order.ServerSubOrder;
+import com.volgagas.personalassistant.models.model.order.UserOrder;
+import com.volgagas.personalassistant.models.model.order.UserSubOrder;
 import com.volgagas.personalassistant.models.model.order_purchase.NewOrder;
 import com.volgagas.personalassistant.models.model.order_purchase.Order;
 import com.volgagas.personalassistant.models.model.queries.QueryTemplate;
@@ -21,6 +25,8 @@ import com.volgagas.personalassistant.models.model.user.UserSimple;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
+import com.volgagas.personalassistant.models.network.PurchReqLinesResponse;
+import com.volgagas.personalassistant.models.network.PurchaseRequestionResponse;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 
 import java.util.List;
@@ -198,10 +204,9 @@ public interface MainRepository {
     /**
      * Get information about user from D365.
      *
-     * @param personD365Id - id d365
      * @return data of user information
      */
-    Single<PersonData> getInfoAboutUserFromDynamics(String personD365Id);
+    Single<PersonData> getInfoAboutUserFromDynamics();
 
     /**
      * @param barcodeNumbers - scanned string data from NomenclatureBarcodeActivity
@@ -252,24 +257,49 @@ public interface MainRepository {
     /**
      * Get person certificates which saved on server d365
      *
-     * @param personD365Id - current person Id
      * @return list of certificates
      */
-    Single<List<PersonCertificates>> getPersonCertificates(String personD365Id);
+    Single<List<PersonCertificates>> getPersonCertificates();
 
     /**
      * Get person skills from d365
      *
-     * @param personD365Id - person id
      * @return list of skills
      */
-    Single<List<PersonSkills>> getPersonSkills(String personD365Id);
+    Single<List<PersonSkills>> getPersonSkills();
 
     /**
      * Get person salary
      *
-     * @param personD365Id - id
      * @return salary
      */
-    Single<PersonSalary> getPersonSalary(String personD365Id);
+    Single<PersonSalary> getPersonSalary();
+
+    /**
+     * Get purchases which user created
+     *
+     * @return list of purchases
+     */
+    Single<List<UserOrder>> getPurchasesFromUser();
+
+    /**
+     * Lines which user created
+     *
+     * @return list of lines
+     */
+    Single<List<UserSubOrder>> getPurchasesLinesFromUser(String requisitionNumber);
+
+    /**
+     * get list of purchase orders
+     *
+     * @return list of elements
+     */
+    Single<List<ServerOrder>> getPurchasesOrder();
+
+    /**
+     * get sub order from current purchase order
+     *
+     * @return object
+     */
+    Single<List<ServerSubOrder>> getPurchaseSubOrder();
 }

@@ -64,11 +64,10 @@ public class InfoPresenter extends BasePresenter<InfoView> {
     @Override
     protected void loadData() {
         getViewState().showProgress();
-        String idD365 = CacheUser.getUser().getPersonalDynamics365Number();
 
-        disposable.add(Single.zip(repository.getInfoAboutUserFromDynamics(idD365),
-                repository.getPersonSkills(idD365),
-                repository.getPersonSalary(idD365),
+        disposable.add(Single.zip(repository.getInfoAboutUserFromDynamics(),
+                repository.getPersonSkills(),
+                repository.getPersonSalary(),
                 (personData, personSkills, personSalary) -> {
                     List<Object> objects = new ArrayList<>();
                     objects.add(personSalary);

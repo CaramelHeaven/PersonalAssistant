@@ -1,42 +1,37 @@
-package com.volgagas.personalassistant.presentation.projects_contracts.presenter;
-
-import android.annotation.SuppressLint;
+package com.volgagas.personalassistant.presentation.order_purchase_requestion_more.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.crashlytics.android.Crashlytics;
-import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Contract;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
-import com.volgagas.personalassistant.utils.bus.RxBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import timber.log.Timber;
 
 /**
- * Copyright (c) 2018 VolgaGas. All rights reserved.
+ * Created by CaramelHeaven on 18:47, 27/02/2019.
  */
 @InjectViewState
-public class ContractPresenter extends BasePresenter<ContractView<Contract>> {
+public class PurchaseReqiestionMorePresenter extends BasePresenter<PurchaseReqiestionMoreView> {
 
     private MainRepository repository;
+    private String orderId;
 
-    public ContractPresenter() {
+    public PurchaseReqiestionMorePresenter(String orderId) {
+        super();
+        this.orderId = orderId;
         repository = MainRemoteRepository.getInstance();
     }
 
-    @SuppressLint("CheckResult")
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+
         loadData();
     }
 
@@ -47,25 +42,28 @@ public class ContractPresenter extends BasePresenter<ContractView<Contract>> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-        Timber.d("error: " + throwable.getMessage());
-        //okay, we have exception ;)
-        Crashlytics.logException(throwable);
+        if (throwable.getMessage().contains(Constants.HTTP_401)) {
+
+        } else {
+            sendCrashlytics(throwable);
+            getViewState().catastrophicError(throwable);
+        }
     }
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
-        //nothing
+
     }
 
     @Override
     protected void loadData() {
         getViewState().showProgress();
-        disposable.add(repository.getContractsForUser()
+        disposable.add(repository.getPurchasesLinesFromUser(orderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     getViewState().hideProgress();
-                    getViewState().showContracts(result);
+                    getViewState().showItem(result);
                 }, this::handlerErrorsFromBadRequests));
     }
 }

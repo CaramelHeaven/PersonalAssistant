@@ -7,6 +7,10 @@ import com.volgagas.personalassistant.models.network.NomenclatureResponse;
 import com.volgagas.personalassistant.models.network.PersonCertificatesResponse;
 import com.volgagas.personalassistant.models.network.PersonDataResponse;
 import com.volgagas.personalassistant.models.network.PersonSkillsResponse;
+import com.volgagas.personalassistant.models.network.PurchOrderLinesResponse;
+import com.volgagas.personalassistant.models.network.PurchReqLinesResponse;
+import com.volgagas.personalassistant.models.network.PurchaseOrderResponse;
+import com.volgagas.personalassistant.models.network.PurchaseRequestionResponse;
 import com.volgagas.personalassistant.models.network.SalaryResponse;
 import com.volgagas.personalassistant.models.network.SubTaskResponse;
 import com.volgagas.personalassistant.models.network.TaskKioskResponse;
@@ -103,4 +107,22 @@ public interface BaseApiService {
 
     @GET("data/PayStatementHeaders")
     Single<SalaryResponse> getPersonSalary(@Query("$filter") String partyNumber);
+
+    //------------------------------------------------------------------------------------------
+    //Below two methods - Purchases Requestions orders
+    @GET("data/PurchaseRequisitionHeaders")
+    Single<PurchaseRequestionResponse> getPurchasesForUser(@Query("$filter") String personId);
+
+    @GET("data/PurchaseRequisitionLines")
+    Single<PurchReqLinesResponse> getPurchaseRequestionMoreForUser(@Query("$filter") String personId,
+                                                                   @Query("$orderBy") String orderby);
+
+    //------------------------------------------------------------------------------------------
+    // and this below two method - Purchases simple order
+    @GET("data/PurchaseOrderHeadersV2")
+    Single<PurchaseOrderResponse> getPurchaseOrders(@Query("$filter") String personId);
+
+    @GET("data/PurchaseOrderLinesV2")
+    Single<PurchOrderLinesResponse> getPurchaseOrderMoreForUser(@Query("$filter") String personId,
+                                                                @Query("$orderBy") String orderby);
 }

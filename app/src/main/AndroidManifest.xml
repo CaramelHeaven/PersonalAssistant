@@ -144,5 +144,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/fff" />
         </provider>
+
+        <activity android:name=".presentation.about_user_certificates.CertificatesActivity"></activity>
     </application>
+
 </manifest>

@@ -84,6 +84,7 @@ public class Constants {
     public static final String QUERY_CREATE_WHO_IS_THE_RECIPIENT = "QUERY_CREATE_WHO_IS_RECIPIENT";
     public static final String PROJECTS_SCREEN = "PROJECTS_SCREEN";
     public static final String ABOUT_USER = "ABOUT_USER";
+    public static final String ABOUT_USER_CERTIFICATES = "ABOUT_USER_CERTIFICATES";
 
     //keys for grab data to current screen
     public static final String PROJECTS_UNIFORM_PRESENTER = "PROJECTS_UNIFORM_PRESENTER";

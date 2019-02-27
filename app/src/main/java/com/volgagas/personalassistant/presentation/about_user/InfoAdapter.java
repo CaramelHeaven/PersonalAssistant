@@ -61,7 +61,7 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 SalaryVacationVH salaryVacationVH = (SalaryVacationVH) viewHolder;
                 if (objectList.get(position) instanceof PersonSalary) {
                     salaryVacationVH.tvSalary
-                            .setText(((PersonSalary) objectList.get(position)).getSalary());
+                            .setText(((PersonSalary) objectList.get(position)).getSalary() + " р.");
                     salaryVacationVH.tvVacation
                             .setText("30");
                 }

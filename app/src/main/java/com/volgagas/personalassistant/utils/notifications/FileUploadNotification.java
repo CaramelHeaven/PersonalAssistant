@@ -80,7 +80,9 @@ public class FileUploadNotification {
     }
 
     public void deleteNotification() {
-        notificationManager.cancel(NOTIFICATION_ID);
+        if (notificationManager != null) {
+            notificationManager.cancel(NOTIFICATION_ID);
+        }
         builder = null;
         baseSize = 0;
         context = null;

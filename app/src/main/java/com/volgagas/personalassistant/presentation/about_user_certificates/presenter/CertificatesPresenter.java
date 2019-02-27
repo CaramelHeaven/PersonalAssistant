@@ -1,38 +1,28 @@
-package com.volgagas.personalassistant.presentation.about_user.presenter;
+package com.volgagas.personalassistant.presentation.about_user_certificates.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
-import com.volgagas.personalassistant.models.model.info.InfoCommon;
-import com.volgagas.personalassistant.models.model.info.PersonCertificates;
-import com.volgagas.personalassistant.models.model.info.PersonData;
-import com.volgagas.personalassistant.models.model.info.PersonSalary;
-import com.volgagas.personalassistant.models.model.info.PersonSkills;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function3;
-import io.reactivex.functions.Function4;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import timber.log.Timber;
 
 /**
- * Copyright (c) 2019 VolgaGas. All rights reserved.
+ * Created by CaramelHeaven on 14:08, 27/02/2019.
  */
 @InjectViewState
-public class InfoPresenter extends BasePresenter<InfoView> {
-
+public class CertificatesPresenter extends BasePresenter<CertificatesView> {
     private MainRepository repository;
 
-    public InfoPresenter() {
+    public CertificatesPresenter() {
+        super();
         repository = MainRemoteRepository.getInstance();
     }
 
@@ -41,18 +31,24 @@ public class InfoPresenter extends BasePresenter<InfoView> {
         super.onFirstViewAttach();
 
         disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
-                .filter(result -> result.equals(Constants.ABOUT_USER))
+                .filter(result -> result.equals(Constants.ABOUT_USER_CERTIFICATES))
                 .subscribe(result -> loadData()));
 
         loadData();
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
-            RxBus.getInstance().passActionForUpdateToken(Constants.ABOUT_USER);
+            RxBus.getInstance().passActionForUpdateToken(Constants.ABOUT_USER_CERTIFICATES);
         } else {
             sendCrashlytics(throwable);
+            getViewState().catastrophicError(throwable);
         }
     }
 
@@ -66,23 +62,13 @@ public class InfoPresenter extends BasePresenter<InfoView> {
         getViewState().showProgress();
         String idD365 = CacheUser.getUser().getPersonalDynamics365Number();
 
-        disposable.add(Single.zip(repository.getInfoAboutUserFromDynamics(idD365),
-                repository.getPersonSkills(idD365),
-                repository.getPersonSalary(idD365),
-                (personData, personSkills, personSalary) -> {
-                    List<Object> objects = new ArrayList<>();
-                    objects.add(personSalary);
-                    objects.add(personData);
-                    objects.add(personSkills);
-
-                    return objects;
-                })
+        disposable.add(repository.getPersonCertificates(idD365)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    getViewState().hideProgress();
-                    getViewState().showData(result);
-                }, this::handlerErrorsFromBadRequests));
+                            getViewState().hideProgress();
+                            getViewState().showItems(result);
+                        },
+                        this::handlerErrorsFromBadRequests));
     }
-
 }

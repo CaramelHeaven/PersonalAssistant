@@ -18,7 +18,9 @@ import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ import com.crashlytics.android.Crashlytics;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.presentation.about_user.InfoFragment;
+import com.volgagas.personalassistant.presentation.about_user_certificates.CertificatesActivity;
 import com.volgagas.personalassistant.presentation.base.BaseActivity;
 import com.volgagas.personalassistant.presentation.home.HomeFragment;
 import com.volgagas.personalassistant.presentation.main.presenter.MainPresenter;
@@ -60,8 +63,8 @@ public class MainActivity extends BaseActivity implements MainView {
     private ConstraintLayout constraintLayout;
     private TextView tvName, tvCategory;
     private ImageButton ibSettings, ibLogout;
+    private RelativeLayout rlCertificates;
 
-    private File fileApk;
     private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
     private boolean hasPermissions;
 
@@ -87,6 +90,7 @@ public class MainActivity extends BaseActivity implements MainView {
         ibSettings = findViewById(R.id.iv_settings);
         ibLogout = findViewById(R.id.iv_logout);
         toolbar = findViewById(R.id.toolbar);
+        rlCertificates = findViewById(R.id.rl_certificates);
         constraintLayout = findViewById(R.id.constraintLayout);
 
         setPermissionToEnableNfc(false);
@@ -111,7 +115,6 @@ public class MainActivity extends BaseActivity implements MainView {
                 .replace(R.id.fragment_container, HomeFragment.newInstance(), "HOME")
                 .commit();
 
-
         hasPermissions = permissionsDelegate.hasCameraPermission();
 
         if (hasPermissions) {
@@ -119,7 +122,6 @@ public class MainActivity extends BaseActivity implements MainView {
         } else {
             permissionsDelegate.requestPermissions();
         }
-
 
         PassDataChannel passDataChannel = PassDataChannel.getInstance();
 
@@ -139,6 +141,9 @@ public class MainActivity extends BaseActivity implements MainView {
             startActivity(new Intent(MainActivity.this, StartActivity.class));
             finish();
         });
+
+        rlCertificates.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, CertificatesActivity.class)));
     }
 
     @Override
@@ -176,7 +181,17 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     public void onBackPressed() {
-        getSupportFragmentManager().popBackStack();
+        Fragment projectsTest = getSupportFragmentManager().findFragmentByTag("PROJECTS");
+        if (projectsTest == null) {
+            Fragment infoTest = getSupportFragmentManager().findFragmentByTag("INFO");
+            if (infoTest != null) {
+                TransitionManager.beginDelayedTransition(constraintLayout);
+                homeSet.applyTo(constraintLayout);
+            }
+        } else {
+            TransitionManager.beginDelayedTransition(constraintLayout);
+            homeSet.applyTo(constraintLayout);
+        }
     }
 
 

@@ -80,9 +80,6 @@ public abstract class BaseActivity extends BaseGodActivity {
 
     @Override
     protected void onStop() {
-        if (nfcAdapter != null && nfcAdapter.isEnabled()) {
-            nfcAdapter.disableForegroundDispatch(this);
-        }
         super.onStop();
     }
 

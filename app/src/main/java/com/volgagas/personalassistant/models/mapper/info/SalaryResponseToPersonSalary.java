@@ -21,7 +21,7 @@ public class SalaryResponseToPersonSalary extends Mapper<SalaryResponse, PersonS
         if (salaryResponse.getValue().size() > 0) {
             personSalary.setSalary(String.valueOf(salaryResponse.getValue().get(0).getNetPay()));
         } else {
-            personSalary.setSalary("2000 $");
+            personSalary.setSalary("ЗП неопределена");
         }
     }
 }

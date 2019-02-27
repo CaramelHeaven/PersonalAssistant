@@ -18,13 +18,20 @@
             android:layout_marginStart="16dp"
             android:src="@drawable/ic_cake" />
 
-        <TextView
-            android:id="@+id/tv_birthday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="День рождения: 1960 01 16"
-            android:textColor="@android:color/black" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/iv_cake">
+
+            <TextView
+                android:id="@+id/tv_birthday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="День рождения: 1960 01 16"
+                android:textColor="@android:color/black" />
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
@@ -48,13 +55,20 @@
             android:layout_marginStart="16dp"
             android:src="@drawable/ic_smartphone" />
 
-        <TextView
-            android:id="@+id/tv_phone_numbers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Номер телефона: +79170129529"
-            android:textColor="@android:color/black" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/iv_phone">
+
+            <TextView
+                android:id="@+id/tv_phone_numbers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Номер телефона: +79170129529"
+                android:textColor="@android:color/black" />
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
@@ -78,18 +92,24 @@
             android:layout_marginStart="16dp"
             android:src="@drawable/ic_house" />
 
-        <TextView
-            android:id="@+id/tv_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_toEndOf="@id/iv_house"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="Адрес: улица Пушкина Колотушника д.29 кв. 1"
-            android:textColor="@android:color/black" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/iv_house">
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="Адрес: улица Пушкина Колотушника Georgia house 7/30 English street д.29 кв. 1"
+                android:textColor="@android:color/black" />
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"

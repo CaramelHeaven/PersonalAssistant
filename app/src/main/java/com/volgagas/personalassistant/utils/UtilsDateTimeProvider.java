@@ -17,6 +17,7 @@ public class UtilsDateTimeProvider {
     private static DateFormat dateFormatForWorker = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private static DateFormat dateHistoryFormat = new SimpleDateFormat("MMM dd, yyyy", new Locale("RU"));
     private static DateFormat timeHistoryFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private static DateFormat dateBirthdayFormat = new SimpleDateFormat("dd MMMM yyyy", new Locale("RU"));
 
     private static SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
             Locale.getDefault());
@@ -115,6 +116,16 @@ public class UtilsDateTimeProvider {
         try {
             serverFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
             return timeHistoryFormat.format(serverFormat.parse(serverTime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String formatBirthday(String serverTime) {
+        try {
+            serverFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+            return dateBirthdayFormat.format(serverFormat.parse(serverTime));
         } catch (ParseException e) {
             e.printStackTrace();
         }

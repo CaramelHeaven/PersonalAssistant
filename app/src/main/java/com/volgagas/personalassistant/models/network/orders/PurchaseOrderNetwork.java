@@ -344,6 +344,124 @@ public class PurchaseOrderNetwork {
     @Expose
     private String totalDiscountVendorGroupCode;
 
+    @Override
+    public String toString() {
+        return "PurchaseOrderNetwork{" +
+                "odataEtag='" + odataEtag + '\'' +
+                ", dataAreaId='" + dataAreaId + '\'' +
+                ", purchaseOrderNumber='" + purchaseOrderNumber + '\'' +
+                ", vendorInvoiceDeclarationId='" + vendorInvoiceDeclarationId + '\'' +
+                ", expectedStoreAvailableSalesDate='" + expectedStoreAvailableSalesDate + '\'' +
+                ", deliveryModeId='" + deliveryModeId + '\'' +
+                ", invoiceAddressStreet='" + invoiceAddressStreet + '\'' +
+                ", orderVendorAccountNumber='" + orderVendorAccountNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", transportationModeId='" + transportationModeId + '\'' +
+                ", isChangeManagementActive='" + isChangeManagementActive + '\'' +
+                ", accountingDistributionTemplateName='" + accountingDistributionTemplateName + '\'' +
+                ", deliveryAddressDescription='" + deliveryAddressDescription + '\'' +
+                ", vendorTransactionSettlementType='" + vendorTransactionSettlementType + '\'' +
+                ", deliveryCityInKana='" + deliveryCityInKana + '\'' +
+                ", deliveryStreetInKana='" + deliveryStreetInKana + '\'' +
+                ", reasonComment='" + reasonComment + '\'' +
+                ", numberSequenceGroupId='" + numberSequenceGroupId + '\'' +
+                ", transportationTemplateId='" + transportationTemplateId + '\'' +
+                ", accountingDate='" + accountingDate + '\'' +
+                ", cashDiscountPercentage=" + cashDiscountPercentage +
+                ", purchaseOrderName='" + purchaseOrderName + '\'' +
+                ", requestedDeliveryDate='" + requestedDeliveryDate + '\'' +
+                ", deliveryAddressCountryRegionId='" + deliveryAddressCountryRegionId + '\'' +
+                ", deliveryAddressLatitude=" + deliveryAddressLatitude +
+                ", multilineDiscountVendorGroupCode='" + multilineDiscountVendorGroupCode + '\'' +
+                ", deliveryAddressCity='" + deliveryAddressCity + '\'' +
+                ", confirmedDeliveryDate='" + confirmedDeliveryDate + '\'' +
+                ", purchaseRebateVendorGroupId='" + purchaseRebateVendorGroupId + '\'' +
+                ", invoiceAddressCounty='" + invoiceAddressCounty + '\'' +
+                ", chargeVendorGroupId='" + chargeVendorGroupId + '\'' +
+                ", requesterPersonnelNumber='" + requesterPersonnelNumber + '\'' +
+                ", projectId='" + projectId + '\'' +
+                ", shippingCarrierId='" + shippingCarrierId + '\'' +
+                ", totalDiscountPercentage=" + totalDiscountPercentage +
+                ", priceVendorGroupCode='" + priceVendorGroupCode + '\'' +
+                ", purchaseOrderHeaderCreationMethod='" + purchaseOrderHeaderCreationMethod + '\'' +
+                ", deliveryAddressDistrictName='" + deliveryAddressDistrictName + '\'' +
+                ", deliveryAddressCountyId='" + deliveryAddressCountyId + '\'' +
+                ", deliveryAddressZipCode='" + deliveryAddressZipCode + '\'' +
+                ", isConsolidatedInvoiceTarget='" + isConsolidatedInvoiceTarget + '\'' +
+                ", confirmingPurchaseOrderCode='" + confirmingPurchaseOrderCode + '\'' +
+                ", languageId='" + languageId + '\'' +
+                ", reasonCode='" + reasonCode + '\'' +
+                ", deliveryAddressDunsNumber='" + deliveryAddressDunsNumber + '\'' +
+                ", deliveryTermsId='" + deliveryTermsId + '\'' +
+                ", bankDocumentType='" + bankDocumentType + '\'' +
+                ", expectedStoreReceiptDate='" + expectedStoreReceiptDate + '\'' +
+                ", deliveryAddressName='" + deliveryAddressName + '\'' +
+                ", invoiceAddressCountryRegionId='" + invoiceAddressCountryRegionId + '\'' +
+                ", replenishmentServiceCategoryId='" + replenishmentServiceCategoryId + '\'' +
+                ", purchaseOrderPoolId='" + purchaseOrderPoolId + '\'' +
+                ", deliveryAddressStreetNumber='" + deliveryAddressStreetNumber + '\'' +
+                ", expectedCrossDockingDate='" + expectedCrossDockingDate + '\'' +
+                ", invoiceAddressStreetNumber='" + invoiceAddressStreetNumber + '\'' +
+                ", taxExemptNumber='" + taxExemptNumber + '\'' +
+                ", isDeliveryAddressPrivate='" + isDeliveryAddressPrivate + '\'' +
+                ", formattedInvoiceAddress='" + formattedInvoiceAddress + '\'' +
+                ", buyerGroupId='" + buyerGroupId + '\'' +
+                ", deliveryAddressCountryRegionISOCode='" + deliveryAddressCountryRegionISOCode + '\'' +
+                ", cashDiscountCode='" + cashDiscountCode + '\'' +
+                ", paymentScheduleName='" + paymentScheduleName + '\'' +
+                ", intrastatTransactionCode='" + intrastatTransactionCode + '\'' +
+                ", uRL='" + uRL + '\'' +
+                ", confirmingPurchaseOrderCodeLanguageId='" + confirmingPurchaseOrderCodeLanguageId + '\'' +
+                ", currencyCode='" + currencyCode + '\'' +
+                ", invoiceType='" + invoiceType + '\'' +
+                ", arePricesIncludingSalesTax='" + arePricesIncludingSalesTax + '\'' +
+                ", deliveryAddressLocationId='" + deliveryAddressLocationId + '\'' +
+                ", gSTSelfBilledInvoiceApprovalNumber='" + gSTSelfBilledInvoiceApprovalNumber + '\'' +
+                ", isDeliveredDirectly='" + isDeliveredDirectly + '\'' +
+                ", intrastatStatisticsProcedureCode='" + intrastatStatisticsProcedureCode + '\'' +
+                ", invoiceVendorAccountNumber='" + invoiceVendorAccountNumber + '\'' +
+                ", deliveryAddressStreet='" + deliveryAddressStreet + '\'' +
+                ", vendorOrderReference='" + vendorOrderReference + '\'' +
+                ", replenishmentWarehouseId='" + replenishmentWarehouseId + '\'' +
+                ", fixedDueDate='" + fixedDueDate + '\'' +
+                ", transportationDocumentLineId='" + transportationDocumentLineId + '\'' +
+                ", salesTaxGroupCode='" + salesTaxGroupCode + '\'' +
+                ", isDeliveryAddressOrderSpecific='" + isDeliveryAddressOrderSpecific + '\'' +
+                ", vendorPostingProfileId='" + vendorPostingProfileId + '\'' +
+                ", vendorPaymentMethodSpecificationName='" + vendorPaymentMethodSpecificationName + '\'' +
+                ", invoiceAddressCity='" + invoiceAddressCity + '\'' +
+                ", shippingCarrierServiceGroupId='" + shippingCarrierServiceGroupId + '\'' +
+                ", contactPersonId='" + contactPersonId + '\'' +
+                ", defaultReceivingWarehouseId='" + defaultReceivingWarehouseId + '\'' +
+                ", eUSalesListCode='" + eUSalesListCode + '\'' +
+                ", importDeclarationNumber='" + importDeclarationNumber + '\'' +
+                ", purchaseOrderStatus='" + purchaseOrderStatus + '\'' +
+                ", paymentTermsName='" + paymentTermsName + '\'' +
+                ", deliveryAddressLongitude=" + deliveryAddressLongitude +
+                ", documentApprovalStatus='" + documentApprovalStatus + '\'' +
+                ", invoiceAddressZipCode='" + invoiceAddressZipCode + '\'' +
+                ", shippingCarrierServiceId='" + shippingCarrierServiceId + '\'' +
+                ", defaultLedgerDimensionDisplayValue='" + defaultLedgerDimensionDisplayValue + '\'' +
+                ", deliveryAddressTimeZone=" + deliveryAddressTimeZone +
+                ", attentionInformation='" + attentionInformation + '\'' +
+                ", deliveryAddressStateId='" + deliveryAddressStateId + '\'' +
+                ", deliveryBuildingCompliment='" + deliveryBuildingCompliment + '\'' +
+                ", intrastatTransportModeCode='" + intrastatTransportModeCode + '\'' +
+                ", deliveryAddressPostBox='" + deliveryAddressPostBox + '\'' +
+                ", isOneTimeVendor='" + isOneTimeVendor + '\'' +
+                ", intrastatPortId='" + intrastatPortId + '\'' +
+                ", ordererPersonnelNumber='" + ordererPersonnelNumber + '\'' +
+                ", vendorPaymentMethodName='" + vendorPaymentMethodName + '\'' +
+                ", invoiceAddressState='" + invoiceAddressState + '\'' +
+                ", defaultReceivingSiteId='" + defaultReceivingSiteId + '\'' +
+                ", lineDiscountVendorGroupCode='" + lineDiscountVendorGroupCode + '\'' +
+                ", transportationRoutePlanId='" + transportationRoutePlanId + '\'' +
+                ", zakatContractNumber='" + zakatContractNumber + '\'' +
+                ", formattedDeliveryAddress='" + formattedDeliveryAddress + '\'' +
+                ", totalDiscountVendorGroupCode='" + totalDiscountVendorGroupCode + '\'' +
+                '}';
+    }
+
     public String getOdataEtag() {
         return odataEtag;
     }

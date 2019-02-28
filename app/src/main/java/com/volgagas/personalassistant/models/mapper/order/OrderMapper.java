@@ -1,8 +1,12 @@
 package com.volgagas.personalassistant.models.mapper.order;
 
+import com.volgagas.personalassistant.models.model.order.ServerOrder;
+import com.volgagas.personalassistant.models.model.order.ServerSubOrder;
 import com.volgagas.personalassistant.models.model.order.UserOrder;
 import com.volgagas.personalassistant.models.model.order.UserSubOrder;
+import com.volgagas.personalassistant.models.network.PurchOrderLinesResponse;
 import com.volgagas.personalassistant.models.network.PurchReqLinesResponse;
+import com.volgagas.personalassistant.models.network.PurchaseOrderResponse;
 import com.volgagas.personalassistant.models.network.PurchaseRequestionResponse;
 
 import java.util.List;
@@ -33,5 +37,13 @@ public class OrderMapper {
 
     public List<UserSubOrder> map(PurchReqLinesResponse response) {
         return purchReqLinesResponseToUserSubOrder.map(response);
+    }
+
+    public List<ServerOrder> map(PurchaseOrderResponse response) {
+        return purchaseOrderToServerOrder.map(response);
+    }
+
+    public List<ServerSubOrder> map(PurchOrderLinesResponse response) {
+        return purchOrderLinesResponseToServerSubOrder.map(response);
     }
 }

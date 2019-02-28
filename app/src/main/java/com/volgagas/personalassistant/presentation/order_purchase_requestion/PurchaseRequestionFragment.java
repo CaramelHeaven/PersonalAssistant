@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
@@ -19,12 +18,9 @@ import com.volgagas.personalassistant.presentation.base.BaseFragment;
 import com.volgagas.personalassistant.presentation.order_purchase_requestion.presenter.PurchaseRequestionPresenter;
 import com.volgagas.personalassistant.presentation.order_purchase_requestion.presenter.PurchaseRequestionView;
 import com.volgagas.personalassistant.presentation.order_purchase_requestion_more.PurchaseReqiestionMoreDialogFragment;
-import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 16:16, 27/02/2019.
@@ -35,7 +31,7 @@ public class PurchaseRequestionFragment extends BaseFragment implements Purchase
     private ProgressBar progressBar;
     private LinearLayout llEmpty;
 
-    private PurchaseOrderAdapter adapter;
+    private PurchaseRequisitionAdapter adapter;
 
     @InjectPresenter
     PurchaseRequestionPresenter presenter;
@@ -61,7 +57,7 @@ public class PurchaseRequestionFragment extends BaseFragment implements Purchase
         progressBar = view.findViewById(R.id.progressBar);
         llEmpty = view.findViewById(R.id.ll_empty);
 
-        adapter = new PurchaseOrderAdapter(new ArrayList<>());
+        adapter = new PurchaseRequisitionAdapter(new ArrayList<>());
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));

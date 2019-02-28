@@ -14,6 +14,13 @@ public class PurchaseOrderResponse {
     @Expose
     private List<PurchaseOrderNetwork> value = null;
 
+    @Override
+    public String toString() {
+        return "PurchaseOrderResponse{" +
+                "value=" + value +
+                '}';
+    }
+
     public List<PurchaseOrderNetwork> getValue() {
         return value;
     }

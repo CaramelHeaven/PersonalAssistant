@@ -109,13 +109,13 @@ public interface BaseApiService {
     Single<SalaryResponse> getPersonSalary(@Query("$filter") String partyNumber);
 
     //------------------------------------------------------------------------------------------
-    //Below two methods - Purchases Requestions orders
+    //Below two methods - Purchases Requisition orders
     @GET("data/PurchaseRequisitionHeaders")
-    Single<PurchaseRequestionResponse> getPurchasesForUser(@Query("$filter") String personId);
+    Single<PurchaseRequestionResponse> getPurchaseRequisition(@Query("$filter") String personId);
 
     @GET("data/PurchaseRequisitionLines")
-    Single<PurchReqLinesResponse> getPurchaseRequestionMoreForUser(@Query("$filter") String personId,
-                                                                   @Query("$orderBy") String orderby);
+    Single<PurchReqLinesResponse> getPurchaseRequisitionLines(@Query("$filter") String orderId,
+                                                              @Query("$orderBy") String orderby);
 
     //------------------------------------------------------------------------------------------
     // and this below two method - Purchases simple order
@@ -123,6 +123,6 @@ public interface BaseApiService {
     Single<PurchaseOrderResponse> getPurchaseOrders(@Query("$filter") String personId);
 
     @GET("data/PurchaseOrderLinesV2")
-    Single<PurchOrderLinesResponse> getPurchaseOrderMoreForUser(@Query("$filter") String personId,
-                                                                @Query("$orderBy") String orderby);
+    Single<PurchOrderLinesResponse> getPurchaseOrderLines(@Query("$filter") String orderId,
+                                                          @Query("$orderBy") String orderby);
 }

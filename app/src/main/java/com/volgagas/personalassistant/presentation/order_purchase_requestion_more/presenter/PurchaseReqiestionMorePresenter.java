@@ -3,7 +3,6 @@ package com.volgagas.personalassistant.presentation.order_purchase_requestion_mo
 import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
-import com.volgagas.personalassistant.models.model.Contract;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
 
@@ -58,7 +57,7 @@ public class PurchaseReqiestionMorePresenter extends BasePresenter<PurchaseReqie
     @Override
     protected void loadData() {
         getViewState().showProgress();
-        disposable.add(repository.getPurchasesLinesFromUser(orderId)
+        disposable.add(repository.getPurchaseRequisitionLines(orderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

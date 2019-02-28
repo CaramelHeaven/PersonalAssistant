@@ -3,6 +3,8 @@ package com.volgagas.personalassistant.presentation.order_purchase_requestion_mo
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,14 +22,19 @@ import com.volgagas.personalassistant.models.model.order.UserSubOrder;
 import com.volgagas.personalassistant.presentation.order_purchase_requestion_more.presenter.PurchaseReqiestionMorePresenter;
 import com.volgagas.personalassistant.presentation.order_purchase_requestion_more.presenter.PurchaseReqiestionMoreView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by CaramelHeaven on 18:46, 27/02/2019.
  */
 public class PurchaseReqiestionMoreDialogFragment extends MvpAppCompatDialogFragment implements PurchaseReqiestionMoreView {
 
     private DisplayMetrics displayMetrics;
+    private PurchaseRequisitionMoreAdapter adapter;
 
     private ProgressBar progressBar;
+    private RecyclerView recyclerView;
 
     @InjectPresenter
     PurchaseReqiestionMorePresenter presenter;
@@ -55,6 +62,13 @@ public class PurchaseReqiestionMoreDialogFragment extends MvpAppCompatDialogFrag
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         progressBar = view.findViewById(R.id.progressBar);
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+        adapter = new PurchaseRequisitionMoreAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
 
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -71,12 +85,16 @@ public class PurchaseReqiestionMoreDialogFragment extends MvpAppCompatDialogFrag
 
     @Override
     public void onDestroyView() {
+        recyclerView = null;
+        progressBar = null;
         super.onDestroyView();
     }
 
     @Override
-    public void showItem(UserSubOrder userSubOrder) {
-
+    public void showItem(List<UserSubOrder> userSubOrder) {
+        if (userSubOrder.size() > 0) {
+            adapter.updateAdapter(userSubOrder);
+        }
     }
 
     @Override

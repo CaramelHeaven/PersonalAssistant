@@ -5,10 +5,12 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.volgagas.personalassistant.models.model.order.UserSubOrder;
 import com.volgagas.personalassistant.presentation.base.BaseView;
 
+import java.util.List;
+
 /**
  * Created by CaramelHeaven on 18:47, 27/02/2019.
  */
 public interface PurchaseReqiestionMoreView extends BaseView {
     @StateStrategyType(value = AddToEndSingleStrategy.class)
-    void showItem(UserSubOrder userSubOrder);
+    void showItem(List<UserSubOrder> userSubOrder);
 }

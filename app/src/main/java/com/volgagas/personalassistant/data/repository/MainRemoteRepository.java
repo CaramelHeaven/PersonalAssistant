@@ -14,7 +14,9 @@ import com.volgagas.personalassistant.models.mapper.info.PersonSkillsResponseToP
 import com.volgagas.personalassistant.models.mapper.info.SalaryResponseToPersonSalary;
 import com.volgagas.personalassistant.models.mapper.kiosk.TaskKioskResponseToTaskTemplate;
 import com.volgagas.personalassistant.models.mapper.order.OrderMapper;
+import com.volgagas.personalassistant.models.mapper.order.PurchOrderLinesResponseToServerSubOrder;
 import com.volgagas.personalassistant.models.mapper.order.PurchReqLinesResponseToUserSubOrder;
+import com.volgagas.personalassistant.models.mapper.order.PurchaseOrderToServerOrder;
 import com.volgagas.personalassistant.models.mapper.order.PurchaseRequestionResponseToUserOrder;
 import com.volgagas.personalassistant.models.mapper.query_template.QueriesTemplateResponseToQueryTemplate;
 import com.volgagas.personalassistant.models.mapper.query_template.QueryTemplateMapper;
@@ -134,6 +136,9 @@ public class MainRemoteRepository implements MainRepository {
                             new PurchReqLinesResponseToUserSubOrder();
                     PurchaseRequestionResponseToUserOrder purchaseRequestionResponseToUserOrder =
                             new PurchaseRequestionResponseToUserOrder();
+                    PurchaseOrderToServerOrder purchaseOrderToServerOrder = new PurchaseOrderToServerOrder();
+                    PurchOrderLinesResponseToServerSubOrder purchOrderLinesResponseToServerSubOrder =
+                            new PurchOrderLinesResponseToServerSubOrder();
 
                     //Initial mappers
                     taskMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
@@ -151,7 +156,8 @@ public class MainRemoteRepository implements MainRepository {
                             personSkillsResponseToPersonSkills, personDataResponseToPersonData,
                             salaryResponseToPersonSalary);
                     orderMapper = new OrderMapper(purchReqLinesResponseToUserSubOrder,
-                            purchaseRequestionResponseToUserOrder);
+                            purchaseRequestionResponseToUserOrder, purchaseOrderToServerOrder,
+                            purchOrderLinesResponseToServerSubOrder);
 
                     INSTANCE = new MainRemoteRepository();
                 }
@@ -460,31 +466,35 @@ public class MainRemoteRepository implements MainRepository {
     }
 
     @Override
-    public Single<List<UserOrder>> getPurchasesFromUser() {
+    public Single<List<UserOrder>> getPurchaseRequisitions() {
         String filter = "PreparerPersonnelNumber eq 'д000000310'";
 
-        return PersonalAssistant.getBaseApiService().getPurchasesForUser(filter)
+        return PersonalAssistant.getBaseApiService().getPurchaseRequisition(filter)
                 .map(orderMapper::map);
     }
 
     @Override
-    public Single<List<UserSubOrder>> getPurchasesLinesFromUser(String requisitionNumber) {
+    public Single<List<UserSubOrder>> getPurchaseRequisitionLines(String requisitionNumber) {
         String filter = "RequisitionNumber eq '" + requisitionNumber + "'";
 
-        return PersonalAssistant.getBaseApiService().getPurchaseRequestionMoreForUser(filter,
-                "RequisitionLineNumber asc")
+        return PersonalAssistant.getBaseApiService()
+                .getPurchaseRequisitionLines(filter, "RequisitionLineNumber asc")
                 .map(orderMapper::map);
     }
 
     @Override
-    public Single<List<ServerOrder>> getPurchasesOrder() {
-        String filter = "PreparerPersonnelNumber eq 'д000000310'";
+    public Single<List<ServerOrder>> getPurchaseOrders() {
+        String filter = "OrdererPersonnelNumber eq 'д000000310'";
 
-        return null;
+        return PersonalAssistant.getBaseApiService().getPurchaseOrders(filter)
+                .map(orderMapper::map);
     }
 
     @Override
-    public Single<List<ServerSubOrder>> getPurchaseSubOrder() {
-        return null;
+    public Single<List<ServerSubOrder>> getPurchaseOrderLines(String orderNumber) {
+        String filter = "PurchaseOrderNumber eq '" + orderNumber + "'";
+
+        return PersonalAssistant.getBaseApiService().getPurchaseOrderLines(filter, "LineNumber asc")
+                .map(orderMapper::map);
     }
 }

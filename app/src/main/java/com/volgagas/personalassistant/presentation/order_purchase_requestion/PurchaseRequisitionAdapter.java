@@ -19,20 +19,20 @@ import timber.log.Timber;
 /**
  * Created by CaramelHeaven on 16:36, 27/02/2019.
  */
-public class PurchaseOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PurchaseRequisitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     List<UserOrder> orders;
 
     private myOnItemClickListener myOnItemClickListener;
 
-    public PurchaseOrderAdapter(List<UserOrder> orders) {
+    public PurchaseRequisitionAdapter(List<UserOrder> orders) {
         this.orders = orders;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_purchase_order, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_purchase_requisition, viewGroup, false);
 
         return new UserOrderVH(view);
     }

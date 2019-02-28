@@ -1,4 +1,4 @@
-package com.volgagas.personalassistant.presentation.order_purchase_requestion.presenter;
+package com.volgagas.personalassistant.presentation.order_purchase_order_more.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
@@ -10,19 +10,18 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import timber.log.Timber;
 
 /**
- * Created by CaramelHeaven on 16:17, 27/02/2019.
+ * Created by CaramelHeaven on 11:54, 28/02/2019.
  */
 @InjectViewState
-public class PurchaseRequestionPresenter extends BasePresenter<PurchaseRequestionView> {
+public class PurchaseOrderMorePresenter extends BasePresenter<PurchaseOrderMoreView> {
 
+    private String orderId;
     private MainRepository repository;
 
-    public PurchaseRequestionPresenter() {
-        super();
-        Timber.d("INITIAL");
+    public PurchaseOrderMorePresenter(String orderId) {
+        this.orderId = orderId;
         repository = MainRemoteRepository.getInstance();
     }
 
@@ -51,7 +50,7 @@ public class PurchaseRequestionPresenter extends BasePresenter<PurchaseRequestio
     @Override
     protected void loadData() {
         getViewState().showProgress();
-        disposable.add(repository.getPurchaseRequisitions()
+        disposable.add(repository.getPurchaseOrderLines(orderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

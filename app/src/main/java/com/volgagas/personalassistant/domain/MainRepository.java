@@ -280,26 +280,27 @@ public interface MainRepository {
      *
      * @return list of purchases
      */
-    Single<List<UserOrder>> getPurchasesFromUser();
+    Single<List<UserOrder>> getPurchaseRequisitions();
 
     /**
      * Lines which user created
      *
      * @return list of lines
      */
-    Single<List<UserSubOrder>> getPurchasesLinesFromUser(String requisitionNumber);
+    Single<List<UserSubOrder>> getPurchaseRequisitionLines(String requisitionNumber);
 
     /**
      * get list of purchase orders
      *
      * @return list of elements
      */
-    Single<List<ServerOrder>> getPurchasesOrder();
+    Single<List<ServerOrder>> getPurchaseOrders();
 
     /**
      * get sub order from current purchase order
      *
+     * @param orderNumber - number of order
      * @return object
      */
-    Single<List<ServerSubOrder>> getPurchaseSubOrder();
+    Single<List<ServerSubOrder>> getPurchaseOrderLines(String orderNumber);
 }

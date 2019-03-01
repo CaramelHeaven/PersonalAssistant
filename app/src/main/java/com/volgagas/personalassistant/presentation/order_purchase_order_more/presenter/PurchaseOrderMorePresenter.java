@@ -10,6 +10,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 11:54, 28/02/2019.
@@ -54,6 +55,7 @@ public class PurchaseOrderMorePresenter extends BasePresenter<PurchaseOrderMoreV
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
+                    Timber.d("result: " + result.toString());
                     getViewState().hideProgress();
                     getViewState().showItems(result);
                 }, this::handlerErrorsFromBadRequests));

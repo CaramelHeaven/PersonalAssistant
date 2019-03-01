@@ -493,6 +493,7 @@ public class MainRemoteRepository implements MainRepository {
     @Override
     public Single<List<ServerSubOrder>> getPurchaseOrderLines(String orderNumber) {
         String filter = "PurchaseOrderNumber eq '" + orderNumber + "'";
+        Timber.d("KEKE");
 
         return PersonalAssistant.getBaseApiService().getPurchaseOrderLines(filter, "LineNumber asc")
                 .map(orderMapper::map);

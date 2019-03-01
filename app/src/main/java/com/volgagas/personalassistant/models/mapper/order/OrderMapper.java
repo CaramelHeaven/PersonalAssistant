@@ -11,6 +11,8 @@ import com.volgagas.personalassistant.models.network.PurchaseRequestionResponse;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 16:05, 27/02/2019.
  */

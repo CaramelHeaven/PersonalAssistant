@@ -451,7 +451,7 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Single<List<PersonSkills>> getPersonSkills() {
-        String filter = "PartyNumber eq '" + CacheUser.getUser().getPersonalDynamics365Number() + "'";
+        String filter = "PartyNumber eq '" + "0000000201" + "'";
 
         return PersonalAssistant.getBaseApiService().getPersonSkills(filter)
                 .map(infoMapper::map);

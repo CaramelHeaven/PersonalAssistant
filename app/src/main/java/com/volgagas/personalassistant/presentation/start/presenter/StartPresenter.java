@@ -33,6 +33,7 @@ import timber.log.Timber;
 public class StartPresenter extends BasePresenter<StartView> {
 
     private MainRepository repository;
+    private String userNumbers;
 
     @SuppressLint("CheckResult")
     public StartPresenter() {
@@ -55,25 +56,21 @@ public class StartPresenter extends BasePresenter<StartView> {
                 .filter(result -> result.equals("ENABLE_NFC"))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> getViewState().enableNFC()));
+
+        //refresh tokens
+        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
+                .subscribeOn(Schedulers.io())
+                .filter(result -> result.equals(Constants.START_PRESENTER))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> loadData()));
     }
 
     public void getUserData(String data) {
-        getViewState().showProgress();
-        disposable.add(repository.getCardInfo(data)
-                .subscribeOn(Schedulers.io())
-                .filter(user -> user.getCategory() != null && !user.getCategory().equals(Constants.EQUIPMENT))
-                .filter(user -> user.getName() != null && !user.getName().equals(""))
-                .toSingle()
-                .flatMap((Function<User, SingleSource<UserDynamics>>) user -> {
-                    CacheUser.getUser().setBaseFields(user);
-                    return repository.getPersonalUserNumber(user.getName());
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResponse, this::handlerErrorsFromBadRequests));
+        this.userNumbers = data;
+        loadData();
     }
 
     private void successfulResponse(UserDynamics userDynamics) {
-        Timber.d("user dynamics: " + userDynamics.toString());
         ThreePermissions permissions = ThreePermissions.getInstance();
         if (userDynamics.getPersonalNumber() == null || userDynamics.getPersonalNumber().equals("")) {
             permissions.setServer(false);
@@ -94,9 +91,11 @@ public class StartPresenter extends BasePresenter<StartView> {
         getViewState().hideProgress();
         if (throwable instanceof IllegalArgumentException) {
             getViewState().resultMatchedWithEquipment();
+        } else if (throwable.getMessage().contains(Constants.HTTP_401)) {
+            RxBus.getInstance().passActionForUpdateToken(Constants.START_PRESENTER);
         } else {
             sendCrashlytics(throwable);
-            getViewState().commonError();
+            getViewState().commonError(throwable);
         }
     }
 
@@ -107,6 +106,19 @@ public class StartPresenter extends BasePresenter<StartView> {
 
     @Override
     protected void loadData() {
-
+        if (userNumbers != null && !userNumbers.equals("")) {
+            getViewState().showProgress();
+            disposable.add(repository.getCardInfo(userNumbers)
+                    .subscribeOn(Schedulers.io())
+                    .filter(user -> user.getCategory() != null && !user.getCategory().equals(Constants.EQUIPMENT))
+                    .filter(user -> user.getName() != null && !user.getName().equals(""))
+                    .toSingle()
+                    .flatMap((Function<User, SingleSource<UserDynamics>>) user -> {
+                        CacheUser.getUser().setBaseFields(user);
+                        return repository.getPersonalUserNumber(user.getName());
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::successfulResponse, this::handlerErrorsFromBadRequests));
+        }
     }
 }

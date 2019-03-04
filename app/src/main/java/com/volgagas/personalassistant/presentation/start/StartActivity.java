@@ -256,12 +256,12 @@ public class StartActivity extends BaseActivity implements StartView {
     }
 
     @Override
-    public void commonError() {
+    public void commonError(Throwable throwable) {
         RxBus.getInstance().passDataToCommonChannel("TITLE_SHOW");
 
         setPermissionToEnableNfc(true);
         handlerNFC();
 
-        Toasty.info(this, "Приложите карту еще раз").show();
+        Toasty.info(this, "Непредвиденная ошибка: " + throwable.getMessage()).show();
     }
 }

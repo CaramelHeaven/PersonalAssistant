@@ -2,7 +2,7 @@ package com.volgagas.personalassistant.models.network;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.volgagas.personalassistant.models.network.orders.PurchaseRequestionNetwork;
+import com.volgagas.personalassistant.models.network.orders.PurchaseRequisitionNetwork;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class PurchaseRequestionResponse {
     @SerializedName("value")
     @Expose
-    private List<PurchaseRequestionNetwork> value = null;
+    private List<PurchaseRequisitionNetwork> value = null;
 
     @Override
     public String toString() {
@@ -21,7 +21,7 @@ public class PurchaseRequestionResponse {
                 '}';
     }
 
-    public List<PurchaseRequestionNetwork> getValue() {
+    public List<PurchaseRequisitionNetwork> getValue() {
         return value;
     }
 }

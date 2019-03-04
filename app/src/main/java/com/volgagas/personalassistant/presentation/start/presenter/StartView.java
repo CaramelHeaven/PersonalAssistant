@@ -13,7 +13,7 @@ public interface StartView extends BaseView {
     void resultMatchedWithEquipment();
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
-    void commonError();
+    void commonError(Throwable throwable);
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
     void goToMainMenu();

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_container"
     android:layout_width="match_parent"
-    android:layout_height="96dp"
+    android:layout_height="104dp"
     android:foreground="?attr/selectableItemBackground">
 
     <RelativeLayout
@@ -18,7 +19,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_box_packed" />
+            android:src="@drawable/ic_trolley" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -33,18 +34,28 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_16sp" />
 
-        <TextView
-            android:id="@+id/tv_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_container"
+            android:layout_width="90dp"
+            android:layout_height="24dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
-            android:text="Status: active"
-            android:textColor="@android:color/black"
-            android:visibility="visible" />
+            app:cardCornerRadius="8dp">
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLength="9"
+                android:text="Active"
+                android:textColor="@android:color/white"
+                android:visibility="visible" />
+        </android.support.v7.widget.CardView>
 
         <TextView
             android:id="@+id/tv_description"

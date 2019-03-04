@@ -1,6 +1,8 @@
 package com.volgagas.personalassistant.presentation.order_purchase_requestion;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,10 +43,36 @@ public class PurchaseRequisitionAdapter extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         UserOrderVH userOrderVH = (UserOrderVH) viewHolder;
 
-        userOrderVH.tvDescription.setText(orders.get(i).getDescription());
-        userOrderVH.tvTitle.setText("Заказ " + orders.get(i).getRequisitionNumber() +
-                orders.get(i).getDefaultBusinessName());
-        userOrderVH.tvStatus.setText(orders.get(i).getStatus());
+        userOrderVH.tvDescription.setText(orders.get(i).getName());
+        userOrderVH.tvTitle.setText("Заказ № " + orders.get(i).getRequisitionNumber());
+
+        Context context = userOrderVH.cvContainer.getContext();
+        switch (orders.get(i).getStatus()) {
+            case "Closed":
+                userOrderVH.cvContainer.setCardBackgroundColor(context.getResources()
+                        .getColor(R.color.colorStatusClosed));
+                userOrderVH.tvStatus.setText("Завершено");
+                break;
+            case "Approved":
+                userOrderVH.cvContainer.setCardBackgroundColor(context.getResources()
+                        .getColor(R.color.colorStatusApproved));
+                userOrderVH.tvStatus.setText("Подтверждено");
+                break;
+            case "InReview":
+                userOrderVH.cvContainer.setCardBackgroundColor(context.getResources()
+                        .getColor(R.color.colorStatusInReview));
+                userOrderVH.tvStatus.setText("Рассматривается");
+                break;
+            case "Draft":
+                userOrderVH.cvContainer.setCardBackgroundColor(context.getResources()
+                        .getColor(R.color.colorStatusDraft));
+                userOrderVH.tvStatus.setText("Шаблон");
+                break;
+            default:
+                userOrderVH.cvContainer.setCardBackgroundColor(context.getResources()
+                        .getColor(R.color.colorStatusReject));
+                userOrderVH.tvStatus.setText("Отклонено");
+        }
     }
 
     public void updateAdapter(List<UserOrder> orders) {
@@ -65,9 +93,11 @@ public class PurchaseRequisitionAdapter extends RecyclerView.Adapter<RecyclerVie
     class UserOrderVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTitle, tvStatus, tvDescription;
         RelativeLayout rlContainer;
+        CardView cvContainer;
 
         public UserOrderVH(@NonNull View itemView) {
             super(itemView);
+            cvContainer = itemView.findViewById(R.id.cv_container);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvStatus = itemView.findViewById(R.id.tv_status);
             tvDescription = itemView.findViewById(R.id.tv_description);

@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by CaramelHeaven on 15:39, 27/02/2019.
  */
-public class PurchaseRequestionNetwork {
+public class PurchaseRequisitionNetwork {
     @SerializedName("@odata.etag")
     @Expose
     private String odataEtag;

@@ -5,6 +5,8 @@ package com.volgagas.personalassistant.models.model.order;
  */
 public class UserSubOrder {
     private String order;
+    private String status;
+
 
     public String getOrder() {
         return order;

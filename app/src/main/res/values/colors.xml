@@ -22,5 +22,12 @@
     <color name="colorIconLocation">#5D15C2</color>
     <color name="colorIconClock">#7CC24A</color>
 
+    <!--Coloring status in PurchaseRequisitionAdapter-->
+    <color name="colorStatusDraft">#003CB3</color>
+    <color name="colorStatusInReview">#E6E600</color>
+    <color name="colorStatusApproved">#00B31E</color>
+    <color name="colorStatusClosed">#00B31E</color>
+    <color name="colorStatusReject">#E60026</color>
+
     <color name="lightPrimaText">#4F83CC</color>
 </resources>

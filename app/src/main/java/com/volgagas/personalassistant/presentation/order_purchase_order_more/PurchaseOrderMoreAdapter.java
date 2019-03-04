@@ -25,7 +25,8 @@ public class PurchaseOrderMoreAdapter extends RecyclerView.Adapter<RecyclerView.
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_pu)
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_purchase_order_more,
+                viewGroup, false);
         return null;
     }
 

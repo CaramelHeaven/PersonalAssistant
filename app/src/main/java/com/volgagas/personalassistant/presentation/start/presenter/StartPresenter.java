@@ -110,15 +110,21 @@ public class StartPresenter extends BasePresenter<StartView> {
             getViewState().showProgress();
             disposable.add(repository.getCardInfo(userNumbers)
                     .subscribeOn(Schedulers.io())
-                    .filter(user -> user.getCategory() != null && !user.getCategory().equals(Constants.EQUIPMENT))
-                    .filter(user -> user.getName() != null && !user.getName().equals(""))
-                    .toSingle()
-                    .flatMap((Function<User, SingleSource<UserDynamics>>) user -> {
-                        CacheUser.getUser().setBaseFields(user);
-                        return repository.getPersonalUserNumber(user.getName());
-                    })
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::successfulResponse, this::handlerErrorsFromBadRequests));
+                    .subscribe(result -> {
+                        if (result.getCategory() != null && !result.getCategory().equals(Constants.EQUIPMENT)
+                                && result.getName() != null && !result.getName().equals("")) {
+                            CacheUser.getUser().setBaseFields(result);
+
+                            disposable.add(repository.getPersonalUserNumber(result.getName())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(this::successfulResponse,
+                                            this::handlerErrorsFromBadRequests));
+                        } else {
+                            getViewState().showErrorToEnter();
+                        }
+                    }, this::handlerErrorsFromBadRequests));
         }
     }
 }

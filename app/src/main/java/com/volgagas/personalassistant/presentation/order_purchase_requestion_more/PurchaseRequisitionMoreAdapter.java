@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.order.UserSubOrder;
@@ -32,7 +33,10 @@ public class PurchaseRequisitionMoreAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
+        UserSubOrderVH userSubOrderVH = (UserSubOrderVH) viewHolder;
+        userSubOrderVH.tvDescription.setText(list.get(i).getDescription());
+        userSubOrderVH.tvQuantity.setText(list.get(i).getQuantity() + " " + list.get(i).getUnit());
+        userSubOrderVH.tvPrice.setText(list.get(i).getPrice() + " " + list.get(i).getPriceCode());
     }
 
     @Override
@@ -46,9 +50,13 @@ public class PurchaseRequisitionMoreAdapter extends RecyclerView.Adapter<Recycle
     }
 
     class UserSubOrderVH extends RecyclerView.ViewHolder {
+        TextView tvDescription, tvPrice, tvQuantity;
 
         public UserSubOrderVH(@NonNull View itemView) {
             super(itemView);
+            tvDescription = itemView.findViewById(R.id.tv_description);
+            tvPrice = itemView.findViewById(R.id.tv_price);
+            tvQuantity = itemView.findViewById(R.id.tv_quantity);
         }
     }
 }

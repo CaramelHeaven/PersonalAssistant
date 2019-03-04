@@ -3,8 +3,10 @@ package com.volgagas.personalassistant.presentation.order_purchase_requestion_mo
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -33,6 +35,7 @@ public class PurchaseReqiestionMoreDialogFragment extends MvpAppCompatDialogFrag
     private DisplayMetrics displayMetrics;
     private PurchaseRequisitionMoreAdapter adapter;
 
+    private Toolbar toolbar;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
 
@@ -62,7 +65,13 @@ public class PurchaseReqiestionMoreDialogFragment extends MvpAppCompatDialogFrag
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         progressBar = view.findViewById(R.id.progressBar);
+        toolbar = view.findViewById(R.id.toolbar);
         recyclerView = view.findViewById(R.id.recyclerView);
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> dismiss());
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -94,6 +103,8 @@ public class PurchaseReqiestionMoreDialogFragment extends MvpAppCompatDialogFrag
     public void showItem(List<UserSubOrder> userSubOrder) {
         if (userSubOrder.size() > 0) {
             adapter.updateAdapter(userSubOrder);
+        } else {
+            Toast.makeText(getActivity(), "Ничего нет", Toast.LENGTH_SHORT).show();
         }
     }
 

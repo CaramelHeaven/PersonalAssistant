@@ -15,7 +15,7 @@ public class PurchReqLinesNetwork {
     private String requisitionNumber;
     @SerializedName("RequisitionLineNumber")
     @Expose
-    private Integer requisitionLineNumber;
+    private Long requisitionLineNumber;
     @SerializedName("ProcurementProductCategoryName")
     @Expose
     private String procurementProductCategoryName;
@@ -51,7 +51,7 @@ public class PurchReqLinesNetwork {
     private String deliveryStreetInKana;
     @SerializedName("LineDiscountAmount")
     @Expose
-    private Integer lineDiscountAmount;
+    private Double lineDiscountAmount;
     @SerializedName("ProductStyleId")
     @Expose
     private String productStyleId;
@@ -78,7 +78,7 @@ public class PurchReqLinesNetwork {
     private String itemBatchNumber;
     @SerializedName("DeliveryAddressLatitude")
     @Expose
-    private Integer deliveryAddressLatitude;
+    private Long deliveryAddressLatitude;
     @SerializedName("ReceivingWarehouseId")
     @Expose
     private String receivingWarehouseId;
@@ -114,13 +114,13 @@ public class PurchReqLinesNetwork {
     private String deliveryAddressZipCode;
     @SerializedName("FixedPriceCharges")
     @Expose
-    private Integer fixedPriceCharges;
+    private Long fixedPriceCharges;
     @SerializedName("DeliveryAddressDunsNumber")
     @Expose
     private String deliveryAddressDunsNumber;
     @SerializedName("PurchasePriceQuantity")
     @Expose
-    private Integer purchasePriceQuantity;
+    private Long purchasePriceQuantity;
     @SerializedName("RequisitionerPersonnelNumber")
     @Expose
     private String requisitionerPersonnelNumber;
@@ -129,7 +129,7 @@ public class PurchReqLinesNetwork {
     private String deliveryAddressName;
     @SerializedName("BudgetReservationLineNumber")
     @Expose
-    private Integer budgetReservationLineNumber;
+    private Long budgetReservationLineNumber;
     @SerializedName("DeliveryAddressStreetNumber")
     @Expose
     private String deliveryAddressStreetNumber;
@@ -198,10 +198,10 @@ public class PurchReqLinesNetwork {
     private String isDeliveryAddressOrderSpecific;
     @SerializedName("PurchasePrice")
     @Expose
-    private Integer purchasePrice;
+    private Double purchasePrice;
     @SerializedName("LineDiscountPercentage")
     @Expose
-    private Integer lineDiscountPercentage;
+    private Long lineDiscountPercentage;
     @SerializedName("RequestedDate")
     @Expose
     private String requestedDate;
@@ -210,7 +210,7 @@ public class PurchReqLinesNetwork {
     private String businessJustificationCode;
     @SerializedName("DeliveryAddressLongitude")
     @Expose
-    private Integer deliveryAddressLongitude;
+    private Long deliveryAddressLongitude;
     @SerializedName("FixedAssetGroupId")
     @Expose
     private String fixedAssetGroupId;
@@ -234,16 +234,16 @@ public class PurchReqLinesNetwork {
     private String deliveryAddressPostBox;
     @SerializedName("LineAmount")
     @Expose
-    private Integer lineAmount;
+    private Double lineAmount;
     @SerializedName("FixedAssetReasonCode")
     @Expose
     private String fixedAssetReasonCode;
     @SerializedName("ProjectSalesPrice")
     @Expose
-    private Integer projectSalesPrice;
+    private Long projectSalesPrice;
     @SerializedName("RequestedPurchaseQuantity")
     @Expose
-    private Integer requestedPurchaseQuantity;
+    private Double requestedPurchaseQuantity;
     @SerializedName("ExternalItemNumber")
     @Expose
     private String externalItemNumber;
@@ -259,7 +259,7 @@ public class PurchReqLinesNetwork {
         return requisitionNumber;
     }
 
-    public Integer getRequisitionLineNumber() {
+    public Long getRequisitionLineNumber() {
         return requisitionLineNumber;
     }
 
@@ -307,7 +307,7 @@ public class PurchReqLinesNetwork {
         return deliveryStreetInKana;
     }
 
-    public Integer getLineDiscountAmount() {
+    public Double getLineDiscountAmount() {
         return lineDiscountAmount;
     }
 
@@ -343,7 +343,7 @@ public class PurchReqLinesNetwork {
         return itemBatchNumber;
     }
 
-    public Integer getDeliveryAddressLatitude() {
+    public Long getDeliveryAddressLatitude() {
         return deliveryAddressLatitude;
     }
 
@@ -391,7 +391,7 @@ public class PurchReqLinesNetwork {
         return deliveryAddressZipCode;
     }
 
-    public Integer getFixedPriceCharges() {
+    public Long getFixedPriceCharges() {
         return fixedPriceCharges;
     }
 
@@ -399,7 +399,7 @@ public class PurchReqLinesNetwork {
         return deliveryAddressDunsNumber;
     }
 
-    public Integer getPurchasePriceQuantity() {
+    public Long getPurchasePriceQuantity() {
         return purchasePriceQuantity;
     }
 
@@ -411,7 +411,7 @@ public class PurchReqLinesNetwork {
         return deliveryAddressName;
     }
 
-    public Integer getBudgetReservationLineNumber() {
+    public Long getBudgetReservationLineNumber() {
         return budgetReservationLineNumber;
     }
 
@@ -503,11 +503,11 @@ public class PurchReqLinesNetwork {
         return isDeliveryAddressOrderSpecific;
     }
 
-    public Integer getPurchasePrice() {
+    public Double getPurchasePrice() {
         return purchasePrice;
     }
 
-    public Integer getLineDiscountPercentage() {
+    public Long getLineDiscountPercentage() {
         return lineDiscountPercentage;
     }
 
@@ -519,7 +519,7 @@ public class PurchReqLinesNetwork {
         return businessJustificationCode;
     }
 
-    public Integer getDeliveryAddressLongitude() {
+    public Long getDeliveryAddressLongitude() {
         return deliveryAddressLongitude;
     }
 
@@ -529,10 +529,6 @@ public class PurchReqLinesNetwork {
 
     public String getDefaultLedgerDimensionDisplayValue() {
         return defaultLedgerDimensionDisplayValue;
-    }
-
-    public Object getDeliveryAddressTimeZone() {
-        return deliveryAddressTimeZone;
     }
 
     public String getBudgetReservationDocumentNumber() {
@@ -551,7 +547,7 @@ public class PurchReqLinesNetwork {
         return deliveryAddressPostBox;
     }
 
-    public Integer getLineAmount() {
+    public Double getLineAmount() {
         return lineAmount;
     }
 
@@ -559,11 +555,11 @@ public class PurchReqLinesNetwork {
         return fixedAssetReasonCode;
     }
 
-    public Integer getProjectSalesPrice() {
+    public Long getProjectSalesPrice() {
         return projectSalesPrice;
     }
 
-    public Integer getRequestedPurchaseQuantity() {
+    public Double getRequestedPurchaseQuantity() {
         return requestedPurchaseQuantity;
     }
 
@@ -574,4 +570,5 @@ public class PurchReqLinesNetwork {
     public String getFormattedDeliveryAddress() {
         return formattedDeliveryAddress;
     }
+
 }

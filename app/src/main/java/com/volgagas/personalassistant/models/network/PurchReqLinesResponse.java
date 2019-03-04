@@ -13,4 +13,8 @@ public class PurchReqLinesResponse {
     @SerializedName("value")
     @Expose
     private List<PurchReqLinesNetwork> value = null;
+
+    public List<PurchReqLinesNetwork> getValue() {
+        return value;
+    }
 }

@@ -2,6 +2,9 @@ package com.volgagas.personalassistant.data.cache;
 
 import com.volgagas.personalassistant.models.model.Contract;
 import com.volgagas.personalassistant.models.model.common.Apk;
+import com.volgagas.personalassistant.models.model.order.CommonOrder;
+import com.volgagas.personalassistant.models.model.order.ServerOrder;
+import com.volgagas.personalassistant.models.model.order.UserOrder;
 import com.volgagas.personalassistant.models.model.queries.QueryToUser;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
@@ -46,6 +49,9 @@ public class CachePot {
     private List<QueryToUser> queryToUserList;
     private List<UniformRequest> queryFromUserList;
 
+    //cache data for purchase orders
+    private List<ServerOrder> serverOrders;
+
     public static CachePot getInstance() {
         if (cachePot == null) {
             synchronized (CachePot.class) {
@@ -56,6 +62,14 @@ public class CachePot {
         }
 
         return cachePot;
+    }
+
+    public List<ServerOrder> getServerOrders() {
+        return serverOrders;
+    }
+
+    public void setServerOrders(List<ServerOrder> serverOrders) {
+        this.serverOrders = new ArrayList<>(serverOrders);
     }
 
     public void setQueryToUserList(List<QueryToUser> queryToUserList) {

@@ -5,6 +5,7 @@ import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import java.util.List;
 
@@ -31,6 +32,13 @@ public class PurchaseReqiestionMorePresenter extends BasePresenter<PurchaseReqie
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
 
+        //refresh tokens
+        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
+                .subscribeOn(Schedulers.io())
+                .filter(result -> result.equals(Constants.PURCHASE_REQUISITION_MORE))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> loadData()));
+
         loadData();
     }
 
@@ -42,7 +50,7 @@ public class PurchaseReqiestionMorePresenter extends BasePresenter<PurchaseReqie
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
-
+            RxBus.getInstance().passActionForUpdateToken(Constants.PURCHASE_REQUISITION_MORE);
         } else {
             sendCrashlytics(throwable);
             getViewState().catastrophicError(throwable);

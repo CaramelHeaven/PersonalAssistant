@@ -73,6 +73,9 @@ public class Constants {
     public static final String ACTION_FOR_DOWNLOAD_APK = "ACTION_FOR_DOWNLOAD_APK";
 
     //refreshing key-word for each screen
+    public static final String PURCHASE_REQUISITION = "PURCHASE_REQUISITION";
+    public static final String PURCHASE_ORDER_MORE = "PURCHASE_ORDER_MORE";
+    public static final String PURCHASE_REQUISITION_MORE = "PURCHASE_REQUISITION_MORE";
     public static final String START_PRESENTER = "START_PRESENTER";
     public static final String WORKER_TODAY_NEW_PRESENTER = "WORKER_TODAY_NEW_PRESENTER";
     public static final String WORKER_GPA_PRESENTER = "WORKER_GPA_PRESENTER";

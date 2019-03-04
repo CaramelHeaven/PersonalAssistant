@@ -4,6 +4,8 @@ import com.arellomobile.mvp.InjectViewState;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
+import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.bus.RxBus;
 
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class PurchaseOrderMorePresenter extends BasePresenter<PurchaseOrderMoreV
     private MainRepository repository;
 
     public PurchaseOrderMorePresenter(String orderId) {
+        super();
         this.orderId = orderId;
         repository = MainRemoteRepository.getInstance();
     }
@@ -29,6 +32,13 @@ public class PurchaseOrderMorePresenter extends BasePresenter<PurchaseOrderMoreV
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+
+        //refresh tokens
+        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
+                .subscribeOn(Schedulers.io())
+                .filter(result -> result.equals(Constants.PURCHASE_ORDER_MORE))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> loadData()));
 
         loadData();
     }
@@ -40,7 +50,11 @@ public class PurchaseOrderMorePresenter extends BasePresenter<PurchaseOrderMoreV
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-
+        if (throwable.getMessage().contains(Constants.HTTP_401)) {
+            RxBus.getInstance().passActionForUpdateToken(Constants.PURCHASE_ORDER_MORE);
+        } else {
+            sendCrashlytics(throwable);
+        }
     }
 
     @Override

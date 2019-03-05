@@ -69,19 +69,54 @@ public class InfoPresenter extends BasePresenter<InfoView> {
                 repository.getPersonSkills(),
                 repository.getPersonSalary(),
                 (personData, personSkills, personSalary) -> {
-                    List<Object> objects = new ArrayList<>();
-                    objects.add(personSalary);
-                    objects.add(personData);
-                    objects.add(personSkills);
+                    CommonObjects objects = new CommonObjects();
+                    objects.setPersonSalary(personSalary);
+                    objects.setPersonData(personData);
+                    objects.setPersonSkills(personSkills);
 
                     return objects;
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
+                    List<Object> list = new ArrayList<>();
+                    list.add(result.getPersonSalary());
+                    list.add(result.getPersonData());
+
                     getViewState().hideProgress();
-                    getViewState().showData(result);
+
+                    getViewState().showData(list);
+                    getViewState().showPersonSkills(result.getPersonSkills());
                 }, this::handlerErrorsFromBadRequests));
     }
 
+    private class CommonObjects {
+        private PersonSalary personSalary;
+        private PersonData personData;
+        private List<PersonSkills> personSkills;
+
+        public PersonSalary getPersonSalary() {
+            return personSalary;
+        }
+
+        public void setPersonSalary(PersonSalary personSalary) {
+            this.personSalary = personSalary;
+        }
+
+        public PersonData getPersonData() {
+            return personData;
+        }
+
+        public void setPersonData(PersonData personData) {
+            this.personData = personData;
+        }
+
+        public List<PersonSkills> getPersonSkills() {
+            return personSkills;
+        }
+
+        public void setPersonSkills(List<PersonSkills> personSkills) {
+            this.personSkills = personSkills;
+        }
+    }
 }

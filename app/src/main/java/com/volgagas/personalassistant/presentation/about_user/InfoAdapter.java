@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
@@ -26,7 +27,7 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final int TYPE_INFO = -1;
     private final int TYPE_DATA = -2;
-    private final int TYPE_SKILLS = -3;
+    //private final int TYPE_SKILLS = -3;
     private final int TYPE_USUALLY = 0;
 
     public InfoAdapter(List<Object> objectList) {
@@ -45,10 +46,6 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 View data = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.item_info_data, viewGroup, false);
                 return new DataVH(data);
-            case TYPE_USUALLY:
-                View skills = LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.item_info_skills, viewGroup, false);
-                return new SkillsVH(skills);
             default:
                 return null;
         }
@@ -89,26 +86,18 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
+        Timber.d("pos: " + position);
         if (objectList.get(position) != null) {
             if (objectList.get(position) instanceof PersonSalary) {
                 return TYPE_INFO;
             } else if (objectList.get(position) instanceof PersonData) {
                 return TYPE_DATA;
-            } else if (objectList.get(position) instanceof PersonSkills) {
-                return TYPE_SKILLS;
             } else {
                 return TYPE_USUALLY;
             }
         } else {
             Timber.d("object list null, pos: " + position);
             return position;
-        }
-    }
-
-    class SkillsVH extends RecyclerView.ViewHolder {
-
-        public SkillsVH(@NonNull View itemView) {
-            super(itemView);
         }
     }
 

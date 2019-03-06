@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.volgagas.personalassistant.BuildConfig;
 import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
@@ -147,28 +148,29 @@ public class MainPresenter extends MvpPresenter<MainView> {
     private List<Apk> filterApkListForCurrentAppName(List<Apk> baseApk) {
         List<Apk> apkList = new ArrayList<>();
 
-        //if user is testing person - allow him to download test apk's.
-        boolean allowToDownloadTestApk = false;
-        for (String secondName : Constants.ALLOW_PEOPLE_TESTING) {
-            if (CacheUser.getUser().getName().contains(secondName)) {
-                allowToDownloadTestApk = true;
+        boolean isAllowToDownloadTestApk = false;
+        for (String lastName : Constants.ALLOW_PEOPLE_TESTING) {
+            if (CacheUser.getUser().getName().contains(lastName)) {
+                isAllowToDownloadTestApk = true;
                 break;
             }
         }
-        for (Apk apk : baseApk) {
-            if (apk.getName().toLowerCase().contains("pa")) {
-                if (allowToDownloadTestApk) {
-                    if (apk.getName().toLowerCase().contains("test")) {
-                        apkList.add(apk);
-                    }
-                } else {
-                    if (!apk.getName().toLowerCase().contains("test")) {
-                        apkList.add(apk);
-                    }
+
+        if (isAllowToDownloadTestApk && BuildConfig.FLAVOR.equals("dev")) {
+            for (Apk apk : baseApk) {
+                if (apk.getName().toLowerCase().contains("pa") &
+                        apk.getName().toLowerCase().contains("dev")) {
+                    apkList.add(apk);
+                }
+            }
+        } else {
+            for (Apk apk : baseApk) {
+                if (apk.getName().toLowerCase().contains("pa") &&
+                        !apk.getName().toLowerCase().contains("dev")) {
+                    apkList.add(apk);
                 }
             }
         }
-        Timber.d("apk list: " + apkList);
 
         return apkList;
     }

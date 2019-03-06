@@ -101,6 +101,7 @@ public class MainActivity extends BaseActivity implements MainView {
         infoSet = new ConstraintSet();
 
         provideBackgroundUIData();
+        //init release
 
         homeSet.clone(constraintLayout);
         projectsSet.clone(this, R.layout.activity_constraint_projects);

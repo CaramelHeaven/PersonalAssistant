@@ -63,6 +63,11 @@ public class QueryToUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
+    public void clear() {
+        this.queryToUsers.clear();
+        notifyDataSetChanged();
+    }
+
     public QueryToUser getItemByPosition(int pos) {
         return queryToUsers.get(pos);
     }

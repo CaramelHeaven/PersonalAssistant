@@ -1,8 +1,10 @@
 package com.volgagas.personalassistant.presentation.projects_query_to_user;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,6 +38,7 @@ public class QueryToUserFragment extends BaseFragment implements QueryToUserView
     private ProgressBar progressBar;
     private ImageView ivImageEmpty;
     private TextView tvEmptyQueries;
+    private SwipeRefreshLayout swipeRefresh;
 
     private QueryToUserAdapter adapter;
 
@@ -63,6 +66,7 @@ public class QueryToUserFragment extends BaseFragment implements QueryToUserView
         progressBar = view.findViewById(R.id.progressBar);
         tvEmptyQueries = view.findViewById(R.id.tv_empty_tasks);
         ivImageEmpty = view.findViewById(R.id.iv_empty_tasks);
+        swipeRefresh = view.findViewById(R.id.spl_update_content);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -75,6 +79,8 @@ public class QueryToUserFragment extends BaseFragment implements QueryToUserView
                     QueryMoreDetailsDialogFragment.newInstance(adapter.getItemByPosition(position));
             fragment.show(getActivity().getSupportFragmentManager(), null);
         });
+
+        provideRefreshingItems();
     }
 
     @Override
@@ -110,4 +116,24 @@ public class QueryToUserFragment extends BaseFragment implements QueryToUserView
         }
     }
 
+    private void provideRefreshingItems() {
+        swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        swipeRefresh.setOnRefreshListener(() -> {
+            adapter.clear();
+            presenter.updateData();
+            if (swipeRefresh.isRefreshing()) {
+                new Handler().postDelayed(() -> swipeRefresh.setRefreshing(false), 1000);
+            }
+        });
+    }
+
+    @Override
+    public void showUpdatedData(List<QueryToUser> data) {
+        if (data.size() > 0) {
+            adapter.updateAdapter(data);
+        } else {
+            ivImageEmpty.setVisibility(View.VISIBLE);
+            tvEmptyQueries.setVisibility(View.VISIBLE);
+        }
+    }
 }

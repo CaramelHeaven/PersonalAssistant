@@ -41,7 +41,9 @@ public class KioskAddedTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         TaskVH taskVH = (TaskVH) viewHolder;
+
         taskVH.tvTaskName.setText(taskList.get(position).getDescription());
+        taskVH.tvCategory.setText(taskList.get(position).getCategoryId());
     }
 
     @Override

@@ -7,8 +7,8 @@ android {
         applicationId "com.volgagas.personalassistant"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 16
-        versionName "0.1.6"
+        versionCode 21
+        versionName "0.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -23,6 +23,20 @@ android {
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    //specifies flavor dimensions
+    flavorDimensions "tier"
+    productFlavors {
+        dev {
+            dimension "tier"
+            versionName = android.defaultConfig.versionName + " dev"
+            applicationId = "com.volgagas.personalassistant.dev"
+        }
+        prod {
+            dimension "tier"
+            applicationId = "com.volgagas.personalassistant.prod"
+        }
     }
 }
 

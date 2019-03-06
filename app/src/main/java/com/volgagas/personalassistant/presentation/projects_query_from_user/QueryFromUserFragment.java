@@ -2,9 +2,11 @@ package com.volgagas.personalassistant.presentation.projects_query_from_user;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,6 +42,7 @@ public class QueryFromUserFragment extends BaseFragment implements QueryFromUser
     private ImageView ivEmptyTasks;
     private TextView tvEmptyTasks;
     private FloatingActionButton fabCreate;
+    private SwipeRefreshLayout swipeRefresh;
 
     private QueryFromUserAdapter adapter;
 
@@ -68,6 +71,7 @@ public class QueryFromUserFragment extends BaseFragment implements QueryFromUser
         tvEmptyTasks = view.findViewById(R.id.tv_empty_tasks);
         fabCreate = view.findViewById(R.id.fab_create);
         ivEmptyTasks = view.findViewById(R.id.iv_empty_tasks);
+        swipeRefresh = view.findViewById(R.id.spl_update_content);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -83,6 +87,8 @@ public class QueryFromUserFragment extends BaseFragment implements QueryFromUser
 
         fabCreate.setOnClickListener(v ->
                 startActivity(new Intent(getActivity(), QueryCreateActivity.class)));
+
+        provideRefreshingItems();
     }
 
     @Override
@@ -118,4 +124,24 @@ public class QueryFromUserFragment extends BaseFragment implements QueryFromUser
         }
     }
 
+    private void provideRefreshingItems() {
+        swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        swipeRefresh.setOnRefreshListener(() -> {
+            adapter.clear();
+            presenter.updateData();
+            if (swipeRefresh.isRefreshing()) {
+                new Handler().postDelayed(() -> swipeRefresh.setRefreshing(false), 1000);
+            }
+        });
+    }
+
+    @Override
+    public void showUpdatedData(List<UniformRequest> data) {
+        if (data.size() > 0) {
+            adapter.updateAdapter(data);
+        } else {
+            ivEmptyTasks.setVisibility(View.VISIBLE);
+            tvEmptyTasks.setVisibility(View.VISIBLE);
+        }
+    }
 }

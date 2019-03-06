@@ -96,7 +96,7 @@ public class Constants {
     public static final String PROJECTS_CONTRACTS = "PROJECTS_CONTRACTS";
 
     //People which can test our application
-    public static final List<String> ALLOW_PEOPLE_TESTING = new ArrayList<>(Arrays.asList("Бунькин", "Тарновский", "Иванов"));
+    public static final List<String> ALLOW_PEOPLE_TESTING = new ArrayList<>(Arrays.asList("Бунькин", "Тарновский"));
     //current app version, we init it inside StartActivity
     public static String APP_CURRENT_VERSION = "";
     public static final String APP_NOFITICATION = "CHANNEL_ID_103"; // for create notification

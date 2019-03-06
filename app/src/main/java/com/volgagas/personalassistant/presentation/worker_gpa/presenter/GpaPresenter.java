@@ -82,21 +82,19 @@ public class GpaPresenter extends BasePresenter<GpaView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result.getCategory().equals("Оборудование")) {
-                        //todo MAKE this code to check GPA NAME for current card name
-//                        if (result.getName().equals(task.getGpa())) {
-                        disposable.add(Single.just(selectedTasks)
-                                .subscribeOn(Schedulers.io())
-                                .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
-                                .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
-                                        repository.sendStartedSubTasks(mappingJson(), subTask.getIdActivity()))
-                                .toList()
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
-
-//                        } else {
-//                            getViewState().hideProgress();
-//                            getViewState().showError("Приложена другая карта оборудования");
-//                        }
+                        if (result.getName().equals(task.getGpa())) {
+                            disposable.add(Single.just(selectedTasks)
+                                    .subscribeOn(Schedulers.io())
+                                    .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)
+                                    .flatMap((Function<SubTask, ObservableSource<Response<Void>>>) subTask ->
+                                            repository.sendStartedSubTasks(mappingJson(), subTask.getIdActivity()))
+                                    .toList()
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
+                        } else {
+                            getViewState().hideProgress();
+                            getViewState().showError("Приложена другая карта оборудования");
+                        }
                     } else {
                         getViewState().hideProgress();
                         getViewState().showError("Приложена карточка сотрудника");
@@ -116,9 +114,11 @@ public class GpaPresenter extends BasePresenter<GpaView> {
 
     @Override
     protected void handlerErrorsFromBadRequests(Throwable throwable) {
-        sendCrashlytics(throwable);
-        Timber.d("thrwoable: " + throwable.getCause());
-        Timber.d("thrwoable: " + throwable.getMessage());
+        if (throwable.getMessage().contains(Constants.HTTP_401)) {
+            RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_GPA_PRESENTER);
+        } else {
+            sendCrashlytics(throwable);
+        }
     }
 
     @Override

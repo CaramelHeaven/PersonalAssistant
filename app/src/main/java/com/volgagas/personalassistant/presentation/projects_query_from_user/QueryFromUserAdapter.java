@@ -54,6 +54,11 @@ public class QueryFromUserAdapter extends RecyclerView.Adapter<RecyclerView.View
         notifyDataSetChanged();
     }
 
+    public void clear() {
+        this.uniformRequests.clear();
+        notifyDataSetChanged();
+    }
+
     public UniformRequest getItemByPosition(int pos) {
         return uniformRequests.get(pos);
     }

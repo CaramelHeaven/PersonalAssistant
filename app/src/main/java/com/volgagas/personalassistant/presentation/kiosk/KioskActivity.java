@@ -180,7 +180,7 @@ public class KioskActivity extends BaseActivity implements KioskView {
         alertDialog = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                 .setTitle("Сканирование")
-                .setMessage("Приложите карту для подтверждения задач")
+                .setMessage("Приложите карту работника для подтверждения задач")
                 .setCancelable(true)
                 .setOnCancelListener(dialog -> {
                     Timber.d("set on cancel listener");

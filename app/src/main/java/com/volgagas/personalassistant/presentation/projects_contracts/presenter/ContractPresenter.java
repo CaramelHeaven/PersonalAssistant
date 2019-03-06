@@ -58,7 +58,7 @@ public class ContractPresenter extends BasePresenter<ContractView<Contract>> {
     }
 
     @Override
-    protected void loadData() {
+    public void loadData() {
         getViewState().showProgress();
         disposable.add(repository.getContractsForUser()
                 .subscribeOn(Schedulers.io())

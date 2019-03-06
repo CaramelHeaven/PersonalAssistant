@@ -49,6 +49,11 @@ public class ContractAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
+    public void clear() {
+        this.contractList.clear();
+        notifyDataSetChanged();
+    }
+
     class ContractVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvMoney, tvState, tvTitle, tvDateEnd;
         private CardView cvContainer;

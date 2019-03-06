@@ -1,11 +1,11 @@
 package com.volgagas.personalassistant.presentation.main.presenter;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.volgagas.personalassistant.data.cache.CachePot;
+import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.common.Apk;
@@ -15,33 +15,18 @@ import com.volgagas.personalassistant.utils.notifications.FileUploadNotification
 import com.volgagas.personalassistant.utils.services.SaveApkWorker;
 import com.volgagas.personalassistant.utils.threads.UpdateTokenHandler;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import androidx.work.Constraints;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.BiConsumer;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
 import timber.log.Timber;
 
 /**
@@ -161,11 +146,29 @@ public class MainPresenter extends MvpPresenter<MainView> {
      */
     private List<Apk> filterApkListForCurrentAppName(List<Apk> baseApk) {
         List<Apk> apkList = new ArrayList<>();
-        for (Apk apk : baseApk) {
-            if (apk.getName().toLowerCase().contains("pa") && (!apk.getName().toLowerCase().contains("test"))) {
-                apkList.add(apk);
+
+        //if user is testing person - allow him to download test apk's.
+        boolean allowToDownloadTestApk = false;
+        for (String secondName : Constants.ALLOW_PEOPLE_TESTING) {
+            if (CacheUser.getUser().getName().contains(secondName)) {
+                allowToDownloadTestApk = true;
+                break;
             }
         }
+        for (Apk apk : baseApk) {
+            if (apk.getName().toLowerCase().contains("pa")) {
+                if (allowToDownloadTestApk) {
+                    if (apk.getName().toLowerCase().contains("test")) {
+                        apkList.add(apk);
+                    }
+                } else {
+                    if (!apk.getName().toLowerCase().contains("test")) {
+                        apkList.add(apk);
+                    }
+                }
+            }
+        }
+        Timber.d("apk list: " + apkList);
 
         return apkList;
     }

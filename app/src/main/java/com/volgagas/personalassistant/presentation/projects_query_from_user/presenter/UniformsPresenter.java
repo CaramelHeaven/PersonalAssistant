@@ -67,9 +67,19 @@ public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRe
 
     }
 
+    public void updateData() {
+        getViewState().showProgress();
+        disposable.add(repository.getUniformRequestsFromUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    getViewState().hideProgress();
+                    getViewState().showUpdatedData(result);
+                }));
+    }
+
     @Override
     protected void loadData() {
-        Timber.d("LALA: ");
         if (CachePot.getInstance().getQueryFromUserList() != null) {
             result(CachePot.getInstance().getQueryFromUserList());
         }

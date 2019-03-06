@@ -63,6 +63,17 @@ public class QueryToUserPresenter extends BasePresenter<QueryToUserView<QueryToU
 
     }
 
+    public void updateData() {
+        getViewState().showProgress();
+        disposable.add(repository.getUniformRequestsToUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    getViewState().hideProgress();
+                    getViewState().showUpdatedData(result);
+                }));
+    }
+
     @Override
     protected void loadData() {
         Timber.d("LALA: ");

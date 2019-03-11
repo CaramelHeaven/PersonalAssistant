@@ -7,20 +7,16 @@ import com.volgagas.personalassistant.presentation.base.BaseView;
 /**
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
+@StateStrategyType(value = OneExecutionStateStrategy.class)
 public interface StartView extends BaseView {
 
-    @StateStrategyType(value = OneExecutionStateStrategy.class)
     void resultMatchedWithEquipment();
 
-    @StateStrategyType(value = OneExecutionStateStrategy.class)
     void commonError(Throwable throwable);
 
-    @StateStrategyType(value = OneExecutionStateStrategy.class)
     void goToMainMenu();
 
-    @StateStrategyType(value = OneExecutionStateStrategy.class)
     void showErrorToEnter();
 
-    @StateStrategyType(value = OneExecutionStateStrategy.class)
     void enableNFC();
 }

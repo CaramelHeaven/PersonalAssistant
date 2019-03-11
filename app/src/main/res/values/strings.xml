@@ -11,6 +11,6 @@
     <string name="volgagas_description">«Волга Газ» - независимая компания по разведке и добыче нефти и газа, работающая в Поволжье России.</string>
 
     <!--Changing this for update apkes: Помощник || Тест.-->
-    <string name="currentVersionApp">0.4.0</string>
+    <string name="currentVersionApp">0.4.1</string>
     <string name="current_app_name">Тест</string>
 </resources>

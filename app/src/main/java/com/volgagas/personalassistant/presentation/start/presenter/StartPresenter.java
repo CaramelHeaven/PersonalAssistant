@@ -73,7 +73,8 @@ public class StartPresenter extends BasePresenter<StartView> {
 
     private void successfulResponse(UserDynamics userDynamics) {
         ThreePermissions permissions = ThreePermissions.getInstance();
-        if (userDynamics.getPersonalNumber().equals("") || userDynamics.getWorkerRecId().equals("")) {
+        if (userDynamics.getPersonalNumber() == null || userDynamics.getWorkerRecId() == null ||
+                userDynamics.getPersonalNumber().equals("") || userDynamics.getWorkerRecId().equals("")) {
             permissions.setServer(false);
             CommonChannel.sendPermissions(permissions);
 

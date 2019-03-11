@@ -6,6 +6,7 @@ package com.volgagas.personalassistant.models.model;
  */
 public class UserDynamics {
     private String personalNumber;
+    private String workerRecId;
 
     public String getPersonalNumber() {
         return personalNumber;
@@ -15,10 +16,19 @@ public class UserDynamics {
         this.personalNumber = personalNumber;
     }
 
+    public String getWorkerRecId() {
+        return workerRecId;
+    }
+
+    public void setWorkerRecId(String workerRecId) {
+        this.workerRecId = workerRecId;
+    }
+
     @Override
     public String toString() {
         return "UserDynamics{" +
                 "personalNumber='" + personalNumber + '\'' +
+                ", workerRecId='" + workerRecId + '\'' +
                 '}';
     }
 }

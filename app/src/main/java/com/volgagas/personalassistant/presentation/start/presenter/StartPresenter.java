@@ -3,6 +3,7 @@ package com.volgagas.personalassistant.presentation.start.presenter;
 import android.annotation.SuppressLint;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
@@ -72,7 +73,7 @@ public class StartPresenter extends BasePresenter<StartView> {
 
     private void successfulResponse(UserDynamics userDynamics) {
         ThreePermissions permissions = ThreePermissions.getInstance();
-        if (userDynamics.getPersonalNumber() == null || userDynamics.getPersonalNumber().equals("")) {
+        if (userDynamics.getPersonalNumber().equals("") || userDynamics.getWorkerRecId().equals("")) {
             permissions.setServer(false);
             CommonChannel.sendPermissions(permissions);
 
@@ -80,6 +81,7 @@ public class StartPresenter extends BasePresenter<StartView> {
             getViewState().showErrorToEnter();
         } else {
             CacheUser.getUser().setPersonalDynamics365Number(userDynamics.getPersonalNumber());
+            CacheUser.getUser().setWorkerRecId(userDynamics.getWorkerRecId());
 
             permissions.setServer(true);
             CommonChannel.sendPermissions(permissions);

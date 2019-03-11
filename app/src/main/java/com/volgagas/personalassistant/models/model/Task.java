@@ -35,6 +35,8 @@ public class Task implements Parcelable, GlobalTask, Comparable<Task> {
     private String dayOfMonth;
     private String dayOfWeek;
 
+    private String serviceTaskId;
+
     @Override
     public int compareTo(Task o) {
         return serverDateTime.compareTo(o.getServerDateTime());
@@ -55,6 +57,7 @@ public class Task implements Parcelable, GlobalTask, Comparable<Task> {
                 ", serverDateTime=" + serverDateTime +
                 ", dayOfMonth='" + dayOfMonth + '\'' +
                 ", dayOfWeek='" + dayOfWeek + '\'' +
+                ", serviceTaskId='" + serviceTaskId + '\'' +
                 '}';
     }
 
@@ -167,6 +170,13 @@ public class Task implements Parcelable, GlobalTask, Comparable<Task> {
         this.projCategoryId = projCategoryId;
     }
 
+    public String getServiceTaskId() {
+        return serviceTaskId;
+    }
+
+    public void setServiceTaskId(String serviceTaskId) {
+        this.serviceTaskId = serviceTaskId;
+    }
 
     @Override
     public int describeContents() {
@@ -187,6 +197,7 @@ public class Task implements Parcelable, GlobalTask, Comparable<Task> {
         dest.writeLong(this.serverDateTime != null ? this.serverDateTime.getTime() : -1);
         dest.writeString(this.dayOfMonth);
         dest.writeString(this.dayOfWeek);
+        dest.writeString(this.serviceTaskId);
     }
 
     public Task() {
@@ -206,6 +217,7 @@ public class Task implements Parcelable, GlobalTask, Comparable<Task> {
         this.serverDateTime = tmpServerDateTime == -1 ? null : new Date(tmpServerDateTime);
         this.dayOfMonth = in.readString();
         this.dayOfWeek = in.readString();
+        this.serviceTaskId = in.readString();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {

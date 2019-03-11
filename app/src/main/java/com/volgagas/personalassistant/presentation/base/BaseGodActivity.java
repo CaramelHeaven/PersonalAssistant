@@ -27,8 +27,6 @@ import com.volgagas.personalassistant.BuildConfig;
 import com.volgagas.personalassistant.PersonalAssistant;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.data.cache.CacheUser;
-import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
-import com.volgagas.personalassistant.models.network.query_to_user.QueryToUserAssignedTo;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.channels.CommonChannel;
@@ -37,17 +35,10 @@ import com.volgagas.personalassistant.utils.manager.BroadcastManager;
 import com.volgagas.personalassistant.utils.notifications.FileUploadNotification;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 import timber.log.Timber;
 
 /**
@@ -64,6 +55,7 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     private String dynamicsCurrentHttp;
     private String sharePointCache;
     private BroadcastManager broadcastManager;
+    private boolean registerBroadcastReceiver = false;
     private IntentFilter filter;
 
     private SharedPreferences sharedPreferences;
@@ -83,11 +75,6 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
             dynamicsCurrentHttp = Constants.DYNAMICS_365;
         }
 
-        broadcastManager = new BroadcastManager();
-
-        filter = new IntentFilter();
-        filter.addAction(Constants.ACTION_UPDATE_APK);
-        filter.addAction(Constants.ACTION_NOT_UPDATE_APK);
     }
 
     @Override
@@ -133,13 +120,20 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (registerBroadcastReceiver) {
+            broadcastManager = new BroadcastManager();
 
-        registerReceiver(broadcastManager, filter);
+            filter = new IntentFilter();
+            filter.addAction(Constants.ACTION_UPDATE_APK);
+            filter.addAction(Constants.ACTION_NOT_UPDATE_APK);
+
+            registerReceiver(broadcastManager, filter);
+        }
     }
 
     @Override
     protected void onPause() {
-        if (broadcastManager != null) {
+        if (registerBroadcastReceiver && broadcastManager != null) {
             unregisterReceiver(broadcastManager);
             broadcastManager = null;
         }
@@ -326,7 +320,8 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
 
         notificationManager.notify(Constants.APP_NOTIFICATION_UPDATE_APP, notification);
 
-        Timber.d("COMPLETED");
+        //update broadcast receiver for enable buttons in notification
+        onResume();
     }
 
     /**
@@ -357,5 +352,9 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
 
             startActivity(intent);
         }
+    }
+
+    public void setRegisterBroadcastReceiver(boolean registerBroadcastReceiver) {
+        this.registerBroadcastReceiver = registerBroadcastReceiver;
     }
 }

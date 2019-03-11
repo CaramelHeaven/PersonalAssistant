@@ -61,7 +61,6 @@ public class NomenclatureBarcodePresenter extends MvpPresenter<NomenclatureBarco
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(result -> {
-                                Timber.d("checking unit: " + result.toString());
                                 getViewState().hideProgressDialog();
                                 getViewState().successfulGetBarcodeFromServer(result);
                             },
@@ -70,7 +69,11 @@ public class NomenclatureBarcodePresenter extends MvpPresenter<NomenclatureBarco
     }
 
     private void handlerWithError(Throwable throwable) {
-        Crashlytics.logException(throwable);
+        if (throwable.getMessage().contains("404")) {
+            getViewState().showNotFoundNomenclature();
+        } else {
+            Crashlytics.logException(throwable);
+        }
     }
 
     @Override

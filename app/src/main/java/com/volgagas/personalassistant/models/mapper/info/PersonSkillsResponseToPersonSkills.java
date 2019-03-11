@@ -6,6 +6,7 @@ import com.volgagas.personalassistant.models.model.info.PersonSkills;
 import com.volgagas.personalassistant.models.network.PersonSkillsResponse;
 import com.volgagas.personalassistant.models.network.info.PersonSkillsNetwork;
 
+import java.nio.channels.SelectionKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,34 +51,43 @@ public class PersonSkillsResponseToPersonSkills extends Mapper<PersonSkillsRespo
                     skills.setImageReference(R.drawable.ic_word);
                     break;
                 case "Service Focus":
-                    skills.setImageReference(0);
+                    skills.setSkillName("Целеустремленность");
+                    skills.setImageReference(R.drawable.ic_service_focus);
                     break;
                 case "Continuous Impr":
-                    skills.setImageReference(0);
+                    skills.setImageReference(R.drawable.ic_continuous_impovment);
                     break;
                 case "Self-Developmen":
-                    skills.setImageReference(0);
+                    skills.setSkillName("Самообучаемость");
+                    skills.setImageReference(R.drawable.ic_self_development);
                     break;
                 case "Decision Making":
-                    skills.setImageReference(0);
+                    skills.setSkillName("Desicion Making");
+                    skills.setImageReference(R.drawable.ic_decision_making);
                     break;
                 case "Responsibility":
-                    skills.setImageReference(0);
+                    skills.setSkillName("Ответственность");
+                    skills.setImageReference(R.drawable.ic_responsibility);
                     break;
                 case "Collaborating":
-                    skills.setImageReference(0);
+                    skills.setSkillName("Сотрудничество");
+                    skills.setImageReference(R.drawable.ic_collaborating);
                     break;
                 case "Communicating":
-                    skills.setImageReference(0);
+                    skills.setSkillName("Коммуникативность");
+                    skills.setImageReference(R.drawable.ic_communicating);
                     break;
                 case "Coaching and Me":
-                    skills.setImageReference(0);
+                    skills.setSkillName("Тренировочный скилл");
+                    skills.setImageReference(R.drawable.ic_coaching_and_me);
                     break;
                 case "Diversity":
-                    skills.setImageReference(0);
+                    skills.setSkillName("Разнообразность");
+                    skills.setImageReference(R.drawable.ic_diversity);
                     break;
                 case "Creativity":
-                    skills.setImageReference(0);
+                    skills.setSkillName("Креативность");
+                    skills.setImageReference(R.drawable.ic_creativity);
                     break;
                 case "Initiative":
                     skills.setImageReference(0);
@@ -86,7 +96,8 @@ public class PersonSkillsResponseToPersonSkills extends Mapper<PersonSkillsRespo
                     skills.setImageReference(0);
                     break;
                 case "Results Focus":
-                    skills.setImageReference(0);
+                    skills.setSkillName("Результативность");
+                    skills.setImageReference(R.drawable.ic_results_focus);
                     break;
             }
         }

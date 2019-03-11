@@ -49,7 +49,7 @@ public interface BaseApiService {
     @GET(Constants.MY_HOST + "database/getUserPhotoByName")
     Single<UserSimpleResponse> getUserSimpleByName(@Query("userName") String userName);
 
-    @GET("data/BaseWorkers?")
+    @GET("data/Workers?")
     Single<UserDynamicsResponse> getPersonalNumber(@Query("$filter") String name);
 
     @GET("data/SOWithAC?")

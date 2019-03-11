@@ -116,6 +116,9 @@ public class UserDynamicsNetwork {
     @SerializedName("PersonBirthCity")
     @Expose
     private String personBirthCity;
+    @SerializedName("WorkerRecId")
+    @Expose
+    private String workerRecId;
 
     public String getPersonnelNumber() {
         return personnelNumber;
@@ -259,5 +262,9 @@ public class UserDynamicsNetwork {
 
     public String getPersonBirthCity() {
         return personBirthCity;
+    }
+
+    public String getWorkerRecId() {
+        return workerRecId;
     }
 }

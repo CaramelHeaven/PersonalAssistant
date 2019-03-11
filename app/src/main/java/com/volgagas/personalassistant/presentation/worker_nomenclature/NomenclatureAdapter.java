@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
+import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private int NOMENCLATURE_SCAN = -1;
     private OnButtonPlusMinusClickListener onButtonPlusMinusClickListener;
+    private myOnItemClickListener myOnItemClickListener; //used for remove position
 
     public NomenclatureAdapter(List<Nomenclature> nomenclatureList) {
         this.nomenclatureList = nomenclatureList;
@@ -75,6 +77,10 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return nomenclatureList.size() + 1;
     }
 
+    public void onItemDismiss(int position) {
+        myOnItemClickListener.onItemClick(position);
+    }
+
     @Override
     public int getItemViewType(int position) {
         if (position == nomenclatureList.size()) {
@@ -89,6 +95,11 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         nomenclatureList.addAll(values);
 
         notifyDataSetChanged();
+    }
+
+    public void removeItemByPosition(int pos) {
+        nomenclatureList.remove(pos);
+        notifyItemRemoved(pos);
     }
 
     public void addItem(Nomenclature data) {
@@ -117,13 +128,12 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
      * @return boolean value. If each nomenclature equals 0 count - return true, else - false
      */
     public boolean isNomenclaturesCountEqualsNull() {
-        Timber.d("check not: " + nomenclatureList.toString());
         for (Nomenclature item : nomenclatureList) {
-            if (item.getCount() != 0) {
-                return false;
+            if (item.getCount() == 0) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public void clear() {
@@ -136,7 +146,7 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    class NomenclatureVH extends RecyclerView.ViewHolder {
+    public class NomenclatureVH extends RecyclerView.ViewHolder {
         Button btnAdd, btnMinus;
         TextView tvTitle, tvUnit;
         TextInputEditText etCount;
@@ -149,6 +159,7 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             etCount = itemView.findViewById(R.id.et_count);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvUnit = itemView.findViewById(R.id.tv_unit);
+            rlContainer = itemView.findViewById(R.id.rl_base_container);
 
             provideEditTextListener();
             provideButtonsClick();
@@ -240,5 +251,9 @@ public class NomenclatureAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void setOnButtonPlusMinusClickListener(OnButtonPlusMinusClickListener onButtonPlusMinusClickListener) {
         this.onButtonPlusMinusClickListener = onButtonPlusMinusClickListener;
+    }
+
+    public void setMyOnItemClickListener(com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener myOnItemClickListener) {
+        this.myOnItemClickListener = myOnItemClickListener;
     }
 }

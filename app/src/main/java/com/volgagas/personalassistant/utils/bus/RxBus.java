@@ -37,6 +37,7 @@ public class RxBus {
     }
 
     public void passScanData(String data) {
+        Timber.d("pass Scan Data: " + data);
         scanData.onNext(data);
     }
 

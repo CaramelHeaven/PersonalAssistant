@@ -49,6 +49,9 @@ public class CachePot {
     private List<QueryToUser> queryToUserList;
     private List<UniformRequest> queryFromUserList;
 
+    //for nomenclature original list from server
+    List<Nomenclature> originalList;
+
     //cache data for purchase orders
     private List<ServerOrder> serverOrders;
 
@@ -174,5 +177,17 @@ public class CachePot {
 
     public void setApk(Apk apk) {
         this.apk = apk;
+    }
+
+    public void setOriginalList(List<Nomenclature> originalList) {
+        this.originalList = originalList;
+    }
+
+    public List<Nomenclature> getOriginalList() {
+        return originalList;
+    }
+
+    public void clearOriginalList() {
+        originalList.clear();
     }
 }

@@ -12,6 +12,8 @@ import com.volgagas.personalassistant.presentation.worker_nomenclature.Nomenclat
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 12:40, 16/01/2019.
  * Copyright (c) 2018 VolgaGas. All rights reserved.
@@ -54,7 +56,11 @@ public class ChooseActionActivity extends BaseActivity implements ChooseActivity
 
     @Override
     protected void sendDataToServer(String data) {
-        RxBus.getInstance().passScanData(data);
+        if (data.length() == 18) {
+            RxBus.getInstance().passScanData(data);
+        } else {
+            Toast.makeText(this, "Повторите сканирование", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -85,6 +91,8 @@ public class ChooseActionActivity extends BaseActivity implements ChooseActivity
 
     @Override
     public void enableNFC() {
-
+        Timber.d("enable NFC");
+        setPermissionToEnableNfc(true);
+        handlerNFC();
     }
 }

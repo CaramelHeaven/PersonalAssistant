@@ -91,6 +91,9 @@ public class UtilsDateTimeProvider {
         return result + "23:59:59Z";
     }
 
+    /**
+     * @return current data format. Example - 2019-03-11T16:29:59Z
+     */
     public static String getCurrentFormatDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         return dateFormat.format(Calendar.getInstance().getTime());

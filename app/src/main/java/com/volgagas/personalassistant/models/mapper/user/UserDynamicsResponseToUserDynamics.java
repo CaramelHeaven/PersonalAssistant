@@ -18,6 +18,13 @@ public class UserDynamicsResponseToUserDynamics extends Mapper<UserDynamicsRespo
 
     @Override
     protected void fillData(UserDynamics user, UserDynamicsResponse value) {
-        user.setPersonalNumber(value.getValue().get(0).getPersonnelNumber());
+        //used 0 cause we get only 1 person
+        if (value.getValue().size() > 0) {
+            user.setPersonalNumber(value.getValue().get(0).getPersonnelNumber());
+            user.setWorkerRecId(value.getValue().get(0).getWorkerRecId());
+        } else {
+            user.setPersonalNumber("");
+            user.setWorkerRecId("");
+        }
     }
 }

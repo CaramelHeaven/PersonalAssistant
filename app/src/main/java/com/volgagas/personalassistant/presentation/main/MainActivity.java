@@ -102,7 +102,9 @@ public class MainActivity extends BaseActivity implements MainView {
         infoSet = new ConstraintSet();
 
         provideBackgroundUIData();
-        //init release kek
+
+        //register notification
+        setRegisterBroadcastReceiver(true);
 
         homeSet.clone(constraintLayout);
         projectsSet.clone(this, R.layout.activity_constraint_projects);
@@ -130,10 +132,8 @@ public class MainActivity extends BaseActivity implements MainView {
         passDataChannel.getSubject()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> TransitionManager.beginDelayedTransition(constraintLayout), throwable -> {
-                    Timber.d("tho: " + throwable.getCause());
-                    Timber.d("tho: " + throwable.getMessage());
-                });
+                .subscribe(result -> TransitionManager.beginDelayedTransition(constraintLayout),
+                        Crashlytics::logException);
 
         ibSettings.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class)));
@@ -161,6 +161,11 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -199,7 +204,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     protected void sendDataToServer(String data) {
-
+        //nothing
     }
 
     private void setBottomNavigation() {

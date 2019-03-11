@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.crashlytics.android.Crashlytics;
 import com.volgagas.personalassistant.BuildConfig;
 import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.cache.CacheUser;
@@ -39,7 +40,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
     private UpdateTokenHandler updateTokenHandler;
     private CompositeDisposable disposable;
     private MainRepository repository;
-    private boolean permissionToDownloadFile = false;
 
     public MainPresenter() {
         disposable = new CompositeDisposable();
@@ -94,10 +94,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
                     WorkManager.getInstance()
                             .enqueue(oneTimeWorkRequest);
-                }, throwable -> {
-                    Timber.d("throwable: " + throwable.getMessage());
-                    Timber.d("throwable: " + throwable.getCause());
-                }));
+                }, Crashlytics::logException));
     }
 
     /**
@@ -185,10 +182,8 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result.size() != 0) {
-                        Timber.d("all result: " + result);
                         Apk apk = findNewestVersion(result);
                         if (apk != null) {
-                            Timber.d("NEWEST APK: " + apk.toString());
                             CachePot.getInstance().saveApk(apk); // save apk for the future use
                             RxBus.getInstance().passDataToCommonChannel(Constants.UPDATE_APK);
                         }

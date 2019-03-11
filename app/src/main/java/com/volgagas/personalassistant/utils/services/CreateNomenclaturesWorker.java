@@ -8,6 +8,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.volgagas.personalassistant.data.cache.CachePot;
+import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
@@ -46,11 +47,13 @@ public class CreateNomenclaturesWorker extends RxWorker {
         List<Nomenclature> nomenclatureList = CachePot.getInstance().getCreateList();
         String serviceOrderId = getInputData().getString("SERVICE_ORDER_ID");
         String projCategoryId = getInputData().getString("PROJ_CATEGORY_ID");
+        String serviceTaskId = getInputData().getString("SERVICE_TASK_ID");
 
         return Single.just(nomenclatureList)
                 .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
                 .flatMap((Function<Nomenclature, ObservableSource<Response<Void>>>) data -> repository
-                        .attachNomenclatureToServiceOrder(mappingToJson(data, serviceOrderId, projCategoryId)))
+                        .attachNomenclatureToServiceOrder(mappingToJson(
+                                data, serviceOrderId, projCategoryId, serviceTaskId)))
                 .toList()
                 .map(responses -> Result.success())
                 .doOnError(throwable -> {
@@ -60,7 +63,8 @@ public class CreateNomenclaturesWorker extends RxWorker {
                 });
     }
 
-    private JsonObject mappingToJson(Nomenclature nomenclature, String serviceOrderId, String projCategory) {
+    private JsonObject mappingToJson(Nomenclature nomenclature, String serviceOrderId, String projCategory,
+                                     String serviceTaskId) {
         JsonObject object = new JsonObject();
 
         object.add("dataAreaId", new JsonPrimitive("gns"));
@@ -78,9 +82,9 @@ public class CreateNomenclaturesWorker extends RxWorker {
                 new JsonPrimitive(UtilsDateTimeProvider.workerServiceTime() + "T12:00:00Z"));
         object.add("ProjCurrencyCode", new JsonPrimitive("RUB"));
         object.add("TransactionType", new JsonPrimitive("Item"));
-        object.add("DateRangeTo", new JsonPrimitive("2019-02-22T12:00:00Z"));
-        object.add("ServiceTaskId", new JsonPrimitive("БудОстанов"));
-        object.add("Worker", new JsonPrimitive(Long.parseLong("5637144586")));
+        object.add("DateRangeTo", new JsonPrimitive(UtilsDateTimeProvider.getCurrentFormatDateTime()));
+        object.add("ServiceTaskId", new JsonPrimitive(serviceTaskId));
+        object.add("Worker", new JsonPrimitive(Long.parseLong(CacheUser.getUser().getWorkerRecId())));
         object.add("Unit", new JsonPrimitive(nomenclature.getUnit()));
 
         return object;

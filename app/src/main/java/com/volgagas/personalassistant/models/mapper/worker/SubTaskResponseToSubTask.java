@@ -27,7 +27,6 @@ public class SubTaskResponseToSubTask extends Mapper<SubTaskResponse, List<SubTa
     @Override
     protected void fillData(List<SubTaskViewer> subTaskViewers, SubTaskResponse response) {
         for (SubTaskNetwork network : response.getValue()) {
-            Timber.d("network: " + network.toString());
             SubTaskViewer subTaskViewer = new SubTaskViewer();
 
             subTaskViewer.setDescription(network.getaCDescription());

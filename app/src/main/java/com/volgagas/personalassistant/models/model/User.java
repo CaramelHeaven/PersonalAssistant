@@ -17,6 +17,7 @@ public class User implements Parcelable {
     private String userImage;
 
     private String personalDynamics365Number; // used for get information from D365
+    private String workerRecId; // field for nomenclatures
 
     private String userCliendId;
     private String dynamics365Token;
@@ -39,7 +40,9 @@ public class User implements Parcelable {
                 ", codekeyList=" + codekeyList +
                 ", lastEntered='" + lastEntered + '\'' +
                 ", category='" + category + '\'' +
+                ", userImage='" + userImage + '\'' +
                 ", personalDynamics365Number='" + personalDynamics365Number + '\'' +
+                ", workerRecId='" + workerRecId + '\'' +
                 ", userCliendId='" + userCliendId + '\'' +
                 ", dynamics365Token='" + dynamics365Token + '\'' +
                 ", sharePointToken='" + sharePointToken + '\'' +
@@ -133,6 +136,14 @@ public class User implements Parcelable {
         this.personalDynamics365Number = personalDynamics365Number;
     }
 
+    public String getWorkerRecId() {
+        return workerRecId;
+    }
+
+    public void setWorkerRecId(String workerRecId) {
+        this.workerRecId = workerRecId;
+    }
+
     public void clear() {
         this.name = "";
         this.position = "";
@@ -143,6 +154,7 @@ public class User implements Parcelable {
         this.userCliendId = "";
         this.dynamics365Token = "";
         this.sharePointToken = "";
+        this.workerRecId = "";
 
         this.personalDynamics365Number = "";
     }
@@ -161,6 +173,7 @@ public class User implements Parcelable {
         dest.writeString(this.category);
         dest.writeString(this.userImage);
         dest.writeString(this.personalDynamics365Number);
+        dest.writeString(this.workerRecId);
         dest.writeString(this.userCliendId);
         dest.writeString(this.dynamics365Token);
         dest.writeString(this.sharePointToken);
@@ -177,6 +190,7 @@ public class User implements Parcelable {
         this.category = in.readString();
         this.userImage = in.readString();
         this.personalDynamics365Number = in.readString();
+        this.workerRecId = in.readString();
         this.userCliendId = in.readString();
         this.dynamics365Token = in.readString();
         this.sharePointToken = in.readString();

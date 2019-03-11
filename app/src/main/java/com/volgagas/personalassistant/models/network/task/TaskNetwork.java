@@ -53,6 +53,9 @@ public class TaskNetwork {
     @SerializedName("SO_Category")
     @Expose
     private String projCategoryId;
+    @SerializedName("SO_ServiceTaskId")
+    @Expose
+    private String soServiceTaskId;
 
     @Override
     public String toString() {
@@ -72,6 +75,7 @@ public class TaskNetwork {
                 ", gpa='" + gpa + '\'' +
                 ", acClosed='" + acClosed + '\'' +
                 ", projCategoryId='" + projCategoryId + '\'' +
+                ", soServiceTaskId='" + soServiceTaskId + '\'' +
                 '}';
     }
 
@@ -133,5 +137,9 @@ public class TaskNetwork {
 
     public String getProjCategoryId() {
         return projCategoryId;
+    }
+
+    public String getSoServiceTaskId() {
+        return soServiceTaskId;
     }
 }

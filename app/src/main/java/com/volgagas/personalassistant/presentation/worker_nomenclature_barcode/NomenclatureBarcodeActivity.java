@@ -233,4 +233,12 @@ public class NomenclatureBarcodeActivity extends MvpAppCompatActivity implements
     public void hideProgressDialog() {
         progressDialog.cancel();
     }
+
+    @Override
+    public void showNotFoundNomenclature() {
+        if (progressDialog != null) {
+            progressDialog.cancel();
+        }
+        Toast.makeText(this, "Номенклатура не найдена", Toast.LENGTH_SHORT).show();
+    }
 }

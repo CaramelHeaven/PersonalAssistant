@@ -10,7 +10,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -60,7 +59,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
             task.setPreferredTime(test.get(i).getPreferredTime());
             task.setStatus(test.get(i).getStatus());
             task.setProjCategoryId(test.get(i).getProjCategoryId());
-            Timber.d("task get ProjCategory: " + task.getProjCategoryId());
+            task.setServiceTaskId(test.get(i).getSoServiceTaskId());
 
             if (!map.containsKey(task))
                 map.put(task, new ArrayList<>());
@@ -77,6 +76,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
             task.setPreferredTime(test.get(i).getPreferredTime());
             task.setStatus(test.get(i).getStatus());
             task.setProjCategoryId(test.get(i).getProjCategoryId());
+            task.setServiceTaskId(test.get(i).getSoServiceTaskId());
 
             if (map.containsKey(task)) {
                 List<SubTask> subTasks = map.get(task);
@@ -86,7 +86,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
             }
         }
 
-        List<Task> compeletedList = new ArrayList<>();
+        List<Task> completedList = new ArrayList<>();
 
         //Changed logic [copy from worker]. 21.12.2018
         for (Map.Entry<Task, List<SubTask>> entry : updated.entrySet()) {
@@ -99,14 +99,14 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
             task.setStartTime((String) values[1]);
             task.setServerDateTime((Date) values[2]);
 
-            formatDayOfWeekAndDayOfMounth(task);
+            formatDayOfWeekAndDayOfMonth(task);
 
             task.setSubTasks(entry.getValue());
 
-            compeletedList.add(task);
+            completedList.add(task);
         }
 
-        tasks.addAll(compeletedList);
+        tasks.addAll(completedList);
     }
 
     private SubTask addSubTask(SubTask subTask, TaskNetwork network) {
@@ -124,6 +124,9 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
     /**
      * First subTask contains minimal date and time after fillDateStartInSubTasks method.
      * Just get it and set each Task this is date and time.
+     *
+     * @param subTasks - current list of sub-tasks
+     * @return object which contains 3 special data-elements.
      */
     private Object[] getMinimalTimeFromSubTasks(List<SubTask> subTasks) {
         Object[] massiveData = new Object[3];
@@ -137,8 +140,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
         String currentDate = dateFormat.format(Calendar.getInstance().getTime());
         String dateString = subTasks.get(0).getStartServerTime().substring(0, 10);
 
-        /* if date equal current date - just put "Today", another return minimal time.
-         * */
+        // if date equal current date - just put "Today", another return minimal time.
         if (currentDate.contains(dateString)) {
             massiveData[0] = "Сегодня";
         } else {
@@ -147,9 +149,8 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
 
         massiveData[1] = subTasks.get(0).getStartTime();
 
-        /**
-         * Add to massive last value which we will be add to task and after all will use collection sort
-         * */
+
+        // Add to massive last value which we will be add to task and after all will use collection sort
         try {
             Date date = dateFormat.parse(subTasks.get(0).getStartServerTime());
             massiveData[2] = date;
@@ -161,7 +162,9 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
     }
 
     /**
-     * format date and time in each subTask
+     * Format date and time in each subTask
+     *
+     * @param subTasks - list of current subtasks. inside it we change time
      */
     private void fillDateStartInSubTasks(List<SubTask> subTasks) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -189,8 +192,10 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
     /**
      * Format server time to day in week and day in month for reflect this data to UI inside
      * WorkerTodayNewFragment
+     *
+     * @param task - current task
      */
-    private void formatDayOfWeekAndDayOfMounth(Task task) {
+    private void formatDayOfWeekAndDayOfMonth(Task task) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         DateFormat dayInWeek = new SimpleDateFormat("E", new Locale("RU"));
         DateFormat dayInMonth = new SimpleDateFormat("d", new Locale("RU"));

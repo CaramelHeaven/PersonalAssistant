@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.io.IOException;
 
 import io.reactivex.Single;
@@ -53,7 +55,7 @@ public abstract class BaseActivity extends BaseGodActivity {
                     {MifareClassic.class.getName()}
             };
         } else {
-            Toast.makeText(this, "NFC is not supported on your device", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ваше устройство не поддерживает NFC считывание", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -117,6 +119,7 @@ public abstract class BaseActivity extends BaseGodActivity {
                         }
                         mifareClassic.close();
                     } catch (IOException e) {
+                        Crashlytics.logException(e);
                         e.printStackTrace();
                     }
                 })
@@ -131,6 +134,7 @@ public abstract class BaseActivity extends BaseGodActivity {
     }
 
     private void unsuccessfulResult(Throwable throwable) {
+        Crashlytics.logException(throwable);
         Timber.d("throwable: " + throwable.getMessage());
         Timber.d("throwable: " + throwable.getCause());
     }

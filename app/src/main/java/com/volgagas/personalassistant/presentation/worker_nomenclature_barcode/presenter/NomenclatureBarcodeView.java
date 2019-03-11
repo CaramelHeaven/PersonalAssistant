@@ -20,4 +20,6 @@ public interface NomenclatureBarcodeView extends MvpView {
     void showProgressDialog();
 
     void hideProgressDialog();
+
+    void showNotFoundNomenclature();
 }

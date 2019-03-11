@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.volgagas.personalassistant.data.cache.CachePot;
@@ -50,7 +51,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
         super();
         repository = MainRemoteRepository.getInstance();
         task = TaskContentManager.getInstance().getTask();
-        Timber.d("CHECKING TASK: " + task.toString());
+
         helperNomenclatureList = new ArrayList<>();
     }
 
@@ -91,7 +92,6 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 CachePot.getInstance().getCacheBarcodeList();
         List<Nomenclature> nomenclatureList = new ArrayList<>();
 
-        Timber.d("NON CHECK: " + helperNomenclatureList.toString());
         //mapping barcode to nomenclature
         for (Barcode barcode : barcodeList) {
             Nomenclature nomenclature = new
@@ -111,6 +111,8 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
             }
         }
 
+        Timber.d("helper list after barcode scanned: " + helperNomenclatureList);
+        Timber.d("checking original List: " + originalList);
         return Observable.just(helperNomenclatureList);
     }
 
@@ -131,9 +133,10 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
     /**
      * Request to get nomenclatures from own server
      *
-     * @param data - codekey for spesial nomenclature
+     * @param data - code-key for special nomenclature
      */
     private void addDataFromNfc(String data) {
+        Timber.d("add to nomenclature");
         disposable.add(repository.findNomenclatureByCardInfo(data)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -143,6 +146,9 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                     } else {
                         getViewState().addNomenclatureToBaseList(result);
                     }
+                }, throwable -> {
+                    Crashlytics.logException(throwable);
+                    getViewState().errorNomenclature();
                 }));
     }
 
@@ -160,7 +166,9 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                     }
 
                     helperNomenclatureList.addAll(result);
+
                     toOriginalList(result);
+                    CachePot.getInstance().setOriginalList(originalList);
 
                     getViewState().hideProgress();
                     getViewState().showBaseList(result);
@@ -182,11 +190,15 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
     public void createNomenclatures(List<Nomenclature> ourList) {
         Timber.d("our lIST: " + ourList.toString());
         Timber.d("original list: " + originalList);
+        Timber.d("helper list: " + helperNomenclatureList);
+
+        originalList = CachePot.getInstance().getOriginalList();
+
         List<Nomenclature> createResult = new ArrayList<>();
         List<Nomenclature> updateResult = new ArrayList<>();
 
         for (Nomenclature ourData : ourList) {
-            //not bad, yey!
+            //not bad, yey! Add to updateList if value in nomenclature has changed
             for (Nomenclature kek : originalList) {
                 if (ourData.getName().equals(kek.getName()) && ourData.getCount() != kek.getCount()) {
                     updateResult.add(ourData);
@@ -197,6 +209,8 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 createResult.add(ourData);
             }
         }
+        Timber.d("checking created list: " + createResult);
+        Timber.d("checking updatedList: " + updateResult);
 
         if (createResult.size() > 0) {
             CachePot.getInstance().putCreateNomenclatures(createResult);
@@ -207,6 +221,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                     .setInputData(new Data.Builder()
                             .putString("SERVICE_ORDER_ID", task.getIdTask())
                             .putString("PROJ_CATEGORY_ID", task.getProjCategoryId())
+                            .putString("SERVICE_TASK_ID", task.getServiceTaskId())
                             .build())
                     .build();
 
@@ -227,43 +242,11 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
             WorkManager.getInstance()
                     .enqueue(updateWorker);
         }
-
-//        if (createResult.size() > 0) {
-//            Single.just(createResult)
-//                    .subscribeOn(Schedulers.io())
-//                    .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
-//                    .flatMap((Function<Nomenclature, ObservableSource<Response<Void>>>) data -> repository
-//                            .attachNomenclatureToServiceOrder(mappingToJson(data, task.getIdTask())))
-//                    .toList()
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(kek -> {
-//                        Timber.d("result: " + kek);
-//                    }, throwable -> {
-//                        Timber.d("ALALAL: " + throwable.getMessage());
-//                        Timber.d("ALALAL: " + throwable.getCause());
-//                    });
-//        } else if (updateResult.size() > 0) {
-//            Single.just(updateResult)
-//                    .subscribeOn(Schedulers.io())
-//                    .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
-//                    .flatMap((Function<Nomenclature, ObservableSource<?>>) nomenclature ->
-//                            repository.updateNomenclatureInServer(task.getIdTask(), nomenclature.getServiceOrderLineNum(),
-//                                    mappingToJson(nomenclature.getCount())))
-//                    .toList()
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(kek -> {
-//                        Timber.d("result: " + kek);
-//                    }, throwable -> {
-//                        Timber.d("ALALAL: " + throwable.getMessage());
-//                        Timber.d("ALALAL: " + throwable.getCause());
-//                    });
-//        }
     }
 
     public void setHelperNomenclatureList(List<Nomenclature> helperNomenclatureList) {
         this.helperNomenclatureList.clear();
         this.helperNomenclatureList.addAll(helperNomenclatureList);
-        Timber.d("AFTER SET: " + helperNomenclatureList);
     }
 
     private void toOriginalList(List<Nomenclature> result) {
@@ -276,5 +259,9 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
             originalList.add(nomenclature);
         }
+    }
+
+    public List<Nomenclature> getOriginalList() {
+        return originalList;
     }
 }

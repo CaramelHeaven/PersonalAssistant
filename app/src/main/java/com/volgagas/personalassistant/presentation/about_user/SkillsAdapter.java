@@ -36,7 +36,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         SkillsVH skillsVH = (SkillsVH) viewHolder;
 
-        skillsVH.tvTitle.setText("Уровень владения " + personSkills.get(i).getSkillName());
+        skillsVH.tvTitle.setText(personSkills.get(i).getSkillName());
         skillsVH.tvLevel.setText("Уровень: " + personSkills.get(i).getLevel());
 
         if (personSkills.get(i).getImageReference() != 0) {

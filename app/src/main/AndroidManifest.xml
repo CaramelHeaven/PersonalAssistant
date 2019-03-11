@@ -17,7 +17,7 @@
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher_volgagas"
-        android:label="Тест"
+        android:label="@string/current_app_name"
         android:roundIcon="@mipmap/ic_launcher_volgagas_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"

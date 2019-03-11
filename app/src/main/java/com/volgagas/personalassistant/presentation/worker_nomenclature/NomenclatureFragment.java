@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
 import com.volgagas.personalassistant.presentation.base.BaseFragment;
@@ -28,9 +30,13 @@ import com.volgagas.personalassistant.presentation.worker_nomenclature.presenter
 import com.volgagas.personalassistant.presentation.worker_nomenclature_barcode.NomenclatureBarcodeActivity;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.callbacks.OnButtonPlusMinusClickListener;
+import com.volgagas.personalassistant.utils.callbacks.myOnItemClickListener;
+import com.volgagas.personalassistant.utils.item_touch.ItemTouchAdapterNomenclature;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 12:40, 16/01/2019.
@@ -96,11 +102,11 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
                 Toast.makeText(getActivity(), "Список элементов пуст", Toast.LENGTH_SHORT).show();
             } else {
                 if (adapter.isNomenclaturesCountEqualsNull()) {
-                    Toast.makeText(getActivity(), "Нельзя", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "В списке присутствует номенклатура с нулевым значением", Toast.LENGTH_SHORT).show();
                 } else {
                     if (adapter.getNomenclatureList().size() > 0) {
                         presenter.createNomenclatures(adapter.getNomenclatureList());
-                        presenter.clearOriginalList(); // clear helper list, because we exit from this screen
+                        //CachePot.getInstance().clearOriginalList(); // clear helper list, because we exit from this screen
                         if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
                             Toast.makeText(getActivity(), "Отправили", Toast.LENGTH_SHORT).show();
                             getActivity().finish();
@@ -143,6 +149,10 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         adapter = new NomenclatureAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
+        ItemTouchAdapterNomenclature callback = new ItemTouchAdapterNomenclature(adapter);
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(recyclerView);
+
         adapter.setOnButtonPlusMinusClickListener(new OnButtonPlusMinusClickListener() {
             @Override
             public void onHandleCount(int position, int status, int count) {
@@ -152,6 +162,13 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
             @Override
             public void onHandleEditText(int pos, int count) {
                 adapter.getItemByPosition(pos).setCount(count);
+            }
+        });
+
+        adapter.setMyOnItemClickListener(position -> {
+            adapter.removeItemByPosition(position);
+            if (adapter.getItemCount() == 0) {
+
             }
         });
     }

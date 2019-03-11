@@ -245,7 +245,8 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Single<UserDynamics> getPersonalUserNumber(String personalName) {
-        String filter = "Name eq '" + personalName + "'";
+        String filter = "(Name eq '" + personalName + "' and WorkerStatus eq " +
+                "Microsoft.Dynamics.DataEntities.HcmWorkerStatus'Employed')";
 
         return PersonalAssistant.getBaseApiService()
                 .getPersonalNumber(filter)
@@ -421,7 +422,6 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Observable<Response<Void>> attachNomenclatureToServiceOrder(JsonObject object) {
-        Timber.d("check json object: " + object);
         String url = "https://volgagas-testdevaos.sandbox.ax.dynamics.com/data/SOLinesEntity/";
 
         return PersonalAssistant.getBaseApiService().createNomenclatureInServiceOrder(url, object);

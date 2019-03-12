@@ -105,6 +105,9 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
         }
 
         Timber.d("dynamics SHOW: " + dynamicsCurrentHttp);
+        //todo remove it in dev release
+        dynamicsCurrentHttp = Constants.DYNAMICS_TEST;
+        Constants.DYNAMICS_365 = Constants.DYNAMICS_TEST;
 
         if (d365Cache.equals("")) {
             authContext.acquireToken(StartActivity.this, dynamicsCurrentHttp, Constants.CLIENT,
@@ -133,7 +136,6 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
 
     @Override
     protected void onPause() {
-        Timber.d("onPause: " + this.getClass().getSimpleName());
         if (nfcAdapter != null && nfcAdapter.isEnabled()) {
             Timber.d("DISABLE THiS SHIT");
             nfcAdapter.disableForegroundDispatch(this);
@@ -185,8 +187,6 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
 
     private void unsuccessfulResult(Throwable throwable) {
         Crashlytics.logException(throwable);
-        Timber.d("throwable: " + throwable.getMessage());
-        Timber.d("throwable: " + throwable.getCause());
     }
 
     @Override

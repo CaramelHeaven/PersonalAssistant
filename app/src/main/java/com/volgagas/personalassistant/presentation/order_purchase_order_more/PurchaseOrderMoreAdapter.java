@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.volgagas.personalassistant.R;
 import com.volgagas.personalassistant.models.model.order.ServerSubOrder;
@@ -46,6 +47,7 @@ public class PurchaseOrderMoreAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     class ServerSubOrderVH extends RecyclerView.ViewHolder {
+        TextView tvDescription, tvQuantity, tvPrice;
 
         public ServerSubOrderVH(@NonNull View itemView) {
             super(itemView);

@@ -48,7 +48,6 @@ public class UniformsPresenter extends BasePresenter<QueryFromUserView<UniformRe
     }
 
     private void result(List<UniformRequest> requests) {
-        Timber.d("hide progress");
         getViewState().hideProgress();
         getViewState().showItems(requests);
     }

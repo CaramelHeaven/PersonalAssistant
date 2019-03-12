@@ -1,9 +1,6 @@
 package com.volgagas.personalassistant.data.cache;
 
-import com.volgagas.personalassistant.models.model.Contract;
 import com.volgagas.personalassistant.models.model.common.Apk;
-import com.volgagas.personalassistant.models.model.order.CommonOrder;
-import com.volgagas.personalassistant.models.model.order.ServerOrder;
 import com.volgagas.personalassistant.models.model.order.UserOrder;
 import com.volgagas.personalassistant.models.model.queries.QueryToUser;
 import com.volgagas.personalassistant.models.model.queries.UniformRequest;
@@ -15,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 12:39, 06/02/2019.
@@ -52,8 +48,8 @@ public class CachePot {
     //for nomenclature original list from server
     List<Nomenclature> originalList;
 
-    //cache data for purchase orders
-    private List<ServerOrder> serverOrders;
+    //helper list for reflect this data in PurchaseRequisitionFragment, we saved in inside PurchaseOrderPresenter
+    private List<UserOrder> userOrders;
 
     public static CachePot getInstance() {
         if (cachePot == null) {
@@ -65,14 +61,6 @@ public class CachePot {
         }
 
         return cachePot;
-    }
-
-    public List<ServerOrder> getServerOrders() {
-        return serverOrders;
-    }
-
-    public void setServerOrders(List<ServerOrder> serverOrders) {
-        this.serverOrders = new ArrayList<>(serverOrders);
     }
 
     public void setQueryToUserList(List<QueryToUser> queryToUserList) {
@@ -189,5 +177,13 @@ public class CachePot {
 
     public void clearOriginalList() {
         originalList.clear();
+    }
+
+    public List<UserOrder> getUserOrders() {
+        return userOrders;
+    }
+
+    public void setUserOrders(List<UserOrder> userOrders) {
+        this.userOrders = userOrders;
     }
 }

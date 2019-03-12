@@ -21,6 +21,8 @@ import com.volgagas.personalassistant.presentation.order_purchase_order_more.pre
 
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 11:11, 28/02/2019.
  */
@@ -92,7 +94,7 @@ public class PurchaseOrderMoreDialogFragment extends MvpAppCompatDialogFragment 
     @Override
     public void showItems(List<ServerSubOrder> serverSubOrders) {
         if (serverSubOrders.size() > 0) {
-
+            Timber.d("checking fields: " + serverSubOrders);
         }
     }
 }

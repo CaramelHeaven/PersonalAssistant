@@ -9,12 +9,13 @@ import android.widget.Button;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.volgagas.personalassistant.R;
+import com.volgagas.personalassistant.presentation.base.BaseGodActivity;
 import com.volgagas.personalassistant.presentation.order_new_purchase.OrderNewPurchaseActivity;
 
 /**
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */
-public class OrderPurchaseActivity extends MvpAppCompatActivity {
+public class OrderPurchaseActivity extends BaseGodActivity {
 
     private Button btnAddNewOrder;
     private Toolbar toolbar;

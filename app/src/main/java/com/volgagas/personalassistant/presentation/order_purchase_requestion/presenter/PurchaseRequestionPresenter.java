@@ -37,15 +37,12 @@ public class PurchaseRequestionPresenter extends BasePresenter<PurchaseRequestio
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+        getViewState().showProgress();
 
-        //refresh tokens
-        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
-                .subscribeOn(Schedulers.io())
-                .filter(result -> result.equals(Constants.PURCHASE_REQUISITION))
+        disposable.add(RxBus.getInstance().getCommonChannel()
+                .filter(result -> result.equals(Constants.PURCHASE_REQUISITION_PRESENTER))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> loadData()));
-
-        loadData();
     }
 
     @Override
@@ -69,22 +66,8 @@ public class PurchaseRequestionPresenter extends BasePresenter<PurchaseRequestio
 
     @Override
     protected void loadData() {
-        getViewState().showProgress();
-        disposable.add(Single.zip(repository.getPurchaseOrders(), repository.getPurchaseRequisitions(),
-                (serverOrders, userOrders) -> {
-                    CommonOrder order = new CommonOrder();
-                    order.setServerOrders(serverOrders);
-                    order.setUserOrders(userOrders);
-
-                    return order;
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    CachePot.getInstance().setServerOrders(result.getServerOrders());
-
-                    getViewState().hideProgress();
-                    getViewState().showItems(result.getUserOrders());
-                }, this::handlerErrorsFromBadRequests));
+        Timber.d("GET CALLBACK");
+        getViewState().hideProgress();
+        getViewState().showItems(CachePot.getInstance().getUserOrders());
     }
 }

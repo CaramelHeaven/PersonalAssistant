@@ -76,6 +76,7 @@ public class Constants {
     public static final String PURCHASE_REQUISITION = "PURCHASE_REQUISITION";
     public static final String PURCHASE_ORDER_MORE = "PURCHASE_ORDER_MORE";
     public static final String PURCHASE_REQUISITION_MORE = "PURCHASE_REQUISITION_MORE";
+    public static final String PURCHASE_ORDER_PRESENTER = "PURCHASE_ORDER_PRESENTER";
     public static final String START_PRESENTER = "START_PRESENTER";
     public static final String WORKER_TODAY_NEW_PRESENTER = "WORKER_TODAY_NEW_PRESENTER";
     public static final String WORKER_GPA_PRESENTER = "WORKER_GPA_PRESENTER";
@@ -94,6 +95,7 @@ public class Constants {
     public static final String PROJECTS_UNIFORM_PRESENTER = "PROJECTS_UNIFORM_PRESENTER";
     public static final String PROJECTS_QUERY_TO_USER_PRESENTER = "PROJECTS_QUERY_TO_USER_PRESENTER";
     public static final String PROJECTS_CONTRACTS = "PROJECTS_CONTRACTS";
+    public static final String PURCHASE_REQUISITION_PRESENTER = "PURCHASE_REQUISITION_PRESENTER";
 
     //People which can test our application
     public static final List<String> ALLOW_PEOPLE_TESTING = new ArrayList<>(Arrays.asList("Бунькин", "Тарновский", "Иванов"));

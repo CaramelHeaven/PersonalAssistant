@@ -26,6 +26,18 @@ public class PersonCertificatesNetwork {
     @Expose
     private String notes;
 
+    @Override
+    public String toString() {
+        return "PersonCertificatesNetwork{" +
+                "odataEtag='" + odataEtag + '\'' +
+                ", partyNumber='" + partyNumber + '\'' +
+                ", certificateTypeId='" + certificateTypeId + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", notes='" + notes + '\'' +
+                '}';
+    }
+
     public String getOdataEtag() {
         return odataEtag;
     }

@@ -66,7 +66,6 @@ public class CertificatesPresenter extends BasePresenter<CertificatesView> {
                 .subscribe(result -> {
                             getViewState().hideProgress();
                             getViewState().showItems(result);
-                        },
-                        this::handlerErrorsFromBadRequests));
+                        }, this::handlerErrorsFromBadRequests));
     }
 }

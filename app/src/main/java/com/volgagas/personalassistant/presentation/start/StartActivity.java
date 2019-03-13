@@ -11,6 +11,7 @@ import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -104,7 +105,6 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
             Constants.DYNAMICS_365 = dynamicsCurrentHttp;
         }
 
-        Timber.d("dynamics SHOW: " + dynamicsCurrentHttp);
         //todo remove it in dev release
         dynamicsCurrentHttp = Constants.DYNAMICS_TEST;
         Constants.DYNAMICS_365 = Constants.DYNAMICS_TEST;
@@ -230,9 +230,6 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
 
     @Override
     public void goToMainMenu() {
-        Fabric.with(this, new Crashlytics());
-
-        Crashlytics.setUserIdentifier(CacheUser.getUser().getName());
         startActivity(new Intent(StartActivity.this, MainActivity.class));
     }
 
@@ -250,6 +247,12 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
     public void enableNFC() {
         permissionToEnableNfc = true;
         onResume();
+    }
+
+    @Override
+    public void setCrashlytics() {
+        Fabric.with(this, new Crashlytics());
+        Crashlytics.setUserIdentifier(CacheUser.getUser().getName());
     }
 
     @Override

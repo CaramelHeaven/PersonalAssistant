@@ -8,6 +8,7 @@ public class PersonCertificates {
     private String startTime;
     private String endTime;
     private String notes;
+    private String certificate;
 
     @Override
     public String toString() {
@@ -16,6 +17,7 @@ public class PersonCertificates {
                 ", startTime='" + startTime + '\'' +
                 ", endTime='" + endTime + '\'' +
                 ", notes='" + notes + '\'' +
+                ", certificate='" + certificate + '\'' +
                 '}';
     }
 
@@ -49,5 +51,13 @@ public class PersonCertificates {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getCertificate() {
+        return certificate;
+    }
+
+    public void setCertificate(String certificate) {
+        this.certificate = certificate;
     }
 }

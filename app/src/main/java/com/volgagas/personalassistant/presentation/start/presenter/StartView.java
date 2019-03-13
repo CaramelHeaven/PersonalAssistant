@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.presentation.start.presenter;
 
 import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
+import com.crashlytics.android.Crashlytics;
 import com.volgagas.personalassistant.presentation.base.BaseView;
 
 /**
@@ -19,4 +20,6 @@ public interface StartView extends BaseView {
     void showErrorToEnter();
 
     void enableNFC();
+
+    void setCrashlytics();
 }

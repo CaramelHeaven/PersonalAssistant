@@ -443,7 +443,7 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Single<List<PersonCertificates>> getPersonCertificates() {
-        String filter = "PartyNumber eq '" + CacheUser.getUser().getPersonalDynamics365Number() + "'";
+        String filter = "PartyNumber eq '" + "000001401" + "'";
 
         return PersonalAssistant.getBaseApiService().getPersonCetrificates(filter)
                 .map(infoMapper::map);

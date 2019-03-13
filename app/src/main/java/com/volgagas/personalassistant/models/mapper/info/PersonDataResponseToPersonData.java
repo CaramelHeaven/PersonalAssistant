@@ -20,9 +20,15 @@ public class PersonDataResponseToPersonData extends Mapper<PersonDataResponse, P
 
     @Override
     protected void fillData(PersonData personData, PersonDataResponse personDataResponse) {
-        PersonDataNetwork data = personDataResponse.getValue().get(0);
-        personData.setAddressStreet(data.getAddressStreet());
-        personData.setBirthDate(UtilsDateTimeProvider.formatBirthday(data.getBirthDate()));
-        personData.setContactPhone(data.getPrimaryContactPhone());
+        if (personDataResponse.getValue().size() > 0) {
+            PersonDataNetwork data = personDataResponse.getValue().get(0);
+            personData.setAddressStreet(data.getAddressStreet());
+            personData.setBirthDate(UtilsDateTimeProvider.formatBirthday(data.getBirthDate()));
+            personData.setContactPhone(data.getPrimaryContactPhone());
+        } else {
+            personData.setAddressStreet("");
+            personData.setBirthDate("");
+            personData.setContactPhone("");
+        }
     }
 }

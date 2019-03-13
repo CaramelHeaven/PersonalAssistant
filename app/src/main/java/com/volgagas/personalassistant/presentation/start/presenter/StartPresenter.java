@@ -118,6 +118,7 @@ public class StartPresenter extends BasePresenter<StartView> {
                         if (result.getCategory() != null && !result.getCategory().equals(Constants.EQUIPMENT)
                                 && result.getName() != null && !result.getName().equals("")) {
                             CacheUser.getUser().setBaseFields(result);
+                            getViewState().setCrashlytics();
 
                             disposable.add(repository.getPersonalUserNumber(result.getName())
                                     .subscribeOn(Schedulers.io())

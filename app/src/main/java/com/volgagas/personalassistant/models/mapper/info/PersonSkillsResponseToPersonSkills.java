@@ -41,6 +41,9 @@ public class PersonSkillsResponseToPersonSkills extends Mapper<PersonSkillsRespo
             skills.setImageReference(R.drawable.ic_sharepoint);
         } else {
             switch (skills.getSkillName()) {
+                case "MS Excel":
+                    skills.setImageReference(R.drawable.ic_excel);
+                    break;
                 case "MS Outlook":
                     skills.setImageReference(R.drawable.ic_outlook);
                     break;

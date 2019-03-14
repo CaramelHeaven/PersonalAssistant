@@ -63,6 +63,7 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
     private PendingIntent pendingIntent;
     private StringBuilder secretNumbers = null;
     private boolean permissionToEnableNfc = false;
+    private boolean isOnResume = true;
 
     @InjectPresenter
     StartPresenter presenter;
@@ -128,7 +129,6 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
         super.onResume();
         Timber.d("onResume: " + this.getClass().getSimpleName());
         Timber.d("get simplest name current class: " + this.getClass().getSimpleName());
-        Timber.d("nfc adapter check: " + nfcAdapter.isEnabled() + " permission: " + permissionToEnableNfc);
         if (nfcAdapter != null && permissionToEnableNfc && nfcAdapter.isEnabled()) {
             nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListArray);
         }
@@ -136,6 +136,7 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
 
     @Override
     protected void onPause() {
+        isOnResume = false;
         if (nfcAdapter != null && nfcAdapter.isEnabled()) {
             Timber.d("DISABLE THiS SHIT");
             nfcAdapter.disableForegroundDispatch(this);
@@ -200,15 +201,18 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
      * @param data - user codekey from mifare card
      */
     protected void sendDataToServer(String data) {
-        showProgress();
+        if (permissionToEnableNfc) {
+            showProgress();
 
-        //setPermissionToEnableNfc(false);
-        //handlerNFC();
+            //setPermissionToEnableNfc(false);
+            //handlerNFC();
 
-        if (data != null && data.length() == 18) {
-            presenter.getUserData(data);
-        } else {
-            Toast.makeText(this, "Приложите карту еще раз", Toast.LENGTH_SHORT).show();
+            if (data != null && data.length() == 18) {
+                permissionToEnableNfc = false; //disable NFC when user scanned card
+                presenter.getUserData(data);
+            } else {
+                Toast.makeText(this, "Приложите карту еще раз", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -226,6 +230,7 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
     @Override
     public void catastrophicError(Throwable throwable) {
         Toast.makeText(this, "Необработанная ошибка: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+        permissionToEnableNfc = true;
     }
 
     @Override
@@ -238,6 +243,7 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
         //setPermissionToEnableNfc(true);
         //handlerNFC();
 
+        permissionToEnableNfc = true;
         RxBus.getInstance().passDataToCommonChannel("TITLE_SHOW");
         progressBar.setVisibility(View.GONE);
         Toast.makeText(this, "Произошла ошибка при входе. Повторите еще раз", Toast.LENGTH_SHORT).show();
@@ -245,8 +251,10 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
 
     @Override
     public void enableNFC() {
-        permissionToEnableNfc = true;
-        onResume();
+        if (isOnResume) {
+            permissionToEnableNfc = true;
+            onResume();
+        }
     }
 
     @Override

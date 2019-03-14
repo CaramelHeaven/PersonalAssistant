@@ -40,7 +40,7 @@ public class CertificatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         certificatesVH.tvTitle.setText(certificatesList.get(i).getCertificate());
         certificatesVH.tvDescription.setText(certificatesList.get(i).getNotes());
-        certificatesVH.tvTime.setText(certificatesList.get(i).getStartTime());
+        certificatesVH.tvTime.setText(certificatesList.get(i).getTime());
     }
 
     @Override

@@ -1,9 +1,11 @@
 package com.volgagas.personalassistant.models.mapper.info;
 
+import com.github.aakira.expandablelayout.Utils;
 import com.volgagas.personalassistant.models.mapper.Mapper;
 import com.volgagas.personalassistant.models.model.info.PersonCertificates;
 import com.volgagas.personalassistant.models.network.PersonCertificatesResponse;
 import com.volgagas.personalassistant.models.network.info.PersonCertificatesNetwork;
+import com.volgagas.personalassistant.utils.UtilsDateTimeProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +29,23 @@ public class PersonCertificatesResponseToPersonCertificates extends Mapper<Perso
         for (PersonCertificatesNetwork network : response.getValue()) {
             PersonCertificates certificates = new PersonCertificates();
 
-            certificates.setEndTime(network.getEndDate());
             certificates.setNotes(network.getNotes());
             certificates.setPartyNumber(network.getPartyNumber());
-            certificates.setStartTime(network.getStartDate());
+            certificates.setTime(mapDates(network.getStartDate(), network.getEndDate()));
             certificates.setCertificate(network.getCertificateTypeId());
 
             personCertificates.add(certificates);
         }
+    }
+
+    private String mapDates(String startDate, String endDate) {
+        StringBuilder builder = new StringBuilder("От " + UtilsDateTimeProvider.formatBirthday(startDate) + " до ");
+        String endTime = UtilsDateTimeProvider.formatBirthday(endDate);
+
+        if (endTime.contains("1900")) {
+            return builder.append("неопределенного срока").toString();
+        }
+
+        return builder.append(endTime).toString();
     }
 }

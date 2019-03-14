@@ -5,8 +5,7 @@ package com.volgagas.personalassistant.models.model.info;
  */
 public class PersonCertificates {
     private String partyNumber;
-    private String startTime;
-    private String endTime;
+    private String time;
     private String notes;
     private String certificate;
 
@@ -14,8 +13,7 @@ public class PersonCertificates {
     public String toString() {
         return "PersonCertificates{" +
                 "partyNumber='" + partyNumber + '\'' +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
+                ", time='" + time + '\'' +
                 ", notes='" + notes + '\'' +
                 ", certificate='" + certificate + '\'' +
                 '}';
@@ -27,22 +25,6 @@ public class PersonCertificates {
 
     public void setPartyNumber(String partyNumber) {
         this.partyNumber = partyNumber;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
     }
 
     public String getNotes() {
@@ -59,5 +41,13 @@ public class PersonCertificates {
 
     public void setCertificate(String certificate) {
         this.certificate = certificate;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

@@ -3,11 +3,9 @@ package com.volgagas.personalassistant.presentation.start.presenter;
 import android.annotation.SuppressLint;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
-import com.volgagas.personalassistant.models.model.User;
 import com.volgagas.personalassistant.models.model.UserDynamics;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
@@ -17,15 +15,9 @@ import com.volgagas.personalassistant.utils.channels.check_auth.ThreePermissions
 
 import java.util.List;
 
-import io.reactivex.MaybeSource;
-import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import timber.log.Timber;
 
 /**
  * Copyright (c) 2018 VolgaGas. All rights reserved.

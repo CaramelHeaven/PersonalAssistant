@@ -60,6 +60,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
             task.setStatus(test.get(i).getStatus());
             task.setProjCategoryId(test.get(i).getProjCategoryId());
             task.setServiceTaskId(test.get(i).getSoServiceTaskId());
+            task.setSoProjId(test.get(i).getSoProjectId());
 
             if (!map.containsKey(task))
                 map.put(task, new ArrayList<>());
@@ -77,6 +78,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
             task.setStatus(test.get(i).getStatus());
             task.setProjCategoryId(test.get(i).getProjCategoryId());
             task.setServiceTaskId(test.get(i).getSoServiceTaskId());
+            task.setSoProjId(test.get(i).getSoProjectId());
 
             if (map.containsKey(task)) {
                 List<SubTask> subTasks = map.get(task);

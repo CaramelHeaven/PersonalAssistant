@@ -28,12 +28,15 @@ public class PurchaseOrderMoreAdapter extends RecyclerView.Adapter<RecyclerView.
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_purchase_order_more,
                 viewGroup, false);
-        return null;
+        return new ServerSubOrderVH(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+        ServerSubOrderVH serverSubOrderVH = (ServerSubOrderVH) viewHolder;
 
+        serverSubOrderVH.tvName.setText(list.get(i).getName());
+        serverSubOrderVH.tvDescription.setText(list.get(i).getDescription());
     }
 
     public void updateAdapter(List<ServerSubOrder> list) {
@@ -47,10 +50,12 @@ public class PurchaseOrderMoreAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     class ServerSubOrderVH extends RecyclerView.ViewHolder {
-        TextView tvDescription, tvQuantity, tvPrice;
+        TextView tvDescription, tvName;
 
         public ServerSubOrderVH(@NonNull View itemView) {
             super(itemView);
+            tvDescription = itemView.findViewById(R.id.tv_description);
+            tvName = itemView.findViewById(R.id.tv_name);
         }
     }
 }

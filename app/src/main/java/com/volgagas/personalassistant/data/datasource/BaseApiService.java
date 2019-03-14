@@ -111,7 +111,8 @@ public interface BaseApiService {
     //------------------------------------------------------------------------------------------
     //Below two methods - Purchases Requisition orders
     @GET("data/PurchaseRequisitionHeaders")
-    Single<PurchaseRequestionResponse> getPurchaseRequisition(@Query("$filter") String personId);
+    Single<PurchaseRequestionResponse> getPurchaseRequisition(@Query("$filter") String personId,
+                                                              @Query("$orderBy") String orderBy);
 
     @GET("data/PurchaseRequisitionLines")
     Single<PurchReqLinesResponse> getPurchaseRequisitionLines(@Query("$filter") String orderId,
@@ -120,7 +121,8 @@ public interface BaseApiService {
     //------------------------------------------------------------------------------------------
     // and this below two method - Purchases simple order
     @GET("data/PurchaseOrderHeadersV2")
-    Single<PurchaseOrderResponse> getPurchaseOrders(@Query("$filter") String personId);
+    Single<PurchaseOrderResponse> getPurchaseOrders(@Query("$filter") String personId,
+                                                    @Query("$orderBy") String orderBy);
 
     @GET("data/PurchaseOrderLinesV2")
     Single<PurchOrderLinesResponse> getPurchaseOrderLines(@Query("$filter") String orderId,

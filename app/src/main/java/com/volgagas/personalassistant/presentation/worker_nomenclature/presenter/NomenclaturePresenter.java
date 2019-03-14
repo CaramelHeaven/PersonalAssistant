@@ -222,6 +222,7 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                             .putString("SERVICE_ORDER_ID", task.getIdTask())
                             .putString("PROJ_CATEGORY_ID", task.getProjCategoryId())
                             .putString("SERVICE_TASK_ID", task.getServiceTaskId())
+                            .putString("SO_PROJ_ID", task.getSoProjId())
                             .build())
                     .build();
 

@@ -48,12 +48,13 @@ public class CreateNomenclaturesWorker extends RxWorker {
         String serviceOrderId = getInputData().getString("SERVICE_ORDER_ID");
         String projCategoryId = getInputData().getString("PROJ_CATEGORY_ID");
         String serviceTaskId = getInputData().getString("SERVICE_TASK_ID");
+        String soProjId = getInputData().getString("SO_PROJ_ID");
 
         return Single.just(nomenclatureList)
                 .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
                 .flatMap((Function<Nomenclature, ObservableSource<Response<Void>>>) data -> repository
                         .attachNomenclatureToServiceOrder(mappingToJson(
-                                data, serviceOrderId, projCategoryId, serviceTaskId)))
+                                data, serviceOrderId, projCategoryId, serviceTaskId, soProjId)))
                 .toList()
                 .map(responses -> Result.success())
                 .doOnError(throwable -> {
@@ -64,7 +65,7 @@ public class CreateNomenclaturesWorker extends RxWorker {
     }
 
     private JsonObject mappingToJson(Nomenclature nomenclature, String serviceOrderId, String projCategory,
-                                     String serviceTaskId) {
+                                     String serviceTaskId, String soProjId) {
         JsonObject object = new JsonObject();
 
         object.add("dataAreaId", new JsonPrimitive("gns"));
@@ -73,6 +74,7 @@ public class CreateNomenclaturesWorker extends RxWorker {
         object.add("InventDimId", new JsonPrimitive("GNS-000627"));
         object.add("ProjLinePropertyId", new JsonPrimitive("Расход"));
         object.add("ProjCategoryId", new JsonPrimitive(projCategory + "_ТМЦ"));
+        object.add("ProjId", new JsonPrimitive(soProjId));
         object.add("DateRangeFrom",
                 new JsonPrimitive(UtilsDateTimeProvider.workerServiceTime() + "T12:00:00Z"));
         object.add("Qty", new JsonPrimitive(nomenclature.getCount()));

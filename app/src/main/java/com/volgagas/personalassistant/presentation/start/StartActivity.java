@@ -127,8 +127,6 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
     @Override
     protected void onResume() {
         super.onResume();
-        Timber.d("onResume: " + this.getClass().getSimpleName());
-        Timber.d("get simplest name current class: " + this.getClass().getSimpleName());
         if (nfcAdapter != null && permissionToEnableNfc && nfcAdapter.isEnabled()) {
             nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListArray);
         }

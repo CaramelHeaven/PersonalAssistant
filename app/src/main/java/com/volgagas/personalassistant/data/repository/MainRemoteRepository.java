@@ -443,7 +443,7 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Single<List<PersonCertificates>> getPersonCertificates() {
-        String filter = "PartyNumber eq '" + "000001401" + "'";
+        String filter = "PartyNumber eq '" + CacheUser.getUser().getWorkerRecId() + "'";
 
         return PersonalAssistant.getBaseApiService().getPersonCetrificates(filter)
                 .map(infoMapper::map);
@@ -451,7 +451,7 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Single<List<PersonSkills>> getPersonSkills() {
-        String filter = "PartyNumber eq '" + "0000000201" + "'";
+        String filter = "PartyNumber eq '" + CacheUser.getUser().getWorkerRecId() + "'";
 
         return PersonalAssistant.getBaseApiService().getPersonSkills(filter)
                 .map(infoMapper::map);
@@ -467,9 +467,9 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Single<List<UserOrder>> getPurchaseRequisitions() {
-        String filter = "PreparerPersonnelNumber eq 'д000000310'";
+        String filter = "(PreparerPersonnelNumber eq 'д000000310')";
 
-        return PersonalAssistant.getBaseApiService().getPurchaseRequisition(filter)
+        return PersonalAssistant.getBaseApiService().getPurchaseRequisition(filter, "DefaultRequestedDate desc")
                 .map(orderMapper::map);
     }
 
@@ -484,16 +484,15 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Single<List<ServerOrder>> getPurchaseOrders() {
-        String filter = "OrdererPersonnelNumber eq 'д000000310'";
+        String filter = "(OrdererPersonnelNumber eq 'д000000310')";
 
-        return PersonalAssistant.getBaseApiService().getPurchaseOrders(filter)
+        return PersonalAssistant.getBaseApiService().getPurchaseOrders(filter, "AccountingDate desc")
                 .map(orderMapper::map);
     }
 
     @Override
     public Single<List<ServerSubOrder>> getPurchaseOrderLines(String orderNumber) {
         String filter = "PurchaseOrderNumber eq '" + orderNumber + "'";
-        Timber.d("KEKE");
 
         return PersonalAssistant.getBaseApiService().getPurchaseOrderLines(filter, "LineNumber asc")
                 .map(orderMapper::map);

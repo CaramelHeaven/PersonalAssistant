@@ -43,7 +43,7 @@ public class PersonCertificatesResponseToPersonCertificates extends Mapper<Perso
         String endTime = UtilsDateTimeProvider.formatBirthday(endDate);
 
         if (endTime.contains("1900")) {
-            return builder.append("неопределенного срока").toString();
+            return builder.append("неопределенного ср.").toString();
         }
 
         return builder.append(endTime).toString();

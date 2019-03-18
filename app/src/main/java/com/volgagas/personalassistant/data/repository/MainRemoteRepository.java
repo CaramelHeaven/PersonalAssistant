@@ -30,6 +30,7 @@ import com.volgagas.personalassistant.models.mapper.user.UserResponseListToUserL
 import com.volgagas.personalassistant.models.mapper.user.UserResponseToUser;
 import com.volgagas.personalassistant.models.mapper.user.UserSimpleResponseToUserSimple;
 import com.volgagas.personalassistant.models.mapper.worker.BarcodeResponseToBarcode;
+import com.volgagas.personalassistant.models.mapper.worker.DimMapResponseToNomenclDimension;
 import com.volgagas.personalassistant.models.mapper.worker.NomenclatureHostRespToNomenclatureHost;
 import com.volgagas.personalassistant.models.mapper.worker.NomenclatureResponseToNomenclature;
 import com.volgagas.personalassistant.models.mapper.worker.SubTaskResponseToSubTask;
@@ -59,11 +60,14 @@ import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.model.user.UserSimple;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
+import com.volgagas.personalassistant.models.model.worker.NomenclatureDimension;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
+import com.volgagas.personalassistant.models.network.DimensionMappingResponse;
 import com.volgagas.personalassistant.models.network.user_id.UserId;
 import com.volgagas.personalassistant.utils.Constants;
 import com.volgagas.personalassistant.utils.UtilsDateTimeProvider;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -71,6 +75,8 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.functions.Function;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import timber.log.Timber;
@@ -139,12 +145,14 @@ public class MainRemoteRepository implements MainRepository {
                     PurchaseOrderToServerOrder purchaseOrderToServerOrder = new PurchaseOrderToServerOrder();
                     PurchOrderLinesResponseToServerSubOrder purchOrderLinesResponseToServerSubOrder =
                             new PurchOrderLinesResponseToServerSubOrder();
+                    DimMapResponseToNomenclDimension dimMapResponseToNomenclDimension =
+                            new DimMapResponseToNomenclDimension();
 
                     //Initial mappers
                     taskMapper = new TaskMapper(taskResponseToTask, taskResponseToTaskHistory,
                             taskKioskResponseToTaskTemplate, subTaskResponseToSubTask,
                             nomenclatureResponseToNomenclature, nomenclatureHostRespToNomenclatureHost,
-                            barcodeResponseToBarcode);
+                            barcodeResponseToBarcode, dimMapResponseToNomenclDimension);
                     userMapper = new UserMapper(userResponseToUser, userResponseListToUserList,
                             userIdResponseToUserId, userDynamicsResponseToUserDynamics,
                             userSimpleResponseToUserSimple);
@@ -496,5 +504,13 @@ public class MainRemoteRepository implements MainRepository {
 
         return PersonalAssistant.getBaseApiService().getPurchaseOrderLines(filter, "LineNumber asc")
                 .map(orderMapper::map);
+    }
+
+    @Override
+    public Single<NomenclatureDimension> getNomenclatureMappingDimension(String category) {
+        String filter = "ProjCategoryEmplId eq '" + category + "'";
+
+        return PersonalAssistant.getBaseApiService().getDimensionMappingByServiceOrder(filter)
+                .map(taskMapper::map);
     }
 }

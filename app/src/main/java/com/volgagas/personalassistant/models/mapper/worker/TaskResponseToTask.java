@@ -33,7 +33,6 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
         fillData(tasks, value);
 
         Collections.sort(tasks);
-        Timber.d("after completed: " + tasks);
 
         return tasks;
     }
@@ -43,6 +42,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
         //removing completed tasks
         List<TaskNetwork> test = new ArrayList<>();
         for (TaskNetwork taskNetwork : taskResponse.getValue()) {
+            //if gpa not set - not add
             if (!taskNetwork.getAcClosed().equals("Yes") && !taskNetwork.getGpa().equals("")) {
                 test.add(taskNetwork);
             }
@@ -53,6 +53,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
         for (int i = 0; i < test.size(); i++) {
             Task task = new Task();
 
+            //set field this
             task.setDescription(test.get(i).getServiceOrderDescription());
             task.setIdTask(test.get(i).getServiceOrderId());
             task.setGpa(test.get(i).getGpa());
@@ -71,6 +72,7 @@ public class TaskResponseToTask extends Mapper<TaskResponse, List<Task>> {
         for (int i = 0; i < test.size(); i++) {
             Task task = new Task();
 
+            //set field this
             task.setDescription(test.get(i).getServiceOrderDescription());
             task.setIdTask(test.get(i).getServiceOrderId());
             task.setGpa(test.get(i).getGpa());

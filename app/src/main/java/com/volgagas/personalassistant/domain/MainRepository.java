@@ -1,6 +1,7 @@
 package com.volgagas.personalassistant.domain;
 
 import com.google.gson.JsonObject;
+import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.models.model.Contract;
 import com.volgagas.personalassistant.models.model.SubTaskViewer;
 import com.volgagas.personalassistant.models.model.Task;
@@ -24,6 +25,7 @@ import com.volgagas.personalassistant.models.model.queries.UniformRequest;
 import com.volgagas.personalassistant.models.model.user.UserSimple;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
+import com.volgagas.personalassistant.models.model.worker.NomenclatureDimension;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.models.network.PurchReqLinesResponse;
 import com.volgagas.personalassistant.models.network.PurchaseRequestionResponse;
@@ -303,4 +305,6 @@ public interface MainRepository {
      * @return object
      */
     Single<List<ServerSubOrder>> getPurchaseOrderLines(String orderNumber);
+
+    Single<NomenclatureDimension> getNomenclatureMappingDimension(String category);
 }

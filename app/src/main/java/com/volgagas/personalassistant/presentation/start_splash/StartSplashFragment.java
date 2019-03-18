@@ -41,14 +41,12 @@ public class StartSplashFragment extends Fragment {
         ivFactory = view.findViewById(R.id.iv_volgagas);
 
         final Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.bounce);
-
         ivFactory.startAnimation(animation);
-
-
     }
 
     @Override
     public void onDestroyView() {
+        ivFactory = null;
         super.onDestroyView();
     }
 }

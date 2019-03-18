@@ -12,15 +12,19 @@ import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
+import com.volgagas.personalassistant.models.model.worker.NomenclatureDimension;
 import com.volgagas.personalassistant.utils.UtilsDateTimeProvider;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import androidx.work.RxWorker;
 import androidx.work.WorkerParameters;
+import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -31,6 +35,7 @@ import timber.log.Timber;
  */
 public class CreateNomenclaturesWorker extends RxWorker {
     private MainRepository repository;
+    private String inventDimId;
 
     /**
      * @param appContext   The application {@link Context}
@@ -50,7 +55,11 @@ public class CreateNomenclaturesWorker extends RxWorker {
         String serviceTaskId = getInputData().getString("SERVICE_TASK_ID");
         String soProjId = getInputData().getString("SO_PROJ_ID");
 
-        return Single.just(nomenclatureList)
+        return repository.getNomenclatureMappingDimension(projCategoryId)
+                .flatMap((Function<NomenclatureDimension, SingleSource<List<Nomenclature>>>) nomenclatureDimension -> {
+                    inventDimId = nomenclatureDimension.getInventDimId();
+                    return Single.just(nomenclatureList);
+                })
                 .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
                 .flatMap((Function<Nomenclature, ObservableSource<Response<Void>>>) data -> repository
                         .attachNomenclatureToServiceOrder(mappingToJson(
@@ -58,7 +67,6 @@ public class CreateNomenclaturesWorker extends RxWorker {
                 .toList()
                 .map(responses -> Result.success())
                 .doOnError(throwable -> {
-                    Timber.d("THROWABLE: " + throwable.getMessage());
                     Crashlytics.logException(throwable);
                     Result.retry();
                 });
@@ -71,7 +79,7 @@ public class CreateNomenclaturesWorker extends RxWorker {
         object.add("dataAreaId", new JsonPrimitive("gns"));
         object.add("ServiceOrderId", new JsonPrimitive(serviceOrderId));
         object.add("ItemId", new JsonPrimitive(nomenclature.getName()));
-        object.add("InventDimId", new JsonPrimitive("AllBlank"));
+        object.add("InventDimId", new JsonPrimitive(inventDimId));
         object.add("ProjLinePropertyId", new JsonPrimitive("Расход"));
         object.add("ProjCategoryId", new JsonPrimitive(projCategory + "_ТМЦ"));
         object.add("ProjId", new JsonPrimitive(soProjId));
@@ -79,7 +87,7 @@ public class CreateNomenclaturesWorker extends RxWorker {
         object.add("DateRangeFrom",
                 new JsonPrimitive(UtilsDateTimeProvider.workerServiceTime() + "T12:00:00Z"));
         object.add("Qty", new JsonPrimitive(nomenclature.getCount()));
-        //object.add("DefaultDimension", new JsonPrimitive(Long.parseLong("5637144586")));//still here
+        object.add("DefaultDimension", new JsonPrimitive(Long.parseLong("5637144586")));//still here
         object.add("TransactionSubType", new JsonPrimitive("Consumption"));
         object.add("DateExecution",
                 new JsonPrimitive(UtilsDateTimeProvider.workerServiceTime() + "T12:00:00Z"));

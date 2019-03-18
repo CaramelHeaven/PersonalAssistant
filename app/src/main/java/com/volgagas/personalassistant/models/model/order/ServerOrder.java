@@ -7,6 +7,7 @@ public class ServerOrder {
     private String purchaseOrderName;
     private String deliveryAddress;
     private String purchaseOrderNumber;
+    private String status;
 
     public String getPurchaseOrderName() {
         return purchaseOrderName;
@@ -30,5 +31,13 @@ public class ServerOrder {
 
     public void setPurchaseOrderNumber(String purchaseOrderNumber) {
         this.purchaseOrderNumber = purchaseOrderNumber;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -27,6 +27,7 @@ public class PurchaseOrderToServerOrder extends Mapper<PurchaseOrderResponse, Li
             ServerOrder serverOrder = new ServerOrder();
             serverOrder.setDeliveryAddress(network.getFormattedDeliveryAddress());
             serverOrder.setPurchaseOrderName(network.getPurchaseOrderName());
+            serverOrder.setStatus(network.getDocumentApprovalStatus());
             serverOrder.setPurchaseOrderNumber(network.getPurchaseOrderNumber());
 
             serverOrders.add(serverOrder);

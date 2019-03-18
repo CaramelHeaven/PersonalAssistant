@@ -66,7 +66,6 @@ public class PurchaseRequestionPresenter extends BasePresenter<PurchaseRequestio
 
     @Override
     protected void loadData() {
-        Timber.d("GET CALLBACK");
         getViewState().hideProgress();
         getViewState().showItems(CachePot.getInstance().getUserOrders());
     }

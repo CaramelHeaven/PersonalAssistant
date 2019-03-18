@@ -61,6 +61,7 @@ public class StartPresenter extends BasePresenter<StartView> {
 
     public void getUserData(String data) {
         this.userNumbers = data;
+        Timber.d("userData: " + userNumbers);
         loadData();
     }
 
@@ -75,8 +76,8 @@ public class StartPresenter extends BasePresenter<StartView> {
             getViewState().showErrorToEnter();
 
             //todo remove it
-//            CacheUser.getUser().setPersonalDynamics365Number(userDynamics.getPersonalNumber());
-//            //CacheUser.getUser().setWorkerRecId(userDynamics.getWorkerRecId());
+            //CacheUser.getUser().setPersonalDynamics365Number(userDynamics.getPersonalNumber());
+            //CacheUser.getUser().setWorkerRecId(userDynamics.getWorkerRecId());
 
             permissions.setServer(false);
             CommonChannel.sendPermissions(permissions);

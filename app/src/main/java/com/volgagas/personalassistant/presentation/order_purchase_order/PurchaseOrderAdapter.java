@@ -1,10 +1,12 @@
 package com.volgagas.personalassistant.presentation.order_purchase_order;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,6 +43,14 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<RecyclerView.View
         ServerOrderVH serverOrderVH = (ServerOrderVH) viewHolder;
 
         serverOrderVH.tvName.setText(serverOrders.get(i).getPurchaseOrderName());
+        serverOrderVH.tvAddress.setText(serverOrders.get(i).getDeliveryAddress());
+
+        Context context = serverOrderVH.ivBox.getContext();
+        if (serverOrders.get(i).getStatus().equals("Confirmed")) {
+            serverOrderVH.ivBox.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_box_unpacked));
+        } else {
+            serverOrderVH.ivBox.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_box_packed));
+        }
     }
 
     @Override
@@ -60,11 +70,13 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<RecyclerView.View
     class ServerOrderVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvName, tvAddress;
         RelativeLayout rlContainer;
+        ImageView ivBox;
 
         public ServerOrderVH(@NonNull View itemView) {
             super(itemView);
             rlContainer = itemView.findViewById(R.id.rl_container);
             tvName = itemView.findViewById(R.id.tv_title);
+            ivBox = itemView.findViewById(R.id.iv_image);
 
             rlContainer.setOnClickListener(this::onClick);
         }

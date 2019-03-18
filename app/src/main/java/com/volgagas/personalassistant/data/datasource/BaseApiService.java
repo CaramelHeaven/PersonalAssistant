@@ -2,6 +2,7 @@ package com.volgagas.personalassistant.data.datasource;
 
 import com.google.gson.JsonObject;
 import com.volgagas.personalassistant.models.network.BarcodeResponse;
+import com.volgagas.personalassistant.models.network.DimensionMappingResponse;
 import com.volgagas.personalassistant.models.network.NomenclatureHostResponse;
 import com.volgagas.personalassistant.models.network.NomenclatureResponse;
 import com.volgagas.personalassistant.models.network.PersonCertificatesResponse;
@@ -108,15 +109,18 @@ public interface BaseApiService {
     @GET("data/PayStatementHeaders")
     Single<SalaryResponse> getPersonSalary(@Query("$filter") String partyNumber);
 
+    @GET("data/ProjCategoryDimMapping")
+    Single<DimensionMappingResponse> getDimensionMappingByServiceOrder(@Query("$filter") String projCategory);
+
     //------------------------------------------------------------------------------------------
     //Below two methods - Purchases Requisition orders
     @GET("data/PurchaseRequisitionHeaders")
     Single<PurchaseRequestionResponse> getPurchaseRequisition(@Query("$filter") String personId,
-                                                              @Query("$orderBy") String orderBy);
+                                                              @Query("$orderby") String orderBy);
 
     @GET("data/PurchaseRequisitionLines")
     Single<PurchReqLinesResponse> getPurchaseRequisitionLines(@Query("$filter") String orderId,
-                                                              @Query("$orderBy") String orderby);
+                                                              @Query("$orderby") String orderby);
 
     //------------------------------------------------------------------------------------------
     // and this below two method - Purchases simple order

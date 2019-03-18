@@ -201,7 +201,6 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
     protected void sendDataToServer(String data) {
         if (permissionToEnableNfc) {
             showProgress();
-            //data = "0x20FB34F5B5000022";
 
             //setPermissionToEnableNfc(false);
             //handlerNFC();

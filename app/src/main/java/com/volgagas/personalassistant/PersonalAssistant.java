@@ -33,6 +33,10 @@ public class PersonalAssistant extends Application {
     private static BaseApiService baseApiService;
     private static SPApiService spApiService;
 
+    public static String getLastTokenDynamics365() {
+        return lastTokenDynamics365;
+    }
+
     /* Times
      * */
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'", Locale.getDefault());

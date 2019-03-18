@@ -3,6 +3,8 @@ package com.volgagas.personalassistant.presentation.order_purchase_order_more;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import com.volgagas.personalassistant.models.model.order.ServerSubOrder;
 import com.volgagas.personalassistant.presentation.order_purchase_order_more.presenter.PurchaseOrderMorePresenter;
 import com.volgagas.personalassistant.presentation.order_purchase_order_more.presenter.PurchaseOrderMoreView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
@@ -30,6 +33,9 @@ public class PurchaseOrderMoreDialogFragment extends MvpAppCompatDialogFragment 
 
     private DisplayMetrics displayMetrics;
     private ProgressBar progressBar;
+    private RecyclerView recyclerView;
+
+    private PurchaseOrderMoreAdapter adapter;
 
     @InjectPresenter
     PurchaseOrderMorePresenter presenter;
@@ -57,6 +63,13 @@ public class PurchaseOrderMoreDialogFragment extends MvpAppCompatDialogFragment 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         progressBar = view.findViewById(R.id.progress_bar);
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+        adapter = new PurchaseOrderMoreAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
 
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -94,7 +107,7 @@ public class PurchaseOrderMoreDialogFragment extends MvpAppCompatDialogFragment 
     @Override
     public void showItems(List<ServerSubOrder> serverSubOrders) {
         if (serverSubOrders.size() > 0) {
-            Timber.d("checking fields: " + serverSubOrders);
+            adapter.updateAdapter(serverSubOrders);
         }
     }
 }

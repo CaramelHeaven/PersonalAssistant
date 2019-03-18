@@ -71,14 +71,15 @@ public class CreateNomenclaturesWorker extends RxWorker {
         object.add("dataAreaId", new JsonPrimitive("gns"));
         object.add("ServiceOrderId", new JsonPrimitive(serviceOrderId));
         object.add("ItemId", new JsonPrimitive(nomenclature.getName()));
-        object.add("InventDimId", new JsonPrimitive("GNS-000627"));
+        object.add("InventDimId", new JsonPrimitive("AllBlank"));
         object.add("ProjLinePropertyId", new JsonPrimitive("Расход"));
         object.add("ProjCategoryId", new JsonPrimitive(projCategory + "_ТМЦ"));
         object.add("ProjId", new JsonPrimitive(soProjId));
+        object.add("ToInventDimId", new JsonPrimitive("AllBlank"));
         object.add("DateRangeFrom",
                 new JsonPrimitive(UtilsDateTimeProvider.workerServiceTime() + "T12:00:00Z"));
         object.add("Qty", new JsonPrimitive(nomenclature.getCount()));
-        object.add("DefaultDimension", new JsonPrimitive(Long.parseLong("5637144586")));//still here
+        //object.add("DefaultDimension", new JsonPrimitive(Long.parseLong("5637144586")));//still here
         object.add("TransactionSubType", new JsonPrimitive("Consumption"));
         object.add("DateExecution",
                 new JsonPrimitive(UtilsDateTimeProvider.workerServiceTime() + "T12:00:00Z"));

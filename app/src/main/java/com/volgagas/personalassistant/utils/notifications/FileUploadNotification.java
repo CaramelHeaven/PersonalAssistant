@@ -67,13 +67,17 @@ public class FileUploadNotification {
     }
 
     public void updateNotification(String percent) {
-        builder.setContentText("Скачивание файла")
-                .setContentTitle("")
-                .setOngoing(true)
-                .setContentInfo(percent + "%")
-                .setProgress(baseSize, Integer.parseInt(percent), false);
+        if (builder != null) {
+            builder.setContentText("Скачивание файла")
+                    .setContentTitle("")
+                    .setOngoing(true)
+                    .setContentInfo(percent + "%")
+                    .setProgress(baseSize, Integer.parseInt(percent), false);
+        }
 
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+        if (notificationManager != null) {
+            notificationManager.notify(NOTIFICATION_ID, builder.build());
+        }
         if (Integer.parseInt(percent) == baseSize) {
             deleteNotification();
         }

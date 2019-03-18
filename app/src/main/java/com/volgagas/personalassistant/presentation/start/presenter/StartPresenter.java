@@ -18,6 +18,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Copyright (c) 2018 VolgaGas. All rights reserved.
@@ -72,6 +73,13 @@ public class StartPresenter extends BasePresenter<StartView> {
 
             //Show user if we get card data with empty fields
             getViewState().showErrorToEnter();
+
+            //todo remove it
+//            CacheUser.getUser().setPersonalDynamics365Number(userDynamics.getPersonalNumber());
+//            //CacheUser.getUser().setWorkerRecId(userDynamics.getWorkerRecId());
+
+            permissions.setServer(false);
+            CommonChannel.sendPermissions(permissions);
         } else {
             CacheUser.getUser().setPersonalDynamics365Number(userDynamics.getPersonalNumber());
             CacheUser.getUser().setWorkerRecId(userDynamics.getWorkerRecId());

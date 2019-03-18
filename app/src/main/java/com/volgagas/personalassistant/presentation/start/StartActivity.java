@@ -107,8 +107,8 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
         }
 
         //todo remove it in dev release
-        dynamicsCurrentHttp = Constants.DYNAMICS_TEST;
-        Constants.DYNAMICS_365 = Constants.DYNAMICS_TEST;
+//        dynamicsCurrentHttp = Constants.DYNAMICS_TEST;
+//        Constants.DYNAMICS_365 = Constants.DYNAMICS_TEST;
 
         if (d365Cache.equals("")) {
             authContext.acquireToken(StartActivity.this, dynamicsCurrentHttp, Constants.CLIENT,
@@ -201,6 +201,7 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
     protected void sendDataToServer(String data) {
         if (permissionToEnableNfc) {
             showProgress();
+            //data = "0x20FB34F5B5000022";
 
             //setPermissionToEnableNfc(false);
             //handlerNFC();

@@ -27,6 +27,8 @@ import com.volgagas.personalassistant.presentation.order_purchase_requestion_mor
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 18:46, 27/02/2019.
  */
@@ -103,6 +105,7 @@ public class PurchaseReqiestionMoreDialogFragment extends MvpAppCompatDialogFrag
     public void showItem(List<UserSubOrder> userSubOrder) {
         if (userSubOrder.size() > 0) {
             adapter.updateAdapter(userSubOrder);
+            Timber.d("Updated adamter: " + userSubOrder.toString());
         } else {
             Toast.makeText(getActivity(), "Ничего нет", Toast.LENGTH_SHORT).show();
         }

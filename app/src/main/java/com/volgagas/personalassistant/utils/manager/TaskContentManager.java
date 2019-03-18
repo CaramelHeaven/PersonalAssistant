@@ -34,7 +34,6 @@ public class TaskContentManager {
 
     public void setCurrentTask(Task task) {
         this.task = task;
-        Timber.d("TASK KEK: " + task.getProjCategoryId());
     }
 
     public Task getTask() {

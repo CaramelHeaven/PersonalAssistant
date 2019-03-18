@@ -7,6 +7,7 @@ import com.volgagas.personalassistant.data.cache.CachePot;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Task;
+import com.volgagas.personalassistant.models.model.info.PersonCertificates;
 import com.volgagas.personalassistant.models.model.worker.ContainerTaskAndHistory;
 import com.volgagas.personalassistant.models.model.worker.TaskHistory;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
@@ -37,11 +38,21 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
         repository = MainRemoteRepository.getInstance();
         disposable = new CompositeDisposable();
 
+        PersonalAssistant.provideDynamics365Auth("sdasd", "");
+
+        //update two screens
         disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
                 .subscribeOn(Schedulers.io())
                 .filter(result -> result.equals(Constants.WORKER_TODAY_NEW_PRESENTER))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> commonLoadTasksTodayAndHistory()));
+
+        //update current screen
+        disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
+                .subscribeOn(Schedulers.io())
+                .filter(result -> result.equals(Constants.WORKER_TODAY_NEW_UPDATE_PRESENTER))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> loadData()));
     }
 
     @Override
@@ -61,6 +72,7 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
      * to update this tasks today - it's simple calls loadData method in here
      */
     private void commonLoadTasksTodayAndHistory() {
+        Timber.d("checking token: " + PersonalAssistant.getLastTokenDynamics365());
         getViewState().showProgress();
         disposable.add(Single.zip(repository.getTasksToday(), repository.getHistoryTasks(),
                 ContainerTaskAndHistory::new)
@@ -76,12 +88,28 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
                 }, this::handlerErrorsFromBadRequests));
     }
 
+    int k = 0;
+
     public void loadData() {
+        if (k == 0) {
+            PersonalAssistant.provideDynamics365Auth("fasfs", "");
+            k++;
+        }
         getViewState().showProgress();
         disposable.add(repository.getTasksToday()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResult, this::handlerErrorsFromBadRequests));
+                .subscribe(this::successfulResult, this::handlerErrorForUpdateData));
+    }
+
+    private void handlerErrorForUpdateData(Throwable throwable) {
+        Timber.d("handler error: ");
+        if (throwable.getMessage().contains(Constants.HTTP_401)) {
+            RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_TODAY_NEW_UPDATE_PRESENTER);
+        } else {
+            sendCrashlytics(throwable);
+            getViewState().catastrophicError(throwable);
+        }
     }
 
     private void successfulResult(List<Task> tasks) {

@@ -26,4 +26,7 @@ public interface NomenclatureView extends BaseView {
 
     @StateStrategyType(value = AddToEndSingleStrategy.class)
     void addedBarcodeNomenclaturesToBaseList(List<Nomenclature> values);
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void acceptAndCloseView();
 }

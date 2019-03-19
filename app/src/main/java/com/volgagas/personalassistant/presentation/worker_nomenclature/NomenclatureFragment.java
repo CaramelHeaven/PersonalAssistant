@@ -1,5 +1,6 @@
 package com.volgagas.personalassistant.presentation.worker_nomenclature;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,6 +49,7 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     private RecyclerView recyclerView;
     private Toolbar toolbar;
     private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
 
     private NomenclatureAdapter adapter;
     private String action;
@@ -95,6 +97,9 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
             }
         }, 10);
 
+//        btnConfirm.setEnabled(false);
+//        btnToQRCode.setEnabled(false);
+
         btnConfirm.setOnClickListener(v -> {
             if (progressBar.getVisibility() == View.VISIBLE) {
                 Toast.makeText(getActivity(), "Список еще грузится", Toast.LENGTH_SHORT).show();
@@ -105,16 +110,18 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
                     Toast.makeText(getActivity(), "В списке присутствует номенклатура с нулевым значением", Toast.LENGTH_SHORT).show();
                 } else {
                     if (adapter.getNomenclatureList().size() > 0) {
-                        presenter.createNomenclatures(adapter.getNomenclatureList());
-                        //CachePot.getInstance().clearOriginalList(); // clear helper list, because we exit from this screen
-                        if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
-                            Toast.makeText(getActivity(), "Отправили", Toast.LENGTH_SHORT).show();
-                            getActivity().finish();
-                        } else if (action.equals(Constants.USUAL)) {
-                            Intent intent = new Intent(getActivity(), GpaActivity.class);
+                        Boolean checkedNewData = presenter.createNomenclatures(adapter.getNomenclatureList());
 
-                            Toast.makeText(getActivity(), "Отправили", Toast.LENGTH_SHORT).show();
-                            startActivity(intent);
+                        if (checkedNewData) {
+                            progressDialog = new ProgressDialog(getActivity());
+                            progressDialog.setMessage("Посылаем номенклатуры");
+                            progressDialog.setCanceledOnTouchOutside(false);
+
+                            progressDialog.show();
+                            presenter.sendNomenclaturesToServer(); // create or update nomenclatures
+                        } else {
+                            Toast.makeText(getActivity(), "Вы ничего не добавили", Toast.LENGTH_SHORT).show();
+                            acceptAndCloseView();
                         }
                     }
                 }
@@ -122,6 +129,7 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         });
 
         btnToQRCode.setOnClickListener(v -> {
+            presenter.setLoadNomenclaturesFromServer(false);
             presenter.clearHelperList();
             presenter.setHelperNomenclatureList(adapter.getNomenclatureList());
 
@@ -138,8 +146,17 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (presenter.isLoadNomenclaturesFromServer()) {
+            presenter.presenterLoadData();
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
+        Timber.d("on resume: ");
     }
 
     private void provideRecyclerAndAdapter() {
@@ -168,7 +185,7 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
         adapter.setMyOnItemClickListener(position -> {
             adapter.removeItemByPosition(position);
             if (adapter.getItemCount() == 0) {
-
+                //todo nothing
             }
         });
     }
@@ -180,6 +197,8 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
 
     @Override
     public void onDestroyView() {
+        adapter.clear();
+        adapter.notifyDataSetChanged();
         btnConfirm = null;
         btnToQRCode = null;
         toolbar = null;
@@ -224,5 +243,20 @@ public class NomenclatureFragment extends BaseFragment implements NomenclatureVi
     public void addedBarcodeNomenclaturesToBaseList(List<Nomenclature> values) {
         adapter.clear();
         adapter.addItems(values);
+    }
+
+    @Override
+    public void acceptAndCloseView() {
+        if (progressDialog != null) {
+            progressDialog.cancel();
+        }
+        presenter.setLoadNomenclaturesFromServer(true);
+
+        if (action.equals(Constants.ADD_MORE_NOMENCLATURES)) {
+            getActivity().finish();
+        } else if (action.equals(Constants.USUAL)) {
+            Intent intent = new Intent(getActivity(), GpaActivity.class);
+            startActivity(intent);
+        }
     }
 }

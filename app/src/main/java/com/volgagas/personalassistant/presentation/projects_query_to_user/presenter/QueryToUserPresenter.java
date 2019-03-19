@@ -76,7 +76,6 @@ public class QueryToUserPresenter extends BasePresenter<QueryToUserView<QueryToU
 
     @Override
     protected void loadData() {
-        Timber.d("LALA: ");
         if (CachePot.getInstance().getQueryToUserList() != null) {
             interactionResult(CachePot.getInstance().getQueryToUserList());
         }

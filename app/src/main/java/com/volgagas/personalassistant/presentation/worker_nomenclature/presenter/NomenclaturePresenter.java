@@ -5,29 +5,26 @@ import com.crashlytics.android.Crashlytics;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.volgagas.personalassistant.data.cache.CachePot;
+import com.volgagas.personalassistant.data.cache.CacheUser;
 import com.volgagas.personalassistant.data.repository.MainRemoteRepository;
 import com.volgagas.personalassistant.domain.MainRepository;
 import com.volgagas.personalassistant.models.model.Task;
 import com.volgagas.personalassistant.models.model.worker.Barcode;
 import com.volgagas.personalassistant.models.model.worker.Nomenclature;
+import com.volgagas.personalassistant.models.model.worker.NomenclatureDimension;
 import com.volgagas.personalassistant.presentation.base.BasePresenter;
 import com.volgagas.personalassistant.utils.Constants;
+import com.volgagas.personalassistant.utils.UtilsDateTimeProvider;
 import com.volgagas.personalassistant.utils.bus.RxBus;
 import com.volgagas.personalassistant.utils.manager.TaskContentManager;
-import com.volgagas.personalassistant.utils.services.CreateNomenclaturesWorker;
-import com.volgagas.personalassistant.utils.services.UpdateNomenclaturesWorker;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -46,6 +43,12 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
     // used for compare original list with changed our list and if each nomenclature have difference count - we update it
     private List<Nomenclature> helperNomenclatureList;
     private List<Nomenclature> originalList;
+    private String inventDimId; // string for create nomenclature
+
+    private List<Nomenclature> createResult;
+    private List<Nomenclature> updateResult;
+
+    private boolean isLoadNomenclaturesFromServer = true;
 
     public NomenclaturePresenter() {
         super();
@@ -74,7 +77,9 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                         mappingBarcodesToNomenclatures())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> getViewState().addedBarcodeNomenclaturesToBaseList(result)));
+    }
 
+    public void presenterLoadData() {
         loadData();
     }
 
@@ -187,15 +192,11 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
         originalList.clear();
     }
 
-    public void createNomenclatures(List<Nomenclature> ourList) {
-        Timber.d("our lIST: " + ourList.toString());
-        Timber.d("original list: " + originalList);
-        Timber.d("helper list: " + helperNomenclatureList);
-
+    public Boolean createNomenclatures(List<Nomenclature> ourList) {
         originalList = CachePot.getInstance().getOriginalList();
 
-        List<Nomenclature> createResult = new ArrayList<>();
-        List<Nomenclature> updateResult = new ArrayList<>();
+        createResult = new ArrayList<>();
+        updateResult = new ArrayList<>();
 
         for (Nomenclature ourData : ourList) {
             //not bad, yey! Add to updateList if value in nomenclature has changed
@@ -209,40 +210,54 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
                 createResult.add(ourData);
             }
         }
-        Timber.d("checking created list: " + createResult);
-        Timber.d("checking updatedList: " + updateResult);
+        if (createResult.size() > 0 || updateResult.size() > 0) {
+            return true;
+        }
+        return false;
+    }
 
+    public void sendNomenclaturesToServer() {
         if (createResult.size() > 0) {
-            CachePot.getInstance().putCreateNomenclatures(createResult);
-            OneTimeWorkRequest createWorker = new OneTimeWorkRequest.Builder(CreateNomenclaturesWorker.class)
-                    .setConstraints(new Constraints.Builder()
-                            .setRequiredNetworkType(NetworkType.CONNECTED)
-                            .build())
-                    .setInputData(new Data.Builder()
-                            .putString("SERVICE_ORDER_ID", task.getIdTask())
-                            .putString("PROJ_CATEGORY_ID", task.getProjCategoryId())
-                            .putString("SERVICE_TASK_ID", task.getServiceTaskId())
-                            .putString("SO_PROJ_ID", task.getSoProjId())
-                            .build())
-                    .build();
-
-            WorkManager.getInstance()
-                    .enqueue(createWorker);
+            disposable.add(repository.getNomenclatureMappingDimension(task.getProjCategoryId())
+                    .subscribeOn(Schedulers.io())
+                    .flatMap((Function<NomenclatureDimension, SingleSource<List<Nomenclature>>>) nomenclatureDimension -> {
+                        inventDimId = nomenclatureDimension.getInventDimId();
+                        return Single.just(createResult);
+                    })
+                    .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
+                    .flatMap((Function<Nomenclature, ObservableSource<Response<Void>>>) data -> repository
+                            .attachNomenclatureToServiceOrder(mappingToCreateJson(
+                                    data, task.getIdTask(), task.getProjCategoryId(), task.getServiceTaskId(), task.getSoProjId())))
+                    .toList()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(result -> {
+                        if (updateResult.size() > 0) {
+                            updateNomenclatures(updateResult);
+                        } else {
+                            getViewState().acceptAndCloseView();
+                        }
+                    }, throwable -> {
+                        Timber.d("th: " + throwable);
+                        sendCrashlytics(throwable);
+                    }));
+        } else if (updateResult.size() > 0) {
+            updateNomenclatures(updateResult);
         }
-        if (updateResult.size() > 0) {
-            CachePot.getInstance().putUpdateNomenclatures(updateResult);
-            OneTimeWorkRequest updateWorker = new OneTimeWorkRequest.Builder(UpdateNomenclaturesWorker.class)
-                    .setConstraints(new Constraints.Builder()
-                            .setRequiredNetworkType(NetworkType.CONNECTED)
-                            .build())
-                    .setInputData(new Data.Builder()
-                            .putString("SERVICE_ORDER_ID", task.getIdTask())
-                            .build())
-                    .build();
+    }
 
-            WorkManager.getInstance()
-                    .enqueue(updateWorker);
-        }
+    private void updateNomenclatures(List<Nomenclature> updateResult) {
+        disposable.add(Single.just(updateResult)
+                .subscribeOn(Schedulers.io())
+                .flattenAsObservable((Function<List<Nomenclature>, Iterable<Nomenclature>>) data -> data)
+                .flatMap((Function<Nomenclature, ObservableSource<Response<Void>>>) nomenclature ->
+                        repository.updateNomenclatureInServer(task.getIdTask(), nomenclature.getServiceOrderLineNum(),
+                                mappingToUpdateJson(nomenclature.getCount())))
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> getViewState().acceptAndCloseView(), throwable -> {
+                    Timber.d("throwable: " + throwable);
+                    Crashlytics.logException(throwable);
+                }));
     }
 
     public void setHelperNomenclatureList(List<Nomenclature> helperNomenclatureList) {
@@ -264,5 +279,57 @@ public class NomenclaturePresenter extends BasePresenter<NomenclatureView> {
 
     public List<Nomenclature> getOriginalList() {
         return originalList;
+    }
+
+    private JsonObject mappingToCreateJson(Nomenclature nomenclature, String serviceOrderId, String projCategory,
+                                           String serviceTaskId, String soProjId) {
+        JsonObject object = new JsonObject();
+
+        object.add("dataAreaId", new JsonPrimitive("gns"));
+        object.add("ServiceOrderId", new JsonPrimitive(serviceOrderId));
+        object.add("ItemId", new JsonPrimitive(nomenclature.getName()));
+        object.add("InventDimId", new JsonPrimitive(inventDimId));
+        object.add("ProjLinePropertyId", new JsonPrimitive("Расход"));
+        object.add("ProjCategoryId", new JsonPrimitive(projCategory + "_ТМЦ"));
+        object.add("ProjId", new JsonPrimitive(soProjId));
+        object.add("ToInventDimId", new JsonPrimitive("AllBlank"));
+        object.add("DateRangeFrom",
+                new JsonPrimitive(UtilsDateTimeProvider.workerServiceTime() + "T12:00:00Z"));
+        object.add("Qty", new JsonPrimitive(nomenclature.getCount()));
+        object.add("DefaultDimension", new JsonPrimitive(Long.parseLong("5637144586")));//still here
+        object.add("TransactionSubType", new JsonPrimitive("Consumption"));
+        object.add("DateExecution",
+                new JsonPrimitive(UtilsDateTimeProvider.workerServiceTime() + "T12:00:00Z"));
+        object.add("ProjCurrencyCode", new JsonPrimitive("RUB"));
+        object.add("TransactionType", new JsonPrimitive("Item"));
+        object.add("DateRangeTo", new JsonPrimitive(UtilsDateTimeProvider.getCurrentFormatDateTime()));
+        object.add("ServiceTaskId", new JsonPrimitive(serviceTaskId));
+        object.add("Worker", new JsonPrimitive(Long.parseLong(CacheUser.getUser().getWorkerRecId())));
+        object.add("Unit", new JsonPrimitive(nomenclature.getUnit()));
+
+        return object;
+    }
+
+    private JsonObject mappingToUpdateJson(int qty) {
+        JsonObject object = new JsonObject();
+        object.add("Qty", new JsonPrimitive(qty));
+
+        return object;
+    }
+
+    public List<Nomenclature> getCreateResult() {
+        return createResult;
+    }
+
+    public List<Nomenclature> getUpdateResult() {
+        return updateResult;
+    }
+
+    public boolean isLoadNomenclaturesFromServer() {
+        return isLoadNomenclaturesFromServer;
+    }
+
+    public void setLoadNomenclaturesFromServer(boolean loadNomenclaturesFromServer) {
+        isLoadNomenclaturesFromServer = loadNomenclaturesFromServer;
     }
 }

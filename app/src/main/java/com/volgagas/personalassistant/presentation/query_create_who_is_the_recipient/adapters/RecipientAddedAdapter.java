@@ -80,7 +80,6 @@ public class RecipientAddedAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public void updateAdapter(List<User> users) {
-        Timber.d("UPDATE ADAPTER ADDE");
         uniqueUsers.addAll(users);
         userList.clear();
         userList.addAll(uniqueUsers);

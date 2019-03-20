@@ -114,7 +114,6 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
             authContext.acquireToken(StartActivity.this, dynamicsCurrentHttp, Constants.CLIENT,
                     Constants.REDIRECT_URL, "", PromptBehavior.Auto, "", d365Callback);
         } else {
-            Timber.d("REQUEST");
             authContext.acquireTokenSilentAsync(dynamicsCurrentHttp, Constants.CLIENT, d365Cache, d365Callback);
         }
     }
@@ -136,7 +135,6 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
     protected void onPause() {
         isOnResume = false;
         if (nfcAdapter != null && nfcAdapter.isEnabled()) {
-            Timber.d("DISABLE THiS SHIT");
             nfcAdapter.disableForegroundDispatch(this);
         }
         super.onPause();

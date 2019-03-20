@@ -91,7 +91,6 @@ public class ChooseActionActivity extends BaseActivity implements ChooseActivity
 
     @Override
     public void enableNFC() {
-        Timber.d("enable NFC");
         setPermissionToEnableNfc(true);
         handlerNFC();
     }

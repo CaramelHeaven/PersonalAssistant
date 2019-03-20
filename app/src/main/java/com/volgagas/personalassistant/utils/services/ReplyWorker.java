@@ -26,8 +26,6 @@ public class ReplyWorker extends Worker {
     @Override
     public Result doWork() {
         repository = MainRemoteRepository.getInstance();
-
-        Timber.d("do something");
         try {
             Thread.sleep(4000);
         } catch (InterruptedException e) {

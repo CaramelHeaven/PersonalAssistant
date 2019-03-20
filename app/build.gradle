@@ -30,8 +30,8 @@ android {
     productFlavors {
         dev {
             dimension "tier"
-            versionCode = 28
-            versionName = "0.5.1"
+            versionCode = 29
+            versionName = "0.5.2"
             applicationId = "com.volgagas.personalassistant.dev"
         }
         prod {

@@ -47,6 +47,7 @@ public class PersonalAssistant extends Application {
     public void onCreate() {
         super.onCreate();
 
+        Timber.d("asdas: ");
         Timber.plant(new Timber.DebugTree());
 
         TaskContentManager.getInstance();

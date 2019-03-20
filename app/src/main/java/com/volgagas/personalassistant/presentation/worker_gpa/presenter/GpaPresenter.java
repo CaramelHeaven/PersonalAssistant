@@ -107,8 +107,7 @@ public class GpaPresenter extends BasePresenter<GpaView> {
         if (responses.size() > 0) {
             handlerErrorInSuccessfulResult(responses);
         } else {
-            Timber.d("SUCCESSFUL");
-            //getViewState().completed();
+            getViewState().completed();
         }
     }
 

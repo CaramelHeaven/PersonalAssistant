@@ -13,7 +13,6 @@ import timber.log.Timber;
 public class RxBus {
     private static volatile RxBus instance;
 
-    //TODO refactoring this shit
     private PublishSubject<String> updateTokenSubject = PublishSubject.create();
     //scan data for scan mifare card
     private PublishSubject<String> scanData = PublishSubject.create();
@@ -37,7 +36,6 @@ public class RxBus {
     }
 
     public void passScanData(String data) {
-        Timber.d("pass Scan Data: " + data);
         scanData.onNext(data);
     }
 

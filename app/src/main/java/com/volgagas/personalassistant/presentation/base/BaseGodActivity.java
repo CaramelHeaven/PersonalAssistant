@@ -149,7 +149,6 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        Timber.d("onDestroy");
         disposable.clear();
         try {
             if (authContext != null) {
@@ -193,13 +192,9 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
                 .subscribe(result -> {
                     //if handler update token delivered in here, we check it. We won't to send
                     // this constant to channel [passUpdatedToken]
-                    Timber.d("updated string: " + TwoPermissions.getInstance().getUpdatedString());
-                    Timber.d("cons update token silent: " + Constants.UPDATE_TOKEN_SILENT);
                     if (!(TwoPermissions.getInstance().getUpdatedString().equals(Constants.UPDATE_TOKEN_SILENT))) {
-                        Timber.d("im here: ");
                         RxBus.getInstance().passUpdatedToken(TwoPermissions.getInstance().getUpdatedString());
                     }
-                    Timber.d("completed refresh: " + result);
                     TwoPermissions.getInstance().resetValues();
                 }));
     }
@@ -211,7 +206,6 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
      * @param result - string which define where we send observer data for update request to server
      */
     private void refreshTokens(String result) {
-        Timber.d("RESULT: " + result);
         authContext = new AuthenticationContext(this, Constants.AUTH_URL, true);
 
         TwoPermissions.getInstance().resetValues();

@@ -129,6 +129,7 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
 
     @Override
     protected void handlerErrorInSuccessfulResult(List<Response<Void>> result) {
+        //nothing here
         if (result.size() > 0) {
             for (Response<Void> response : result) {
                 Timber.d("sout: " + response.code());

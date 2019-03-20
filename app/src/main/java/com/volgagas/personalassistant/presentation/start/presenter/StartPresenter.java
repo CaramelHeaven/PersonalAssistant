@@ -29,7 +29,6 @@ public class StartPresenter extends BasePresenter<StartView> {
     private MainRepository repository;
     private String userNumbers;
 
-    @SuppressLint("CheckResult")
     public StartPresenter() {
         super();
         repository = MainRemoteRepository.getInstance();
@@ -63,6 +62,11 @@ public class StartPresenter extends BasePresenter<StartView> {
         this.userNumbers = data;
         Timber.d("userData: " + userNumbers);
         loadData();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     private void successfulResponse(UserDynamics userDynamics) {

@@ -104,8 +104,12 @@ public class UtilsDateTimeProvider {
      */
     public static String formatHistoryDate(String serverDate) {
         try {
-            Date date = serverFormat.parse(serverDate);
-            return dateHistoryFormat.format(date);
+            if (!serverDate.equals("")) {
+                Date date = serverFormat.parse(serverDate);
+                return dateHistoryFormat.format(date);
+            } else {
+                return "";
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -118,7 +122,11 @@ public class UtilsDateTimeProvider {
     public static String formatHistoryTime(String serverTime) {
         try {
             serverFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-            return timeHistoryFormat.format(serverFormat.parse(serverTime));
+            if (serverFormat.parse(serverTime) != null) {
+                return timeHistoryFormat.format(serverFormat.parse(serverTime));
+            } else {
+                return "";
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -235,6 +235,16 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
     }
 
     @Override
+    public void onBackPressed() {
+        //nothing
+    }
+
+    @Override
+    public boolean onNavigateUp() {
+        return false;
+    }
+
+    @Override
     public void showErrorToEnter() {
         //setPermissionToEnableNfc(true);
         //handlerNFC();

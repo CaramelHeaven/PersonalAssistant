@@ -36,7 +36,7 @@
             android:layout_toRightOf="@id/cv_container"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Fominov Sergey Mihkailovich"
+            android:text="asdsa"
             android:textColor="@android:color/black" />
 
         <TextView
@@ -50,7 +50,7 @@
             android:layout_toRightOf="@id/cv_container"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Android developer"
+            android:text="dsd"
             android:textSize="12sp" />
     </RelativeLayout>
 

@@ -43,7 +43,9 @@
             android:exported="true"
             android:label="Login"
             android:screenOrientation="portrait" />
-        <activity android:name=".presentation.start.StartActivity">
+        <activity
+            android:name=".presentation.start.StartActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />

@@ -9,6 +9,8 @@ import com.volgagas.personalassistant.presentation.worker_history.WorkerHistoryF
 import com.volgagas.personalassistant.presentation.worker_today.WorkerTodayFragment;
 import com.volgagas.personalassistant.presentation.worker_today_new.WorkerTodayNewFragment;
 
+import io.reactivex.Single;
+
 /**
  * Copyright (c) 2018 VolgaGas. All rights reserved.
  */

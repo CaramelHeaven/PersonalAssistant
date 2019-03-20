@@ -39,7 +39,7 @@ public class SalaryNetwork {
     private String payStatementReversed;
     @SerializedName("NetPay")
     @Expose
-    private Integer netPay;
+    private Double netPay;
     @SerializedName("PersonnelNumber")
     @Expose
     private String personnelNumber;
@@ -54,7 +54,7 @@ public class SalaryNetwork {
     private String periodStartDate;
     @SerializedName("GrossPay")
     @Expose
-    private Integer grossPay;
+    private Double grossPay;
     @SerializedName("DisbursementFormat")
     @Expose
     private String disbursementFormat;
@@ -108,7 +108,7 @@ public class SalaryNetwork {
         return payStatementReversed;
     }
 
-    public Integer getNetPay() {
+    public Double getNetPay() {
         return netPay;
     }
 
@@ -128,7 +128,7 @@ public class SalaryNetwork {
         return periodStartDate;
     }
 
-    public Integer getGrossPay() {
+    public Double getGrossPay() {
         return grossPay;
     }
 

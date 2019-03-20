@@ -64,7 +64,6 @@ public class RxBus {
     }
 
     public void passDataToCommonChannel(String data) {
-        Timber.d("pass data: " + data);
         commonChannel.onNext(data);
     }
 

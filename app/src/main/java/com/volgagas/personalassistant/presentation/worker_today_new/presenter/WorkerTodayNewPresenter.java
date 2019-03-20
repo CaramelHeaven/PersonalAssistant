@@ -38,8 +38,6 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
         repository = MainRemoteRepository.getInstance();
         disposable = new CompositeDisposable();
 
-        PersonalAssistant.provideDynamics365Auth("sdasd", "");
-
         //update two screens
         disposable.add(RxBus.getInstance().getSubscribeToUpdateToken()
                 .subscribeOn(Schedulers.io())
@@ -88,13 +86,7 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
                 }, this::handlerErrorsFromBadRequests));
     }
 
-    int k = 0;
-
     public void loadData() {
-        if (k == 0) {
-            PersonalAssistant.provideDynamics365Auth("fasfs", "");
-            k++;
-        }
         getViewState().showProgress();
         disposable.add(repository.getTasksToday()
                 .subscribeOn(Schedulers.io())
@@ -103,7 +95,6 @@ public class WorkerTodayNewPresenter extends BasePresenter<WorkerTodayNewView<Ta
     }
 
     private void handlerErrorForUpdateData(Throwable throwable) {
-        Timber.d("handler error: ");
         if (throwable.getMessage().contains(Constants.HTTP_401)) {
             RxBus.getInstance().passActionForUpdateToken(Constants.WORKER_TODAY_NEW_UPDATE_PRESENTER);
         } else {

@@ -430,7 +430,7 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Observable<Response<Void>> attachNomenclatureToServiceOrder(JsonObject object) {
-        String url = "https://volgagas-testdevaos.sandbox.ax.dynamics.com/data/SOLinesEntity/";
+        String url = Constants.DYNAMICS_365 + "/data/SOLinesEntity/";
 
         return PersonalAssistant.getBaseApiService().createNomenclatureInServiceOrder(url, object);
     }
@@ -438,7 +438,7 @@ public class MainRemoteRepository implements MainRepository {
     @Override
     public Observable<Response<Void>> updateNomenclatureInServer(String serviceOrderId, int serviceOrderLineNum,
                                                                  JsonObject object) {
-        String url = "https://volgagas-testdevaos.sandbox.ax.dynamics.com/data/SOLinesEntity(dataAreaId='gns', " +
+        String url = Constants.DYNAMICS_365 + "/data/SOLinesEntity(dataAreaId='gns', " +
                 "ServiceOrderId='" + serviceOrderId + "',ServiceOrderLineNum=" + serviceOrderLineNum + ")";
 
         return PersonalAssistant.getBaseApiService().updateNomenclatureInServer(url, object);
@@ -475,6 +475,7 @@ public class MainRemoteRepository implements MainRepository {
 
     @Override
     public Single<List<UserOrder>> getPurchaseRequisitions() {
+        //todo change д000000310 on user personnel number. this is keep in cache user model
         String filter = "(PreparerPersonnelNumber eq 'д000000310')";
 
         return PersonalAssistant.getBaseApiService().getPurchaseRequisition(filter, "DefaultRequestedDate desc")

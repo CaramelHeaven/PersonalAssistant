@@ -27,10 +27,12 @@ public class BroadcastManager extends BroadcastReceiver {
             if (intent.getAction().equals(Constants.ACTION_NOT_UPDATE_APK)) {
                 notificationManager.cancel(Constants.APP_NOTIFICATION_UPDATE_APP);
             } else if (intent.getAction().equals(Constants.ACTION_UPDATE_APK)) {
-                RxBus.getInstance().passDataToCommonChannel(Constants.ACTION_FOR_DOWNLOAD_APK);
-                notificationManager.cancel(Constants.APP_NOTIFICATION_UPDATE_APP);
+                if (RxBus.getInstance().getCommonChannel() != null && notificationManager != null) {
+                    RxBus.getInstance().passDataToCommonChannel(Constants.ACTION_FOR_DOWNLOAD_APK);
+                    notificationManager.cancel(Constants.APP_NOTIFICATION_UPDATE_APP);
 
-                Toast.makeText(context, "UPDATING", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Обновление приложения", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

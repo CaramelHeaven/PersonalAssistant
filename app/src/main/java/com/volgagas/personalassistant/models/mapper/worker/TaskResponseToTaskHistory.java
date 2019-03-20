@@ -63,7 +63,9 @@ public class TaskResponseToTaskHistory extends Mapper<TaskResponse, List<TaskHis
             task.setStatus(test.get(i).getStatus());
             if (map.containsKey(task)) {
                 List<SubTask> subTasks = map.get(task);
-                subTasks.add(addSubTask(new SubTask(), test.get(i)));
+                if (test.get(i) != null) {
+                    subTasks.add(addSubTask(new SubTask(), test.get(i)));
+                }
                 updated.put(task, subTasks);
             }
         }

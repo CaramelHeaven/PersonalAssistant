@@ -75,7 +75,7 @@ public class FileUploadNotification {
                     .setProgress(baseSize, Integer.parseInt(percent), false);
         }
 
-        if (notificationManager != null) {
+        if (notificationManager != null && builder != null) {
             notificationManager.notify(NOTIFICATION_ID, builder.build());
         }
         if (Integer.parseInt(percent) == baseSize) {

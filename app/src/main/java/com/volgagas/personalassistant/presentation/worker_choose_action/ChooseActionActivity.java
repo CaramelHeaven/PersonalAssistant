@@ -30,7 +30,7 @@ public class ChooseActionActivity extends BaseActivity implements ChooseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_action);
         setPermissionToEnableNfc(false);
-
+        
         action = getIntent().getStringExtra("ACTION");
 
         //We can enter in this activity from two ways; ResultActivity or from WorkerTodayDF

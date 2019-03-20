@@ -81,8 +81,7 @@ public class GpaPresenter extends BasePresenter<GpaView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result.getCategory().equals("Оборудование")) {
-                        //equals(task.getGpa())
-                        if (result.getName().length() > 0) {
+                        if (result.getName().equals(task.getGpa())) {
                             disposable.add(Single.just(selectedTasks)
                                     .subscribeOn(Schedulers.io())
                                     .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)

@@ -37,8 +37,8 @@ public class KioskTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_kiosk_task, viewGroup, false);
-        return new TaskVH(view);
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_kiosk_task, viewGroup, false);
+            return new TaskVH(view);
     }
 
     @Override
@@ -46,8 +46,6 @@ public class KioskTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TaskVH taskVH = (TaskVH) viewHolder;
         taskVH.tvTaskName.setText(taskList.get(position).getDescription());
         taskVH.tvCategory.setText(taskList.get(position).getCategoryId());
-
-        Timber.d("kek: " + taskList.get(position).toString());
     }
 
     public void updateAdapter(List<TaskTemplate> models) {

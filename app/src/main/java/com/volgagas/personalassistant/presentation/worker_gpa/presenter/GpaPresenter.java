@@ -74,7 +74,6 @@ public class GpaPresenter extends BasePresenter<GpaView> {
     //&& gpa.getName().equals(task.getGpa()))
     public void sendData(String userNumbers) {
         this.userNumbers = userNumbers;
-
         getViewState().showProgress();
 
         disposable.add(repository.getCardInfo(userNumbers)
@@ -82,7 +81,8 @@ public class GpaPresenter extends BasePresenter<GpaView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result.getCategory().equals("Оборудование")) {
-                        if (result.getName().equals(task.getGpa())) {
+                        //equals(task.getGpa())
+                        if (result.getName().length() > 0) {
                             disposable.add(Single.just(selectedTasks)
                                     .subscribeOn(Schedulers.io())
                                     .flattenAsObservable((Function<List<SubTask>, Iterable<SubTask>>) subTasks -> subTasks)

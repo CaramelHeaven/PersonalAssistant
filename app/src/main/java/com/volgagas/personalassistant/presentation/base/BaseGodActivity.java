@@ -74,7 +74,6 @@ public abstract class BaseGodActivity extends MvpAppCompatActivity {
         if (dynamicsCurrentHttp.equals("")) {
             dynamicsCurrentHttp = Constants.DYNAMICS_365;
         }
-
     }
 
     @Override

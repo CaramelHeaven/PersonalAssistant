@@ -39,7 +39,7 @@ public class StartPresenter extends BasePresenter<StartView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         //subscriber to get permissions state for start MainActivity
-        disposable.add(CommonChannel.getInstance().getPermissionsSubject()
+        disposable.add(CommonChannel.getInstance(). getPermissionsSubject()
                 .subscribeOn(Schedulers.io())
                 .filter(ThreePermissions::allValuesIsTrue)
                 .observeOn(AndroidSchedulers.mainThread())

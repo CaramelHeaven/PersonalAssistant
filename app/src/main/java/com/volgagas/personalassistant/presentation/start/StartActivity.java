@@ -247,10 +247,8 @@ public class StartActivity extends MvpAppCompatActivity implements StartView {
 
     @Override
     public void enableNFC() {
-        if (isOnResume) {
-            permissionToEnableNfc = true;
-            onResume();
-        }
+        permissionToEnableNfc = true;
+        onResume();
     }
 
     @Override
